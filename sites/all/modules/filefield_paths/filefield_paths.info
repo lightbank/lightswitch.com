@@ -1,0 +1,22 @@
+name = FileField Paths
+description = Adds extra functionality to FileFields Path settings.
+dependencies[] = token
+core = 7.x
+files[] = filefield_paths.install
+files[] = filefield_paths.module
+files[] = modules/file.inc
+files[] = modules/image.inc
+files[] = tests/filefield_paths.test
+
+; Information added by drupal.org packaging script on 2011-02-25
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "filefield_paths"
+datestamp = "1298619259"
+
+; Information added by drupal.org packaging script on 2011-06-12
+version = "7.x-1.0-alpha1"
+core = "7.x"
+project = "filefield_paths"
+datestamp = "1307867224"
+

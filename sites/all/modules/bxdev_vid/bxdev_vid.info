@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Videographer
+description = "Implements custom Videographer functionality."
+package = bx
+core = 7.x

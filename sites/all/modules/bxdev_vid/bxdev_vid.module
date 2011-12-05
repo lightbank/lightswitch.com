@@ -1,0 +1,207 @@
+<?php
+
+/**
+ * HOOKS
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function bxdev_vid_menu() {
+  $items['join-our-team'] = array(
+    'title' => t('Videographer or Editor? Join Our Team!'),
+    'page callback' => 'bxdev_vid_join_form',
+    'access arguments' => array('access content'),
+		'file path' => drupal_get_path('module', 'node'),
+    'file' => 'node.pages.inc',
+		'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function bxdev_vid_block_info() {
+  // This example comes from node.module.
+  $blocks['vid_sort']['info'] = t('Videographer sort');
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function bxdev_vid_block_view($delta = '') {
+  $block = array();
+	$output = '';
+	
+  switch ($delta) {
+    case 'vid_sort':
+			// get the url parameters
+			$url = $_SERVER['REQUEST_URI'];
+			$parse_url = parse_url($url);
+			
+			// check if url params exist
+			if(isset($parse_url['query'])){			
+				$parse_str = parse_str($parse_url['query']);				
+			}else{
+				$field_region_value = 'All';
+				$field_skills_value = 'All';
+				$sort_by = 'field_rating_value';
+				$sort_order = 'DESC';
+			}
+			
+			// initialize sort classname variables
+			$rating_class = '';
+			$recent_class = '';
+			$abc_class = '';
+		
+			// determine which is active		
+			switch($sort_by){
+				case 'field_rating_value':
+					$rating_class = 'active';
+					break;
+			
+				case 'created':
+					$recent_class = 'active';
+					break;
+				
+				case 'title':
+					$abc_class = 'active';
+					break;
+			}
+		
+			// output
+			$output .= 'Sort by: ';
+			$output .= '<a class="' . $rating_class . '" href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $field_skills_value . '&sort_by=field_rating_value&sort_order=DESC">Rating</a>';
+			$output .= ' | <a class="' . $recent_class . '" href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $field_skills_value . '&sort_by=created&sort_order=DESC">Recent</a>';
+			$output .= ' | <a class="' . $abc_class . '" href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $field_skills_value . '&sort_by=title&sort_order=ASC">ABC</a>';
+			
+      $block['content'] = $output;
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function bxdev_vid_preprocess_page(&$variables) {
+	// check if page is displaying videographer full node
+	if(isset($variables['node'])){
+		$variables['videographer'] = ($variables['node']->type == 'videographer') ? TRUE : FALSE;
+	}else{
+		$variables['videographer'] = FALSE;
+	}
+}
+
+
+
+/**
+ * FORMS
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function bxdev_vid_form_alter(&$form, $form_state, $form_id){
+	if($form['#id'] == 'views-exposed-form-videographers-page' && arg(0) == 'videographers'){
+		
+		$output = '';
+		
+		// get the url parameters
+		$url = $_SERVER['REQUEST_URI'];
+		$parse_url = parse_url($url);
+		
+		// check if url params exist
+		if(isset($parse_url['query'])){			
+			$parse_str = parse_str($parse_url['query']);			
+		}else{
+			$field_region_value = 'All';
+			$field_skills_value = 'All';
+			$sort_by = 'field_rating_value';
+			$sort_order = 'DESC';
+		}
+		
+		/**
+		 * Skills filter
+		 */
+		// filter skills header	
+		$output .= '<div class="filter-skills filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by Skill:</h3><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=All&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';
+		// begin the list
+		$output .= '<ul>';		
+		$skills = $form['field_skills_value']['#options'];
+		// cycle through each region
+		foreach($skills as $skill_key => $skill){
+			if($skill_key != 'All'){
+				// check for the active class
+				$filter_class = ($field_skills_value == $skill_key) ? 'active' : '';
+				$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $skill_key . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $skill . '</a></li>';
+			}
+		}		
+		// end the list
+		$output .= '</ul></div>';
+	
+		/**
+		 * City filter
+		 */
+		// filter city header	
+		$output .= '<div class="filter-city filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by City:</h3><a href="/videographers?field_region_value=All&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';		
+		// begin the list
+		$output .= '<ul>';		
+		$regions = $form['field_region_value']['#options'];
+		// cycle through each region
+		foreach($regions as $region_key => $region){
+			if($region_key != 'All'){
+				// check for the active class
+				$filter_class = ($field_region_value == $region_key) ? 'active' : '';
+				$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $region_key . '&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $region . '</a></li>';
+			}
+		}		
+		// end the list
+		$output .= '</ul></div>';
+	
+		// attach the markup
+		$form['filter_links'] = array(
+			'#markup' => $output,
+		);
+						
+		// dpm($form);		
+	}
+}
+
+/**
+ * Form builder: add videographer
+ */
+function bxdev_vid_join_form(){
+	// build a empty node object to pass to the node add form
+	$node = new stdClass();
+	$node->uid = 0;
+	$node->type = 'videographer';
+	$node->language = 'und';
+	$form = drupal_get_form('videographer_node_form', $node);
+	$form['actions']['submit']['#value'] = t('Submit');
+	unset($form['field_notes']);
+	unset($form['field_rating']);
+	unset($form['additional_settings']);
+	return drupal_render($form);
+}
+
+
+/**
+ * CUSTOM
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+

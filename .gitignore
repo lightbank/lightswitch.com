@@ -1,0 +1,12 @@
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
+
+# Ignore bxdev module as it contains terminal information
+sites/all/modules/bxdev
+
+# Ignore SEO XML files
+*.xml
