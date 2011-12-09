@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Sales
+description = "Implements sales user functionality."
+package = bx
+core = 7.x

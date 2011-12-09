@@ -1,0 +1,54 @@
+<?php
+
+function bxdev_user_preprocess_page($variables){
+	// $user = new User();
+	// $user->load(7);
+	// // $user->send();
+	// dpm($user);
+	// $profile_types = profile2_get_types();
+	// $profile = profile2_load(2);
+	// dpm($profile_types);
+	// dpm($profile);
+}
+
+/**
+ * Implements hook_mail().
+ */
+function bxdev_user_mail($key, &$message, $params) {
+	switch($key){
+		case 'new_videographer':
+			$subject = t('Thanks for becoming a Videographer!');
+		  $body = 'You have been entered into the database.
+		
+			Here is your password: <strong>' . $params['pass'] . '</strong>';
+			
+		  $message['subject'] = t('Thanks for becoming a Videographer!');
+		  $message['body'][] = $body;
+			break;
+	}
+}
+
+class User{
+	
+	function __construct(){
+		$this->password = $this->generate_password();
+	}
+	
+	function load($uid){
+		$this->user = user_load($uid);
+	}
+	
+	function create($account){
+		$account->pass = $password;
+		$this->user = user_save($account);
+	}
+	
+	function generate_password(){
+		return user_password();
+	}
+	
+	function send(){
+		drupal_mail('bxdev_user', 'new_videographer', $this->user->mail, language_default(), array('pass' => $this->password));
+	}
+	
+}

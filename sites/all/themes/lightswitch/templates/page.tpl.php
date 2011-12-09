@@ -13,6 +13,7 @@
   <?php endif; ?>
 
   <div id="main-content" class="clearfix">
+		<?php print $messages; ?>
     <?php print render($title_prefix); ?>
     <?php print render($title_suffix); ?>
     <?php if ($primary_local_tasks): ?><ul class="links clearfix"><?php print render($primary_local_tasks) ?></ul><?php endif; ?>
