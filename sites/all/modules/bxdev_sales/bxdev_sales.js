@@ -2,7 +2,7 @@
   
 	$(function(){
 		
-		if(window.location.hash = '#existing'){
+		if(window.location.hash == '#existing'){
 			$('.client-add-form').hide();
 			$('.client-existing-form').show();
 		}
@@ -16,7 +16,6 @@
 			$('.client-add-form').hide();
 			$('.client-existing-form').show();
 		});
-		
 		
 		Drupal.jsAC.prototype.hidePopup = function (keycode) {
 			var selected_value = $(this.selected).text();
