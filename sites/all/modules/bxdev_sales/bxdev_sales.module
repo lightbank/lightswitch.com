@@ -4,184 +4,185 @@
  * HOOKS
  */
 
+function bxdev_sales_preprocess_page($variables){
+	// $account = new stdClass();
+	// $account->name = 'wandoledzep@gmail.com';
+	// $account->mail = 'wandoledzep@gmail.com';
+	// $account->pass = user_password();
+	// $account->roles = array(2 => 'authenticated user', 7 => 'client');
+	// $user = user_save($account);
+	// 
+	// $profile = profile_create(array('user' => $user, 'type' => 'client'));
+	// $profile->field_profile_test['und'][0]['value'] = 'hello dood';
+	// profile2_save($profile);
+	// 
+	// dpm($profile);
+}
+
 /**
  * Implements hook_menu().
  */
 function bxdev_sales_menu() {
   $items['sales/add/client'] = array(
     'title' => t('Create a New Video Project'),
-		'page callback' => 'drupal_get_form',
-    'page arguments' => array('bxdev_sales_create_client_form'),
+		'page callback' => 'bxdev_sales_create_client_page',
+		'file path' => drupal_get_path('module','user'),
+    'file' => 'user.pages.inc',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
+	$items['sales/add/project/%user'] = array(
+	  'title' => t('Create a New Video Project'),
+		'page callback' => 'bxdev_sales_create_project_page',
+		'page arguments' => array(3),
+		'file path' => drupal_get_path('module','node'),
+    'file' => 'node.pages.inc',
+	  'access arguments' => array('access content'),
+	  'type' => MENU_CALLBACK,
+	);
+
+	$items['sales/get/form/%'] = array(
+		'page callback' => 'bxdev_sales_get_form',
+		'page arguments' => array(3),
+		'file path' => drupal_get_path('module','user'),
+    'file' => 'user.pages.inc',
+    'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
+
+	$items['sales/autocomplete/clients'] = array(
+		'page callback' => 'bxdev_sales_autocomplete_clients',
+	  'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
+
   return $items;
 }
+
 
 /**
  * FORMS
  */
-function bxdev_sales_create_client_form(){
+
+/**
+ * Form builder: existing client
+ */
+function bxdev_sales_existing_client_form($form, $form_state){
+	$form['existing_client'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Existing client'),
+		'#autocomplete_path' => 'sales/autocomplete/clients',
+		'#required' => TRUE,
+	);
 	
-	$user_5 = user_load(5);
-	dpm($user_5);
-	
-	$form = array();
-	
-	$form['new_existing_client'] = array(
-	  '#type' => 'radios',
-	  '#title' => t('new or existing client'),
-	  '#options' => array(
-			0 => 'new',
-			1 => 'existing',
-		),
+	$form['existing_client_nid'] = array(
+	  '#type' => 'hidden',
+	  '#default_value' => '',
 	);	
-	
-	$form['business_name'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('business name'),
-	);
-	
-	$form['category'] = array(
-	  '#type' => 'select',
-	  '#title' => t('category'),
-	  '#options' => array(
-			'cat1' => 'cat1',
-			'cat2' => 'cat2',
-		),
-	);
-	
-	$form['price'] = array(
-	  '#type' => 'select',
-	  '#title' => t('price'),
-	  '#options' => array(
-			'price1' => 'price1',
-			'price2' => 'price2',
-		),
-	);
-	
-	$form['website'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('website'),
-	);
-	
-	$form['phone'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('phone'),
-	);
-	
-	$form['email'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('email'),
-	);
-	
-	$form['address'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('address'),
-	);
-	
-	$form['hours_operation'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('hours of operation'),
-	);
-	
-	$form['business_overview'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('business overview paragraph'),
-	);
-	
-	$form['address'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('address'),
-	);
-	
-	$form['social_name1'] = array(
-	  '#type' => 'textfield',
-	  '#title' => t('social media'),
-	);
-	
-	$form['social_url1'] = array(
-	  '#type' => 'textfield',
-	);
-	
-	$form['social_name2'] = array(
-	  '#type' => 'textfield',
-	);
-	
-	$form['social_url2'] = array(
-	  '#type' => 'textfield',
-	);
-	
-	$form['social_name3'] = array(
-	  '#type' => 'textfield',
-	);
-	
-	$form['social_url3'] = array(
-	  '#type' => 'textfield',
-	);
-	
-	$form['social_name4'] = array(
-	  '#type' => 'textfield',
-	);
-	
-	$form['social_url4'] = array(
-	  '#type' => 'textfield',
-	);
-	
-	$form['pdf_label'] = array(
-	  '#type' => 'textfield',
-		'#title' => t('business PDF download'),
-	);
-	
-	$form['pdf_file'] = array(
-	  '#type' => 'file',
-	);
 	
 	$form['submit'] = array(
 	  '#type' => 'submit',
-	  '#value' => t('Continue'),
-	);	
+	  '#value' => t('Continue >'),
+	);
 	
-	return $form;	
-}
-
-function bxdev_sales_create_client_form_submit($form, $form_state){
-	
-	$values = $form_state['values'];
-	
-	$file = file_save_upload('pdf_file', array('file_validate_extensions' => array('pdf', 'txt', 'doc' ,'docx')), 'public://');
-	$file->display = 1;
-	
-	$account = new stdClass();
-	$account->name = $values['email'];
-	$account->mail = $values['email'];
-	$account->pass = user_password();
-	$account->roles = array(2 => 'authenticated user', 7 => 'client');
-	$account->field_business_name['und'][0]['value'] = $values['business_name'];
-	$account->field_business_category['und'][0]['value'] = $values['category'];
-	$account->field_business_price['und'][0]['value'] = $values['price'];
-	$account->field_website['und'][0]['value'] = $values['website'];
-	$account->field_business_phone['und'][0]['value'] = $values['phone'];
-	$account->field_business_address['und'][0]['value'] = $values['address'];
-	$account->field_hours_operation['und'][0]['value'] = $values['hours_operation'];
-	$account->field_business_overview['und'][0]['value'] = $values['business_overview'];
-	$account->field_social_name1['und'][0]['value'] = $values['social_name1'];
-	$account->field_social_url1['und'][0]['value'] = $values['social_url1'];
-	$account->field_social_name2['und'][0]['value'] = $values['social_name2'];
-	$account->field_social_url2['und'][0]['value'] = $values['social_url2'];
-	$account->field_social_name3['und'][0]['value'] = $values['social_name3'];
-	$account->field_social_url3['und'][0]['value'] = $values['social_url3'];
-	$account->field_social_name4['und'][0]['value'] = $values['social_name4'];
-	$account->field_social_url4['und'][0]['value'] = $values['social_url4'];
-	
-	$account->field_business_pdf_label['und'][0]['value'] = $values['pdf_label'];
-	$account->field_business_pdf_download['und'][0] = (array)$file;
-	
-	$user = user_save($account);
+	return $form;
 	
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bxdev_sales_form_bxdev_sales_existing_client_form_alter(&$form, $form_state){
+	$form['#action'] = '/sales/add/client#existing';
+}
+
+/**
+ * Form submit handler: existing client
+ */
+function bxdev_sales_existing_client_form_submit($form, &$form_state){
+	$values = $form_state['values'];
+	// $form_state['redirect'] = '/videographers';
+	dpm($values);
+}
+
+
+/**
  * CUSTOM
  */
+
+/**
+ * Page callback: create client
+ */
+function bxdev_sales_create_client_page(){
+	
+	drupal_add_js(drupal_get_path('module', 'bxdev_sales') . '/bxdev_sales.js');
+	
+	$output = '<h2><strong>Business Profile Info</strong> (step 1 of 2)</h2>';
+	$output .= '<div class="client-select">';
+	$output .= '<a href="#new" class="show-client-add-form">New client</a>';
+	$output .= '<a href="#existing" class="show-client-existing-form">Existing client</a>';
+	$output .= '</div>';
+	
+	$output .= '<div class="client-add-form">' . drupal_render(drupal_get_form('user_register_form')) . '</div>';
+	
+	$output .= '<div class="client-existing-form" style="display:none;">' . drupal_render(drupal_get_form('bxdev_sales_existing_client_form')) . '</div>';
+	
+	return $output;
+	
+}
+
+/**
+ * Page callback: create project
+ */
+function bxdev_sales_create_project_page($user){
+	
+	dpm($user);
+	
+	$output = '';
+
+	$output .= drupal_render(node_add('project'));
+	
+	
+	return $output;
+}
+
+/**
+ * Menu callback: sales get form
+ */
+function bxdev_sales_get_form($type){
+	$output = '';
+	switch($type){
+		case 'new':
+			$output .= '<div id="client-form">' . drupal_render(drupal_get_form('user_register_form')) . '</div>';
+			break;
+		
+		case 'existing':
+			$output .= '<div id="client-form">' . drupal_render(drupal_get_form('bxdev_sales_existing_client_form')) . '</div>';
+			// $commands[] = ajax_command_invoke(NULL, 'bxdev_sales_autocomplete');
+			break;
+	}
+	$commands[] = ajax_command_replace('#client-form', $output);
+	$page = array('#type' => 'ajax', '#commands' => $commands);
+	ajax_deliver($page);
+}
+
+/**
+ * Menu callback: clients autocomplete
+ */
+function bxdev_sales_autocomplete_clients($string){
+	$results = db_query("SELECT field_data_field_name.field_name_value as name, profile.uid as uid FROM {field_data_field_name} INNER JOIN {profile} ON field_data_field_name.entity_id = profile.pid WHERE field_data_field_name.bundle = 'client' AND field_data_field_name.field_name_value LIKE :string", array(':string' => $string . '%'));
+	if($results->rowCount() > 0){
+		$items = array();
+		foreach($results as $client){
+			$items[$client->uid] = $client->name;
+		}
+		drupal_json_output($items);
+	}
+}
+
+
+
+
+
+
