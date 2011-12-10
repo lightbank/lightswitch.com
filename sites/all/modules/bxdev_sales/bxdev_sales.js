@@ -20,8 +20,8 @@
 		Drupal.jsAC.prototype.hidePopup = function (keycode) {
 			var selected_value = $(this.selected).text();
 			var nid = $(this.selected).data('autocompleteValue');
-			$('input[name="existing_client_nid"]').val(nid);
-			$('#edit-existing-client').val(selected_value);
+			$('input[name="existing_business_nid"]').val(nid);
+			$('#edit-existing-business').val(selected_value);
 			
 			// Hide popup.
 			var popup = this.popup;
