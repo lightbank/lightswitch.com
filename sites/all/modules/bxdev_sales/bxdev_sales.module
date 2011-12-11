@@ -86,7 +86,6 @@ function bxdev_sales_node_insert($node) {
 			}
 			// log action
 			watchdog('sales', 'New business: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
-			// drupal_goto('sales/add/project/' . $node->nid);
 			break;
 	}
 }
@@ -190,36 +189,6 @@ function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
 }
 
 /**
- * Implements hook_form_profile2_form_alter().
- */
-function bxdev_sales_form_profile2_form_alter(&$form, &$form_state){
-	if($form['#form_id'] == 'user_register_form'){		
-		// add our custom validation handler
-		array_unshift($form['#validate'], 'bxdev_sales_form_user_register_validate');
-		
-		// add our custom submit handler
-		$form['#submit'][] = 'bxdev_sales_form_user_register_submit';
-		
-		// submit button verbiage
-		$form['actions']['submit']['#value'] = t('Continue >');
-		
-		// make name and pass not required - we will set these values on validate
-		$form['account']['name']['#required'] = FALSE;
-		$form['account']['pass']['#required'] = FALSE;
-		$form['account']['mail']['#required'] = FALSE;
-		
-		$form['account']['name']['#access'] = FALSE;
-		$form['account']['pass']['#access'] = FALSE;
-		$form['account']['mail']['#access'] = FALSE;
-		$form['account']['status']['#access'] = FALSE;
-		$form['account']['notify']['#access'] = FALSE;
-		
-		// remove the legend title
-		$form['profile_client']['#title'] = '';				
-	}
-}
-
-/**
  * Form submit handler: existing client
  */
 function bxdev_sales_existing_business_form_submit($form, &$form_state){
@@ -242,32 +211,13 @@ function bxdev_sales_project_node_form_submit($form, &$form_state){
  * Form submit handler: add business
  */
 function bxdev_sales_form_business_node_form_submit($form, &$form_state){
-	$values = $form_state['values'];
-	$form_state['redirect'] = 'sales/add/project/' . $values['nid'];
+	// only if adding new business, not editing
+	if(arg(2) != 'edit'){
+		$values = $form_state['values'];
+		$form_state['redirect'] = 'sales/add/project/' . $values['nid'];
+	}
 }
 
-/**
- * Submit handler: user register
- */
-function bxdev_sales_form_user_register_submit(&$form, &$form_state){
-	$uid = $form_state['values']['uid'];
-	// log the action
-	watchdog('sales', 'New client: @user, uid: @uid', array('@user' => $form_state['values']['name'], '@uid' => $uid));
-	// redirect
-	$form_state['redirect'] = 'sales/add/project/' . $uid;
-}
-
-/**
- * Form validation handler: user register
- */
-function bxdev_sales_form_user_register_validate(&$form, &$form_state){
-	$values = $form_state['values'];
-	// auto-populate the username, password, and roles values
-	form_set_value($form['account']['name'], $values['profile_client']['field_email']['und'][0]['email'], $form_state);
-	form_set_value($form['account']['mail'], $values['profile_client']['field_email']['und'][0]['email'], $form_state);
-	form_set_value($form['account']['pass'], user_password(), $form_state);
-	form_set_value($form['account']['roles'], array(2 => TRUE, 7 => TRUE), $form_state);
-}
 
 /**
  * CUSTOM
