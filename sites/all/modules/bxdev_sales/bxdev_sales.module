@@ -188,6 +188,23 @@ function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
 	$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_business_node_form_submit';
 }
 
+// /**
+//  * Implements hook_form_FORM_ID_alter().
+//  * Form: user register form
+//  */
+// function bxdev_sales_form_user_register_form_alter(&$form, $form_state){
+// 	if(user_access('administer users')){
+// 		$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_user_register_form_submit';
+// 	}
+// }
+// 
+// /**
+//  * Form submit handler: user register
+//  */
+// function bxdev_sales_form_user_register_form_submit($form, &$form_state){
+// 	dpm($form_state);
+// }
+
 /**
  * Form submit handler: existing client
  */
