@@ -4,12 +4,6 @@
  * HOOKS
  */
 
-function bxdev_project_preprocess_page(&$vars){
-	// $project = new Project(830);
-	// $project->status(5);
-	// dpm($project);
-}
-
 /**
  * Implements hook_menu().
  */
@@ -24,14 +18,20 @@ function bxdev_project_menu() {
   return $items;
 }
 
-
-
 /**
  * Implements hook_node_insert().
  */
 function bxdev_project_node_insert($node) {
   switch($node->type){	
 		case 'project':
+			$full_name = $node->field_business_contact_name['und'][0]['value'];
+			$phone = $node->field_phone['und'][0]['value'];
+			$business = node_load($node->field_project_business_ref['und'][0]['nid']);
+			$client = user_load($business->field_client_ref['und'][0]['uid']);
+			$edit = (array)$client;
+			$edit['field_name']['und'][0]['value'] = $full_name;
+			$edit['field_phone']['und'][0]['value'] = $phone;
+			user_save($client, $edit);
 			// log action
 			watchdog('lightswitch', 'New project: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
 			$project = new Project($node->nid);
@@ -41,6 +41,18 @@ function bxdev_project_node_insert($node) {
 	}
 }
 
+/**
+ * Implements hook_preprocess_node().
+ */
+function bxdev_project_preprocess_node(&$vars){
+	if($vars['type'] == 'project'){
+		$project = new Project($vars['nid']);
+		$vars['business'] = $project->business;
+		$vars['client'] = $project->client;
+		$vars['pc'] = $project->pc;
+		$vars['videographer'] = $project->videographer;
+	}
+}
 
 /**
  * FORMS
@@ -72,11 +84,15 @@ class Project {
 	var $business;
 	var $client;
 	var $videographer;
+	var $pc;
 	
 	function __construct($nid){
 		$this->project = node_load($nid);
 		$this->business = node_load($this->project->field_project_business_ref['und'][0]['nid']);
 		$this->client = user_load($this->business->field_client_ref['und'][0]['uid']);
+		if(!empty($this->project->field_pc_ref)){
+			$this->pc = user_load($this->project->field_pc_ref['und'][0]['uid']);
+		}
 		if(!empty($this->project->field_videog_ref)){
 			$this->videographer = user_load($this->project->field_videog_ref['und'][0]['uid']);
 		}

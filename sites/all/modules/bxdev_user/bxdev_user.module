@@ -5,14 +5,33 @@
  */
 
 /**
+ * Implements hook_permission().
+ */
+function bxdev_user_permission() {
+  return array(
+    'view production details' =>  array(
+      'title' => t('View production details'),
+      'description' => t('View project production details.'),
+    ),
+	  'view production history' =>  array(
+	    'title' => t('View production history'),
+	    'description' => t('View project production history.'),
+	  ),
+  );
+}
+
+
+
+/**
  * Implements hook_menu().
  */
 function bxdev_user_menu() {
-  $items['admin/user/create'] = array(
+  $items['user/%user/new'] = array(
     'title' => 'Create new user',
     'page callback' => 'bxdev_user_create_user_page',
     'access arguments' => array('administer users'),
-    'type' => MENU_CALLBACK,
+		'weight' => 50,
+    'type' => MENU_LOCAL_TASK,
   );
 
 	$items['user/change/password'] = array(
@@ -87,6 +106,50 @@ function bxdev_user_mail($key, &$message, $params) {
 		
 		
 	}
+}
+
+/**
+ * Implementation of hook_menu_local_tasks_alter().
+ */
+function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
+	// if user profile page
+	if(arg(0) == 'user' && is_numeric(arg(1))){
+		$user = user_load(arg(1));
+		
+		if(isset($user->roles[4])){
+			// change "View" to "Events"
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
+			// change "Edit" to "Account info"
+			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
+		}else	if(isset($user->roles[5])){
+			
+		}else	if(isset($user->roles[6])){
+			// change "View" to "Events"
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
+			// change "Edit" to "Account info"
+			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
+		}else if(isset($user->roles[7])){
+			
+		}
+	}
+}
+
+/**
+ * Implementation of hook_preprocess_user_profile(). 
+ */
+function bxdev_user_preprocess_user_profile(&$vars){
+	$output = '';
+	// pc
+	if(isset($vars['user']->roles[4])){
+		$output .= views_embed_view('projects', 'page_1', $vars['user']->uid);
+	// videographer
+	}else if(isset($vars['user']->roles[5])){
+		
+	// sales
+	}else if(isset($vars['user']->roles[6])){
+		$output .= views_embed_view('projects', 'block');
+	}
+	$vars['user_profile'] = $output;	
 }
 
 

@@ -71,35 +71,6 @@ function bxdev_sales_node_presave($node) {
 	}
 }
 
-/**
- * Implementation of hook_preprocess_user_profile(). 
- */
-function bxdev_sales_preprocess_user_profile(&$vars){
-	$output = '';
-	// if user has roles sales
-	if(isset($vars['user']->roles[6])){
-		$output .= views_embed_view('projects', 'block');
-	}
-	$vars['user_profile'] = $output;
-	
-}
-
-/**
- * Implementation of hook_menu_local_tasks_alter().
- */
-function bxdev_sales_menu_local_tasks_alter(&$data, $router_item, $root_path){
-	// if user profile page
-	if(arg(0) == 'user' && is_numeric(arg(1))){
-		$user = user_load(arg(1));
-		// check if user has client role (8)
-		if(isset($user->roles[6])){
-			// change "View" to "Events"
-			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
-			// change "Edit" to "Account info"
-			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
-		}	
-	}
-}
 
 /**
  * FORMS

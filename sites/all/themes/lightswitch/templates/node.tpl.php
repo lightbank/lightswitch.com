@@ -17,6 +17,7 @@
   <?php endif; ?>
 
   <?php if (!empty($content)): ?>
+		<h1 class="page-title"><?php print $title ?></h1>
     <div class="<?php print $hook ?>-content clearfix <?php if (!empty($is_prose)) print 'prose' ?>">
       <?php print render($content) ?>
     </div>

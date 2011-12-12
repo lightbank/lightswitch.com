@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Business
+description = "Enables custom business node functionality."
+package = bx
+core = 7.x
