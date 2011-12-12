@@ -54,17 +54,17 @@ function bxdev_user_mail($key, &$message, $params) {
 	global $base_url;
 	switch($key){
 		case 'videographer':
-			$subject = t('Thanks for becoming a Videographer!');
+			$subject = t('Thanks for becoming a Videographer on Lightswitch!');
 		  $body = 'You have been entered into the database.
 		
 			Here is your password: <strong>' . $params['pass'] . '</strong>';
 			
-		  $message['subject'] = t('Thanks for becoming a Videographer!');
+		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
 			break;
 			
 		case 'sales':
-			$subject = t('Your Sales account details for lightswitch.com');
+			$subject = t('Your Sales account details for Lightswitch');
 		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.
 	
 			Username: ' . $params['name'] . '<br />
@@ -73,6 +73,18 @@ function bxdev_user_mail($key, &$message, $params) {
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
 			break;
+			
+		case 'pc':
+			$subject = t('Your Production Coordinator account details for Lightswitch');
+		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.
+
+			Username: ' . $params['name'] . '<br />
+			Password: ' . $params['pass'] . '';
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+		
 		
 	}
 }
@@ -90,15 +102,29 @@ function bxdev_user_create_user_form($form, $form_state){
 	  '#type' => 'textfield',
 	  '#title' => t('Email'),
 	  '#description' => t('<p>This will act as the username.</p><p>An email will automatically be sent to user with a temporary password.</p>'),
+		'#required' => TRUE,
+	);
+	
+	$form['name'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Full name'),
+		// '#required' => TRUE,
+	);
+	
+	$form['phone'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Phone'),
+		// '#required' => TRUE,
 	);
 	
 	$form['role'] = array(
 	  '#type' => 'radios',
 	  '#title' => t('Role'),
 	  '#options' => array(
-			7 => 'Sales',
+			'sales' => 'Sales',
+			'pc' => 'Production coordinator',
 		),
-	  '#default_value' => 7,
+	  '#default_value' => 'sales',
 	);
 	
 	$form['create'] = array(
@@ -131,6 +157,9 @@ function bxdev_user_change_password_form($form, $form_state){
 function bxdev_user_create_user_form_submit($form, &$form_state){
 	$values = $form_state['values'];
 	$email = $values['email'];
+	$role  = $values['role'];
+	$full_name = $values['name'];
+	$phone = $values['phone'];
 	
 	// check if valid email address
 	if(!valid_email_address($email)){
@@ -142,7 +171,8 @@ function bxdev_user_create_user_form_submit($form, &$form_state){
 	$user = user_load_by_name($email);
 	if(!$user){
 		// create the user
-		$user = new User($email, 'sales');
+		$user = new User($email, $role, $full_name, $phone);
+		$user = $user->get_user();
 		drupal_set_message('User ' . $user->name . ' has been created.');
 	}else{
 		drupal_set_message('User already exists. Please enter a new email address.', 'error');
@@ -163,6 +193,7 @@ function bxdev_user_change_password_form_submit($form, &$form_state){
 	$edit['data']['first_time_login'] = 0;
 	user_save($user, $edit);
 	drupal_set_message('Your password has been saved!');
+	watchdog('lightswitch', 'Changed password - first time login: @name, uid: @uid', array('@name' => $user->name, '@uid' => $user->uid));
 	drupal_goto('user/' . $user->uid);
 }
 
@@ -179,19 +210,52 @@ function bxdev_user_create_user_page(){
 	return $output;
 }
 
+/**
+ * Return user role
+ */
+function bxdev_user_get_role($uid){
+	$user = user_load($uid);
+	$roles = $user->roles;
+	$role = 'authenticated user';
+	if(array_key_exists(4, $roles)){
+		$role = 'pc';
+	}else if(array_key_exists(5, $roles)){
+		$role = 'videographer';
+	}else if(array_key_exists(6, $roles)){
+		$role = 'sales';
+	}else if(array_key_exists(7, $roles)){
+		$role = 'client';
+	}
+	return $role;
+}
 
-class User{
+
+/**
+ * CLASS
+ */
+
+class User {
 	
-	function __construct($email = NULL, $role = NULL){
+	var $password;
+	var $user;
+	var $name;
+	var $mail;
+	var $full_name;
+	var $phone;
+	var $roles;
+	var $role;
+	
+	function __construct($email = NULL, $role = NULL, $full_name = NULL, $phone = NULL){
 		$this->password = user_password();
 		// if arguments have been supplied
 		if(!is_null($email) && !is_null($role)){
 			$this->set_email($email);
 			$this->set_role($role);
+			$this->set_full_name($full_name);
+			$this->set_phone($phone);
 			$this->create();
 			$this->send();
 			$this->log();
-			return $this->user;
 		}
 	}
 	
@@ -203,14 +267,27 @@ class User{
 			'roles' => $this->roles,
 			'status' => 1,
 		);
+		if(isset($this->full_name)){
+			$edit['field_name']['und'][0]['value'] = $this->full_name;
+		}
+		if(isset($this->phone)){
+			$edit['field_phone']['und'][0]['value'] = $this->phone;
+		}		
 		$this->user = user_save(NULL, $edit);
-		// return $this->user;
 	}
 	
 	function set_email($email){
 		$this->name = $email;
 		$this->mail = $email;
 	}
+	
+	function set_full_name($full_name){
+		$this->full_name = $full_name;
+	}
+	
+	function set_phone($phone){
+		$this->phone = $phone;
+	}	
 	
 	function set_role($role){
 		switch($role){
@@ -223,6 +300,11 @@ class User{
 				$this->roles = array(2 => 'authenticated user', 7 => 'client');
 				$this->role = 'client';
 				break;	
+				
+			case 'pc':
+				$this->roles = array(2 => 'authenticated user', 4 => 'production coordinator');
+				$this->role = 'pc';
+				break;
 		}	
 	}
 	
@@ -233,14 +315,21 @@ class User{
 	function log(){
 		switch($this->role){
 			case 'sales':
-				watchdog('pc', 'New sales: @name, uid: @uid', array('@name' => $this->user->name, '@uid' => $this->user->uid));
+				watchdog('lightswitch', 'New sales: @name, uid: @uid', array('@name' => $this->user->name, '@uid' => $this->user->uid));
 				break;
 				
 			case 'client':
-				watchdog('sales', 'New client: @name, uid: @uid', array('@name' => $this->user->name, '@uid' => $this->user->uid));
+				watchdog('lightswitch', 'New client: @name, uid: @uid', array('@name' => $this->user->name, '@uid' => $this->user->uid));
 				break;
-		}
-		
+				
+			case 'pc':
+				watchdog('lightswitch', 'New project coordinator: @name, uid: @uid', array('@name' => $this->user->name, '@uid' => $this->user->uid));
+				break;
+		}		
+	}
+	
+	function get_user(){
+		return $this->user;
 	}
 	
 }

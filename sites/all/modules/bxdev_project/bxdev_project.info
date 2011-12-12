@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Project
+description = "Enables custom project functionality including the commenting system."
+package = bx
+core = 7.x

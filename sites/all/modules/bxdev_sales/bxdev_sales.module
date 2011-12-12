@@ -48,44 +48,25 @@ function bxdev_sales_menu() {
 /**
  * Implements hook_node_insert().
  */
-function bxdev_sales_node_insert($node) {
-  switch($node->type){	
-		case 'project':
-			// log action
-			watchdog('sales', 'New project: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
-			break;
-		
+function bxdev_sales_node_presave($node) {
+  switch($node->type){			
 		case 'business':
 			// get email
 			$name = $node->field_email['und'][0]['email'];
 			// load the user
 			$account = user_load_by_name($name);
 			// if the user exists
-			if($account){
-				// load their client profile
-				$profile = profile2_load_by_user($account->uid, 'client');
-				// set the new business node as a ref
-				$profile->field_businesses_ref['und'][] = array('nid' => $node->nid);
-				// save the profile
-				profile2_save($profile);
-			}else{
-				// create a new user
-				$new_account = new stdClass();
-				$new_account->name = $name;
-				$new_account->pass = user_password();
-				$new_account->roles = array(2 => 'authenticated user', 7 => 'client');
-				$account = user_save($new_account);
+			if(!$account){
+				$full_name = $node->field_email['und'][0]['email'];
+				// create a new client
+				$user = new User($name, 'client');
+				$account = $user->get_user();
 				// log action
-				watchdog('sales', 'New client: @name, uid: @uid', array('@name' => $account->name, '@uid' => $account->uid));
-				// create a new client profile
-				$profile = profile_create(array('user' => $account, 'type' => 'client'));
-				// set the new business node as a ref
-				$profile->field_businesses_ref['und'][] = array('nid' => $node->nid);
-				// save the profile
-				profile2_save($profile);
+				watchdog('lightswitch', 'New client: @name, uid: @uid', array('@name' => $account->name, '@uid' => $account->uid));
 			}
+			$node->field_client_ref['und'][0]['uid'] = $account->uid;
 			// log action
-			watchdog('sales', 'New business: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
+			watchdog('lightswitch', 'New business: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
 			break;
 	}
 }
@@ -187,23 +168,6 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
 function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
 	$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_business_node_form_submit';
 }
-
-// /**
-//  * Implements hook_form_FORM_ID_alter().
-//  * Form: user register form
-//  */
-// function bxdev_sales_form_user_register_form_alter(&$form, $form_state){
-// 	if(user_access('administer users')){
-// 		$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_user_register_form_submit';
-// 	}
-// }
-// 
-// /**
-//  * Form submit handler: user register
-//  */
-// function bxdev_sales_form_user_register_form_submit($form, &$form_state){
-// 	dpm($form_state);
-// }
 
 /**
  * Form submit handler: existing client

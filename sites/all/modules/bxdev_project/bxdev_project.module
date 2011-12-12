@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * HOOKS
+ */
+
+function bxdev_project_preprocess_page(&$vars){
+	// $project = new Project(830);
+	// $project->status(5);
+	// dpm($project);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bxdev_project_menu() {
+  $items['project/claim/%node'] = array(
+    'page callback' => 'bxdev_project_claim_callback',
+		'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+
+/**
+ * Implements hook_node_insert().
+ */
+function bxdev_project_node_insert($node) {
+  switch($node->type){	
+		case 'project':
+			// log action
+			watchdog('lightswitch', 'New project: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
+			$project = new Project($node->nid);
+			$project->log('admin', 'Project added');
+			$project->status(1);
+			break;
+	}
+}
+
+
+/**
+ * FORMS
+ */
+
+
+
+/**
+ * CUSTOM
+ */
+
+/**
+ * Menu callback: project claim
+ */
+function bxdev_project_claim_callback($node){
+	global $user;
+	$node->field_pc_ref['und'][0]['uid'] = $user->uid;
+	node_save($node);
+	drupal_goto('projects/master');
+}
+
+/**
+ * CLASS
+ */
+
+class Project {
+	
+	var $project;
+	var $business;
+	var $client;
+	var $videographer;
+	
+	function __construct($nid){
+		$this->project = node_load($nid);
+		$this->business = node_load($this->project->field_project_business_ref['und'][0]['nid']);
+		$this->client = user_load($this->business->field_client_ref['und'][0]['uid']);
+		if(!empty($this->project->field_videog_ref)){
+			$this->videographer = user_load($this->project->field_videog_ref['und'][0]['uid']);
+		}
+	}
+	
+	function log($type, $message){
+		global $user;
+		$role = bxdev_user_get_role($user->uid);
+		db_insert('production_log')
+			->fields(array(
+				'project_nid' => $this->project->nid,
+				'business_nid' => $this->business->nid,
+				'client_uid' => $this->client->uid,
+				'user_uid' => $user->uid,
+				'user_role' => $role,
+				'type' => $type,
+				'message' => $message,
+			))
+			->execute();
+	}
+	
+	function status($id){
+		$this->project->field_status['und'][0]['value'] = $id;
+		node_save($this->project);
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
