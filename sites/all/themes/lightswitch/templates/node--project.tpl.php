@@ -1,8 +1,8 @@
-<?php dpm($content); ?>
-<?php dpm($business); ?>
-<?php dpm($client); ?>
-<?php dpm($pc); ?>
-<?php dpm($videographer); ?>
+<?php //dpm($content); ?>
+<?php //dpm($business); ?>
+<?php //dpm($client); ?>
+<?php //dpm($pc); ?>
+<?php //dpm($videographer); ?>
 
 <h1><?php print $business->title ?>: <?php print $title ?></h1>
 
@@ -45,18 +45,20 @@
 	
 </div><!-- end .left -->
 
-<div class="main">
+<div class="right">
 	
 	<div class="block">
 		<div class="video">
 			<?php if(isset($content['field_project_video'])): ?>
-				<?php //print render($content['field_project_video']); ?>
+				<?php print render($content['field_project_video']); ?>
 			<?php else: ?>
 				<div class="no-vid">No video has been added.</div>
 			<?php endif; ?>
 		</div><!-- end .video -->
 	
-		<?php //print $comments; ?>
+		<?php print $comments; ?>
+		
+		<?php print $comment_form; ?>
 		
 	</div><!-- end .block -->
 	

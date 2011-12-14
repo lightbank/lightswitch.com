@@ -4,6 +4,13 @@
  * HOOKS
  */
 
+function bxdev_user_preprocess_page(&$vars){
+	// $user = new User();
+	// $user->load(158);
+	// dpm($user);
+	// $user->send();
+}
+
 /**
  * Implements hook_permission().
  */
@@ -19,8 +26,6 @@ function bxdev_user_permission() {
 	  ),
   );
 }
-
-
 
 /**
  * Implements hook_menu().
@@ -74,9 +79,8 @@ function bxdev_user_mail($key, &$message, $params) {
 	switch($key){
 		case 'videographer':
 			$subject = t('Thanks for becoming a Videographer on Lightswitch!');
-		  $body = 'You have been entered into the database.
-		
-			Here is your password: <strong>' . $params['pass'] . '</strong>';
+		  $body = 'You have been entered into the database.<br><br>';
+			$body .= 'Here is your password: <strong>' . $params['pass'] . '</strong>';
 			
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
@@ -84,10 +88,9 @@ function bxdev_user_mail($key, &$message, $params) {
 			
 		case 'sales':
 			$subject = t('Your Sales account details for Lightswitch');
-		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.
-	
-			Username: ' . $params['name'] . '<br />
-			Password: ' . $params['pass'] . '';
+		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '';
 		
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
@@ -95,17 +98,25 @@ function bxdev_user_mail($key, &$message, $params) {
 			
 		case 'pc':
 			$subject = t('Your Production Coordinator account details for Lightswitch');
-		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.
-
-			Username: ' . $params['name'] . '<br />
-			Password: ' . $params['pass'] . '';
+		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '';
 
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
 			break;
 		
-		
+		case 'client':
+			$subject = t('Your Client account details for Lightswitch');
+		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '';
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
 	}
+	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 }
 
 /**
@@ -148,6 +159,9 @@ function bxdev_user_preprocess_user_profile(&$vars){
 	// sales
 	}else if(isset($vars['user']->roles[6])){
 		$output .= views_embed_view('projects', 'block');
+	// client
+	}else if(isset($vars['user']->roles[7])){
+		$output .= views_embed_view('projects', 'block_1');
 	}
 	$vars['user_profile'] = $output;	
 }
@@ -320,6 +334,12 @@ class User {
 			$this->send();
 			$this->log();
 		}
+	}
+	
+	function load($uid){
+		$this->user = user_load($uid);
+		$role = bxdev_user_get_role($uid);
+		$this->set_role($role);
 	}
 	
 	function create(){

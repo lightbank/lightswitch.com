@@ -1,5 +1,10 @@
 <?php
 
+function bxdev_project_preprocess_page($vars){
+	// $me = new Project(832);
+	// dpm($project);
+}
+
 /**
  * HOOKS
  */
@@ -16,6 +21,25 @@ function bxdev_project_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_mail().
+ */
+function bxdev_project_mail($key, &$message, $params) {
+	switch($key){
+		case 'comment':
+			$subject = t('A new comment has been posted to @title', array('@title' => $params['project_title']));
+			$body = 'Posted by: ' . $params['comment_author'] . '<br><br>';
+			$body .= 'Date: ' . $params['comment_date'] . '<br><br>';
+			$body .= 'Comment:<br>' . nl2br($params['comment']) . '<br><br>';
+			$body .= 'Click here to view the project:<br>' . $params['project_link'];
+			
+			$message['subject'] = $subject;
+			$message['body'][] = $body;
+			break;
+	}
+	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 }
 
 /**
@@ -36,33 +60,101 @@ function bxdev_project_node_insert($node) {
 			watchdog('lightswitch', 'New project: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
 			$project = new Project($node->nid);
 			$project->log('admin', 'Project added');
-			$project->status(1);
+			$project->set_status(1);
 			break;
+			
+		case 'comment':
+			$project = new Project($node->field_project_ref['und'][0]['nid']);
+			$project->comment_notify($node->nid);			
 	}
 }
+
+/**
+ * Implements hook_node_update().
+ */
+// function bxdev_project_node_presave($node) {
+// 	dpm($node);
+//   $project = new Project($node->nid);
+// 	// check if project is currently status 2 (claimed), and a videographer has been assigned
+// 	if($project->get_status() == 2 && !empty($node->field_videog_ref['und'])){
+// 		// set status to 3 (assigned)
+// 		$project->set_status(3);
+// 	}
+// }
+
+
 
 /**
  * Implements hook_preprocess_node().
  */
 function bxdev_project_preprocess_node(&$vars){
 	if($vars['type'] == 'project'){
+		module_load_include('inc', 'node', 'node.pages');
+		// load the Project object
 		$project = new Project($vars['nid']);
+		// $project->comment_notify(849);
+		// send the objects to the tpl
 		$vars['business'] = $project->business;
 		$vars['client'] = $project->client;
 		$vars['pc'] = $project->pc;
 		$vars['videographer'] = $project->videographer;
+		// get the comment add form
+		$vars['comment_form'] = drupal_render(node_add('comment'));
+		// get the comments
+		$vars['comments'] = views_embed_view('comments', 'block');
+		
 	}
 }
+
 
 /**
  * FORMS
  */
+function bxdev_project_form_comment_node_form_alter(&$form, $form_state){
+	// change submit button
+	$form['actions']['submit']['#value'] = t('Post Comment');
+	// hide the title field
+	$form['title']['#type'] = 'hidden';
+	$form['title']['#value'] = NULL;
+	// hide the comment label
+	$form['field_comment']['und'][0]['value']['#title'] = '';
+	$form['field_comment']['und'][0]['value']['#default_value'] = t('Type your comments here...');
+	// hide the project ref field
+	$form['field_project_ref']['#type'] = 'hidden';
+	// add custom validate handler
+	array_unshift($form['#validate'], 'bxdev_project_comment_node_form_validate'); 
+	// add custom submit handler
+	$form['actions']['submit']['#submit'][] = 'bxdev_project_comment_node_form_submit';
+}
 
+/**
+ * Form submit handler: comment node form
+ */
+function bxdev_project_comment_node_form_submit($form, &$form_state){
+	$form_state['redirect'] = substr($_SERVER['REQUEST_URI'], 1);
+}
+
+/**
+ * Form validation handler: comment node form
+ */
+function bxdev_project_comment_node_form_validate($form, &$form_state){
+	$values = $form_state['values'];
+	// set the node title
+	$comment = $values['field_comment']['und'][0]['value'];
+	$title = substr($comment, 0, 100);
+	form_set_value($form['title'], $title, $form_state);
+	// set the project ref
+	$project_nid = arg(1);
+	$form['field_project_ref']['#parents'] = array('field_project_ref', 'und', 0, 'nid');
+	form_set_value($form['field_project_ref'], $project_nid, $form_state);		
+}
 
 
 /**
  * CUSTOM
  */
+
+
 
 /**
  * Menu callback: project claim
@@ -71,6 +163,8 @@ function bxdev_project_claim_callback($node){
 	global $user;
 	$node->field_pc_ref['und'][0]['uid'] = $user->uid;
 	node_save($node);
+	$project = new Project($node->nid);
+	$project->set_status(2);
 	drupal_goto('projects/master');
 }
 
@@ -85,11 +179,13 @@ class Project {
 	var $client;
 	var $videographer;
 	var $pc;
+	var $sales;
 	
 	function __construct($nid){
 		$this->project = node_load($nid);
 		$this->business = node_load($this->project->field_project_business_ref['und'][0]['nid']);
 		$this->client = user_load($this->business->field_client_ref['und'][0]['uid']);
+		$this->sales = user_load($this->project->uid);
 		if(!empty($this->project->field_pc_ref)){
 			$this->pc = user_load($this->project->field_pc_ref['und'][0]['uid']);
 		}
@@ -114,9 +210,53 @@ class Project {
 			->execute();
 	}
 	
-	function status($id){
+	function set_status($id){
 		$this->project->field_status['und'][0]['value'] = $id;
 		node_save($this->project);
+	}
+	
+	function get_status(){
+		return $this->project->field_status['und'][0]['value'];
+	}
+	
+	/**
+	 * Return an array of users (uids) associated with the project
+	 */
+	function get_users(){
+		$users = array();
+		if(isset($this->client)){
+			$users[$this->client->uid] = $this->client;
+		}
+		if(isset($this->pc)){
+			$users[$this->pc->uid] = $this->pc;
+		}
+		if(isset($this->videographer)){
+			$users[$this->videographer->uid] = $this->videographer;
+		}
+		if(isset($this->sales)){
+			$users[$this->sales->uid] = $this->sales;
+		}
+		return $users;		
+	}
+	
+	function comment_notify($cid){
+		global $base_url;
+		$project_link = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $this->project->nid);
+		$comment = node_load($cid);
+		$owner_uid = $comment->uid;
+		$users = $this->get_users();
+		unset($users[$owner_uid]);
+		foreach($users as $uid => $user){
+			$comment_author = user_load($comment->uid);
+			$comment_author = $comment_author->field_name['und'][0]['value'];
+			$params = array();
+			$params['project_title'] = $this->project->title;
+			$params['project_link'] = $project_link;
+			$params['comment_author'] = $comment_author;
+			$params['comment_date'] = date('m-d-Y', $comment->created);
+			$params['comment'] = $comment->field_comment['und'][0]['value'];
+			drupal_mail('bxdev_project', 'comment', $user->mail, language_default(), $params);
+		}
 	}
 	
 }

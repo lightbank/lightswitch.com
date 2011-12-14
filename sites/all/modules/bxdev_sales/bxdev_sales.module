@@ -52,14 +52,17 @@ function bxdev_sales_node_presave($node) {
   switch($node->type){			
 		case 'business':
 			// get email
-			$name = $node->field_email['und'][0]['email'];
+			$email = $node->field_email['und'][0]['email'];
 			// load the user
-			$account = user_load_by_name($name);
+			$account = user_load_by_name($email);
 			// if the user exists
 			if(!$account){
 				$full_name = $node->field_email['und'][0]['email'];
 				// create a new client
-				$user = new User($name, 'client');
+				$user = new User();
+				$user->set_email($email);
+				$user->set_role('client');
+				$user->create();
 				$account = $user->get_user();
 				// log action
 				watchdog('lightswitch', 'New client: @name, uid: @uid', array('@name' => $account->name, '@uid' => $account->uid));
