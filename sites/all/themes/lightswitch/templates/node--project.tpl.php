@@ -55,10 +55,15 @@
 				<div class="no-vid">No video has been added.</div>
 			<?php endif; ?>
 		</div><!-- end .video -->
-	
-		<?php print $comments; ?>
 		
-		<?php print $comment_form; ?>
+		<?php print $comments; ?>		
+		
+		<?php if(!$approved): ?>
+			<?php print $comment_form; ?>
+			<?php if(isset($approve_button)) print $approve_button; ?>
+		<?php else: ?>
+			<p>Project has been approved.</p>
+		<?php endif; ?>
 		
 	</div><!-- end .block -->
 	
