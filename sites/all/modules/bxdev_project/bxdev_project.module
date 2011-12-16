@@ -16,21 +16,21 @@ function bxdev_project_menu() {
   $items['project/%node/claim'] = array(
     'page callback' => 'bxdev_project_claim_callback',
 		'page arguments' => array(1),
-    'access arguments' => array('access content'),
+    'access arguments' => array('pc'),
     'type' => MENU_CALLBACK,
   );
 
 	$items['project/%/reset/client'] = array(
 		'page callback' => 'bxdev_project_reset_client_callback',
 		'page arguments' => array(1),
-		'access arguments' => array('access content'),
+		'access arguments' => array('pc'),
 		'type' => MENU_CALLBACK,
 	);
 	
 	$items['project/%/approve'] = array(
 		'page callback' => 'bxdev_project_approve_callback',
 		'page arguments' => array(1),
-		'access arguments' => array('access content'),
+		'access arguments' => array('client'),
 		'type' => MENU_CALLBACK,
 	);
 

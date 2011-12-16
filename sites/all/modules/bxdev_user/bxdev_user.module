@@ -25,6 +25,26 @@ function bxdev_user_permission() {
 	    'title' => t('View production history'),
 	    'description' => t('View project production history.'),
 	  ),
+		'change password' =>  array(
+	    'title' => t('Change password'),
+	    'description' => t('Change password.'),
+	  ),
+		'sales' =>  array(
+	    'title' => t('Sales user permissions'),
+	    'description' => t('Sales user permissions.'),
+	  ),
+		'pc' =>  array(
+	    'title' => t('Production coordinator permissions'),
+	    'description' => t('Production coordinator permissions.'),
+	  ),
+		'client' =>  array(
+	    'title' => t('Client user permissions'),
+	    'description' => t('Client user permissions.'),
+	  ),
+		'videographer' =>  array(
+	    'title' => t('Videographer user permissions'),
+	    'description' => t('Videographer user permissions.'),
+	  ),
   );
 }
 
@@ -44,7 +64,7 @@ function bxdev_user_menu() {
 		'title' => t('Change password'),
 		'page callback' => 'drupal_get_form',
 		'page arguments' => array('bxdev_user_change_password_form'),
-		'access arguments' => array('access content'),
+		'access arguments' => array('change password'),
 		'type' => MENU_CALLBACK,
 	);
 

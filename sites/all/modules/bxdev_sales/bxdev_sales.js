@@ -18,10 +18,15 @@
 		});
 		
 		Drupal.jsAC.prototype.hidePopup = function (keycode) {
-			var selected_value = $(this.selected).text();
-			var nid = $(this.selected).data('autocompleteValue');
-			$('input[name="existing_business_nid"]').val(nid);
-			$('#edit-existing-business').val(selected_value);
+			
+			// Select item if the right key or mousebutton was pressed.
+		  if (this.selected && ((keycode && keycode != 46 && keycode != 8 && keycode != 27) || !keycode)) {
+		    // this.input.value = $(this.selected).data('autocompleteValue');
+				var selected_value = $(this.selected).text();
+				var nid = $(this.selected).data('autocompleteValue');
+				$('input[name="existing_business_nid"]').val(nid);
+				this.input.value = selected_value;
+		  }
 			
 			// Hide popup.
 			var popup = this.popup;

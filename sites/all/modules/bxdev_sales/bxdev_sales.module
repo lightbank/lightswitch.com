@@ -13,7 +13,7 @@ function bxdev_sales_menu() {
 		'page callback' => 'bxdev_sales_create_business_page',
 		'file path' => drupal_get_path('module','node'),
     'file' => 'node.pages.inc',
-    'access arguments' => array('access content'),
+    'access arguments' => array('sales'),
     'type' => MENU_CALLBACK,
   );
 
@@ -23,7 +23,7 @@ function bxdev_sales_menu() {
 		'page arguments' => array(3),
 		'file path' => drupal_get_path('module','node'),
     'file' => 'node.pages.inc',
-	  'access arguments' => array('access content'),
+	  'access arguments' => array('sales'),
 	  'type' => MENU_CALLBACK,
 	);
 
@@ -32,13 +32,13 @@ function bxdev_sales_menu() {
 		'page arguments' => array(3),
 		'file path' => drupal_get_path('module','user'),
     'file' => 'user.pages.inc',
-    'access arguments' => array('access content'),
+    'access arguments' => array('sales'),
 		'type' => MENU_CALLBACK,
 	);
 
 	$items['sales/autocomplete/businesses'] = array(
 		'page callback' => 'bxdev_sales_autocomplete_businesses',
-	  'access arguments' => array('access content'),
+	  'access arguments' => array('sales'),
 		'type' => MENU_CALLBACK,
 	);
 
