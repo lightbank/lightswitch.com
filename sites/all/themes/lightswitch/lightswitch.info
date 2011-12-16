@@ -1,39 +1,25 @@
-core = 7.x
-description = New Lightswitch Drupal Theme.
-engine = phptemplate
-name = Lightswitch
 
-; Regions =====================================================================
+name = Lightswitch
+description = Lightswitch admin theme.
+package = Core
+version = VERSION
+core = 7.x
+
+stylesheets[all][] = css/layout.css
+stylesheets[all][] = css/style.css
+stylesheets[all][] = css/colors.css
+stylesheets[print][] = css/print.css
 
 regions[header] = Header
-regions[sidebar_first] = Sidebar Left
-regions[sidebar_second] = Sidebar Right
 regions[content] = Content
-regions[bottom] = Bottom
+regions[sidebar_first] = Sidebar first
+regions[sidebar_second] = Sidebar second
+
 regions[footer] = Footer
-regions[help] = Help
-regions[page_top] = Page top
-regions[page_bottom] = Page bottom
-regions[highlighted] = Highlighted
 
-; Stylesheets =================================================================
 
-stylesheets[all][] = css/reset.css
-stylesheets[all][] = css/base.css
-stylesheets[all][] = css/styles.css
-stylesheets[screen][] = css/drupal.css
-
-; Scripts =================================================================
-
-scripts[] = js/jquery.validate.min.js
-scripts[] = js/jquery.masonry.min.js
-scripts[] = js/jquery.bxSlider.min.js
-scripts[] = js/jquery.selectBox.min.js
-scripts[] = js/scripts.js
-
-; Information added by drupal.org packaging script on 2011-09-21
-version = "1"
-core = "7.x"
-project = "lightsitch"
-datestamp = "1316616407"
+; Information added by drupal.org packaging script on 2011-08-31
+version = "7.8"
+project = "drupal"
+datestamp = "1314817616"
 

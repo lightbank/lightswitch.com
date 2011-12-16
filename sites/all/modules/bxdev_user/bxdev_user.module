@@ -115,6 +115,17 @@ function bxdev_user_mail($key, &$message, $params) {
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
 			break;
+
+		case 'client_reset':
+			$subject = t('Your video is ready for review!');
+		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '';
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+	
 	}
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 }
@@ -391,8 +402,27 @@ class User {
 		}	
 	}
 	
+	function reset_password(){
+		$edit = (array)$this->user;
+		$edit['pass'] = $this->password;
+		$edit['data']['first_time_login'] = 1;
+		$this->user = user_save($this->user, $edit);
+	}
+	
 	function send(){
 		drupal_mail('bxdev_user', $this->role, $this->user->mail, language_default(), array('name' => $this->user->name, 'pass' => $this->password));
+	}
+	
+	function send_client_project_login($nid){
+		$this->reset_password();
+		$project = new Project($nid);
+		$params = array(
+			'name' => $this->user->name,
+			'pass' => $this->password,
+			'project_path' => $project->project_path,
+		);
+		drupal_mail('bxdev_user', 'client_reset', $this->user->mail, language_default(), $params);
+		$project->log('admin', 'Client sent login information');
 	}
 	
 	function log(){

@@ -1,7 +1,7 @@
 <?php
 
 function bxdev_project_preprocess_page($vars){
-	// $me = new Project(832);
+	// $project = new Project(858);
 	// dpm($project);
 }
 
@@ -13,12 +13,19 @@ function bxdev_project_preprocess_page($vars){
  * Implements hook_menu().
  */
 function bxdev_project_menu() {
-  $items['project/claim/%node'] = array(
+  $items['project/%node/claim'] = array(
     'page callback' => 'bxdev_project_claim_callback',
-		'page arguments' => array(2),
+		'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+
+	$items['project/%/reset/client'] = array(
+		'page callback' => 'bxdev_project_reset_client_callback',
+		'page arguments' => array(1),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
 
   return $items;
 }
@@ -27,6 +34,7 @@ function bxdev_project_menu() {
  * Implements hook_mail().
  */
 function bxdev_project_mail($key, &$message, $params) {
+	global $base_url;
 	switch($key){
 		case 'comment':
 			$subject = t('A new comment has been posted to @title', array('@title' => $params['project_title']));
@@ -65,24 +73,51 @@ function bxdev_project_node_insert($node) {
 			
 		case 'comment':
 			$project = new Project($node->field_project_ref['und'][0]['nid']);
-			$project->comment_notify($node->nid);			
+			// if the first comment
+			if(count($project->comments) == 1){
+				// set the status to 4 - Version 1 to Client
+				$project->set_status(4);
+				$user = new User();
+				$user->load($project->client->uid);
+				$user->send_client_project_login($project->project->nid);
+				$project->log('admin', 'Project info sent to client');
+			}else{
+				// notify all appropriate users
+				$project->comment_notify($node->nid);
+			}
+			$client_comments = array();
+			// count client's comments
+			foreach($project->comments as $comment){
+				if($comment->uid == $project->client->uid){
+					$client_comments[] = $comment->nid;
+				}
+			}
+			// if client has posted at least one comment, set status to 5 - Revision
+			if(!empty($client_comments)){
+				$project->set_status(5);
+			}
 	}
 }
 
 /**
  * Implements hook_node_update().
  */
-// function bxdev_project_node_presave($node) {
-// 	dpm($node);
-//   $project = new Project($node->nid);
-// 	// check if project is currently status 2 (claimed), and a videographer has been assigned
-// 	if($project->get_status() == 2 && !empty($node->field_videog_ref['und'])){
-// 		// set status to 3 (assigned)
-// 		$project->set_status(3);
-// 	}
-// }
-
-
+function bxdev_project_node_update($node) {
+	switch($node->type){
+		case 'project':
+		  $project = new Project($node->nid);
+			// check if project is currently status 2 (claimed), and a videographer has been assigned
+			if($project->get_status() == 2 && !empty($node->field_videog_ref['und'])){
+				// set status to 3 (assigned)
+				$project->set_status(3);
+			}
+			break;
+			
+		case 'comment':
+			
+			break;
+	}
+}
 
 /**
  * Implements hook_preprocess_node().
@@ -154,8 +189,6 @@ function bxdev_project_comment_node_form_validate($form, &$form_state){
  * CUSTOM
  */
 
-
-
 /**
  * Menu callback: project claim
  */
@@ -169,29 +202,58 @@ function bxdev_project_claim_callback($node){
 }
 
 /**
- * CLASS
+ * Menu callback: reset client
+ */
+function bxdev_project_reset_client_callback($nid){
+	$project = new Project($nid);
+	$user = new User();
+	$user->load($project->client->uid);
+	$user->send_client_project_login($nid);
+	drupal_set_message('Client login information has been reset and sent to the user.');
+	drupal_goto($project->project_path);
+}
+
+
+/**
+ * CLASSES
  */
 
 class Project {
 	
 	var $project;
+	var $project_path;
 	var $business;
 	var $client;
 	var $videographer;
 	var $pc;
 	var $sales;
+	var $comments;
 	
 	function __construct($nid){
-		$this->project = node_load($nid);
-		$this->business = node_load($this->project->field_project_business_ref['und'][0]['nid']);
-		$this->client = user_load($this->business->field_client_ref['und'][0]['uid']);
-		$this->sales = user_load($this->project->uid);
-		if(!empty($this->project->field_pc_ref)){
-			$this->pc = user_load($this->project->field_pc_ref['und'][0]['uid']);
+		
+		$project = node_load($nid);
+		$business = node_load($project->field_project_business_ref['und'][0]['nid']);
+		$client = user_load($business->field_client_ref['und'][0]['uid']);
+		$sales = user_load($project->uid);
+		$pc = '';
+		$videographer = '';
+		
+		if(!empty($project->field_pc_ref)){
+			$pc = user_load($project->field_pc_ref['und'][0]['uid']);
 		}
-		if(!empty($this->project->field_videog_ref)){
-			$this->videographer = user_load($this->project->field_videog_ref['und'][0]['uid']);
+		
+		if(!empty($project->field_videog_ref)){
+			$videographer = user_load($project->field_videog_ref['und'][0]['uid']);
 		}
+		
+		$this->project = $project;
+		$this->project_path = drupal_lookup_path('alias', 'node/' . $this->project->nid);
+		$this->business = $business;
+		$this->client = $client;
+		$this->sales = $sales;		
+		$this->pc = $pc;
+		$this->videographer = $videographer;		
+		$this->comments = $this->get_comments();
 	}
 	
 	function log($type, $message){
@@ -258,7 +320,24 @@ class Project {
 			drupal_mail('bxdev_project', 'comment', $user->mail, language_default(), $params);
 		}
 	}
-	
+
+	function get_comments(){
+		$comments = array();
+		$results = db_query("SELECT entity_id FROM {field_data_field_project_ref} WHERE field_project_ref_nid = :nid", array(':nid' => $this->project->nid));
+		if($results->rowCount() > 0){
+			foreach($results as $result){
+				$comment = node_load($result->entity_id);
+				$comments[$comment->nid] = $comment;
+			}
+		}
+		return $comments;
+	}
+
+	function send_client_login(){
+		drupal_mail('bxdev_project', 'first_comment', $this->client->mail, language_default(), array('project_path' => $this->project_path));
+		$this->log('admin', 'Client sent login information');
+	}
+
 }
 
 
