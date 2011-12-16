@@ -56,10 +56,14 @@
 			<?php endif; ?>
 		</div><!-- end .video -->
 		
-		<?php print $comments; ?>		
+		<?php print $comments; ?>
+		
+		<?php //dpm($approved); ?>	
 		
 		<?php if(!$approved): ?>
-			<?php print $comment_form; ?>
+			<?php if($comment_permission): ?>
+				<?php print $comment_form; ?>
+			<?php endif; ?>
 			<?php if(isset($approve_button)) print $approve_button; ?>
 		<?php else: ?>
 			<p>Project has been approved.</p>
@@ -88,13 +92,13 @@
 		</div><!-- end .block -->
 	<?php endif; ?>
 	
-	<?php if(user_access('view production history')): ?>
+	<?php if(isset($production_history)): ?>
 		<div class="block">
 			<div class="trigger">
 				<h2>Production History</h2>
 			</div>
 			<div class="trigger-list prod-history">
-				<?php // print $history; ?>
+				<?php print $production_history; ?>
 			</div><!-- end .prod-history -->
 		</div><!-- end .block -->	
 	<?php endif; ?>

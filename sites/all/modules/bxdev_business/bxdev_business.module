@@ -4,6 +4,18 @@
  * HOOKS
  */
 
+/**
+ * Implements hook_menu().
+ */
+function bxdev_business_menu() {
+  $items['business/%node/public/%'] = array(
+    'page callback' => 'bxdev_business_public_callback',
+		'page arguments' => array(1, 3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
 
 
 /**
@@ -11,8 +23,16 @@
  */
 
 
-
 /**
  * CUSTOM
  */
 
+/**
+ * Page callback: business public
+ */
+function bxdev_business_public_callback($node, $value){
+	$node->field_public_access['und'][0]['value'] = $value;
+	node_save($node);
+	drupal_set_message('Public access has been updated for ' . $node->title);
+	drupal_goto('projects/master');
+}

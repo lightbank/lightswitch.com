@@ -93,10 +93,10 @@ function bxdev_project_node_insert($node) {
 			if(count($project->comments) == 1){
 				// set the status to 4 - Version 1 to Client
 				$project->set_status(4);
+				$project->log('admin', 'Project auto updated to 4 - Version 1 to Client');
 				$user = new User();
 				$user->load($project->client->uid);
 				$user->send_client_project_login($project->project->nid);
-				$project->log('admin', 'Project info sent to client');
 			}else{
 				// notify all appropriate users
 				$project->comment_notify($node->nid);
@@ -111,6 +111,7 @@ function bxdev_project_node_insert($node) {
 			// if client has posted at least one comment, set status to 5 - Revision
 			if(!empty($client_comments)){
 				$project->set_status(5);
+				$project->log('admin', 'Project auto updated to 5 - Revision');
 			}
 	}
 }
@@ -126,6 +127,7 @@ function bxdev_project_node_update($node) {
 			if($project->get_status() == 2 && !empty($node->field_videog_ref['und'])){
 				// set status to 3 (assigned)
 				$project->set_status(3);
+				$project->log('admin', 'Project auto updated to 3 - Assigned');
 			}
 			break;
 			
@@ -140,27 +142,44 @@ function bxdev_project_node_update($node) {
  */
 function bxdev_project_preprocess_node(&$vars){
 	if($vars['type'] == 'project'){
-		global $user;
+		
 		module_load_include('inc', 'node', 'node.pages');
+		
+		global $user;
+		$role = bxdev_user_get_role($user->uid);
+		$profile = '';
+		if($role == 'videographer'){
+			$profile = profile2_load_by_user($user->uid, 'videographer');
+		}
+		// dpm($profile);
 		$nid = $vars['nid'];
-		// load the Project object
 		$project = new Project($nid);
+		
 		// send the objects to the tpl
 		$vars['business'] = $project->business;
 		$vars['client'] = $project->client;
 		$vars['pc'] = $project->pc;
 		$vars['videographer'] = $project->videographer;
 		// check if project has been approved
-		$vars['approved'] = $vars['field_approved'][0];
+		$vars['approved'] = $vars['field_approved'][0]['value'];
+		// check commenting permissions
+		$comment_permission = TRUE;
+		if($role == 'videographer' && !$profile->field_post_comments['und'][0]['value']){
+			$comment_permission = FALSE;
+		}
+		$vars['comment_permission'] = $comment_permission;
 		// get the comment add form
 		$vars['comment_form'] = drupal_render(node_add('comment'));
 		// get the comments
 		$vars['comments'] = views_embed_view('comments', 'block');
-		// dpm($vars);
 		// approve button
 		if(bxdev_user_get_role($user->uid) == 'client'){
 			$vars['approve_button'] = '<span class="approve-or">or</span> <a class="approve-btn" href="/project/' . $nid . '/approve">Approve</a>';
 		}
+		if(user_access('view production history')){
+			$vars['production_history'] = bxdev_project_get_production_log($nid);
+		}
+		// dpm($vars);
 		
 	}
 }
@@ -222,6 +241,7 @@ function bxdev_project_claim_callback($node){
 	node_save($node);
 	$project = new Project($node->nid);
 	$project->set_status(2);
+	$project->log('admin', 'Project auto updated to 2 - Claimed');
 	drupal_goto('projects/master');
 }
 
@@ -258,7 +278,23 @@ function bxdev_project_approve_callback($nid){
 	drupal_goto($project->project_path);
 }
 
-
+/**
+ * Return the production log per node
+ */
+function bxdev_project_get_production_log($nid){
+	$results = db_query("SELECT * FROM {production_log} WHERE project_nid = :nid", array(':nid' => $nid));
+	$output = '';
+	if($results->rowCount() > 0){
+		foreach($results as $result){
+			$user = user_load($result->user_uid);
+			$output .= '<div class="log-row">';
+			$output .= $result->date . ': ' . $user->field_name['und'][0]['value'] . '<br />';
+			$output .= $result->message;
+			$output .= '</div>';
+		}
+	}
+	return $output;
+}
 
 /**
  * CLASSES
@@ -384,7 +420,7 @@ class Project {
 	function send_approved(){
 		global $base_url;
 		$project_link = $base_url . '/' . $this->project_path;
-		$emails = $this->pc->mail . ', ' . $this->videographer->mail;
+		$emails = $this->pc->mail . ', ' . $this->sales->mail . ', ' . $this->client->mail;
 		$params = array(
 			'project_title' => $this->project->title,
 			'project_link' => $project_link,

@@ -9,6 +9,7 @@ function bxdev_user_preprocess_page(&$vars){
 	// $user->load(158);
 	// dpm($user);
 	// $user->send();
+	// bxdev_user_convert_videographer_nodes();
 }
 
 /**
@@ -137,21 +138,24 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 	// if user profile page
 	if(arg(0) == 'user' && is_numeric(arg(1))){
 		$user = user_load(arg(1));
-		
+		// pc
 		if(isset($user->roles[4])){
-			// change "View" to "Events"
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
-			// change "Edit" to "Account info"
-			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
+			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
+			unset($data['tabs'][1]);	
+		// videographer
 		}else	if(isset($user->roles[5])){
-			
-		}else	if(isset($user->roles[6])){
-			// change "View" to "Events"
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
-			// change "Edit" to "Account info"
+			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
+			$data['tabs'][1]['output'][1]['#link']['title'] = 'Videographer details';
+		// sales
+		}else	if(isset($user->roles[6])){
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
+		// client
 		}else if(isset($user->roles[7])){
-			
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
+			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';			
 		}
 	}
 }
@@ -166,7 +170,7 @@ function bxdev_user_preprocess_user_profile(&$vars){
 		$output .= views_embed_view('projects', 'page_1', $vars['user']->uid);
 	// videographer
 	}else if(isset($vars['user']->roles[5])){
-		
+		$output .= views_embed_view('projects', 'block_2');
 	// sales
 	}else if(isset($vars['user']->roles[6])){
 		$output .= views_embed_view('projects', 'block');
@@ -317,6 +321,35 @@ function bxdev_user_get_role($uid){
 	return $role;
 }
 
+/**
+ * Converts existing Videographer nodes to users
+ */
+function bxdev_user_convert_videographer_nodes(){
+	$results = db_query("SELECT nid FROM {node} WHERE nid = 884");
+	foreach($results as $result){
+		// load the node object
+		$node = node_load($result->nid);
+		// create a new videographer user
+		$user = new User($node->field_email['und'][0]['email'], 'videographer', $node->title, $node->field_phone['und'][0]['value']);
+		// load the user
+		$user = $user->get_user();
+		// create a new videographer profile
+		$profile = profile_create(array('user' => $user, 'type' => 'videographer'));
+		// assign all fields to profile
+		$profile->field_region['und'][0]['value'] = $node->field_region['und'][0]['value'];
+		$profile->field_address['und'][0]['value'] = $node->field_address['und'][0]['value'];
+		$profile->field_transportation['und'][0]['value'] = $node->field_transportation['und'][0]['value'];
+		$profile->field_skills['und'][0]['value'] = $node->field_skills['und'][0]['value'];
+		$profile->field_equipment['und'][0]['value'] = $node->field_equipment['und'][0]['value'];
+		$profile->field_links_work['und'][0]['value'] = $node->field_links_work['und'][0]['value'];
+		$profile->field_availability['und'][0]['value'] = $node->field_availability['und'][0]['value'];
+		$profile->field_rating['und'][0]['value'] = $node->field_rating['und'][0]['value'];
+		$profile->field_notes['und'][0]['value'] = $node->field_notes['und'][0]['value'];
+		$profile->field_resume['und'][0] = $node->field_resume['und'][0];
+		// save the profile
+		profile2_save($profile);
+	}
+}
 
 /**
  * CLASS
@@ -399,6 +432,11 @@ class User {
 				$this->roles = array(2 => 'authenticated user', 4 => 'production coordinator');
 				$this->role = 'pc';
 				break;
+				
+			case 'videographer':
+				$this->roles = array(2 => 'authenticated user', 5 => 'videographer');
+				$this->role = 'videographer';
+				break;
 		}	
 	}
 	
@@ -422,7 +460,7 @@ class User {
 			'project_path' => $project->project_path,
 		);
 		drupal_mail('bxdev_user', 'client_reset', $this->user->mail, language_default(), $params);
-		$project->log('admin', 'Client sent login information');
+		$project->log('admin', 'Login information reset and sent to Client');
 	}
 	
 	function log(){
