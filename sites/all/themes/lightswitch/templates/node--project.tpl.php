@@ -1,4 +1,4 @@
-<?php //dpm($content); ?>
+<?php dpm($content); ?>
 <?php //dpm($business); ?>
 <?php //dpm($client); ?>
 <?php //dpm($pc); ?>
@@ -38,10 +38,11 @@
 		
 	</div><!-- end .contacts -->
 	
-	<div class="block operations">
-		<div class="edit"><a href="/node/<?php print $node->nid; ?>/edit">Edit</a></div>
-		<div class="delete"><a href="/node/<?php print $node->nid; ?>/delete">Delete</a></div>
-	</div><!-- end .operations -->
+	<?php if(isset($operations)): ?>
+		<div class="block operations">
+			<?php print $operations; ?>
+		</div><!-- end .operations -->
+	<?php endif; ?>
 	
 </div><!-- end .left -->
 
@@ -73,7 +74,7 @@
 	
 	<?php if(user_access('view production details')): ?>
 		<div class="block">
-			<div class="download-doc"><a href="">Download Word Doc</a></div>
+			<div class="download-doc"><a href="/project/<?php print arg(1); ?>/download/doc">Download Word Doc</a></div>
 			<div class="trigger">
 				<h2>Production Detials</h2>
 			</div>

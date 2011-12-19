@@ -1,5 +1,5 @@
-<?php dpm($content); ?>
-<?php dpm($node); ?>
+<?php //dpm($content); ?>
+<?php //dpm($node); ?>
 
 <div class="left">
 		
@@ -38,20 +38,37 @@
 			<div class="hours-operation"><?php print nl2br(render($content['field_hours_operation'])); ?></div>
 		<?php endif; ?>			
 	</div><!-- end .section.info -->
+	
+	<div class="section social">
+		<?php if(isset($content['field_social_name1']) && isset($content['field_social_url1'])): ?>
+			<div><a href="<?php print $content['field_social_url1'][0]['#markup']; ?>"><?php print render($content['field_social_name1']) ?></a></div>
+		<?php endif; ?>
+		<?php if(isset($content['field_social_name2']) && isset($content['field_social_url2'])): ?>
+			<div><a href="<?php print $content['field_social_url2'][0]['#markup']; ?>"><?php print render($content['field_social_name2']) ?></a></div>
+		<?php endif; ?>
+		<?php if(isset($content['field_social_name3']) && isset($content['field_social_url3'])): ?>
+			<div><a href="<?php print $content['field_social_url3'][0]['#markup']; ?>"><?php print render($content['field_social_name3']) ?></a></div>
+		<?php endif; ?>
+		<?php if(isset($content['field_social_name4']) && isset($content['field_social_url4'])): ?>
+			<div><a href="<?php print $content['field_social_url4'][0]['#markup']; ?>"><?php print render($content['field_social_name4']) ?></a></div>
+		<?php endif; ?>
+	</div>
 
-	<div class="block operations">
-		<div class="edit"><a href="/node/<?php print $node->nid; ?>/edit">Edit</a></div>
-		<div class="delete"><a href="/node/<?php print $node->nid; ?>/delete">Delete</a></div>
-	</div><!-- end .operations -->
+	<?php if(isset($operations)): ?>
+		<div class="block operations">
+			<?php print $operations; ?>
+		</div><!-- end .operations -->
+	<?php endif; ?>
 	
 </div><!-- end .left -->
 
 <div class="main">
 	
 	<div class="block">
+		
 		<div class="video">
-			<?php if(isset($content['field_project_video'])): ?>
-				<?php //print render($content['field_project_video']); ?>
+			<?php if(isset($video)): ?>
+				<?php print $video; ?>
 			<?php else: ?>
 				<div class="no-vid">No video has been added.</div>
 			<?php endif; ?>
@@ -66,11 +83,13 @@
 		
 		<?php if(isset($content['field_business_download_label']) && isset($content['field_business_download_file'])): ?>
 			<div class="download"><a href="<?php print file_create_url($content['field_business_download_file'][0]['#file']->uri); ?>"><?php print render($content['field_business_download_label']); ?></a></div>
-		<?php endif; ?>
-		
-		
+		<?php endif; ?>		
 		
 	</div><!-- end .block -->	
+	
+	<?php if(isset($client_projects)): ?>
+		<?php print $client_projects; ?>
+	<?php endif; ?>
 	
 </div><!-- end .main -->
 

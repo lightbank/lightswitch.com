@@ -14,7 +14,37 @@ function bxdev_business_menu() {
     'access arguments' => array('pc'),
     'type' => MENU_CALLBACK,
   );
+
+	$items['business/%node/video/%'] = array(
+	  'page callback' => 'bxdev_business_video_callback',
+		'page arguments' => array(1, 3),
+	  'access arguments' => array('pc'),
+	  'type' => MENU_CALLBACK,
+	);
+
   return $items;
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function bxdev_business_preprocess_node(&$variables) {
+  // if user is sales or pc, allow edit / delete
+	if(user_access('sales') || user_access('pc')){
+		$operations = '<div class="edit"><a href="/node/' . $variables['node']->nid . '/edit">Edit</a></div>';
+		$operations .= '<div class="delete"><a href="/node/' . $variables['node']->nid . '/delete">Delete</a></div>';
+		$variables['operations'] = $operations;
+	}
+	// if user is pc, allow project select
+	if(user_access('pc')){
+		$variables['client_projects'] = views_embed_view('projects', 'block_3');
+	}
+	// if profile video is assigned
+	if(!empty($variables['field_profile_video_ref'])){
+		$project = node_load($variables['field_profile_video_ref'][0]['nid']);
+		$project = node_view($project);
+		$variables['video'] = render($project['field_project_video']);
+	}
 }
 
 
@@ -36,3 +66,27 @@ function bxdev_business_public_callback($node, $value){
 	drupal_set_message('Public access has been updated for ' . $node->title);
 	drupal_goto('projects/master');
 }
+
+/**
+ * Page callback: business video
+ */
+function bxdev_business_video_callback($business, $project_nid){
+	$business->field_profile_video_ref['und'][0]['nid'] = $project_nid;
+	node_save($business);
+	drupal_set_message('New profile video has been assigned.');
+	drupal_goto('node/' . $business->nid);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

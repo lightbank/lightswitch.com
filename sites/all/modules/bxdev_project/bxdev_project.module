@@ -33,6 +33,13 @@ function bxdev_project_menu() {
 		'access arguments' => array('client'),
 		'type' => MENU_CALLBACK,
 	);
+	
+	$items['project/%node/download/doc'] = array(
+		'page callback' => 'bxdev_project_download_production_details',
+		'page arguments' => array(1),
+		'access arguments' => array('view production details'),
+		'type' => MENU_CALLBACK,
+	);
 
   return $items;
 }
@@ -142,18 +149,19 @@ function bxdev_project_node_update($node) {
  */
 function bxdev_project_preprocess_node(&$vars){
 	if($vars['type'] == 'project'){
-		
+		// include for the node add form
 		module_load_include('inc', 'node', 'node.pages');
 		
+		// load up some variables
 		global $user;
 		$role = bxdev_user_get_role($user->uid);
 		$profile = '';
 		if($role == 'videographer'){
 			$profile = profile2_load_by_user($user->uid, 'videographer');
 		}
-		// dpm($profile);
 		$nid = $vars['nid'];
 		$project = new Project($nid);
+		$comment_permission = TRUE;
 		
 		// send the objects to the tpl
 		$vars['business'] = $project->business;
@@ -163,7 +171,6 @@ function bxdev_project_preprocess_node(&$vars){
 		// check if project has been approved
 		$vars['approved'] = $vars['field_approved'][0]['value'];
 		// check commenting permissions
-		$comment_permission = TRUE;
 		if($role == 'videographer' && !$profile->field_post_comments['und'][0]['value']){
 			$comment_permission = FALSE;
 		}
@@ -179,8 +186,12 @@ function bxdev_project_preprocess_node(&$vars){
 		if(user_access('view production history')){
 			$vars['production_history'] = bxdev_project_get_production_log($nid);
 		}
-		// dpm($vars);
-		
+	  // if user is sales or pc, allow edit / delete
+		if(user_access('sales') || user_access('pc')){
+			$operations = '<div class="edit"><a href="/node/' . $vars['node']->nid . '/edit">Edit</a></div>';
+			$operations .= '<div class="delete"><a href="/node/' . $vars['node']->nid . '/delete">Delete</a></div>';
+			$variables['operations'] = $operations;
+		}
 	}
 }
 
@@ -294,6 +305,39 @@ function bxdev_project_get_production_log($nid){
 		}
 	}
 	return $output;
+}
+
+/**
+ * Menu callback: download production details
+ */
+function bxdev_project_download_production_details($node){
+	
+	header( 'Pragma: public' ); 
+	header( 'Content-Type: application/msword' ); 
+	header( 'Content-Disposition: attachment; filename="' . str_replace(' ', '_', strtolower($node->title)) .  '_production_details.doc"' );
+	
+	$output = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">';
+	$output .= '<style type="text/css">
+		body {font-family: Arial; font-size: 20px;}
+		.field {margin-bottom: 20px;}
+		.field-label {font-weight: bold;}
+	</style>';
+	$output .= '<body>';
+	$output .= '<h1>' . $node->title . ' Production Details</h1>';
+	$output .= render(field_view_field('node', $node, 'field_shoot_date'));
+	$output .= render(field_view_field('node', $node, 'field_voice_over'));
+	$output .= render(field_view_field('node', $node, 'field_voice_over_gender'));
+	$output .= render(field_view_field('node', $node, 'field_owner_interview'));
+	$output .= render(field_view_field('node', $node, 'field_script_notes'));
+	$output .= render(field_view_field('node', $node, 'field_logo'));
+	$output .= render(field_view_field('node', $node, 'field_photos'));
+	$output .= render(field_view_field('node', $node, 'field_features_include'));
+	$output .= render(field_view_field('node', $node, 'field_features_avoid'));
+	$output .= render(field_view_field('node', $node, 'field_unique'));
+	$output .= '</body>';
+	$output .= '</html>';	
+	
+	print $output;	
 }
 
 /**
