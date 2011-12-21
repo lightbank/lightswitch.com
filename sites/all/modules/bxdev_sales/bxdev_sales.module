@@ -141,6 +141,7 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
  */
 function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
 	$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_business_node_form_submit';
+	$form['actions']['submit']['#value'] = t('Continue >');
 }
 
 /**
