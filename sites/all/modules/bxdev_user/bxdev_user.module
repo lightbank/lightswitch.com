@@ -166,8 +166,10 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 		// videographer
 		}else	if(isset($user->roles[5])){
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
-			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
-			$data['tabs'][1]['output'][1]['#link']['title'] = 'Videographer details';
+			if(!empty($data['tabs'][1])){
+				$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
+				$data['tabs'][1]['output'][1]['#link']['title'] = 'Videographer details';
+			}
 		// sales
 		}else	if(isset($user->roles[6])){
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';

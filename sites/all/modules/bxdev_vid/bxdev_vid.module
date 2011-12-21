@@ -12,8 +12,8 @@ function bxdev_vid_menu() {
     'title' => t('Videographer or Editor? Join Our Team!'),
     'page callback' => 'bxdev_vid_join_form',
     'access arguments' => array('access content'),
-		'file path' => drupal_get_path('module', 'node'),
-    'file' => 'node.pages.inc',
+		'file path' => drupal_get_path('module', 'user'),
+    'file' => 'user.pages.inc',
 		'type' => MENU_NORMAL_ITEM,
   );
   return $items;
@@ -171,20 +171,69 @@ function bxdev_vid_form_alter(&$form, $form_state, $form_id){
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
+	$form['account']['name']['#type'] = 'hidden';
+	$form['account']['name']['#value'] = NULL;
+	$form['account']['mail']['#title'] = t('Email');
+	$form['account']['mail']['#description'] = '';
+	$form['account']['mail']['#weight'] = -50;
+	$form['account']['pass']['#type'] = 'hidden';
+	$form['account']['pass']['#value'] = NULL;
+	$form['field_name']['#weight'] = -49;
+	$form['field_phone']['#weight'] = -48;
+	$form['field_name']['und'][0]['value']['#required'] = TRUE;
+	$form['profile_videographer']['#title'] = '';
+	array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
+	unset($form['#submit'][0]);
+	unset($form['#submit'][1]);
+	array_unshift($form['#submit'], 'bxdev_vid_user_register_submit');
+  dpm($form);
+}
+
+/**
+ * Submit handler: user register
+ */
+function bxdev_vid_user_register_submit($form, &$form_state){
+	$values = $form_state['values'];
+	// create a new user
+	$user = new User($values['mail'], 'videographer', $values['field_name']['und'][0]['value'], $values['field_phone']['und'][0]['value']);
+	$user = $user->get_user();
+	// send along the user object
+	$form_state['user'] = $user;
+	// redirect
+	$form_state['redirect'] = 'node/31';
+}
+
+/**
+ * Validation handler: user register
+ */
+function bxdev_vid_user_register_validate($form, &$form_state){
+	$values = $form_state['values'];
+	if(!empty($values['mail'])){
+		// populate the username and password fields
+		form_set_value($form['account']['name'], $values['mail'], $form_state);
+		form_set_value($form['account']['pass'], user_password(), $form_state);
+	}
+}
+
+/**
  * Form builder: add videographer
  */
 function bxdev_vid_join_form(){
-	// build a empty node object to pass to the node add form
-	$node = new stdClass();
-	$node->uid = 0;
-	$node->type = 'videographer';
-	$node->language = 'und';
-	$form = drupal_get_form('videographer_node_form', $node);
-	$form['actions']['submit']['#value'] = t('Submit');
-	unset($form['field_notes']);
-	unset($form['field_rating']);
-	unset($form['additional_settings']);
-	return drupal_render($form);
+	// // build a empty node object to pass to the node add form
+	// $node = new stdClass();
+	// $node->uid = 0;
+	// $node->type = 'videographer';
+	// $node->language = 'und';
+	// $form = drupal_get_form('videographer_node_form', $node);
+	// $form['actions']['submit']['#value'] = t('Submit');
+	// unset($form['field_notes']);
+	// unset($form['field_rating']);
+	// unset($form['additional_settings']);
+	// return drupal_render($form);
+	return drupal_get_form('user_register_form');
 }
 
 
