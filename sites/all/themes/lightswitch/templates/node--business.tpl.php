@@ -8,12 +8,14 @@
 		<?php if(isset($content['field_client_category'])): ?>
 			<div class="category"><?php print render($content['field_client_category']); ?></div>
 		<?php endif; ?>
-		<?php if(isset($content['field_client_rating'])): ?>				
-			<div class="rating rating-<?php print $content['field_client_rating'][0]['#markup']; ?>"><?php print render($content['field_client_rating']); ?></div>
-		<?php endif; ?>
-		<?php if(isset($content['field_client_price'])): ?>				
-			<div class="price price-<?php print $content['field_client_price'][0]['#markup']; ?>"><?php print render($content['field_client_price']); ?></div>
-		<?php endif; ?>			
+		<div class="symbols">
+			<?php if(isset($content['field_client_rating'])): ?>				
+				<div class="rating rating-<?php print $content['field_client_rating'][0]['#markup']; ?>"><?php print render($content['field_client_rating']); ?></div>
+			<?php endif; ?>
+			<?php if(isset($content['field_client_price'])): ?>				
+				<div class="price price-<?php print $content['field_client_price'][0]['#markup']; ?>"><?php print render($content['field_client_price']); ?></div>
+			<?php endif; ?>		
+		</div>	
 	</div><!-- end .section.top -->
 	
 	<div class="section info">

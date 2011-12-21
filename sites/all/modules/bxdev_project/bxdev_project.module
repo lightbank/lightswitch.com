@@ -1,7 +1,15 @@
 <?php
 
-function bxdev_project_preprocess_page($vars){
-	// $project = new Project(858);
+function bxdev_project_preprocess_page(&$vars){
+	drupal_add_js('Drupal.behaviors.password = function () {};', array('type' => 'inline', 'scope' => 'footer'));
+	if(isset($vars['node'])){
+		if($vars['node']->type == 'business' || $vars['node']->type == 'project'){
+			$vars['no_title'] = TRUE;
+		}		
+	}
+	// $vars['no_title'] = ($vars['node']->type == 'business' || $vars['node']->type == 'project');
+	// dpm($vars);
+	// $project = new Project(895);
 	// dpm($project);
 }
 
@@ -51,19 +59,25 @@ function bxdev_project_mail($key, &$message, $params) {
 	global $base_url;
 	switch($key){
 		case 'comment':
-			$subject = t('A new comment has been posted to @title', array('@title' => $params['project_title']));
-			$body = 'Posted by: ' . $params['comment_author'] . '<br><br>';
-			$body .= 'Date: ' . $params['comment_date'] . '<br><br>';
-			$body .= 'Comment:<br>' . nl2br($params['comment']) . '<br><br>';
-			$body .= 'Click here to view the project:<br>' . $params['project_link'];
+			$subject = t('A new comment has been posted in @title', array('@title' => $params['project_title']));
+			$body = 'A new comment has been posted in ' . $params['project_title'] . '<br><br>';
+			$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
+			$body .= 'The comment was posted at: ' . $params['comment_date'] . '<br><br>';
+			$body .= 'Posted by: ' . $params['comment_author'] . '<br><br>';
+			$body .= 'Comment:<br>' . nl2br($params['comment']) . '<br><br>';			
 			
 			$message['subject'] = $subject;
 			$message['body'][] = $body;
 			break;
 			
 		case 'approved':
-			$subject = t('@title has been approved!', array('@title' => $params['project_title']));
-			$body = 'Click here to view the project:<br>' . $params['project_link'];
+			$subject = t('Congratulations, your @title video has been approved!', array('@title' => $params['project_title']));
+			$body = 'You will be receiving the final video formats of your lightswitch video within 2-3 business days.<br><br>';
+			$body .= 'As always, let us know if you have any questions or concerns. Thank you for your business!.<br><br>';
+			$body .= 'Sincerely,<br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
 
 			$message['subject'] = $subject;
 			$message['body'][] = $body;
@@ -98,9 +112,11 @@ function bxdev_project_node_insert($node) {
 			$project = new Project($node->field_project_ref['und'][0]['nid']);
 			// if the first comment
 			if(count($project->comments) == 1){
-				// set the status to 4 - Version 1 to Client
-				$project->set_status(4);
-				$project->log('admin', 'Project auto updated to 4 - Version 1 to Client');
+				if(!$project->overridden){
+					// set the status to 4 - Version 1 to Client
+					$project->set_status(4);
+					$project->log('admin', 'Project auto updated to 4 - Version 1 to Client');
+				}
 				$user = new User();
 				$user->load($project->client->uid);
 				$user->send_client_project_login($project->project->nid);
@@ -116,7 +132,7 @@ function bxdev_project_node_insert($node) {
 				}
 			}
 			// if client has posted at least one comment, set status to 5 - Revision
-			if(!empty($client_comments)){
+			if(!empty($client_comments) && !$project->overridden){
 				$project->set_status(5);
 				$project->log('admin', 'Project auto updated to 5 - Revision');
 			}
@@ -126,21 +142,27 @@ function bxdev_project_node_insert($node) {
 /**
  * Implements hook_node_update().
  */
-function bxdev_project_node_update($node) {
+function bxdev_project_node_submit(&$node, $form, &$form_state) {
+	$values = $form_state['values'];
 	switch($node->type){
 		case 'project':
+		
 		  $project = new Project($node->nid);
-			// check if project is currently status 2 (claimed), and a videographer has been assigned
-			if($project->get_status() == 2 && !empty($node->field_videog_ref['und'])){
+			$old_status = $project->get_status();			
+			$new_status = $values['field_status']['und'][0]['value'];
+			
+			// detect if manually overridden
+			if($old_status !== $new_status){
+				$node->field_status_override['und'][0]['value'] = 1;
+			}
+			
+			// check if project is currently status 2 (claimed), a videographer has been assigned, and project is not manually overridden
+			if($project->get_status() == 2 && !empty($node->field_videog_ref['und']) && $node->field_status_override['und'][0]['value'] !== 1){
 				// set status to 3 (assigned)
-				$project->set_status(3);
+				$node->field_status['und'][0]['value'] = 3;
 				$project->log('admin', 'Project auto updated to 3 - Assigned');
 			}
-			break;
-			
-		case 'comment':
-			
-			break;
+			break;			
 	}
 }
 
@@ -251,8 +273,10 @@ function bxdev_project_claim_callback($node){
 	$node->field_pc_ref['und'][0]['uid'] = $user->uid;
 	node_save($node);
 	$project = new Project($node->nid);
-	$project->set_status(2);
-	$project->log('admin', 'Project auto updated to 2 - Claimed');
+	if(!$project->overridden){
+		$project->set_status(2);
+		$project->log('admin', 'Project auto updated to 2 - Claimed');
+	}
 	drupal_goto('projects/master');
 }
 
@@ -277,8 +301,10 @@ function bxdev_project_approve_callback($nid){
 	$project->project->field_approved['und'][0]['value'] = 1; 
 	// save the node
 	node_save($project->project);
-	// set the status to 6 - Approved
-	$project->set_status(6);
+	if(!$project->overridden){
+		// set the status to 6 - Approved
+		$project->set_status(6);
+	}
 	// send emails
 	$project->send_approved();
 	// log the action
@@ -354,6 +380,7 @@ class Project {
 	var $pc;
 	var $sales;
 	var $comments;
+	var $overridden;
 	
 	function __construct($nid){
 		
@@ -380,6 +407,7 @@ class Project {
 		$this->pc = $pc;
 		$this->videographer = $videographer;		
 		$this->comments = $this->get_comments();
+		$this->overridden = $project->field_status_override['und'][0]['value'];
 	}
 	
 	function log($type, $message){
@@ -469,6 +497,15 @@ class Project {
 			'project_title' => $this->project->title,
 			'project_link' => $project_link,
 		);
+		$params = array(
+			'project_title' => $this->project->title,
+			'project_link' => $project_link,			
+			'pc' => array(
+				'full_name' => $this->pc->field_name['und'][0]['value'],
+				'email' => $this->pc->mail,
+				'phone' => $this->pc->field_phone['und'][0]['value'],
+			),
+		);		
 		drupal_mail('bxdev_project', 'approved', $emails, language_default(), $params);
 	}
 

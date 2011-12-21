@@ -4,12 +4,16 @@
  * HOOKS
  */
 
+/**
+ * Implements hook_preprocess_page().
+ */
 function bxdev_user_preprocess_page(&$vars){
-	// $user = new User();
-	// $user->load(158);
-	// dpm($user);
-	// $user->send();
-	// bxdev_user_convert_videographer_nodes();
+	// if user page
+	if(arg(0) == 'user' && is_numeric(arg(1))){
+		$user = user_load(arg(1));
+		// set the title
+		drupal_set_title('Welcome, ' . $user->field_name['und'][0]['value']);
+	}
 }
 
 /**
@@ -67,6 +71,13 @@ function bxdev_user_menu() {
 		'access arguments' => array('change password'),
 		'type' => MENU_CALLBACK,
 	);
+	
+	$items['user/%/password/forgot'] = array(
+		'page callback' => 'bxdev_user_password_forgot',
+		'page arguments' => array(1),
+		'access arguments' => array('change password'),
+		'type' => MENU_CALLBACK,
+	);
 
   return $items;
 }
@@ -87,7 +98,7 @@ function bxdev_user_user_presave(&$edit, $account, $category) {
 function bxdev_user_user_login(&$edit, $account) {
 	// if first time login
 	if($account->data['first_time_login']){
-		drupal_set_message('This is your first time logging in. Please change your password!');
+		// drupal_set_message('This is your first time logging in. Please change your password!');
 		drupal_goto('user/change/password');
 	}
 }
@@ -99,9 +110,15 @@ function bxdev_user_mail($key, &$message, $params) {
 	global $base_url;
 	switch($key){
 		case 'videographer':
-			$subject = t('Thanks for becoming a Videographer on Lightswitch!');
-		  $body = 'You have been entered into the database.<br><br>';
-			$body .= 'Here is your password: <strong>' . $params['pass'] . '</strong>';
+			$subject = t('Thank you for your interest in becoming a Lightswitch videographer!');
+			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'Thank you for your interest in becoming a Lightswitch videographer! We have received your submission and are currently reviewing your information. Below you will find a unique username and password needed to access your videographer profile page on Lightswitch.com. If you would like to update your profile or make any changes you can do so by clicking the Login link.<br><br>';
+			$body .= 'Login link: <a href="' . $base_url . '/user">' . $base_url . '/user</a><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '<br><br>';
+			$body .= 'Feel free to reach out to us at info@lightswitch.com with any questions.<br><br>';
+			$body .= 'Thanks!<br>';
+			$body .= 'Team Lightswitch';
 			
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
@@ -127,6 +144,7 @@ function bxdev_user_mail($key, &$message, $params) {
 		  $message['body'][] = $body;
 			break;
 		
+		// NOT USED
 		case 'client':
 			$subject = t('Your Client account details for Lightswitch');
 		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
@@ -138,7 +156,26 @@ function bxdev_user_mail($key, &$message, $params) {
 			break;
 
 		case 'client_reset':
-			$subject = t('Your video is ready for review!');
+			$subject = t('Your Lightswitch video is ready for review!');
+			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts. Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '<br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/' . $params['project_path'] . '">' . $base_url . '/' . $params['project_path'] . '</a><br><br>';
+			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you’d like changes made to your video, login  and fill out all requested changes in the "Post a comment" field under your video. Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it.  Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
+			$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
+			$body .= 'Contact us with any questions or concerns.<br><br>';
+			$body .= 'Sincerely,<br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+			
+		case 'password_reset':
+			$subject = t('Your Lightswitch password has been reset');
 		  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
 			$body .= 'Username: ' . $params['name'] . '<br>';
 			$body .= 'Password: ' . $params['pass'] . '';
@@ -146,6 +183,7 @@ function bxdev_user_mail($key, &$message, $params) {
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
 			break;
+		
 	
 	}
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
@@ -165,9 +203,12 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			unset($data['tabs'][1]);	
 		// videographer
 		}else	if(isset($user->roles[5])){
-			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
-			if(!empty($data['tabs'][1])){
+			if(!empty($data['tabs'][0])){
+				$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
 				$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
+			}
+			if(!empty($data['tabs'][1])){
+				$data['tabs'][1]['output'][0]['#link']['title'] = 'Account settings';
 				$data['tabs'][1]['output'][1]['#link']['title'] = 'Videographer details';
 			}
 		// sales
@@ -179,6 +220,8 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';			
 		}
+	}else{
+		unset($data['tabs']);
 	}
 }
 
@@ -201,13 +244,75 @@ function bxdev_user_preprocess_user_profile(&$vars){
 	}else if(isset($vars['user']->roles[7])){
 		$output .= views_embed_view('projects', 'block_1');
 	}
-	$vars['user_profile'] = $output;	
+	$vars['user_profile'] = $output;
+	
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function bxdev_user_block_info() {
+  $blocks['user_info']['info'] = 'User info';
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function bxdev_user_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'user_info':
+			global $user;
+			$output = '';
+			if($user->uid !== 0){
+				$output .= '<div class="username">Logged in as ' . $user->name . '</div>';
+				$output .= '<div class="actions"><a href="/user/' . $user->uid . '">Account</a> <a href="/user/logout">Logout</a></div>';
+			}else{
+				$output .= '<a href="/user">Login</a>';
+			}
+      $block['content'] = $output;
+      break;
+  }
+  return $block;
+}
+
+
+
 
 
 /**
  * FORMS
  */
+
+/**
+ * Implements hook_form_alter().
+ */
+function bxdev_user_form_user_login_alter(&$form, &$form_state) {
+	drupal_set_title('Login to lightswitch');
+	$form['name']['#description'] = '';
+	$form['pass']['#description'] = '<a href="/user/password">Forgot your password?</a>';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function bxdev_user_form_user_pass_alter(&$form, &$form_state) {
+	drupal_set_title('Reset password');
+	$form['name']['#title'] = 'Email address';
+	$form['name']['#description'] = '<a href="/user">Back to login</a>';
+	$form['#submit'][0] = 'bxdev_user_user_pass_submit';
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function bxdev_user_form_user_profile_form_alter(&$form, &$form_state) {
+	$uid = arg(1);
+	$form['account']['current_pass']['#description'] = '<a href="/user/' . $uid . '/password/forgot">Forgot your password?</a>';
+	// dpm($form);
+}
 
 /**
  * Form builder: user create
@@ -254,17 +359,17 @@ function bxdev_user_create_user_form($form, $form_state){
  * Form builder: change password
  */
 function bxdev_user_change_password_form($form, $form_state){
+	drupal_set_title('This is your first time logging in. Please change your password!');
 	$form['pass'] = array(
 		'#type' => 'password_confirm',
 	);
-
 	$form['submit'] = array(
 	  '#type' => 'submit',
 	  '#value' => t('Change password'),
 	);	
-	
 	return $form;
 }
+
 
 /**
  * Form submit handler: user create
@@ -313,6 +418,22 @@ function bxdev_user_change_password_form_submit($form, &$form_state){
 }
 
 /**
+ * Form submit handler: user password (anonymous)
+ */
+function bxdev_user_user_pass_submit($form, &$form_state){
+	$values = $form_state['values'];
+	if($account = user_load_by_name($values['name'])){
+		$user = new User();
+		$user->load($account->uid);
+		$user->send_password_reset();
+		drupal_set_message('New password has been sent to ' . $account->mail);
+	}else{
+		drupal_set_message('Email address does not exist.', 'error');
+	}
+}
+
+
+/**
  * CUSTOM
  */
 
@@ -323,6 +444,17 @@ function bxdev_user_create_user_page(){
 	$output = '';	
 	$output .= drupal_render(drupal_get_form('bxdev_user_create_user_form'));	
 	return $output;
+}
+
+/**
+ * Page callback: password forgot
+ */
+function bxdev_user_password_forgot($uid){
+	$user = new User();
+	$user->load($uid);
+	$user->send_password_reset();
+	drupal_set_message('A new password has been sent to your email. You must log out to use your new password. Click <a href="/user/logout">here</a> to logout');
+	drupal_goto('user/' . $uid . '/edit');
 }
 
 /**
@@ -471,7 +603,12 @@ class User {
 	}
 	
 	function send(){
-		drupal_mail('bxdev_user', $this->role, $this->user->mail, language_default(), array('name' => $this->user->name, 'pass' => $this->password));
+		$params = array(
+			'name' => $this->user->name,
+			'pass' => $this->password,
+			'full_name' => $this->user->field_name['und'][0]['value'],
+		);
+		drupal_mail('bxdev_user', $this->role, $this->user->mail, language_default(), $params);
 	}
 	
 	function send_client_project_login($nid){
@@ -481,9 +618,24 @@ class User {
 			'name' => $this->user->name,
 			'pass' => $this->password,
 			'project_path' => $project->project_path,
+			'full_name' => $this->user->field_name['und'][0]['value'],
+			'pc' => array(
+				'full_name' => $project->pc->field_name['und'][0]['value'],
+				'email' => $project->pc->mail,
+				'phone' => $project->pc->field_phone['und'][0]['value'],
+			),
 		);
 		drupal_mail('bxdev_user', 'client_reset', $this->user->mail, language_default(), $params);
 		$project->log('admin', 'Login information reset and sent to Client');
+	}
+	
+	function send_password_reset(){
+		$this->reset_password();
+		$params = array(
+			'name' => $this->user->name,
+			'pass' => $this->password,
+		);
+		drupal_mail('bxdev_user', 'password_reset', $this->user->mail, language_default(), $params);
 	}
 	
 	function log(){

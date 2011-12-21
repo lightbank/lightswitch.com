@@ -16,6 +16,15 @@ function bxdev_vid_menu() {
     'file' => 'user.pages.inc',
 		'type' => MENU_NORMAL_ITEM,
   );
+
+	$items['user/%user/info'] = array(
+    'title' => t('lightswitch videographer directory'),
+    'page callback' => 'bxdev_vid_user_view_page',
+		'page arguments' => array(1),
+    'access arguments' => array('pc'),
+		'type' => MENU_CALLBACK,
+	);
+
   return $items;
 }
 
@@ -37,49 +46,23 @@ function bxdev_vid_block_view($delta = '') {
 	
   switch ($delta) {
     case 'vid_sort':
-			// get the url parameters
-			$url = $_SERVER['REQUEST_URI'];
-			$parse_url = parse_url($url);
-			
-			// check if url params exist
-			if(isset($parse_url['query'])){			
-				$parse_str = parse_str($parse_url['query']);				
-			}else{
-				$field_region_value = 'All';
-				$field_skills_value = 'All';
-				$sort_by = 'field_rating_value';
-				$sort_order = 'DESC';
+			// get the uri
+			$query = $_SERVER['REQUEST_URI'];
+			// determine if we need to prepend ? or &
+			$symbol = (strpos($query, '?') > 0) ? '&' : '?';
+			// search for the string: '&sort_by='
+			if(($pos = strpos($query, '&sort_by=')) > 0){
+				$query = substr($query, 0, $pos);
 			}
-			
-			// initialize sort classname variables
-			$rating_class = '';
-			$recent_class = '';
-			$abc_class = '';
-		
-			// determine which is active		
-			switch($sort_by){
-				case 'field_rating_value':
-					$rating_class = 'active';
-					break;
-			
-				case 'created':
-					$recent_class = 'active';
-					break;
-				
-				case 'title':
-					$abc_class = 'active';
-					break;
-			}
-		
-			// output
+			// build the markup
 			$output .= 'Sort by: ';
-			$output .= '<a class="' . $rating_class . '" href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $field_skills_value . '&sort_by=field_rating_value&sort_order=DESC">Rating</a>';
-			$output .= ' | <a class="' . $recent_class . '" href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $field_skills_value . '&sort_by=created&sort_order=DESC">Recent</a>';
-			$output .= ' | <a class="' . $abc_class . '" href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $field_skills_value . '&sort_by=title&sort_order=ASC">ABC</a>';
-			
-      $block['content'] = $output;
+			$output .= '<a href="' . $query . $symbol . 'sort_by=field_rating_value&sort_order=DESC">Rating</a> | ';
+			$output .= '<a href="' . $query . $symbol . 'sort_by=created_1&sort_order=DESC">Recent</a> | ';
+			$output .= '<a href="' . $query . $symbol . 'sort_by=field_name_value&sort_order=ASC">ABC</a>';
       break;
   }
+
+	$block['content'] = $output;
   return $block;
 }
 
@@ -105,75 +88,76 @@ function bxdev_vid_preprocess_page(&$variables) {
  * Implements hook_form_alter().
  */
 function bxdev_vid_form_alter(&$form, $form_state, $form_id){
-	if($form['#id'] == 'views-exposed-form-videographers-page' && arg(0) == 'videographers'){
-		
-		$output = '';
-		
-		// get the url parameters
-		$url = $_SERVER['REQUEST_URI'];
-		$parse_url = parse_url($url);
-		
-		// check if url params exist
-		if(isset($parse_url['query'])){			
-			$parse_str = parse_str($parse_url['query']);			
-		}else{
-			$field_region_value = 'All';
-			$field_skills_value = 'All';
-			$sort_by = 'field_rating_value';
-			$sort_order = 'DESC';
-		}
-		
-		/**
-		 * Skills filter
-		 */
-		// filter skills header	
-		$output .= '<div class="filter-skills filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by Skill:</h3><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=All&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';
-		// begin the list
-		$output .= '<ul>';		
-		$skills = $form['field_skills_value']['#options'];
-		// cycle through each region
-		foreach($skills as $skill_key => $skill){
-			if($skill_key != 'All'){
-				// check for the active class
-				$filter_class = ($field_skills_value == $skill_key) ? 'active' : '';
-				$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $skill_key . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $skill . '</a></li>';
-			}
-		}		
-		// end the list
-		$output .= '</ul></div>';
-	
-		/**
-		 * City filter
-		 */
-		// filter city header	
-		$output .= '<div class="filter-city filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by City:</h3><a href="/videographers?field_region_value=All&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';		
-		// begin the list
-		$output .= '<ul>';		
-		$regions = $form['field_region_value']['#options'];
-		// cycle through each region
-		foreach($regions as $region_key => $region){
-			if($region_key != 'All'){
-				// check for the active class
-				$filter_class = ($field_region_value == $region_key) ? 'active' : '';
-				$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $region_key . '&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $region . '</a></li>';
-			}
-		}		
-		// end the list
-		$output .= '</ul></div>';
-	
-		// attach the markup
-		$form['filter_links'] = array(
-			'#markup' => $output,
-		);
-						
-		// dpm($form);		
-	}
+	// if($form['#id'] == 'views-exposed-form-videographers-page' && arg(0) == 'videographers'){
+	// 	
+	// 	$output = '';
+	// 	
+	// 	// get the url parameters
+	// 	$url = $_SERVER['REQUEST_URI'];
+	// 	$parse_url = parse_url($url);
+	// 	
+	// 	// check if url params exist
+	// 	if(isset($parse_url['query'])){			
+	// 		$parse_str = parse_str($parse_url['query']);			
+	// 	}else{
+	// 		$field_region_value = 'All';
+	// 		$field_skills_value = 'All';
+	// 		$sort_by = 'field_rating_value';
+	// 		$sort_order = 'DESC';
+	// 	}
+	// 	
+	// 	/**
+	// 	 * Skills filter
+	// 	 */
+	// 	// filter skills header	
+	// 	$output .= '<div class="filter-skills filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by Skill:</h3><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=All&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';
+	// 	// begin the list
+	// 	$output .= '<ul>';		
+	// 	$skills = $form['field_skills_value']['#options'];
+	// 	// cycle through each region
+	// 	foreach($skills as $skill_key => $skill){
+	// 		if($skill_key != 'All'){
+	// 			// check for the active class
+	// 			$filter_class = ($field_skills_value == $skill_key) ? 'active' : '';
+	// 			$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $skill_key . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $skill . '</a></li>';
+	// 		}
+	// 	}		
+	// 	// end the list
+	// 	$output .= '</ul></div>';
+	// 
+	// 	/**
+	// 	 * City filter
+	// 	 */
+	// 	// filter city header	
+	// 	$output .= '<div class="filter-city filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by City:</h3><a href="/videographers?field_region_value=All&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';		
+	// 	// begin the list
+	// 	$output .= '<ul>';		
+	// 	$regions = $form['field_region_value']['#options'];
+	// 	// cycle through each region
+	// 	foreach($regions as $region_key => $region){
+	// 		if($region_key != 'All'){
+	// 			// check for the active class
+	// 			$filter_class = ($field_region_value == $region_key) ? 'active' : '';
+	// 			$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $region_key . '&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $region . '</a></li>';
+	// 		}
+	// 	}		
+	// 	// end the list
+	// 	$output .= '</ul></div>';
+	// 
+	// 	// attach the markup
+	// 	$form['filter_links'] = array(
+	// 		'#markup' => $output,
+	// 	);
+	// 					
+	// 	// dpm($form);		
+	// }
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
+	
 	$form['account']['name']['#type'] = 'hidden';
 	$form['account']['name']['#value'] = NULL;
 	$form['account']['mail']['#title'] = t('Email');
@@ -184,12 +168,20 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 	$form['field_name']['#weight'] = -49;
 	$form['field_phone']['#weight'] = -48;
 	$form['field_name']['und'][0]['value']['#required'] = TRUE;
-	$form['profile_videographer']['#title'] = '';
+	
+	// modify validation / submit handlers
 	array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
 	unset($form['#submit'][0]);
 	unset($form['#submit'][1]);
 	array_unshift($form['#submit'], 'bxdev_vid_user_register_submit');
-  dpm($form);
+	
+	// left / right wrappers
+	$form['field_name']['#prefix'] = '<div class="left">';
+	$form['profile_videographer']['field_skills']['#suffix'] = '</div><div class="right">';
+	$form['profile_videographer']['field_resume']['#suffix'] = '</div>';
+	$form['#attributes']['class'][] = 'clearfix';
+	
+  // dpm($form);
 }
 
 /**
@@ -199,6 +191,12 @@ function bxdev_vid_user_register_submit($form, &$form_state){
 	$values = $form_state['values'];
 	// create a new user
 	$user = new User($values['mail'], 'videographer', $values['field_name']['und'][0]['value'], $values['field_phone']['und'][0]['value']);
+	// $user = new User();
+	// $user->set_email($values['mail']);
+	// $user->set_full_name($values['field_name']['und'][0]['value']);
+	// $user->set_phone($values['field_phone']['und'][0]['value']);
+	// $user->set_role('videographer');
+	// $user->create();
 	$user = $user->get_user();
 	// send along the user object
 	$form_state['user'] = $user;
@@ -222,18 +220,8 @@ function bxdev_vid_user_register_validate($form, &$form_state){
  * Form builder: add videographer
  */
 function bxdev_vid_join_form(){
-	// // build a empty node object to pass to the node add form
-	// $node = new stdClass();
-	// $node->uid = 0;
-	// $node->type = 'videographer';
-	// $node->language = 'und';
-	// $form = drupal_get_form('videographer_node_form', $node);
-	// $form['actions']['submit']['#value'] = t('Submit');
-	// unset($form['field_notes']);
-	// unset($form['field_rating']);
-	// unset($form['additional_settings']);
-	// return drupal_render($form);
-	return drupal_get_form('user_register_form');
+	$output = render(drupal_get_form('user_register_form'));
+	return $output;
 }
 
 
@@ -241,7 +229,52 @@ function bxdev_vid_join_form(){
  * CUSTOM
  */
 
-
+/**
+ * Page builder: videographer view
+ */
+function bxdev_vid_user_view_page($user){
+	// load the profile
+	$profile = profile2_load_by_user($user->uid, 'videographer');
+	// get renderable array - profile
+	$profile = field_attach_view('profile2', $profile, 'full');
+	// get renderable array - user
+	$user_render = field_attach_view('user', $user, 'full');
+	
+	drupal_set_title('lightswitch videographer directory');
+	
+	// build page markup
+	$output = '';
+	$output .= '<div class="videographer-back"><a href="/videographers">&lt; Back to Videographer List</a></div>';
+	
+	$output .= '<div class="left">';
+		$output .= '<h2>' . $user->field_name['und'][0]['value'] . '</h2>';
+		if(isset($profile['field_region']))	$output .= render($profile['field_region']);
+		if(isset($profile['field_rating'])) $output .= '<div class="videographer-rating videographer-rating-' . $profile['field_rating'][0]['#markup'] . '"></div>';
+		if(isset($user_render['field_phone'])) $output .= render($user_render['field_phone']);
+		$output .= '<div class="field-name-field-email">' . $user->mail . '</div>';
+		if(isset($profile['field_address'])) $output .= render($profile['field_address']);
+		if(isset($profile['field_resume'])) $output .= render($profile['field_resume']);
+		
+		$output .= '<div class="controls">
+			<div class="videographer-edit"><a href="/user/' . $user->uid . '/edit">EDIT</a></div>
+			<div class="videographer-delete"><a href="/user/' . $user->uid . '/cancel">DELETE</a></div>
+		</div>';		
+		
+	$output .= '</div>'; // end .left
+	
+	$output .= '<div class="right">';
+	
+		$output .= (isset($profile['field_notes'])) ? '<div class="videographer-item videographer-notes"><h3>NOTES:</h3>' . render($profile['field_notes']) . '</div>' : '';
+		$output .= (isset($profile['field_skills'])) ? '<div class="videographer-item"><h3>Skills:</h3>' . render($profile['field_skills']) . '</div>' : '';
+		$output .= (isset($profile['field_transportation'])) ? '<div class="videographer-item"><h3>Transportation:</h3>' . render($profile['field_transportation']) . '</div>' : ''; 
+	  $output .= (isset($profile['field_equipment'])) ? '<div class="videographer-item"><h3>Equipment:</h3>' . render($profile['field_equipment']) . '</div>' : '';
+		$output .= (isset($profile['field_links_work'])) ? '<div class="videographer-item"><h3>Links to Examples of Work:</h3>' . render($profile['field_links_work']) . '</div>' : '';
+		$output .= (isset($profile['field_availability'])) ? '<div class="videographer-item"><h3>Availability:</h3>' . render($profile['field_availability']) . '</div>' : '';	
+	
+	$output .= '</div>'; // end .right
+	
+	return $output;
+}
 
 
 

@@ -37,7 +37,9 @@ function bxdev_business_preprocess_node(&$variables) {
 	}
 	// if user is pc, allow project select
 	if(user_access('pc')){
-		$variables['client_projects'] = views_embed_view('projects', 'block_3');
+		$client_projects = '<h2>Client Projects:</h2>';
+		$client_projects .= views_embed_view('projects', 'block_3');
+		$variables['client_projects'] = $client_projects;
 	}
 	// if profile video is assigned
 	if(!empty($variables['field_profile_video_ref'])){
