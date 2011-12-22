@@ -38,60 +38,98 @@
     </div>
   <?php endif; ?>
 
-  <?php if ($exposed): ?>
-    <div class="view-filters">
-			<h2>Filter Results</h2>
-			<a href="/clients" class="clear">clear</a>
+	<div class="search">
+		<?php if ($exposed): ?>
       <?php print $exposed; ?>
-    </div>
-  <?php endif; ?>
+	  <?php endif; ?>
+	</div>
 
-  <?php if ($attachment_before): ?>
-    <div class="attachment attachment-before">
-      <?php print $attachment_before; ?>
-    </div>
-  <?php endif; ?>
+	<div class="left">
+		
+	  <?php if ($exposed): ?>
+	    <div class="view-filters">
+				<h2>Filter Results</h2>
+				<a href="/clients" class="clear">clear</a>
+	      <?php print $exposed; ?>
+	    </div>
+	  <?php endif; ?>
 
-	<?php print '<div class="result-count">Showing ' . ($view->query->offset + 1) . ' - ' . ($view->query->offset + count($view->result)) . ' of ' . $view->total_rows . '</div>'; ?>
+	</div><!-- end .left -->
+	
+	<div class="main">
+		
+		<div class="controls">
+						
+			<?php print '<div class="result-count">Showing ' . ($view->query->offset + 1) . ' - ' . ($view->query->offset + count($view->result)) . ' of ' . $view->total_rows . '</div>'; ?>
+			
+			<div class="sort">
+				<?php
+					$output = '';
+					$query = $_SERVER['REQUEST_URI'];
+					$symbol = (strpos($query, '?') > 0) ? '&' : '?';
+					if(($pos = strpos($query, '&sort_by=')) > 0){
+						$query = substr($query, 0, $pos);
+					}
+					$output .= 'Sort by: ';
+					$output .= '<a href="' . $query . $symbol . 'sort_by=field_client_rating_value&sort_order=DESC">Rating</a> | ';
+					$output .= '<a href="' . $query . $symbol . 'sort_by=title&sort_order=ASC">ABC</a>'; 
+					print $output;		
+				?>
+			</div>
+			
+			<?php if ($pager): ?>
+		    <?php print $pager; ?>
+		  <?php endif; ?>		
+		
+		</div><!-- end .controls -->
+		
+		<div class="block clearfix">
+		
+			<?php if ($attachment_before): ?>
+		    <div class="attachment attachment-before">
+		      <?php print $attachment_before; ?>
+		    </div>
+		  <?php endif; ?>
 
-  <?php if ($pager): ?>
-    <?php print $pager; ?>
-  <?php endif; ?>
+		  <?php if ($rows): ?>
+		    <div class="view-content">
+		      <?php print $rows; ?>
+		    </div>
+		  <?php elseif ($empty): ?>
+		    <div class="view-empty">
+		      <?php print $empty; ?>
+		    </div>
+		  <?php endif; ?>
+	
+		  <?php if ($attachment_after): ?>
+		    <div class="attachment attachment-after">
+		      <?php print $attachment_after; ?>
+		    </div>
+		  <?php endif; ?>
 
-  <?php if ($rows): ?>
-    <div class="view-content">
-      <?php print $rows; ?>
-    </div>
-  <?php elseif ($empty): ?>
-    <div class="view-empty">
-      <?php print $empty; ?>
-    </div>
-  <?php endif; ?>
+		  <?php if ($more): ?>
+		    <?php print $more; ?>
+		  <?php endif; ?>
 
-  <?php if ($pager): ?>
-    <?php print $pager; ?>
-  <?php endif; ?>
+		  <?php if ($footer): ?>
+		    <div class="view-footer">
+		      <?php print $footer; ?>
+		    </div>
+		  <?php endif; ?>
 
-  <?php if ($attachment_after): ?>
-    <div class="attachment attachment-after">
-      <?php print $attachment_after; ?>
-    </div>
-  <?php endif; ?>
+		  <?php if ($feed_icon): ?>
+		    <div class="feed-icon">
+		      <?php print $feed_icon; ?>
+		    </div>
+		  <?php endif; ?>	
+	
+		</div><!-- end block -->
+		
+		<?php if ($pager): ?>
+	    <?php print $pager; ?>
+	  <?php endif; ?>
 
-  <?php if ($more): ?>
-    <?php print $more; ?>
-  <?php endif; ?>
+	</div><!-- end .main -->
 
-  <?php if ($footer): ?>
-    <div class="view-footer">
-      <?php print $footer; ?>
-    </div>
-  <?php endif; ?>
-
-  <?php if ($feed_icon): ?>
-    <div class="feed-icon">
-      <?php print $feed_icon; ?>
-    </div>
-  <?php endif; ?>
 
 </div> <?php /* class view */ ?>

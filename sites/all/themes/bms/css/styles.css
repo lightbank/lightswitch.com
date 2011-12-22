@@ -104,6 +104,11 @@ input[type="submit"] {
     -webkit-transition: all 0.2s ease-in-out;
 }
 
+#edit-cancel {
+	margin-left: 20px;
+}
+
+
 
 /** TABLES
 ================================================**/
@@ -123,6 +128,7 @@ th a {
 
 td {
 	padding: 5px 10px;
+	font-size: 12px;
 }
 
 .even td {
@@ -236,6 +242,21 @@ footer {
     background-image: -moz-linear-gradient(top, #D43C28 0%, #AD3224 50%, #9C1500 50%, #700D00 100%);
     background-image: -webkit-linear-gradient(top, #D43C28 0%, #AD3224 50%, #9C1500 50%, #700D00 100%);
     box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset;
+}
+
+#block-bxdev-user-user-info {
+	float: right;
+	clear: right;
+	font-size: 12px;
+}
+
+#block-bxdev-user-user-info .username {
+	float: left;
+}
+
+#block-bxdev-user-user-info .actions {
+	float: right;
+	padding-left: 20px;
 }
 
 
@@ -365,13 +386,26 @@ footer {
 	list-style: none;
 }
 
+.view-filters {
+	padding: 10px;
+	background: #e9e9e9;
+}
+
+.view-filters select {
+	width: 240px;
+}
 
 
-/** BUSINESS PROFILE
+
+
+
+/** BUSINESS PROFILE / PROJECT PROFILE / CLIENTS DIRECTORY SHARED STYLES
 ================================================**/
 
 
-.node-type-business.logged-in #content {
+.node-type-project.logged-in #content,
+.node-type-business.logged-in #content,
+.page-clients.logged-in #content {
 	padding: 0;
 	background: none;
 	box-shadow: none;
@@ -387,31 +421,49 @@ footer {
 
 .node-type-business .left-top,
 .node-type-business .left-bottom,
-.node-type-business #content .main {
+.node-type-business .main .block,
+.node-type-project #content .left .block,
+.node-type-project .main,
+.page-clients .left,
+.page-clients .main .block {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
 }
 
-.node-type-business #content .left {
+.node-type-business .main .block {
+	width: 660px;
+}
+
+.node-type-business #content .left,
+.node-type-project #content .left,
+.page-clients .left {
 	clear: left;
 	width: 300px;
 	font-family: Georgia, serif;
 }
 
-.node-type-business .left-top,
-.node-type-business .left-bottom {
+.page-clients .left {
+	width: 260px;
 }
 
-.node-type-business #content .main {
+.node-type-business #content .main,
+.node-type-project .main,
+.page-clients .main {
 	position: relative;
 	float: right;
+	width: 700px;
+}
+
+.node-type-project .main {
 	width: 660px;
 }
 
 
-/** LEFT ********/
+
+/** BUSINESS PROFILE LEFT
+================================================**/
 
 .node-type-business #content .left h1 {
 	margin-bottom: 3px;
@@ -482,15 +534,38 @@ footer {
 	border-bottom: 1px solid #b5b5b5;
 }
 
-/** MAIN ******/
+.left .edit { margin-bottom: 5px; }
 
-.main .field-name-field-project-video {
-	position: absolute;
-	top: 10px;
-	left: 6px;
+.left .edit a, .left .delete a {
+	display: block;
+	padding-left: 24px;
+	background: url(../images/sprite_global.png) no-repeat -234px -262px;
+	text-transform: uppercase;
+}
+
+.left .delete a {
+	background-position: -234px -302px;
+	color: #f00;
+}
+
+
+/** BUSINESS PROFILE MAIN
+================================================**/
+
+.main .video-wrap-outer {
+	background: url(../images/bg_video.png) no-repeat;
+	position: relative;
 	width: 689px;
 	height: 419px;
-	background: url(../images/bg_video.png) no-repeat;
+	margin: -15px 0 0 -15px;
+}
+
+.main .video-wrap-outer {
+	padding: 10px 0 0 13px;
+}
+
+.main .video-wrap-inner .slide {
+	position: absolute;
 }
 
 .media-vimeo-outer-wrapper {
@@ -515,7 +590,88 @@ footer {
 	font-size: 16px;
 }
 
+.client-projects {
+	font-family: Georgia, serif;
+	font-size: 18px;
+}
+
+.client-projects h2 {
+	margin-bottom: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #b5b5b5;
+}
+
+.client-projects ol {
+	padding-left: 25px;
+}
+
+.client-projects li {
+	margin-bottom: 5px;
+}
+
+.client-projects .views-field-title-1 {
+	float: left;
+}
+
+.client-projects .views-field-php {
+	float: right;
+	font-size: 14px;
+}
+
+.client-projects .views-field-php a {
+	padding-left: 24px;
+	background: url(../images/sprite_global.png) no-repeat -234px -343px;
+}
+
+.client-projects .views-field-php .active {
+	background-position: -234px -383px;
+}
 
 
+
+/** CLIENT DIRECORY
+================================================**/
+
+.page-clients #content {
+	font-family: Georgia, serif;
+}
+
+.page-clients .search {
+	margin-bottom: 20px;
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+
+.page-clients .search .views-exposed-widget {
+	display: none;
+}
+
+.page-clients .search #edit-title-wrapper { display: block; }
+
+.page-clients .view-filters {
+	background: none;
+	padding: 0;
+}
+
+.page-clients .view-content .left {
+	background: none;
+	padding: 0;
+	box-shadow: none;
+}
+
+.page-clients .left #edit-title-wrapper {
+	display: none;
+}
+
+.page-clients .photo {
+	background: #fff;
+	padding: 3px;
+	box-shadow: 0 0 3px rgba(0,0,0,0.25);
+}
+
+.page-clients .photo img {
+	display: block;
+}
 
 

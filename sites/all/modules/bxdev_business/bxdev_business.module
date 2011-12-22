@@ -29,36 +29,66 @@ function bxdev_business_menu() {
  * Implements hook_preprocess_node().
  */
 function bxdev_business_preprocess_node(&$variables) {
-  // if user is sales or pc, allow edit / delete
-	if(user_access('sales') || user_access('pc')){
-		$operations = '<div class="edit"><a href="/node/' . $variables['node']->nid . '/edit">Edit</a></div>';
-		$operations .= '<div class="delete"><a href="/node/' . $variables['node']->nid . '/delete">Delete</a></div>';
-		$variables['operations'] = $operations;
-	}
-	// if user is pc, allow project select
-	if(user_access('pc')){
-		$client_projects = '<h2>Client Projects:</h2>';
-		$client_projects .= views_embed_view('projects', 'block_3');
-		$variables['client_projects'] = $client_projects;
-	}
-	// if profile video is assigned
-	if(!empty($variables['field_profile_video_ref'])){
-		$video_output = '';
-		// load the project node object
-		$project_node = node_load($variables['field_profile_video_ref'][0]['nid']);
-		// load the renderable array
-		$project = node_view($project_node);
-		// add the video
-		$video_output .= render($project['field_project_video']);
-		// add the full size photos
-		$video_output .= render($project['field_photos']);
-		// load the renderable teaser array
-		$teaser = field_attach_view('node', $project_node, 'teaser');
-		// add the video thumb
-		$video_output .= render($teaser['field_project_video']);
-		// add the photo thumbs
-		$video_output .= render($teaser['field_photos']);
-		$variables['video'] = $video_output;
+	if($variables['node']->type == 'business'){		
+	  // if user is sales or pc, allow edit / delete
+		if(user_access('sales') || user_access('pc')){
+			$operations = '<div class="edit"><a href="/node/' . $variables['node']->nid . '/edit">Edit</a></div>';
+			$operations .= '<div class="delete"><a href="/node/' . $variables['node']->nid . '/delete">Delete</a></div>';
+			$variables['operations'] = $operations;
+		}
+		// if user is pc, allow project select
+		if(user_access('pc')){
+			$client_projects = '<h2>Client Projects:</h2>';
+			$client_projects .= views_embed_view('projects', 'block_3');
+			$variables['client_projects'] = $client_projects;
+		}
+		// if profile video is assigned
+		if(!empty($variables['field_profile_video_ref'])){
+			$video_output = '';
+			// load the project node object
+			$project_node = node_load($variables['field_profile_video_ref'][0]['nid']);
+			// load the renderable array
+			$project = node_view($project_node);
+			
+			// begin video / images markup
+			$video_output .= '<div class="video-wrap-outer"><div class="video-wrap-inner">';
+			// add the video
+			if(!empty($project['field_project_video'][0]['file'])){
+				$video_output .= theme('media_vimeo_video', $project['field_project_video'][0]['file']);
+			}
+			// add the full size photos
+			if(!empty($project['field_photos'])){
+				foreach($project['field_photos'] as $key => $value){
+					if(is_numeric($key)){
+						$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+					}
+				}
+			}
+			$video_output .= '</div></div>';
+			
+			// load the renderable teaser array
+			$teaser = field_attach_view('node', $project_node, 'teaser');
+			
+			// begin thumbnail markup
+			$video_output .= '<div class="video-thumbs-wrap">';
+			// add the video thumb		
+			if(!empty($teaser['field_project_video'])){	
+				$video_output .= render($teaser['field_project_video']);		
+			}		
+			// add the photo thumbs
+			$video_output .= '<div class="photo-thumbs-wrap-outer"><div class="field-label">Images:</div></div>';
+			$video_output .= '<div class="photo-thumbs-wrap-inner">';
+			if(!empty($teaser['field_photos'])){
+				foreach($teaser['field_photos'] as $key => $value){
+					if(is_numeric($key)){
+						$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+					}
+				}
+			}
+			$video_output .= '</div></div>';
+			
+			$variables['video'] = $video_output;
+		}
 	}
 }
 

@@ -321,13 +321,13 @@ function bxdev_project_approve_callback($nid){
  * Return the production log per node
  */
 function bxdev_project_get_production_log($nid){
-	$results = db_query("SELECT * FROM {production_log} WHERE project_nid = :nid", array(':nid' => $nid));
+	$results = db_query("SELECT DATE_FORMAT(date, '%c/%e/%y %l:%i%p') as date, message, user_uid FROM {production_log} WHERE project_nid = :nid", array(':nid' => $nid));
 	$output = '';
 	if($results->rowCount() > 0){
 		foreach($results as $result){
 			$user = user_load($result->user_uid);
 			$output .= '<div class="log-row">';
-			$output .= $result->date . ': ' . $user->field_name['und'][0]['value'] . '<br />';
+			$output .= strtolower($result->date) . ': ' . $user->field_name['und'][0]['value'] . '<br />';
 			$output .= $result->message;
 			$output .= '</div>';
 		}

@@ -4,9 +4,12 @@
 <?php //dpm($pc); ?>
 <?php //dpm($videographer); ?>
 
-<h1><?php print $business->title ?>: <?php print $title ?></h1>
-
-<div class="left">	
+<div class="left">
+	<div class="block">
+		<h1><?php print $business->title ?></h1>
+		<h2><?php print $title ?></h2>
+	</div>
+	
 	<div class="block contacts">
 		
 		<?php if($pc): ?>
@@ -46,7 +49,7 @@
 	
 </div><!-- end .left -->
 
-<div class="right">
+<div class="main">
 	
 	<div class="block">
 		<div class="video">

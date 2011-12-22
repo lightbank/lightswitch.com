@@ -99,9 +99,13 @@
 		
 	</div><!-- end .block -->	
 	
+	<div class="block client-projects">
+	
 	<?php if(isset($client_projects)): ?>
 		<?php print $client_projects; ?>
 	<?php endif; ?>
+	
+	</div>
 	
 </div><!-- end .main -->
 
