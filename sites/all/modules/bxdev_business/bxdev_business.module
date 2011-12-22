@@ -94,18 +94,9 @@ function bxdev_business_block_view($delta = '') {
 }
 
 
-
-
 /**
  * FORMS
  */
-
-/**
- * Implements hook_form_alter().
- */
-function bxdev_business_form_alter(&$form, &$form_state, $form_id) {
-  // dpm($form);
-}
 
 
 

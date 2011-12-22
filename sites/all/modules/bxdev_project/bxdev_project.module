@@ -1,17 +1,5 @@
 <?php
 
-function bxdev_project_preprocess_page(&$vars){
-	drupal_add_js('Drupal.behaviors.password = function () {};', array('type' => 'inline', 'scope' => 'footer'));
-	if(isset($vars['node'])){
-		if($vars['node']->type == 'business' || $vars['node']->type == 'project'){
-			$vars['no_title'] = TRUE;
-		}		
-	}
-	// $vars['no_title'] = ($vars['node']->type == 'business' || $vars['node']->type == 'project');
-	// dpm($vars);
-	// $project = new Project(895);
-	// dpm($project);
-}
 
 /**
  * HOOKS
@@ -153,6 +141,7 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 			
 			// detect if manually overridden
 			if($old_status !== $new_status){
+				$node->field_status_date['und'][0]['value'] = time();
 				$node->field_status_override['und'][0]['value'] = 1;
 			}
 			
@@ -214,6 +203,19 @@ function bxdev_project_preprocess_node(&$vars){
 			$operations .= '<div class="delete"><a href="/node/' . $vars['node']->nid . '/delete">Delete</a></div>';
 			$variables['operations'] = $operations;
 		}
+	}
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function bxdev_project_preprocess_page(&$vars){
+	drupal_add_js('Drupal.behaviors.password = function () {};', array('type' => 'inline', 'scope' => 'footer'));
+	$vars['no_title'] = FALSE;
+	if(isset($vars['node'])){
+		if($vars['node']->type == 'business' || $vars['node']->type == 'project'){
+			$vars['no_title'] = TRUE;
+		}		
 	}
 }
 
@@ -428,6 +430,7 @@ class Project {
 	
 	function set_status($id){
 		$this->project->field_status['und'][0]['value'] = $id;
+		$this->project->field_status_date['und'][0]['value'] = time();
 		node_save($this->project);
 	}
 	
