@@ -396,6 +396,31 @@ footer {
 }
 
 
+/** PROJECT APPROVAL
+================================================**/
+
+#bxdev-project-photo-approval-form {
+	padding-top: 20px;
+}
+
+#bxdev-project-photo-approval-form .photo-wrap {
+	width: 110px;
+	border: solid #ccc 1px;
+	padding: 20px;
+	float:left;
+	margin: 0 20px 20px 0;
+	border-radius: 5px;
+}
+
+#bxdev-project-photo-approval-form .photo-wrap .form-item label.option {
+	font-size: 16px;
+}
+
+#bxdev-project-photo-approval-form #edit-submit {
+	display: block;
+	clear: both;
+}
+
 
 
 

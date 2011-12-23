@@ -58,8 +58,9 @@
 			<?php else: ?>
 				<div class="no-vid">No video has been added.</div>
 			<?php endif; ?>
-			<?php if(isset($photos)): ?>
-				<?php print $photos; ?>
+			<?php if(isset($photos_teaser)): ?>
+				<?php print $photos_teaser; ?>
+				<a href="/project/<?php print arg(1); ?>/photos">View photos</a>
 			<?php endif; ?>
 		</div><!-- end .video -->
 		

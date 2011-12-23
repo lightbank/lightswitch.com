@@ -226,18 +226,49 @@ function bxdev_project_preprocess_node(&$vars){
 		
 		$project_full = node_view($project->project, 'full');
 		$project_teaser = node_view($project->project, 'teaser');
-		// photo thumbnails
-		if(!empty($project_full['field_project_photos'])){
+		
+		// dpm($project_full);
+		
+		// photos
+		// get approved photos
+		$results = db_query("SELECT fid FROM {project_photos_approval} WHERE nid = :nid", array(':nid' => $nid));
+		$approved_photos = array();
+		if($results->rowCount() > 0){
+			foreach($results as $row){
+				$approved_photos[] = $row->fid;
+			}
+		}
+		
+		if(!empty($approved_photos)){
 			$photos = array();
 			foreach($project_full['field_project_photos'] as $key => $value){
 				if(is_numeric($key)){
-					$photos['full'][] = $project_full['field_project_photos'][$key];
-					$photos['teaser'][] = $project_teaser['field_project_photos'][$key];
+					// dpm($value);
+					if(in_array($value['#item']['fid'], $approved_photos)){
+						$photos_full .= theme($value['#theme'], $value);
+						$photos_teaser .= theme($project_teaser['field_project_photos'][$key]['#theme'], $project_teaser['field_project_photos'][$key]);
+						// $photos['full'][] = $project_full['field_project_photos'][$key];
+						// $photos['teaser'][] = $project_teaser['field_project_photos'][$key];
+					}
 				}
 			}
 			// dpm($photos);
-			$vars['photos'] = '<a href="/project/' . $nid . '/photos">View photos</a>';
+			
+			$vars['photos_full'] = $photos_full;
+			$vars['photos_teaser'] = $photos_teaser;
 		}
+		
+		// if(!empty($project_full['field_project_photos'])){
+		// 	$photos = array();
+		// 	foreach($project_full['field_project_photos'] as $key => $value){
+		// 		if(is_numeric($key)){
+		// 			$photos['full'][] = $project_full['field_project_photos'][$key];
+		// 			$photos['teaser'][] = $project_teaser['field_project_photos'][$key];
+		// 		}
+		// 	}
+		// 	// dpm($photos);
+		// 	$vars['photos'] = '<a href="/project/' . $nid . '/photos">View photos</a>';
+		// }
 	}
 }
 
