@@ -36,6 +36,15 @@ function bxdev_project_menu() {
 		'access arguments' => array('view production details'),
 		'type' => MENU_CALLBACK,
 	);
+	
+	$items['project/%/photos'] = array(
+		'title' => t('Photo review'),
+		'page callback' => 'bxdev_project_photo_approval_page',
+		'page arguments' => array(1),
+		'access arguments' => array('view project photos'),
+		'type' => MENU_CALLBACK,
+	);
+	
 
   return $items;
 }
@@ -160,48 +169,74 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
  */
 function bxdev_project_preprocess_node(&$vars){
 	if($vars['type'] == 'project'){
+		
 		// include for the node add form
 		module_load_include('inc', 'node', 'node.pages');
 		
 		// load up some variables
 		global $user;
 		$role = bxdev_user_get_role($user->uid);
-		$profile = '';
-		if($role == 'videographer'){
-			$profile = profile2_load_by_user($user->uid, 'videographer');
-		}
+		$profile = '';		
 		$nid = $vars['nid'];
 		$project = new Project($nid);
 		$comment_permission = TRUE;
+		
+		// if videographer role, get the profile
+		if($role == 'videographer'){
+			$profile = profile2_load_by_user($user->uid, 'videographer');
+		}
 		
 		// send the objects to the tpl
 		$vars['business'] = $project->business;
 		$vars['client'] = $project->client;
 		$vars['pc'] = $project->pc;
 		$vars['videographer'] = $project->videographer;
+		
 		// check if project has been approved
 		$vars['approved'] = $vars['field_approved'][0]['value'];
+		
 		// check commenting permissions
 		if($role == 'videographer' && !$profile->field_post_comments['und'][0]['value']){
 			$comment_permission = FALSE;
 		}
 		$vars['comment_permission'] = $comment_permission;
+		
 		// get the comment add form
 		$vars['comment_form'] = drupal_render(node_add('comment'));
+		
 		// get the comments
 		$vars['comments'] = views_embed_view('comments', 'block');
+		
 		// approve button
 		if(bxdev_user_get_role($user->uid) == 'client'){
 			$vars['approve_button'] = '<span class="approve-or">or</span> <a class="approve-btn" href="/project/' . $nid . '/approve">Approve</a>';
 		}
+		
+		// production history
 		if(user_access('view production history')){
 			$vars['production_history'] = bxdev_project_get_production_log($nid);
 		}
+		
 	  // if user is sales or pc, allow edit / delete
 		if(user_access('sales') || user_access('pc')){
 			$operations = '<div class="edit"><a href="/node/' . $vars['node']->nid . '/edit">Edit</a></div>';
 			$operations .= '<div class="delete"><a href="/node/' . $vars['node']->nid . '/delete">Delete</a></div>';
-			$variables['operations'] = $operations;
+			$vars['operations'] = $operations;
+		}
+		
+		$project_full = node_view($project->project, 'full');
+		$project_teaser = node_view($project->project, 'teaser');
+		// photo thumbnails
+		if(!empty($project_full['field_project_photos'])){
+			$photos = array();
+			foreach($project_full['field_project_photos'] as $key => $value){
+				if(is_numeric($key)){
+					$photos['full'][] = $project_full['field_project_photos'][$key];
+					$photos['teaser'][] = $project_teaser['field_project_photos'][$key];
+				}
+			}
+			// dpm($photos);
+			$vars['photos'] = '<a href="/project/' . $nid . '/photos">View photos</a>';
 		}
 	}
 }
@@ -223,6 +258,10 @@ function bxdev_project_preprocess_page(&$vars){
 /**
  * FORMS
  */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function bxdev_project_form_comment_node_form_alter(&$form, $form_state){
 	// change submit button
 	$form['actions']['submit']['#value'] = t('Post Comment');
@@ -241,10 +280,88 @@ function bxdev_project_form_comment_node_form_alter(&$form, $form_state){
 }
 
 /**
+ * Form builder: photo approval
+ */
+function bxdev_project_photo_approval_form($form, $form_state){
+	$form = array();
+	$node = node_load(arg(1));
+	$render = node_view($node, 'teaser');
+	$full = node_view($node, 'full');
+	
+	// if photos have been assigned
+	if(!empty($render['field_project_photos'])){
+		
+		// get stored values
+		$results = db_query("SELECT fid FROM {project_photos_approval} WHERE nid = :nid", array(':nid' => $node->nid));
+		$defaults = array();
+		if($results->rowCount() > 0){
+			foreach($results as $row){
+				$defaults[] = $row->fid;
+			}
+		}
+		
+		// build the images and checkboxes
+		foreach($render['field_project_photos'] as $key => $value){
+			if(is_numeric($key)){
+				// dpm($value);
+				$path = file_create_url($full['field_project_photos'][$key]['#item']['uri']);
+				$form['approve'][$value['#item']['fid']] = array(
+				  '#type' => 'checkbox',
+				  '#title' => t('Approve'),
+				  '#default_value' => in_array($value['#item']['fid'], $defaults),
+					'#prefix' => '<div class="photo-wrap"><a rel="shadowbox" href="' . image_style_url('approval', $full['field_project_photos'][$key]['#item']['uri']) . '">' . theme($value['#theme'], $value) . '</a>',
+					'#suffix' => '</div>',
+				);				
+			}
+		}
+		
+		// submit button
+		$form['submit'] = array(
+		  '#type' => 'submit',
+		  '#value' => t('Submit'),
+		);		
+		
+	// photos have not been assigned
+	}else{
+		$form['no_photos'] = array(
+			'#markup' => t('No photos assigned.'),
+		);
+	}
+	
+	return $form;
+}
+
+/**
  * Form submit handler: comment node form
  */
 function bxdev_project_comment_node_form_submit($form, &$form_state){
 	$form_state['redirect'] = substr($_SERVER['REQUEST_URI'], 1);
+}
+
+/**
+ * Form submit handler: photo approval form
+ */
+function bxdev_project_photo_approval_form_submit($form, &$form_state){
+	$nid = arg(1);
+	$values = $form_state['values'];
+	// clear all values for current node
+	db_delete('project_photos_approval')
+		->condition('nid', $nid)
+		->execute();
+	// store each new value
+	foreach($values as $key => $value){
+		if(is_numeric($key)){
+			if($value){
+				db_insert('project_photos_approval')
+					->fields(array(
+						'nid' => $nid,
+						'fid' => $key,
+					))
+					->execute();
+			}
+		}
+	}
+	drupal_set_message('Photo approvals have been updated.');
 }
 
 /**
@@ -262,10 +379,39 @@ function bxdev_project_comment_node_form_validate($form, &$form_state){
 	form_set_value($form['field_project_ref'], $project_nid, $form_state);		
 }
 
+/**
+ * Form validation handler: photo approval form
+ */
+function bxdev_project_photo_approval_form_validate($form, &$form_state){
+	$values = $form_state['values'];
+	$count = 0;
+	// cycle through each photo and allow no more than eight choices
+	foreach($values as $key => $value){
+		if(is_numeric($key)){
+			$count += $value;
+		}
+	}
+	// check if greater than 8
+	if($count > 8){
+		form_error($form, 'A maximum of 8 choices can selected.');
+		return FALSE;
+	}
+}
+
 
 /**
  * CUSTOM
  */
+
+/**
+ * Page callback: photo approval
+ */
+function bxdev_project_photo_approval_page($nid){
+	$project_path = drupal_lookup_path('alias', 'node/' . $nid);
+	$output = '<a href="/' . $project_path . '">Back to project</a>';
+	$output .= render(drupal_get_form('bxdev_project_photo_approval_form'));
+	return $output;
+}
 
 /**
  * Menu callback: project claim
@@ -318,24 +464,6 @@ function bxdev_project_approve_callback($nid){
 }
 
 /**
- * Return the production log per node
- */
-function bxdev_project_get_production_log($nid){
-	$results = db_query("SELECT DATE_FORMAT(date, '%c/%e/%y %l:%i%p') as date, message, user_uid FROM {production_log} WHERE project_nid = :nid", array(':nid' => $nid));
-	$output = '';
-	if($results->rowCount() > 0){
-		foreach($results as $result){
-			$user = user_load($result->user_uid);
-			$output .= '<div class="log-row">';
-			$output .= strtolower($result->date) . ': ' . $user->field_name['und'][0]['value'] . '<br />';
-			$output .= $result->message;
-			$output .= '</div>';
-		}
-	}
-	return $output;
-}
-
-/**
  * Menu callback: download production details
  */
 function bxdev_project_download_production_details($node){
@@ -367,6 +495,25 @@ function bxdev_project_download_production_details($node){
 	
 	print $output;	
 }
+
+/**
+ * Return the production log per node
+ */
+function bxdev_project_get_production_log($nid){
+	$results = db_query("SELECT DATE_FORMAT(date, '%c/%e/%y %l:%i%p') as date, message, user_uid FROM {production_log} WHERE project_nid = :nid", array(':nid' => $nid));
+	$output = '';
+	if($results->rowCount() > 0){
+		foreach($results as $result){
+			$user = user_load($result->user_uid);
+			$output .= '<div class="log-row">';
+			$output .= strtolower($result->date) . ': ' . $user->field_name['und'][0]['value'] . '<br />';
+			$output .= $result->message;
+			$output .= '</div>';
+		}
+	}
+	return $output;
+}
+
 
 /**
  * CLASSES

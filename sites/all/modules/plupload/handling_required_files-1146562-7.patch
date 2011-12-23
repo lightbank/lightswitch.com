@@ -1,0 +1,75 @@
+diff --git a/plupload.js b/plupload.js
+index f8be4d1..77fd54a 100644
+--- a/plupload.js
++++ b/plupload.js
+@@ -57,12 +57,23 @@ Drupal.behaviors.plupload = {
+       };
+       $form.submit(function(e) {
+         var uploader = $('.plupload-element', this).pluploadQueue();
++        
++        // Handle file required setting.
++        if (uploader.files.length == 0) {
++          if (!pluploadSettings.required) {            
++            for (var attr in originalFormAttributes) {
++              $form.attr(attr, originalFormAttributes[attr]);
++            }
++            return;
++          }
++          else {
++            e.preventDefault();
++            alert(Drupal.t('You must at least upload one file.'));
++          }
++        }
+ 
+-        // Only allow the submit to proceed if there are files and they've all
+-        // completed uploading.
+-        // @todo Implement a setting for whether the field is required, rather
+-        //   than assuming that all are.
+-        if (uploader.files.length > 0 && uploader.total.uploaded == uploader.files.length) {
++        // Check if uploaded is completed
++        if (uploader.total.uploaded == uploader.files.length) {
+           // Plupload's html4 runtime has a bug where it changes the attributes
+           // of the form to handle the file upload, but then fails to change
+           // them back after the upload is finished.
+@@ -71,19 +82,14 @@ Drupal.behaviors.plupload = {
+           }
+           return;
+         }
+-
+-        // If we're here, stop the form submit, and perform logic as appropriate
+-        // to the current upload state.
+-        e.preventDefault();
+-        if (uploader.files.length == 0) {
+-          alert('You must at least upload one file.');
+-        }
+         else if (uploader.state == plupload.STARTED) {
++          e.preventDefault();
+           alert('Your files are currently being uploaded. Please wait until they are finished before submitting this form.');
+         }
+         else {
+           var stateChangedHandler = function() {
+             if (uploader.total.uploaded == uploader.files.length) {
++              e.preventDefault();
+               // Plupload's html4 runtime has a bug where it changes the
+               // attributes of the form to handle the file upload, but then
+               // fails to change them back after the upload is finished.
+diff --git a/plupload.module b/plupload.module
+index a37a62a..14c2ee6 100644
+--- a/plupload.module
++++ b/plupload.module
+@@ -219,12 +219,14 @@ function plupload_element_pre_render($element) {
+       'extensions' => str_replace(' ', ',', $element['#upload_validators']['file_validate_extensions'][0]),
+     );
+   }
+-
++  
+   if (empty($element['#description'])) {
+     $element['#description'] = '';
+   }
+   $element['#description'] = theme('file_upload_help', array('description' => $element['#description'], 'upload_validators' => $element['#upload_validators']));
+ 
++  $settings['required'] = $element['#required'];
++
+   $element['#attached']['js'][] = array(
+     'type' => 'setting',
+     'data' => array('plupload' => array($element['#id'] => $settings)),

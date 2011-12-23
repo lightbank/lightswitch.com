@@ -58,7 +58,7 @@
 	
 	<div class="main">
 		
-		<div class="controls">
+		<div class="controls clearfix">
 						
 			<?php print '<div class="result-count">Showing ' . ($view->query->offset + 1) . ' - ' . ($view->query->offset + count($view->result)) . ' of ' . $view->total_rows . '</div>'; ?>
 			

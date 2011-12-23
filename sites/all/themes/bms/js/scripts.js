@@ -2,6 +2,8 @@
   
 	$(function(){
 		
+		Shadowbox.init();
+		
 		// video / image slider
 		$('.main .video-wrap-inner').bxSlider({
 			mode: 'fade',

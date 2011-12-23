@@ -50,6 +50,8 @@ function bxdev_business_preprocess_node(&$variables) {
 			// load the renderable array
 			$project = node_view($project_node);
 			
+			// dpm($project_node);
+			
 			// begin video / images markup
 			$video_output .= '<div class="video-wrap-outer"><div class="video-wrap-inner">';
 			// add the video
@@ -57,8 +59,8 @@ function bxdev_business_preprocess_node(&$variables) {
 				$video_output .= theme('media_vimeo_video', $project['field_project_video'][0]['file']);
 			}
 			// add the full size photos
-			if(!empty($project['field_photos'])){
-				foreach($project['field_photos'] as $key => $value){
+			if(!empty($project['field_project_photos'])){
+				foreach($project['field_project_photos'] as $key => $value){
 					if(is_numeric($key)){
 						$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
 					}
@@ -78,8 +80,8 @@ function bxdev_business_preprocess_node(&$variables) {
 			// add the photo thumbs
 			$video_output .= '<div class="photo-thumbs-wrap-outer"><div class="field-label">Images:</div></div>';
 			$video_output .= '<div class="photo-thumbs-wrap-inner">';
-			if(!empty($teaser['field_photos'])){
-				foreach($teaser['field_photos'] as $key => $value){
+			if(!empty($teaser['field_project_photos'])){
+				foreach($teaser['field_project_photos'] as $key => $value){
 					if(is_numeric($key)){
 						$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
 					}

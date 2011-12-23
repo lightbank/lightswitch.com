@@ -49,6 +49,10 @@ function bxdev_user_permission() {
 	    'title' => t('Videographer user permissions'),
 	    'description' => t('Videographer user permissions.'),
 	  ),
+		'view project photos' =>  array(
+	    'title' => t('View project photos'),
+	    'description' => t('View project photos.'),
+	  ),
   );
 }
 

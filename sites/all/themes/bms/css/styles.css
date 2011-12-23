@@ -405,7 +405,8 @@ footer {
 
 .node-type-project.logged-in #content,
 .node-type-business.logged-in #content,
-.page-clients.logged-in #content {
+.page-clients.logged-in #content,
+.page-videographers #content {
 	padding: 0;
 	background: none;
 	box-shadow: none;
@@ -425,7 +426,9 @@ footer {
 .node-type-project #content .left .block,
 .node-type-project .main,
 .page-clients .left,
-.page-clients .main .block {
+.page-clients .main .block,
+.page-videographers .left,
+.page-videographers .main .block {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;
@@ -438,19 +441,22 @@ footer {
 
 .node-type-business #content .left,
 .node-type-project #content .left,
-.page-clients .left {
+.page-clients .left,
+.page-videographers .left {
 	clear: left;
 	width: 300px;
 	font-family: Georgia, serif;
 }
 
-.page-clients .left {
+.page-clients .left,
+.page-videographers .left {
 	width: 260px;
 }
 
 .node-type-business #content .main,
 .node-type-project .main,
-.page-clients .main {
+.page-clients .main,
+.page-videographers .main {
 	position: relative;
 	float: right;
 	width: 700px;
@@ -480,7 +486,7 @@ footer {
 	border-bottom: 1px solid #b5b5b5;
 }
 
-.rating {
+.rating, .videographer-rating {
 	float: left;
 	width: 104px;
 	height: 18px;
@@ -488,10 +494,10 @@ footer {
 	text-indent: -9999em;
 }
 
-.rating-4 { background-position: 0 -172px; }
-.rating-3 { background-position: 0 -190px; }
-.rating-2 { background-position: 0 -208px; }
-.rating-1 { background-position: 0 -226px; }
+.rating-4, .videographer-rating-4 { background-position: 0 -172px; }
+.rating-3, .videographer-rating-3 { background-position: 0 -190px; }
+.rating-2, .videographer-rating-2 { background-position: 0 -208px; }
+.rating-1, .videographer-rating-1 { background-position: 0 -226px; }
 
 .price {
 	float: right;
@@ -632,46 +638,258 @@ footer {
 /** CLIENT DIRECORY
 ================================================**/
 
-.page-clients #content {
+.page-clients #content,
+.page-videographers #content {
 	font-family: Georgia, serif;
 }
 
-.page-clients .search {
-	margin-bottom: 20px;
-	padding: 20px;
+.page-clients .page-title,
+.page-videographers .page-title {
+	font-size: 38px;
+}
+
+/** SEARCH ******/
+
+.page-clients .views-exposed-form .views-exposed-widget,
+.page-videographers .views-exposed-form .views-exposed-widget {
+	float: none;
+	padding: 0;
+}
+
+.page-clients .views-exposed-form .views-exposed-widget .form-submit,
+.page-videographers .views-exposed-form .views-exposed-widget .form-submit {
+	margin-top: 0;
+}
+
+.page-clients .search,
+.page-videographers .search {
+	width: 630px;
+	margin: 0 auto 30px;
+	padding: 10px 20px 3px;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
 }
 
-.page-clients .search .views-exposed-widget {
+.page-videographers .search {
+	width: 660px;
+}
+
+.page-clients .search .views-exposed-widget,
+.page-videographers .search .views-exposed-widget {
 	display: none;
 }
 
-.page-clients .search #edit-title-wrapper { display: block; }
+.page-clients .search #edit-title-wrapper,
+.page-clients .search .views-submit-button,
+.page-videographers .search #edit-field-name-value-wrapper,
+.page-videographers .search .views-submit-button {
+	display: block;
+}
 
-.page-clients .view-filters {
+.page-clients .search label,
+.page-clients .search .views-widget,
+.page-clients .search .views-submit-button,
+.page-videographers .search label,
+.page-videographers .search .views-widget,
+.page-videographers .search .views-submit-button {
+	float: left;
+}
+
+.page-clients .search label,
+.page-videographers .search label {
+	margin-right: 40px;
+	padding-bottom: 0;
+	font-size: 20px;
+	line-height: 31px;
+	text-transform: none;
+}
+
+.page-clients .search input[type="submit"],
+.page-videographers .search input[type="submit"] {
+	width: 30px;
+	height: 31px;
+	line-height: 31px;
+	background: url(../images/sprite_global.png) no-repeat 7px -124px #fb942e;
+	text-indent: -9999em;
+}
+
+
+/** LEFT ******/
+
+.page-clients .view-filters,
+.page-videographers .view-filters {
 	background: none;
 	padding: 0;
 }
 
-.page-clients .view-content .left {
+.page-clients .view-content .left,
+.page-videographers .view-content .left {
 	background: none;
 	padding: 0;
 	box-shadow: none;
 }
 
-.page-clients .left #edit-title-wrapper {
+.page-clients .left h2,
+.page-videographers .left h2 {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #b5b5b5;
+}
+
+.page-clients .left .clear,
+.page-videographers .left .clear {
+	float: right;
+	margin-top: -37px;
+}
+
+.page-clients .left #edit-title-wrapper,
+.page-clients .left .views-widget-sort-by,
+.page-clients .left .views-widget-sort-order,
+.page-videographers .left #edit-title-wrapper,
+.page-videographers .left .views-widget-sort-by,
+.page-videographers .left .views-widget-sort-order,
+.page-videographers .left #edit-field-name-value-wrapper {
 	display: none;
 }
 
-.page-clients .photo {
+.page-clients .left label,
+.page-videographers .left label {
+	font-size: 14px;
+}
+
+.page-clients .left .views-exposed-widget,
+.page-videographers .left .views-exposed-widget {
+	margin-bottom: 10px;
+}
+
+
+/** MAIN ******/
+
+.page-clients .left,
+.page-videographers .left {
+	margin-top: 30px;
+}
+
+.page-clients .main .controls,
+.page-videographers .main .controls {
+	height: 30px;
+}
+
+.result-count, .sort {
+	float: left;
+}
+
+.sort {
+	margin-left: 120px; 
+}
+
+.pager {
+	float: right;
+}
+
+.page-clients #page #content .links,
+.page-videographers #page #content .links {
+	float: left;
+	margin: 0;
+}
+
+.pager-prev {
+	float: left;
+}
+
+.pager-next {
+	float: right;
+}
+
+.pager-prev li,
+.pager-next li {
+	list-style: none;
+}
+
+#page #content .pager li {
+	margin: 0 5px;
+}
+
+#page #content .pager .links a {
+	background: no-repeat;
+	padding: 0;
+	line-height: 1.5em;
+}
+
+#page .pager .links .active {
+	background: none;
+	color: #fb942e;
+}
+
+
+/** Listing **/
+
+.view-clients .main .views-row,
+.view-videographer-users .main .views-row {
+	overflow: hidden;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #b5b5b5;
+}
+
+.view-clients .main .left,
+.view-videographer-users .main .middle {
+	float: left;
+	width: auto;
+	margin: 0;
+}
+.view-clients .main .right,
+.view-videographer-users .main .rating-notes {
+	float: right;
+	padding-right: 5px;
+}
+
+.view-clients .main .title,
+.view-videographer-users .main .title {
+	margin-bottom: 10px;
+	font-size: 20px;
+}
+
+.view-clients .main .left .website {
+	background: none;
+	padding-left: 21px;
+}
+
+.view-clients .photo {
+	float: right;
 	background: #fff;
 	padding: 3px;
 	box-shadow: 0 0 3px rgba(0,0,0,0.25);
 }
 
-.page-clients .photo img {
+.view-clients .photo img {
 	display: block;
 }
 
+.view-clients .category,
+.view-clients .rating {
+	float: left;
+	clear: left;
+	width: 104px;
+	padding-right: 20px;
+	text-align: right;
+}
+
+.view-clients .category {
+	margin-bottom: 15px;
+}
+
+.rating-notes .videographer-rating {
+	float: right;
+	margin-bottom: 10px;
+}
+
+.rating-notes .notes {
+	float: right;
+	clear: right;
+	width: 17px;
+	height: 21px;
+	background: url(../images/sprite_global.png) no-repeat 0 -342px;
+	text-indent: -9999em;
+}
 

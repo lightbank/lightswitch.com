@@ -17,12 +17,13 @@ stylesheets[all][] = css/reset.css
 stylesheets[all][] = css/base.css
 stylesheets[screen][] = css/drupal.css
 stylesheets[screen][] = css/styles.css
+stylesheets[screen][] = js/shadowbox/shadowbox.css
 
 ; Scripts =================================================================
 
 scripts[] = js/jquery.bxSlider.min.js
+scripts[] = js/shadowbox/shadowbox.js
 scripts[] = js/scripts.js
-
 
 ; Information added by drupal.org packaging script on 2011-09-21
 version = "7.x-3.0-beta4"
