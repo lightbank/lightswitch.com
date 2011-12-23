@@ -59,8 +59,10 @@
 				<div class="no-vid">No video has been added.</div>
 			<?php endif; ?>
 			<?php if(isset($photos_teaser)): ?>
-				<?php print $photos_teaser; ?>
-				<a href="/project/<?php print arg(1); ?>/photos">View photos</a>
+				<div class="project-thumb-wrapper clearfix">
+					<?php print $photos_teaser; ?>
+					<a href="/project/<?php print arg(1); ?>/photos">View photos</a>
+				</div>
 			<?php endif; ?>
 		</div><!-- end .video -->
 		

@@ -40,7 +40,10 @@ p {
 	margin: 0 0 1.5em;
 }
 
-a { color: #0A5C9B; }
+a { 
+	color: #0A5C9B; 
+	outline: 0!important;
+}
 
 a:hover {
 	text-decoration: underline;
@@ -421,6 +424,11 @@ footer {
 	clear: both;
 }
 
+.project-thumb {
+	margin-right: 10px;
+	width: 150px;
+	float: left;
+}
 
 
 
@@ -658,6 +666,60 @@ footer {
 	background-position: -234px -383px;
 }
 
+/*slider*/
+.video-thumbs-wrap {
+	margin-bottom: 20px;
+	margin-top: -10px;
+}
+
+.video-thumbs-wrap .field-label {
+	padding-bottom: 7px;
+}
+
+.video-thumbs-wrap .field-name-field-project-video {
+	width: 175px;
+	float: left;
+}
+
+.video-thumbs-wrap .photo-thumbs-wrap-outer {
+	float:left;
+	width: 480px;
+	font-weight: bold;
+}
+
+.video-thumbs-wrap .photo-thumbs-wrap-outer .slide {
+	float: left;
+	padding-right: 10px;
+	cursor: pointer;
+}
+
+.photo-thumbs-wrap-inner {
+	width: 999999px;
+}
+
+.photo-thumbs-wrap-outer .bx-prev {
+	position: absolute;
+	top: 0;
+	left: -32px;
+	width: 24px;
+	height: 59px;
+	background: url(../images/icon_arrow_left.png);
+	text-indent: -999999px;
+}
+
+.photo-thumbs-wrap-outer .bx-next {
+	position: absolute;
+	top: 0;
+	right: -22px;
+	width: 24px;
+	height: 59px;
+	background: url(../images/icon_arrow_right.png);
+	text-indent: -999999px;
+}
+
+.field-name-field-project-video img {
+	cursor: pointer;
+}
 
 
 /** CLIENT DIRECORY

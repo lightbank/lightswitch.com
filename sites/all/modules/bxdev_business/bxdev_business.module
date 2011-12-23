@@ -29,7 +29,7 @@ function bxdev_business_menu() {
  * Implements hook_preprocess_node().
  */
 function bxdev_business_preprocess_node(&$variables) {
-	if($variables['node']->type == 'business'){		
+	if($variables['node']->type == 'business'){
 	  // if user is sales or pc, allow edit / delete
 		if(user_access('sales') || user_access('pc')){
 			$operations = '<div class="edit"><a href="/node/' . $variables['node']->nid . '/edit">Edit</a></div>';
@@ -49,8 +49,9 @@ function bxdev_business_preprocess_node(&$variables) {
 			$project_node = node_load($variables['field_profile_video_ref'][0]['nid']);
 			// load the renderable array
 			$project = node_view($project_node);
-			
-			// dpm($project_node);
+			// get approved photos
+			$project_obj = new Project($project_node->nid);
+			$approved_photos = $project_obj->get_approved_photos();
 			
 			// begin video / images markup
 			$video_output .= '<div class="video-wrap-outer"><div class="video-wrap-inner">';
@@ -58,11 +59,14 @@ function bxdev_business_preprocess_node(&$variables) {
 			if(!empty($project['field_project_video'][0]['file'])){
 				$video_output .= theme('media_vimeo_video', $project['field_project_video'][0]['file']);
 			}
-			// add the full size photos
-			if(!empty($project['field_project_photos'])){
+			
+			// add the full size photos			
+			if(!empty($approved_photos)){
 				foreach($project['field_project_photos'] as $key => $value){
 					if(is_numeric($key)){
-						$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+						if(in_array($value['#item']['fid'], $approved_photos)){
+							$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+						}
 					}
 				}
 			}
@@ -72,22 +76,24 @@ function bxdev_business_preprocess_node(&$variables) {
 			$teaser = field_attach_view('node', $project_node, 'teaser');
 			
 			// begin thumbnail markup
-			$video_output .= '<div class="video-thumbs-wrap">';
+			$video_output .= '<div class="video-thumbs-wrap clearfix">';
 			// add the video thumb		
 			if(!empty($teaser['field_project_video'])){	
 				$video_output .= render($teaser['field_project_video']);		
 			}		
 			// add the photo thumbs
-			$video_output .= '<div class="photo-thumbs-wrap-outer"><div class="field-label">Images:</div></div>';
-			$video_output .= '<div class="photo-thumbs-wrap-inner">';
-			if(!empty($teaser['field_project_photos'])){
+			$video_output .= '<div class="photo-thumbs-wrap-outer clearfix"><div class="field-label">Images:</div>';
+			$video_output .= '<div class="photo-thumbs-wrap-inner clearfix">';
+			if(!empty($approved_photos)){
 				foreach($teaser['field_project_photos'] as $key => $value){
 					if(is_numeric($key)){
-						$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+						if(in_array($value['#item']['fid'], $approved_photos)){
+							$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+						}
 					}
 				}
 			}
-			$video_output .= '</div></div>';
+			$video_output .= '</div></div></div>';
 			
 			$variables['video'] = $video_output;
 		}
