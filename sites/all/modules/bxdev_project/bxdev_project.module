@@ -246,6 +246,7 @@ function bxdev_project_preprocess_node(&$vars){
 		// if approved photos exist
 		$approved_photos = $project->get_approved_photos();
 		if(!empty($approved_photos)){
+			$photos_teaser = '<div class="clearfix">';
 			$photos = array();
 			// cycle through each project photo
 			foreach($project_full['field_project_photos'] as $key => $value){
@@ -258,6 +259,7 @@ function bxdev_project_preprocess_node(&$vars){
 					}
 				}
 			}
+			$photos_teaser .= '</div>';
 			// $vars['photos_full'] = $photos_full;
 			$vars['photos_teaser'] = $photos_teaser;
 		}

@@ -236,7 +236,7 @@ function bxdev_user_preprocess_user_profile(&$vars){
 	$output = '';
 	// pc
 	if(isset($vars['user']->roles[4])){
-		$output .= '<a href="/projects/master">Master list</a>';
+		$output .= '<a href="/projects/master" class="add-project btn">&larr; Master list</a><br /><br />';
 		$output .= views_embed_view('projects', 'page_1', $vars['user']->uid);
 	// videographer
 	}else if(isset($vars['user']->roles[5])){

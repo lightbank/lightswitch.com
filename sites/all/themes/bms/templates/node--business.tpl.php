@@ -97,15 +97,11 @@
 			<div class="download"><a href="<?php print file_create_url($content['field_business_download_file'][0]['#file']->uri); ?>"><?php print $content['field_business_download_label'][0]['#markup']; ?></a></div>
 		<?php endif; ?>		
 		
-	</div><!-- end .block -->	
-	
-	<div class="block client-projects">
+	</div><!-- end .block -->		
 	
 	<?php if(isset($client_projects)): ?>
 		<?php print $client_projects; ?>
 	<?php endif; ?>
-	
-	</div>
 	
 </div><!-- end .main -->
 
