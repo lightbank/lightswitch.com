@@ -247,18 +247,29 @@ function bxdev_vid_user_view_page($user){
 	$output .= '<div class="videographer-back"><a href="/videographers">&lt; Back to Videographer List</a></div>';
 	
 	$output .= '<div class="left">';
-		$output .= '<h2>' . $user->field_name['und'][0]['value'] . '</h2>';
-		if(isset($profile['field_region']))	$output .= render($profile['field_region']);
-		if(isset($profile['field_rating'])) $output .= '<div class="videographer-rating videographer-rating-' . $profile['field_rating'][0]['#markup'] . '"></div>';
-		if(isset($user_render['field_phone'])) $output .= render($user_render['field_phone']);
-		$output .= '<div class="field-name-field-email">' . $user->mail . '</div>';
-		if(isset($profile['field_address'])) $output .= render($profile['field_address']);
-		if(isset($profile['field_resume'])) $output .= render($profile['field_resume']);
+		$output .= '<div class="left-top">';
 		
-		$output .= '<div class="controls">
-			<div class="videographer-edit"><a href="/user/' . $user->uid . '/edit">EDIT</a></div>
-			<div class="videographer-delete"><a href="/user/' . $user->uid . '/cancel">DELETE</a></div>
-		</div>';		
+			$output .= '<div class="section top">';
+				$output .= '<h2>' . $user->field_name['und'][0]['value'] . '</h2>';
+				if(isset($profile['field_region']))	$output .= '<div class="category">' . $profile['field_region'][0]['#markup'] . '</div>';
+				if(isset($profile['field_rating'])) $output .= '<div class="symbols"><div class="videographer-rating videographer-rating-' . $profile['field_rating'][0]['#markup'] . '"></div></div>';
+			$output .= '</div>';
+			
+			$output .= '<div class="section bottom">';
+				if(isset($user_render['field_phone'])) $output .= '<div class="phone">' . $user_render['field_phone'][0]['#markup'] . '</div>';
+				$output .= '<div class="email">' . $user->mail . '</div>';
+				if(isset($profile['field_address'])) $output .= '<div class="address">' . $profile['field_address'][0]['#markup'] . '</div>';
+				if(isset($profile['field_resume'])) $output .= '<div class="resume">' . render($profile['field_resume']) . '</div>';
+			$output .= '</div>';
+			
+		$output .= '</div>';
+		
+		$output .= '<div class="left-bottom">';
+			$output .= '<div class="controls">
+				<div class="edit"><a href="/user/' . $user->uid . '/edit">EDIT</a></div>
+				<div class="delete"><a href="/user/' . $user->uid . '/cancel">DELETE</a></div>
+			</div>';		
+		$output .= '</div>';
 		
 	$output .= '</div>'; // end .left
 	

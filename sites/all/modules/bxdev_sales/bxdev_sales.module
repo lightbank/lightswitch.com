@@ -97,7 +97,7 @@ function bxdev_sales_existing_business_form($form, $form_state){
 	
 	$form['submit'] = array(
 	  '#type' => 'submit',
-	  '#value' => t('Continue >'),
+	  '#value' => t('Continue'),
 	);
 	
 	return $form;	
@@ -124,14 +124,19 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
 		$form['field_project_business_ref']['und']['#default_value'] = $nid;
 	
 		// override original submit button
-		$form['actions']['submit']['#value'] = t('Submit & View Profile >');
+		$form['actions']['submit']['#value'] = t('Submit & View Profile');
 	
 		// add additional submit button
 		$form['actions']['return'] = array(
 			'#type' => 'submit',
-			'#value' => t('< Submit & Return to Form'),
+			'#value' => t('Submit & Return to Form'),
 			'#submit' => array('node_form_submit', 'bxdev_sales_project_node_form_submit'),
 		);
+		
+		// add left / right markup
+		$form['field_project_business_ref']['#prefix'] = '<div class="left">';
+		$form['field_script_notes']['#suffix'] = '</div><div class="right">';
+		$form['field_unique']['#suffix'] = '</div>';		
 	}
 }
 
@@ -140,8 +145,30 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
  * Form: business node form
  */
 function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
+	$form['#attributes']['class'][] = 'clearfix';
 	$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_business_node_form_submit';
-	$form['actions']['submit']['#value'] = t('Continue >');
+	$form['actions']['submit']['#value'] = t('Continue');
+	$form['title']['#prefix'] = '<div class="left">';
+	$form['field_hours_operation']['#suffix'] = '</div><div class="right">';
+	$form['field_business_download_file']['#suffix'] = '</div>';
+	
+	// remove labels and set input values for social media inputs
+	$form['field_social_name1']['und'][0]['value']['#title'] = t('Social Media');
+	$form['field_social_name2']['und'][0]['value']['#title'] = '';
+	$form['field_social_name3']['und'][0]['value']['#title'] = '';
+	$form['field_social_name4']['und'][0]['value']['#title'] = '';
+	$form['field_social_name1']['und'][0]['value']['#default_value'] = t('site name');
+	$form['field_social_name2']['und'][0]['value']['#default_value'] = t('site name');
+	$form['field_social_name3']['und'][0]['value']['#default_value'] = t('site name');
+	$form['field_social_name4']['und'][0]['value']['#default_value'] = t('site name');
+	$form['field_social_url1']['und'][0]['value']['#title'] =  '';
+	$form['field_social_url2']['und'][0]['value']['#title'] =  '';
+	$form['field_social_url3']['und'][0]['value']['#title'] =  '';
+	$form['field_social_url4']['und'][0]['value']['#title'] =  '';
+	$form['field_social_url1']['und'][0]['value']['#default_value'] =  t('url');
+	$form['field_social_url2']['und'][0]['value']['#default_value'] =  t('url');
+	$form['field_social_url3']['und'][0]['value']['#default_value'] =  t('url');
+	$form['field_social_url4']['und'][0]['value']['#default_value'] =  t('url');
 }
 
 /**

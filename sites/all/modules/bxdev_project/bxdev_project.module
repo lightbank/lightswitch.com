@@ -265,19 +265,6 @@ function bxdev_project_preprocess_node(&$vars){
 	}
 }
 
-/**
- * Implements hook_preprocess_page().
- */
-function bxdev_project_preprocess_page(&$vars){
-	drupal_add_js('Drupal.behaviors.password = function () {};', array('type' => 'inline', 'scope' => 'footer'));
-	$vars['no_title'] = FALSE;
-	if(isset($vars['node'])){
-		if($vars['node']->type == 'business' || $vars['node']->type == 'project'){
-			$vars['no_title'] = TRUE;
-		}		
-	}
-}
-
 
 /**
  * FORMS

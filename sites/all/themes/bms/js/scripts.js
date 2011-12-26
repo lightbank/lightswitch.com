@@ -37,6 +37,37 @@
 		
 		
 		/**
+		 * Add buisiness
+		 */
+		
+		// social media name input value / label manipulation
+		$('#edit-field-social-name1-und-0-value, #edit-field-social-name2-und-0-value, #edit-field-social-name3-und-0-value, #edit-field-social-name4-und-0-value').focus(function() {
+			var value = $(this).val();
+			if(value == 'site name'){
+				$(this).val('');
+			}
+		}).blur(function() {
+			var value = $(this).val();
+			if(value == ''){
+				$(this).val('site name');
+			}
+		});
+		
+		// social media url input value / label manipulation
+		$('#edit-field-social-url1-und-0-value, #edit-field-social-url2-und-0-value, #edit-field-social-url3-und-0-value, #edit-field-social-url4-und-0-value').focus(function() {
+			var value = $(this).val();
+			if(value == 'url'){
+				$(this).val('');
+			}
+		}).blur(function() {
+			var value = $(this).val();
+			if(value == ''){
+				$(this).val('url');
+			}
+		});
+		
+		
+		/**
 		 * Project profile
 		 */				
 		
@@ -70,6 +101,12 @@
 			$(this).parent().find('.trigger-list').slideToggle();
 			$(this).toggleClass('active');
 		});
+		
+		$('.client-select a:first').addClass('active');
+		$('.client-select a').click(function(){
+			$(this).parent().find('.active').removeClass('active');
+			$(this).addClass('active');
+		}) 	;
 		
 	});
 

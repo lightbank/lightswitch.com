@@ -271,7 +271,7 @@ function bxdev_user_block_view($delta = '') {
 			$output = '';
 			if($user->uid !== 0){
 				$output .= '<div class="username">Logged in as ' . $user->name . '</div>';
-				$output .= '<div class="actions"><a href="/user/' . $user->uid . '">Account</a> <a href="/user/logout">Logout</a></div>';
+				$output .= '<div class="actions"><a href="/user/' . $user->uid . '">Account</a> | <a href="/user/logout">Logout</a></div>';
 			}else{
 				$output .= '<a href="/user">Login</a>';
 			}

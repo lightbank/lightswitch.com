@@ -3,17 +3,22 @@
 <div class="videographer-back"><a href="/videographers">&lt; Back to Videographer List</a></div>
 
 <div class="left">
-	<h2><?php print $title; ?></h2>
-	<?php if(isset($content['field_region'])) print render($content['field_region']); ?>
-	<?php if(isset($content['field_rating'])) print '<div class="videographer-rating videographer-rating-' . $content['field_rating'][0]['#markup'] . '">' . render($content['field_rating']) . '</div>'; ?>
-	<?php if(isset($content['field_phone'])) print render($content['field_phone']); ?>
-	<?php if(isset($content['field_email'])) print render($content['field_email']); ?>
-	<?php if(isset($content['field_address'])) print render($content['field_address']); ?>
-	<?php if(isset($content['field_resume'])) print render($content['field_resume']); ?>
-	<div class="controls">
-		<div class="videographer-edit"><a href="/node/<?php print arg(1); ?>/edit">EDIT</a></div>
-		<div class="videographer-delete"><a href="/node/<?php print arg(1); ?>/delete">DELETE</a></div>
-	</div>
+	<div class="left-top">
+		<h2><?php print $title; ?></h2>
+		<?php if(isset($content['field_region'])) print render($content['field_region']); ?>
+		<?php if(isset($content['field_rating'])) print '<div class="videographer-rating videographer-rating-' . $content['field_rating'][0]['#markup'] . '">' . render($content['field_rating']) . '</div>'; ?>
+		<?php if(isset($content['field_phone'])) print render($content['field_phone']); ?>
+		<?php if(isset($content['field_email'])) print render($content['field_email']); ?>
+		<?php if(isset($content['field_address'])) print render($content['field_address']); ?>
+		<?php if(isset($content['field_resume'])) print render($content['field_resume']); ?>
+	</div><!-- end .left-top -->
+	
+	<div class="left-bottom">
+		<div class="controls">
+			<div class="videographer-edit"><a href="/node/<?php print arg(1); ?>/edit">EDIT</a></div>
+			<div class="videographer-delete"><a href="/node/<?php print arg(1); ?>/delete">DELETE</a></div>
+		</div>
+	</div><!-- end .left-bottom -->
 </div><!-- end .left -->
 
 <div class="right">

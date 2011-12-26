@@ -113,6 +113,15 @@ input[type="submit"] {
 	margin-left: 20px;
 }
 
+#edit-return {
+	margin-right: 20px;
+}
+
+#project-node-form #edit-return {
+	margin-left: 20px;
+	margin-right: 0;
+}
+
 td input[type="submit"] {
 	height: 20px;
 }
@@ -129,7 +138,7 @@ th {
 	text-transform: uppercase;
 }
 
-th a {
+th span {
 	padding: 5px 10px;
 	display: block;
 	color: #474747;
@@ -144,6 +153,10 @@ td {
 
 .even td {
 	background: #f0f0f0;
+}
+
+th img {
+	margin-left: 10px;
 }
 
 
@@ -273,7 +286,7 @@ footer {
 
 
 
-/** SIGN UP FORM
+/** SIGN UP FORM / CREATE BIZ FORM
 ================================================**/
 
 
@@ -283,24 +296,123 @@ footer {
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
 }
 
-#user-register-form .left {
+#user-register-form .left,
+#business-node-form .left,
+#project-node-form .left {
 	margin-bottom: 40px;
 }
 
-#user-register-form .right {
-	padding-right: 40px;
+#user-register-form .right,
+#business-node-form .right,
+#project-node-form .right {
+	padding-right: 200px;
 }
 
-#user-register-form #edit-actions {
+#user-register-form #edit-actions,
+#business-node-form #edit-actions,
+#project-node-form #edit-actions {
 	padding-top: 40px;
 	border-top: 1px solid #000;
 	clear: both;
 }
 
-#user-register-form #edit-actions input {
+#user-register-form #edit-actions input,
+#business-node-form #edit-actions input,
+#project-node-form #edit-actions input {
 	float: right;
 	padding-right: 40px;
-	background: #fb942e url(../images/sprite_global.png) no-repeat 164px -120px;
+	background: #fb942e url(../images/sprite_global.png) no-repeat 150px -120px;
+}
+
+#business-node-form #edit-actions input {
+	background-position: 80px -120px;
+}
+
+#project-node-form #edit-actions #edit-return {
+	background-position: 170px -120px;
+}
+
+.page-sales-add-business #page {
+	padding-top: 40px;
+}
+
+#ui-datepicker-div {
+	width: 300px;
+}
+
+
+
+/** ADD BIZ
+================================================**/
+
+
+.page-sales-add #content h2 {
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #b5b5b5;
+	font-size: 25px;
+}
+
+.page-sales-add .client-select {
+	margin-bottom: 20px;
+}
+
+.page-sales-add .client-select a {
+	margin-right: 40px;
+	padding: 3px 0 3px 30px;
+	background: url(../images/sprite_global.png) no-repeat 0 -418px;
+}
+
+.page-sales-add .client-select .active {
+	background-position: 0 -379px;
+}
+
+.page-sales-add .edit-submit {
+	background: url(../images/sprite_global.png) no-repeat 0 -129px #fb942e;
+}
+
+.edit-field-social-name1-und-0-value {
+	width: 200px;
+}
+
+#edit-field-business-overview textarea {
+	height: 300px;
+}
+
+#edit-field-social-name1,
+#edit-field-social-url1,
+#edit-field-social-name2,
+#edit-field-social-url2,
+#edit-field-social-name3,
+#edit-field-social-url3,
+#edit-field-social-name4,
+#edit-field-social-url4 {
+	float: left;
+	margin-right: 10px;
+}
+
+#edit-field-social-name2,
+#edit-field-social-name3,
+#edit-field-social-name4 {
+	clear: left;
+}
+
+#edit-field-social-name1 input,
+#edit-field-social-name2 input,
+#edit-field-social-name3 input,
+#edit-field-social-name4 input {
+	width: 90px;
+}
+
+#edit-field-social-url1 input,
+#edit-field-social-url2 input,
+#edit-field-social-url3 input,
+#edit-field-social-url4 input {
+	width: 227px;
+}
+
+#edit-field-social-url1 input {
+	margin-top: 26px;
 }
 
 
@@ -349,7 +461,8 @@ footer {
 	float: right;
 }
 
-#user-login #edit-actions input {
+#user-login #edit-actions input,
+#bxdev-sales-existing-business-form .form-submit {
 	padding-right: 40px;
 	background: #fb942e url(../images/sprite_global.png) no-repeat 67px -120px;
 }
@@ -365,7 +478,7 @@ footer {
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
 }
 
-#page .links a {
+#page .links a, .add-project {
 	width: 180px;
 	background: #828282;
 	color: #fff;
@@ -380,11 +493,15 @@ footer {
 	margin-bottom: 20px;
 }
 
-#page #content .links a {
+#page #content .links a, .add-project {
 	width: auto;
 	padding: 0 10px;
 	font-size: 14px;
 	font-weight: normal;
+}
+
+.add-project {
+	padding: 5px 10px;
 }
 
 #page .links .active {
@@ -405,6 +522,15 @@ footer {
 .view-filters select {
 	width: 240px;
 }
+
+.flag {
+	margin: 0 auto;
+	width: 13px;
+	height: 9px;
+	background: url(../images/sprite_global.png) no-repeat -234px -421px;
+}
+
+
 
 
 /** PHOTO APPROVAL
@@ -499,7 +625,8 @@ footer {
 /** PROJECT PAGE
 ================================================**/
 
-.node-type-project #page {
+.node-type-project #page,
+.page-sales-add-project #page {
 	padding-top: 40px;
 }
 
@@ -601,13 +728,14 @@ footer {
 .node-type-project.logged-in #content,
 .node-type-business.logged-in #content,
 .page-clients.logged-in #content,
-.page-videographers #content {
+.page-videographers #content,
+.page-user-info #content {
 	padding: 0;
 	background: none;
 	box-shadow: none;
 }
 
-.back {
+.back, .videographer-back {
 	float: left;
 	margin: 10px 0;
 	font-family: Georgia, serif;
@@ -615,15 +743,16 @@ footer {
 	font-weight: bold;
 }
 
-.node-type-business .left-top,
-.node-type-business .left-bottom,
+.left .left-top,
+.left .left-bottom,
 .node-type-business .main .block,
 .node-type-project #content .left .block,
 .node-type-project .main .block,
 .page-clients .left,
 .page-clients .main .block,
 .page-videographers .left,
-.page-videographers .main .block {
+.page-videographers .main .block,
+.page-user-info .right {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;
@@ -631,7 +760,8 @@ footer {
 }
 
 .node-type-business .main .block,
-.node-type-project .main .block {
+.node-type-project .main .block,
+.page-user-info .right {
 	overflow: hidden;
 	width: 660px;
 }
@@ -639,7 +769,8 @@ footer {
 .node-type-business #content .left,
 .node-type-project #content .left,
 .page-clients .left,
-.page-videographers .left {
+.page-videographers .left,
+.page-user-info .left {
 	clear: left;
 	width: 300px;
 	font-family: Georgia, serif;
@@ -659,12 +790,15 @@ footer {
 	width: 700px;
 }
 
-/*
-.node-type-project .main {
-	width: 660px;
-}
-*/
 
+
+
+/** USER INFO
+================================================**/
+
+.videographer-item {
+	margin-bottom: 20px;
+}
 
 
 /** BUSINESS PROFILE LEFT
@@ -680,6 +814,7 @@ footer {
 }
 
 .symbols {
+	overflow: hidden;
 	margin-bottom: 12px;
 	padding-bottom: 12px;
 	border-bottom: 1px solid #b5b5b5;
@@ -1146,32 +1281,7 @@ footer {
 
 
 
-/** ADD BIZ
-================================================**/
 
-.page-sales-add #content h2 {
-	margin-bottom: 20px;
-	padding-bottom: 20px;
-	border-bottom: 1px solid #b5b5b5;
-	font-size: 25px;
-}
-
-.page-sales-add .client-select {
-	margin-bottom: 20px;
-}
-
-.page-sales-add .client-select a {
-	margin-right: 40px;
-	padding: 3px 0 3px 30px;
-	background: url(../images/sprite_global.png) no-repeat 0 -418px;
-}
-
-.page-sales-add .form-item-title {
-}
-
-.page-sales-add .edit-submit {
-	background: url(../images/sprite_global.png) no-repeat 0 -129px #fb942e;
-}
 
 
 
