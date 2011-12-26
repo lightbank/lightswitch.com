@@ -202,14 +202,18 @@ function bxdev_project_preprocess_node(&$vars){
 		$vars['comment_permission'] = $comment_permission;
 		
 		// get the comment add form
-		$vars['comment_form'] = drupal_render(node_add('comment'));
+		$comment_form = '<h2>Post a Comment:</h2>';
+		$comment_form .= drupal_render(node_add('comment'));
+		$vars['comment_form'] = $comment_form;
 		
 		// get the comments
 		$vars['comments'] = views_embed_view('comments', 'block');
 		
 		// approve button
 		if(bxdev_user_get_role($user->uid) == 'client'){
-			$vars['approve_button'] = '<span class="approve-or">or</span> <a class="approve-btn" href="/project/' . $nid . '/approve">Approve</a>';
+			$approve_button = '<span class="approve-or">or</span> <a class="approve-btn" href="">Approve</a>';
+			$approve_button .= '<div class="approve-confirm" style="display:none;"><h3>Are you sure you wish to approve this project?</h3><p>After approval, comments will no longer be able to be posted.</p><a class="approve-yes" href="/project/' . $nid . '/approve">Approve</a> <a href="" class="approve-cancel">Cancel</a></div>';
+			$vars['approve_button'] = $approve_button;
 		}
 		
 		// production history
@@ -249,9 +253,6 @@ function bxdev_project_preprocess_node(&$vars){
 				if(is_numeric($key)){
 					// if approved
 					if(in_array($value['#item']['fid'], $approved_photos)){
-						// dpm($value);
-						// get the full photo
-						// $photos_full .= theme($value['#theme'], $value);
 						// get the teaser photo
 						$photos_teaser .= '<div class="project-thumb">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</div>';
 					}
@@ -529,7 +530,7 @@ function bxdev_project_get_production_log($nid){
 		foreach($results as $result){
 			$user = user_load($result->user_uid);
 			$output .= '<div class="log-row">';
-			$output .= strtolower($result->date) . ': ' . $user->field_name['und'][0]['value'] . '<br />';
+			$output .= '<strong>' . strtolower($result->date) . ': ' . $user->field_name['und'][0]['value'] . '</strong><br />';
 			$output .= $result->message;
 			$output .= '</div>';
 		}

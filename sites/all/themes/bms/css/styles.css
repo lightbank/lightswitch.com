@@ -34,10 +34,11 @@ h3 {
 	padding: 40px 0;
 	font-size: 38px;
 	font-weight: normal;
-	text-align: center;
+	line-height: 44px;
+	/*text-align: center;*/
 }
 
-p {
+p, fieldset {
 	margin: 0 0 1.5em;
 }
 
@@ -108,9 +109,14 @@ input[type="submit"] {
     -webkit-transition: all 0.2s ease-in-out;
 }
 
-#edit-cancel {
+#edit-cancel, #edit-delete {
 	margin-left: 20px;
 }
+
+td input[type="submit"] {
+	height: 20px;
+}
+
 
 
 
@@ -133,11 +139,11 @@ th a {
 td {
 	padding: 5px 10px;
 	font-size: 12px;
+	border-right: 6px solid #fff;
 }
 
 .even td {
 	background: #f0f0f0;
-	border-right: 6px solid #fff;
 }
 
 
@@ -252,6 +258,7 @@ footer {
 	float: right;
 	clear: right;
 	font-size: 12px;
+	padding-top: 10px;
 }
 
 #block-bxdev-user-user-info .username {
@@ -400,7 +407,7 @@ footer {
 }
 
 
-/** PROJECT APPROVAL
+/** PHOTO APPROVAL
 ================================================**/
 
 #bxdev-project-photo-approval-form {
@@ -425,12 +432,68 @@ footer {
 	clear: both;
 }
 
-.project-thumb {
-	margin-right: 10px;
-	width: 150px;
-	float: left;
+.project-thumb-wrapper {
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #b5b5b5;
 }
 
+.project-thumb {
+	float: left;
+	width: 150px;
+	margin: 0 7px 7px 7px;
+}
+
+.prod-details-wrap,
+.prod-history-wrap {
+	overflow: hidden;
+}
+
+.prod-details-wrap h2,
+.prod-history-wrap h2 {
+	font-size: 25px;
+}
+
+.trigger {
+	float: left;
+	padding-right: 50px;
+	background: url(../images/sprite_global.png) no-repeat 260px -469px;
+	cursor: pointer;
+}
+
+.trigger.active {
+	background-position: 260px -511px;
+}
+
+.prod-details-wrap .trigger-list,
+.prod-history-wrap .trigger-list {
+	display: none;
+	clear: left;
+	margin-top: 40px;
+}
+
+.trigger-list .field,
+.trigger-list .log-row {
+	margin-bottom: 10px;
+}
+
+.approve-btn, .approve-yes {
+	display: block;
+	width: 110px;
+	height: 40px;
+	background: #198300;
+	color: #fff;
+	line-height: 40px;
+	text-align: center;
+}
+
+.approve-yes {
+	margin-bottom: 10px; 
+}
+
+.approve-cancel {
+	color: #f00;
+}
 
 
 /** PROJECT PAGE
@@ -466,12 +529,19 @@ footer {
 .view-comments .view-header a,
 .download-doc a {
 	float: right;
-	margin: 10px 10px 0 0;
 	padding: 0 5px;
 	background: #4a4949;
 	border-radius: 5px;
 	color: #fff;
 	font-weight: bold;
+}
+
+.download-doc a {
+	margin-left: 10px;
+}
+
+.view-comments .view-header a {
+	margin: 10px 10px 0 0;
 }
 
 .view-comments .views-row {
@@ -501,6 +571,27 @@ footer {
 	height: 100px;
 }
 
+#comment-node-form #edit-submit,
+.approve-or,
+.approve-btn {
+	float: left;
+	margin-right: 20px;
+}
+
+.approve-or {
+	line-height: 40px;
+}
+
+.approve-confirm {
+	position: absolute;
+	bottom: 100px;
+	left: 80px;
+	width: 500px;
+	padding: 20px;
+	border: solid green 5px;
+	background: #edfff5;
+	border-radius: 10px;
+}
 
 
 /** BUSINESS PROFILE / PROJECT PROFILE / CLIENTS DIRECTORY SHARED STYLES
@@ -541,6 +632,7 @@ footer {
 
 .node-type-business .main .block,
 .node-type-project .main .block {
+	overflow: hidden;
 	width: 660px;
 }
 
@@ -666,15 +758,12 @@ footer {
 ================================================**/
 
 .main .video-wrap-outer {
-	background: url(../images/bg_video.png) no-repeat;
 	position: relative;
-	width: 689px;
+	width: 688px;
 	height: 419px;
 	margin: -15px 0 0 -15px;
-}
-
-.main .video-wrap-outer {
-	padding: 10px 0 0 13px;
+	padding: 10px 0 0 14px;
+	background: url(../images/bg_video.png) no-repeat;
 }
 
 .main .video-wrap-inner .slide {
@@ -802,6 +891,11 @@ footer {
 .page-clients #content,
 .page-videographers #content {
 	font-family: Georgia, serif;
+}
+
+.page-clients h1,
+.page-videographers h1 {
+	text-align: center;
 }
 
 /** SEARCH ******/
@@ -974,7 +1068,7 @@ footer {
 
 #page .pager .links .active {
 	background: none;
-	color: #fb942e;
+	color: #0A5C9B;
 }
 
 
@@ -1081,3 +1175,12 @@ footer {
 
 
 
+/** EDIT FORM
+================================================**/
+
+.page-node-edit .node-project-form {
+	margin-bottom: 20px;
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}

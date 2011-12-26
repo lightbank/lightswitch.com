@@ -53,11 +53,13 @@
 	
 	<div class="block">
 		<div class="video">
-			<?php if(isset($content['field_project_video'])): ?>
-				<?php print render($content['field_project_video']); ?>
-			<?php else: ?>
-				<div class="no-vid">No video has been added.</div>
-			<?php endif; ?>
+			<div class="video-wrap-outer">
+				<?php if(isset($content['field_project_video'])): ?>
+					<?php print render($content['field_project_video']); ?>
+				<?php else: ?>
+					<div class="no-vid">No video has been added.</div>
+				<?php endif; ?>
+			</div><!-- end .video-wrap-outer -->
 			<?php if(isset($photos_teaser)): ?>
 				<div class="project-thumb-wrapper clearfix">
 					<?php print $photos_teaser; ?>
@@ -67,8 +69,6 @@
 		</div><!-- end .video -->
 		
 		<?php print $comments; ?>
-		
-		<?php //dpm($approved); ?>	
 		
 		<?php if(!$approved): ?>
 			<?php if($comment_permission): ?>
@@ -82,10 +82,11 @@
 	</div><!-- end .block -->
 	
 	<?php if(user_access('view production details')): ?>
-		<div class="block">
+		<div class="block prod-details-wrap">
 			<div class="download-doc"><a href="/project/<?php print arg(1); ?>/download/doc">Download Word Doc</a></div>
+			<div class="download-doc"><a href="/sites/default/files/LS_Production_Release.docx">Download Release</a></div>
 			<div class="trigger">
-				<h2>Production Detials</h2>
+				<h2>Production Details</h2>
 			</div>
 			<div class="trigger-list prod-details">
 				<?php if(isset($content['field_shoot_date'])){print render($content['field_shoot_date']);} ?>
@@ -103,7 +104,7 @@
 	<?php endif; ?>
 	
 	<?php if(isset($production_history)): ?>
-		<div class="block">
+		<div class="block prod-history-wrap">
 			<div class="trigger">
 				<h2>Production History</h2>
 			</div>

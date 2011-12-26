@@ -51,7 +51,25 @@
 			if(value == ''){
 				$(this).val('Type your comments here...');
 			}
-		});;
+		});
+		
+		// approve button click
+		$('.approve-btn').click(function(){
+			$('.approve-confirm').fadeIn(200);
+			return false;
+		});
+		
+		// approve cancel click
+		$('.approve-cancel').click(function(){
+			$('.approve-confirm').fadeOut(200);
+			return false;
+		});
+		
+		// Production Details / History Toggle
+		$('.trigger').click(function(){
+			$(this).parent().find('.trigger-list').slideToggle();
+			$(this).toggleClass('active');
+		});
 		
 	});
 
