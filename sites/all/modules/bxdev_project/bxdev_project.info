@@ -3,3 +3,5 @@ name = bxdev Project
 description = "Enables custom project functionality including the commenting system."
 package = bx
 core = 7.x
+
+files[] = includes/views_handler_status_days_ago_field.inc

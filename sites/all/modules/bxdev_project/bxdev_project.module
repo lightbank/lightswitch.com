@@ -6,6 +6,16 @@
  */
 
 /**
+ * Implements hook_views_api().
+ */
+function bxdev_project_views_api() {
+  return array(
+    'api' => 3,
+    // 'path' => drupal_get_path('module', 'bxdev_project') . '/includes/views',
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function bxdev_project_menu() {
@@ -43,8 +53,7 @@ function bxdev_project_menu() {
 		'page arguments' => array(1),
 		'access arguments' => array('view project photos'),
 		'type' => MENU_CALLBACK,
-	);
-	
+	);	
 
   return $items;
 }

@@ -323,11 +323,15 @@ footer {
 }
 
 #user-register-form #edit-actions input,
-#business-node-form #edit-actions input,
-#project-node-form #edit-actions input {
+.page-node-add #business-node-form #edit-actions input,
+.page-node-add #project-node-form #edit-actions input {
 	float: right;
 	padding-right: 40px;
 	background: #fb942e url(../images/sprite_global.png) no-repeat 150px -120px;
+}
+
+#user-register-form #edit-actions input {
+	background-position: 165px -120px;
 }
 
 #business-node-form #edit-actions input {
@@ -488,10 +492,17 @@ footer {
 /** LOGGED IN
 ================================================**/
 
+
 .logged-in #content {
 	padding: 20px;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+
+.logged-in.page-join-our-team #content {
+	padding: 0;
+	background: none;
+	box-shadow: none;
 }
 
 #page .links a, .add-project {
@@ -598,7 +609,7 @@ footer {
 
 .trigger {
 	float: left;
-	padding-right: 50px;
+	padding-right: 65px;
 	background: url(../images/sprite_global.png) no-repeat 260px -469px;
 	cursor: pointer;
 }
