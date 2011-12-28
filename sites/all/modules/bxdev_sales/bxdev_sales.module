@@ -148,27 +148,23 @@ function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
 	$form['#attributes']['class'][] = 'clearfix';
 	$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_business_node_form_submit';
 	$form['actions']['submit']['#value'] = t('Continue');
-	$form['title']['#prefix'] = '<div class="left">';
-	$form['field_hours_operation']['#suffix'] = '</div><div class="right">';
-	$form['field_business_download_file']['#suffix'] = '</div>';
+	
+	// if sales/add/business
+	if($form['#node_edit_form'] === TRUE){
+		$form['title']['#prefix'] = '<div class="left">';
+		$form['field_hours_operation']['#suffix'] = '</div><div class="right">';
+		$form['field_business_download_file']['#suffix'] = '</div>';
+	}
 	
 	// remove labels and set input values for social media inputs
-	$form['field_social_name1']['und'][0]['value']['#title'] = t('Social Media');
+	$form['field_social_name1']['und'][0]['value']['#title'] = t('Social Name');
 	$form['field_social_name2']['und'][0]['value']['#title'] = '';
 	$form['field_social_name3']['und'][0]['value']['#title'] = '';
 	$form['field_social_name4']['und'][0]['value']['#title'] = '';
-	$form['field_social_name1']['und'][0]['value']['#default_value'] = t('site name');
-	$form['field_social_name2']['und'][0]['value']['#default_value'] = t('site name');
-	$form['field_social_name3']['und'][0]['value']['#default_value'] = t('site name');
-	$form['field_social_name4']['und'][0]['value']['#default_value'] = t('site name');
-	$form['field_social_url1']['und'][0]['value']['#title'] =  '';
+	$form['field_social_url1']['und'][0]['value']['#title'] =  t('Social URL');
 	$form['field_social_url2']['und'][0]['value']['#title'] =  '';
 	$form['field_social_url3']['und'][0]['value']['#title'] =  '';
 	$form['field_social_url4']['und'][0]['value']['#title'] =  '';
-	$form['field_social_url1']['und'][0]['value']['#default_value'] =  t('url');
-	$form['field_social_url2']['und'][0]['value']['#default_value'] =  t('url');
-	$form['field_social_url3']['und'][0]['value']['#default_value'] =  t('url');
-	$form['field_social_url4']['und'][0]['value']['#default_value'] =  t('url');
 }
 
 /**
@@ -185,7 +181,7 @@ function bxdev_sales_existing_business_form_submit($form, &$form_state){
  */
 function bxdev_sales_project_node_form_submit($form, &$form_state){
 	// send to client add form if "return to form" button was clicked
-	if($form_state['clicked_button']['#value'] == '< Submit & Return to Form'){
+	if($form_state['clicked_button']['#value'] == 'Submit & Return to Form'){
 		$form_state['redirect'] = 'sales/add/business';
 	}
 }

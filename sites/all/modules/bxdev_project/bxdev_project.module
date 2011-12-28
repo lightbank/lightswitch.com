@@ -112,6 +112,13 @@ function bxdev_project_node_insert($node) {
 			$project = new Project($node->nid);
 			$project->log('admin', 'Project added');
 			$project->set_status(1);
+			
+			// set the business profile video default
+			if(empty($business->field_profile_video_ref)){
+				$business->field_profile_video_ref['und'][0]['nid'] = $node->nid;
+				node_save($business);
+			}
+			
 			break;
 			
 		case 'comment':
@@ -225,6 +232,30 @@ function bxdev_project_preprocess_node(&$vars){
 			$vars['approve_button'] = $approve_button;
 		}
 		
+		// production details
+		if(user_access('view production details')){
+			$production_details = '<div class="block prod-details-wrap">
+				<div class="download-doc"><a href="/project/' . $nid . '/download/doc">Download Word Doc</a></div>
+				<div class="download-doc"><a href="/sites/default/files/LS_Production_Release.docx">Download Release</a></div>
+				<div class="trigger">
+					<h2>Production Details</h2>
+				</div>
+				<div class="trigger-list prod-details">';
+			$production_details .= (isset($content['field_shoot_date'])) ? render($content['field_shoot_date']) : '';
+			$production_details .= (isset($content['field_voice_over'])) ? render($content['field_voice_over']) : '';
+			$production_details .= (isset($content['field_voice_over_gender'])) ? render($content['field_voice_over_gender']) : '';
+			$production_details .= (isset($content['field_owner_interview'])) ? render($content['field_owner_interview']) : '';
+			$production_details .= (isset($content['field_script_notes'])) ? render($content['field_script_notes']) : '';
+			$production_details .= (isset($content['field_logo'])) ? render($content['field_logo']) : '';
+			$production_details .= (isset($content['field_photos'])) ? render($content['field_photos']) : '';
+			$production_details .= (isset($content['field_features_include'])) ? render($content['field_features_include']) : '';
+			$production_details .= (isset($content['field_features_avoid'])) ? render($content['field_features_avoid']) : '';
+			$production_details .= (isset($content['field_unique'])) ? render($content['field_unique']) : '';
+			$production_details .=	'</div></div>';
+			$vars['production_details'] = $production_details;
+		}
+		
+		
 		// production history
 		if(user_access('view production history')){
 			$vars['production_history'] = bxdev_project_get_production_log($nid);
@@ -263,7 +294,7 @@ function bxdev_project_preprocess_node(&$vars){
 				// if approved
 				if(in_array($value['#item']['fid'], $approved_photos)){
 					// get the teaser photo
-					$photos_teaser .= '<div class="project-thumb">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</div>';
+					$photos_teaser .= '<div class="project-thumb"><a rel="shadowbox" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</a></div>';
 				}
 			}
 		}
@@ -413,7 +444,7 @@ function bxdev_project_photo_approval_form_validate($form, &$form_state){
 	}
 	// check if greater than 8
 	if($count > 8){
-		form_error($form, 'A maximum of 8 choices can selected.');
+		form_error($form, 'A maximum of 8 choices can be approved.');
 		return FALSE;
 	}
 }
@@ -520,7 +551,7 @@ function bxdev_project_download_production_details($node){
  * Return the production log per node
  */
 function bxdev_project_get_production_log($nid){
-	$results = db_query("SELECT DATE_FORMAT(date, '%c/%e/%y %l:%i%p') as date, message, user_uid FROM {production_log} WHERE project_nid = :nid", array(':nid' => $nid));
+	$results = db_query("SELECT DATE_FORMAT(DATE_ADD(date, INTERVAL 2 HOUR), '%c/%e/%y %l:%i%p') as date, message, user_uid FROM {production_log} WHERE project_nid = :nid", array(':nid' => $nid));
 	$output = '';
 	if($results->rowCount() > 0){
 		foreach($results as $result){
@@ -627,8 +658,10 @@ class Project {
 		$project_link = $base_url . '/' . $this->project_path;
 		$comment = node_load($cid);
 		$owner_uid = $comment->uid;
+		$sales_uid = $this->sales->uid;
 		$users = $this->get_users();
 		unset($users[$owner_uid]);
+		unset($users[$sales_uid]);
 		foreach($users as $uid => $user){
 			$comment_author = user_load($comment->uid);
 			$comment_author = $comment_author->field_name['und'][0]['value'];

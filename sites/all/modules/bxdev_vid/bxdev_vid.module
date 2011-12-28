@@ -5,76 +5,6 @@
  */
 
 /**
- * Implements hook_init().
- */
-function bxdev_vid_init() {
-	//   $other_database = array(
-	//   'database' => 'lightswitch_drupal2',
-	//   'username' => 'lightswitch', // assuming this is necessary
-	//   'password' => 'Switch!2011', // assuming this is necessary
-	//   'host' => 'localhost', // assumes localhost
-	//   'driver' => 'mysql', // replace with your database driver
-	// );
-	//   // replace 'YourDatabaseKey' with something that's unique to your module
-	//   Database::addConnectionInfo('first_site', 'default', $other_database);
-	//   db_set_active('first_site');
-	// 
-	// $nodes = array();
-	// $results = db_query("SELECT nid FROM {node} WHERE type = 'videographer' AND nid < 500");
-	// foreach($results as $row){
-	// 	$node = node_load($row->nid);
-	// 	$nodes[] = $node;
-	// }
-	// 
-	// db_set_active();
-	// 
-	// // dpm($nodes);
-	// 
-	// foreach($nodes as $node){
-	// 	// $node = node_load($row->nid);
-	// 	if(!user_load_by_name($node->field_email['und'][0]['email'])){
-	// 		
-	// 		$new_user = array(
-	// 			'name' => $node->field_email['und'][0]['email'],
-	// 			'mail' => $node->field_email['und'][0]['email'],
-	// 			'pass' => user_password(),
-	// 			'roles' => array(
-	// 				2 => 'authenticated user',
-	// 				5 => 'videographer',
-	// 			),
-	// 			'status' => 1,		
-	// 		);
-	// 		$new_user['field_name']['und'][0]['value'] = $node->title;
-	// 		$new_user['field_phone']['und'][0]['value'] = $node->field_phone['und'][0]['value'];
-	// 	
-	// 		$new_user = user_save(NULL, $new_user);
-	// 	
-	// 		$profile = profile_create(array('user' => $new_user, 'type' => 'videographer'));
-	// 
-	// 		$profile->field_address['und'][0]['value'] = $node->field_address['und'][0]['value'];
-	// 		$profile->field_equipment['und'][0]['value'] = $node->field_equipment['und'][0]['value'];
-	// 		$profile->field_links_work['und'][0]['value'] = $node->field_links_work['und'][0]['value'];
-	// 		$profile->field_availability['und'][0]['value'] = $node->field_availability['und'][0]['value'];
-	// 		if(!empty($node->field_resume)){
-	// 			$profile->field_resume = $node->field_resume;
-	// 		}
-	// 		$profile->field_region['und'][0]['value'] = $node->field_region['und'][0]['value'];
-	// 		$profile->field_rating['und'][0]['value'] = $node->field_rating['und'][0]['value'];
-	// 		$profile->field_transportation['und'][0]['value'] = $node->field_transportation['und'][0]['value'];
-	// 		$profile->field_notes['und'][0]['value'] = $node->field_notes['und'][0]['value'];
-	// 		$profile->field_skills['und'][0]['value'] = $node->field_skills['und'][0]['value'];
-	// 
-	// 		profile2_save($profile);
-	// 	
-	// 	}
-	// 			
-	// }
-	
-}
-
-
-
-/**
  * Implements hook_menu().
  */
 function bxdev_vid_menu() {
@@ -301,75 +231,6 @@ function bxdev_vid_preprocess_page(&$variables) {
  */
 
 /**
- * Implements hook_form_alter().
- */
-function bxdev_vid_form_alter(&$form, $form_state, $form_id){
-	// if($form['#id'] == 'views-exposed-form-videographers-page' && arg(0) == 'videographers'){
-	// 	
-	// 	$output = '';
-	// 	
-	// 	// get the url parameters
-	// 	$url = $_SERVER['REQUEST_URI'];
-	// 	$parse_url = parse_url($url);
-	// 	
-	// 	// check if url params exist
-	// 	if(isset($parse_url['query'])){			
-	// 		$parse_str = parse_str($parse_url['query']);			
-	// 	}else{
-	// 		$field_region_value = 'All';
-	// 		$field_skills_value = 'All';
-	// 		$sort_by = 'field_rating_value';
-	// 		$sort_order = 'DESC';
-	// 	}
-	// 	
-	// 	/**
-	// 	 * Skills filter
-	// 	 */
-	// 	// filter skills header	
-	// 	$output .= '<div class="filter-skills filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by Skill:</h3><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=All&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';
-	// 	// begin the list
-	// 	$output .= '<ul>';		
-	// 	$skills = $form['field_skills_value']['#options'];
-	// 	// cycle through each region
-	// 	foreach($skills as $skill_key => $skill){
-	// 		if($skill_key != 'All'){
-	// 			// check for the active class
-	// 			$filter_class = ($field_skills_value == $skill_key) ? 'active' : '';
-	// 			$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $field_region_value . '&field_skills_value=' . $skill_key . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $skill . '</a></li>';
-	// 		}
-	// 	}		
-	// 	// end the list
-	// 	$output .= '</ul></div>';
-	// 
-	// 	/**
-	// 	 * City filter
-	// 	 */
-	// 	// filter city header	
-	// 	$output .= '<div class="filter-city filter-wrap"><div class="filter-header filter-city-header"><h3>Filter by City:</h3><a href="/videographers?field_region_value=All&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">clear</a></div>';		
-	// 	// begin the list
-	// 	$output .= '<ul>';		
-	// 	$regions = $form['field_region_value']['#options'];
-	// 	// cycle through each region
-	// 	foreach($regions as $region_key => $region){
-	// 		if($region_key != 'All'){
-	// 			// check for the active class
-	// 			$filter_class = ($field_region_value == $region_key) ? 'active' : '';
-	// 			$output .= '<li class="' . $filter_class . '"><a href="/videographers?field_region_value=' . $region_key . '&field_skills_value=' . $field_skills_value . '&sort_by=' . $sort_by . '&sort_order=' . $sort_order . '">' . $region . '</a></li>';
-	// 		}
-	// 	}		
-	// 	// end the list
-	// 	$output .= '</ul></div>';
-	// 
-	// 	// attach the markup
-	// 	$form['filter_links'] = array(
-	// 		'#markup' => $output,
-	// 	);
-	// 					
-	// 	// dpm($form);		
-	// }
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
 function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
@@ -396,8 +257,6 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 	$form['profile_videographer']['field_skills']['#suffix'] = '</div><div class="right">';
 	$form['profile_videographer']['field_resume']['#suffix'] = '</div>';
 	$form['#attributes']['class'][] = 'clearfix';
-	
-  // dpm($form);
 }
 
 /**
@@ -455,12 +314,14 @@ function bxdev_vid_user_view_page($user){
 	$profile = field_attach_view('profile2', $profile, 'full');
 	// get renderable array - user
 	$user_render = field_attach_view('user', $user, 'full');
+	// get the previous page
+	$referer = $_SERVER['HTTP_REFERER'];
 	
 	drupal_set_title('lightswitch videographer directory');
 	
 	// build page markup
 	$output = '';
-	$output .= '<div class="videographer-back"><a href="/videographers">&lt; Back to Videographer List</a></div>';
+	$output .= '<div class="videographer-back"><a href="' . $referer . '">&lt; Back to Videographer List</a></div>';
 	
 	$output .= '<div class="left">';
 		$output .= '<div class="left-top">';

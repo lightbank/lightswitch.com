@@ -7,65 +7,37 @@
 		/**
 		 * Business profile
 		 */
-		
-		// video / image slider init
-		var business_slider = $('.main .video-wrap-inner').bxSlider({
-			mode: 'fade',
-			controls: false
-		});
-		
+				
 		// thumb video / image slider init
 		$('.main .photo-thumbs-wrap-inner').bxSlider({
 			displaySlideQty: 4,
 			moveSlideQty: 4
 		});
 		
-		// click an image thumb
-		$('.video-thumbs-wrap .slide.pager').click(function(){
-			var index = $('.video-thumbs-wrap .slide.pager').index(this) + 1;
-			business_slider.goToSlide(index);
-			setTimeout(function(){
-				var video_content = $('#media-vimeo-1').clone().html();
-				$('#media-vimeo-1').html(video_content);
-			}, 500);
-		});
+		/** INSTEAD OF FADING THE VIDEO INTO IMAGES, USING SHADOWBOX INSTEAD
+		/** BELOW IS THE FADE CODE
 		
-		// click the video thumb
-		$('.field-name-field-project-video img').click(function(){
-			business_slider.goToSlide(0);
-		});
+		// // video / image slider init
+		// var business_slider = $('.main .video-wrap-inner').bxSlider({
+		// 	mode: 'fade',
+		// 	controls: false
+		// });
 		
-		
-		/**
-		 * Add buisiness
-		 */
-		
-		// social media name input value / label manipulation
-		$('#edit-field-social-name1-und-0-value, #edit-field-social-name2-und-0-value, #edit-field-social-name3-und-0-value, #edit-field-social-name4-und-0-value').focus(function() {
-			var value = $(this).val();
-			if(value == 'site name'){
-				$(this).val('');
-			}
-		}).blur(function() {
-			var value = $(this).val();
-			if(value == ''){
-				$(this).val('site name');
-			}
-		});
-		
-		// social media url input value / label manipulation
-		$('#edit-field-social-url1-und-0-value, #edit-field-social-url2-und-0-value, #edit-field-social-url3-und-0-value, #edit-field-social-url4-und-0-value').focus(function() {
-			var value = $(this).val();
-			if(value == 'url'){
-				$(this).val('');
-			}
-		}).blur(function() {
-			var value = $(this).val();
-			if(value == ''){
-				$(this).val('url');
-			}
-		});
-		
+		// // click an image thumb
+		// $('.video-thumbs-wrap .slide.pager').click(function(){
+		// 	var index = $('.video-thumbs-wrap .slide.pager').index(this) + 1;
+		// 	business_slider.goToSlide(index);
+		// 	setTimeout(function(){
+		// 		var video_content = $('#media-vimeo-1').clone().html();
+		// 		$('#media-vimeo-1').html(video_content);
+		// 	}, 500);
+		// });
+		// 
+		// // click the video thumb
+		// $('.field-name-field-project-video img').click(function(){
+		// 	business_slider.goToSlide(0);
+		// });
+				
 		
 		/**
 		 * Project profile

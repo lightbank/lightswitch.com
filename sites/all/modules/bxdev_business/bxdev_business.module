@@ -62,16 +62,20 @@ function bxdev_business_preprocess_node(&$variables) {
 				$video_output .= theme('media_vimeo_video', $project['field_project_video'][0]['file']);
 			}
 			
-			// add the full size photos			
-			if(!empty($approved_photos)){
-				foreach($project['field_project_photos'] as $key => $value){
-					if(is_numeric($key)){
-						if(in_array($value['#item']['fid'], $approved_photos)){
-							$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
-						}
-					}
-				}
-			}
+			// REMOVED THE IMAGE FADE FUNCTIONALITY
+			// BELOW IS THE OLD CODE
+			
+			// // add the full size photos			
+			// if(!empty($approved_photos)){
+			// 	foreach($project['field_project_photos'] as $key => $value){
+			// 		if(is_numeric($key)){
+			// 			if(in_array($value['#item']['fid'], $approved_photos)){
+			// 				$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+			// 			}
+			// 		}
+			// 	}
+			// }
+			
 			$video_output .= '</div></div>';
 			
 			// load the renderable teaser array
@@ -90,7 +94,7 @@ function bxdev_business_preprocess_node(&$variables) {
 				foreach($teaser['field_project_photos'] as $key => $value){
 					if(is_numeric($key)){
 						if(in_array($value['#item']['fid'], $approved_photos)){
-							$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
+							$video_output .= '<div class="slide"><a rel="shadowbox" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme($value['#theme'], $value) . '</a></div>';
 						}
 					}
 				}
