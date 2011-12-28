@@ -46,31 +46,29 @@
 		</div><!-- end .section.info -->
 	
 		<div class="section social">
-			<?php if(isset($content['field_social_name1']) && isset($content['field_social_url1'])): ?>
+			<?php if(!empty($content['field_social_name1']) && !empty($content['field_social_url1'])): ?>
 				<div><a href="<?php print $content['field_social_url1'][0]['#markup']; ?>"><?php print render($content['field_social_name1']) ?></a></div>
 			<?php endif; ?>
-			<?php if(isset($content['field_social_name2']) && isset($content['field_social_url2'])): ?>
+			<?php if(!empty($content['field_social_name2']) && !empty($content['field_social_url2'])): ?>
 				<div><a href="<?php print $content['field_social_url2'][0]['#markup']; ?>"><?php print render($content['field_social_name2']) ?></a></div>
 			<?php endif; ?>
-			<?php if(isset($content['field_social_name3']) && isset($content['field_social_url3'])): ?>
+			<?php if(!empty($content['field_social_name3']) && !empty($content['field_social_url3'])): ?>
 				<div><a href="<?php print $content['field_social_url3'][0]['#markup']; ?>"><?php print render($content['field_social_name3']) ?></a></div>
 			<?php endif; ?>
-			<?php if(isset($content['field_social_name4']) && isset($content['field_social_url4'])): ?>
+			<?php if(!empty($content['field_social_name4']) && !empty($content['field_social_url4'])): ?>
 				<div><a href="<?php print $content['field_social_url4'][0]['#markup']; ?>"><?php print render($content['field_social_name4']) ?></a></div>
 			<?php endif; ?>
 		</div>
 	
 	</div><!-- end .left-top -->
-	
-	<div class="left-bottom">
 
-		<?php if(isset($operations)): ?>
+	<?php if(isset($operations)): ?>
+		<div class="left-bottom">
 			<div class="block operations">
 				<?php print $operations; ?>
 			</div><!-- end .operations -->
-		<?php endif; ?>
-	
-	</div><!-- end .left-bottom -->
+		</div><!-- end .left-bottom -->
+	<?php endif; ?>
 	
 </div><!-- end .left -->
 

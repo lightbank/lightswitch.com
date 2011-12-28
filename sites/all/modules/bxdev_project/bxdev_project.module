@@ -254,24 +254,22 @@ function bxdev_project_preprocess_node(&$vars){
 		
 		// if approved photos exist
 		$approved_photos = $project->get_approved_photos();
-		if(!empty($approved_photos)){
-			$photos_teaser = '<div class="clearfix">';
-			$photos = array();
-			// cycle through each project photo
-			foreach($project_full['field_project_photos'] as $key => $value){
-				// if photo
-				if(is_numeric($key)){
-					// if approved
-					if(in_array($value['#item']['fid'], $approved_photos)){
-						// get the teaser photo
-						$photos_teaser .= '<div class="project-thumb">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</div>';
-					}
+		$photos_teaser = '<div class="clearfix">';
+		$photos = array();
+		// cycle through each project photo
+		foreach($project_full['field_project_photos'] as $key => $value){
+			// if photo
+			if(is_numeric($key)){
+				// if approved
+				if(in_array($value['#item']['fid'], $approved_photos)){
+					// get the teaser photo
+					$photos_teaser .= '<div class="project-thumb">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</div>';
 				}
 			}
-			$photos_teaser .= '</div>';
-			// $vars['photos_full'] = $photos_full;
-			$vars['photos_teaser'] = $photos_teaser;
 		}
+		$photos_teaser .= '</div>';
+		// $vars['photos_full'] = $photos_full;
+		$vars['photos_teaser'] = $photos_teaser;
 		
 	}
 }

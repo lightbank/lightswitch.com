@@ -31,7 +31,7 @@ h3 {
 }
 
 .page-title {
-	padding: 40px 0;
+	padding: 20px 0 40px;
 	font-size: 38px;
 	font-weight: normal;
 	line-height: 44px;
@@ -143,6 +143,10 @@ th span {
 	display: block;
 	color: #474747;
 	border-bottom: 5px solid #f0f0f0;
+}
+
+.ui-datepicker-calendar th span {
+	padding: 0;
 }
 
 td {
@@ -323,11 +327,11 @@ footer {
 }
 
 #user-register-form #edit-actions input,
-.page-node-add #business-node-form #edit-actions input,
-.page-node-add #project-node-form #edit-actions input {
+.page-sales-add #business-node-form #edit-actions input,
+.page-sales-add #project-node-form #edit-actions input {
 	float: right;
 	padding-right: 40px;
-	background: #fb942e url(../images/sprite_global.png) no-repeat 150px -120px;
+	background: #fb942e url(../images/sprite_global.png) no-repeat 84px -120px;
 }
 
 #user-register-form #edit-actions input {
@@ -344,6 +348,10 @@ footer {
 
 #project-node-form #edit-actions #edit-return {
 	background-position: 200px -120px;
+}
+
+#project-node-form #edit-actions #edit-submit {
+	background-position: 176px -120px;
 }
 
 .page-sales-add-business #page {
@@ -481,12 +489,15 @@ footer {
 	float: right;
 }
 
-#user-login #edit-actions input,
 #bxdev-sales-existing-business-form .form-submit {
 	padding-right: 40px;
-	background: #fb942e url(../images/sprite_global.png) no-repeat 67px -120px;
+	background: #fb942e url(../images/sprite_global.png) no-repeat 84px -120px;
 }
 
+#user-login #edit-actions input {
+	padding-right: 40px;
+	background: #fb942e url(../images/sprite_global.png) no-repeat 64px -120px;
+}
 
 
 /** LOGGED IN
@@ -557,6 +568,9 @@ footer {
 	background: url(../images/sprite_global.png) no-repeat -234px -421px;
 }
 
+.view-empty {
+	padding-top: 20px;
+}
 
 
 
