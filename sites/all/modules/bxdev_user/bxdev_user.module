@@ -102,8 +102,14 @@ function bxdev_user_user_presave(&$edit, $account, $category) {
 function bxdev_user_user_login(&$edit, $account) {
 	// if first time login
 	if($account->data['first_time_login']){
-		// drupal_set_message('This is your first time logging in. Please change your password!');
-		drupal_goto('user/change/password');
+		$options = array();
+		// check for destination param
+		if(isset($_GET['url'])){
+			$options['query'] = array(
+				'destination' => $_GET['url'],
+			);
+		}
+		drupal_goto('user/change/password', $options);
 	}
 }
 
@@ -165,7 +171,7 @@ function bxdev_user_mail($key, &$message, $params) {
 		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts. Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
 			$body .= 'Username: ' . $params['name'] . '<br>';
 			$body .= 'Password: ' . $params['pass'] . '<br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user">' . $base_url . '/user</a><br><br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/' . $params['project_path'] . '">' . $base_url . '/' . $params['project_path'] . '</a><br><br>';
 			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you’d like changes made to your video, login  and fill out all requested changes in the "Post a comment" field under your video. Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it.  Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
 			$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
 			$body .= 'Contact us with any questions or concerns.<br><br>';
