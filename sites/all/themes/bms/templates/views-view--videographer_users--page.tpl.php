@@ -49,7 +49,7 @@
 	  <?php if ($exposed): ?>
 	    <div class="view-filters">
 				<h2>Filter Results</h2>
-				<a href="/clients" class="clear">clear</a>
+				<a href="/videographers" class="clear">clear</a>
 	      <?php print $exposed; ?>
 	    </div>
 	  <?php endif; ?>
@@ -71,8 +71,8 @@
 						$query = substr($query, 0, $pos);
 					}
 					$output .= 'Sort by: ';
-					$output .= '<a href="' . $query . $symbol . 'sort_by=field_client_rating_value&sort_order=DESC">Rating</a> | ';
-					$output .= '<a href="' . $query . $symbol . 'sort_by=title&sort_order=ASC">ABC</a>'; 
+					$output .= '<a href="' . $query . $symbol . 'sort_by=field_rating_value&sort_order=DESC">Rating</a> | ';
+					$output .= '<a href="' . $query . $symbol . 'sort_by=field_name_value&sort_order=ASC">ABC</a>'; 
 					print $output;		
 				?>
 			</div>

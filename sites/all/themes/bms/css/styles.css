@@ -855,10 +855,11 @@ footer {
 	text-indent: -9999em;
 }
 
-.rating-4, .videographer-rating-4 { background-position: 0 -172px; }
-.rating-3, .videographer-rating-3 { background-position: 0 -190px; }
-.rating-2, .videographer-rating-2 { background-position: 0 -208px; }
-.rating-1, .videographer-rating-1 { background-position: 0 -226px; }
+.rating-5, .videographer-rating-5 { background-position: 0 -172px; }
+.rating-4, .videographer-rating-4 { background-position: 0 -190px; }
+.rating-3, .videographer-rating-3 { background-position: 0 -208px; }
+.rating-2, .videographer-rating-2 { background-position: 0 -226px; }
+.rating-1, .videographer-rating-1 { background-position: 0 -244px; }
 
 .price {
 	float: right;
@@ -1296,7 +1297,7 @@ footer {
 	margin-bottom: 10px;
 }
 
-.rating-notes .notes {
+.rating-notes .notes-inner {
 	float: right;
 	clear: right;
 	width: 17px;
