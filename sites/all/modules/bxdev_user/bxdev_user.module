@@ -53,6 +53,10 @@ function bxdev_user_permission() {
 	    'title' => t('View project photos'),
 	    'description' => t('View project photos.'),
 	  ),
+		'upload business logo' =>  array(
+		  'title' => t('Upload business logo'),
+		  'description' => t('Upload business logo.'),
+		),
   );
 }
 
@@ -242,7 +246,9 @@ function bxdev_user_preprocess_user_profile(&$vars){
 	$output = '';
 	// pc
 	if(isset($vars['user']->roles[4])){
-		$output .= '<a href="/projects/master" class="add-project btn">&larr; Master list</a><br /><br />';
+		$output .= '<div class="">';
+		$output .= '<a href="/projects/master" class="add-project btn">Master project list</a> <a class="add-project btn" href="/videographers">Videographers directory</a>';
+		$output .= '</div><br />';
 		$output .= views_embed_view('projects', 'page_1', $vars['user']->uid);
 	// videographer
 	}else if(isset($vars['user']->roles[5])){

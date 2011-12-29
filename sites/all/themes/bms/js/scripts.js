@@ -4,6 +4,12 @@
 		
 		Shadowbox.init();
 		
+		Drupal.behaviors.bxdev_project = {
+	    attach: function(context, settings) {
+				$('#edit-business-logo-upload').attr('size', 15);
+	    }
+	  };
+		
 		/**
 		 * Business profile
 		 */
@@ -41,7 +47,9 @@
 		
 		/**
 		 * Project profile
-		 */				
+		 */	
+		
+		// $('#edit-business-logo-upload').attr('size', 15);			
 		
 		// comment textarea focus / blur
 		$('#edit-field-comment-und-0-value').focus(function() {

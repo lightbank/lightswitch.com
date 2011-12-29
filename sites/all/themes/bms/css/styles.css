@@ -77,7 +77,7 @@ label {
 	padding-bottom: 5px;
 	font-family: Mate, Georgia, serif;
 	font-size: 18px;
-	text-transform: lowercase;
+	/*text-transform: lowercase;*/
 }
 
 .form-text, textarea, select {
@@ -764,6 +764,25 @@ footer {
 	border: solid green 5px;
 	background: #edfff5;
 	border-radius: 10px;
+}
+
+#bxdev-project-logo-upload-form #edit-business-logo-remove-button {
+	font-size: 12px;
+	height: auto;
+	background: transparent;
+	color: #f00;
+}
+
+#bxdev-project-logo-upload-form #edit-business-logo-upload-button {
+	display: none;
+}
+
+.progress-disabled {
+	float: none;
+}
+
+.ajax-progress {
+	display: none;
 }
 
 

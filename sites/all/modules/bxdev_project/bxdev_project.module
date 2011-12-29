@@ -11,7 +11,6 @@
 function bxdev_project_views_api() {
   return array(
     'api' => 3,
-    // 'path' => drupal_get_path('module', 'bxdev_project') . '/includes/views',
   );
 }
 
@@ -195,6 +194,7 @@ function bxdev_project_preprocess_node(&$vars){
 		$profile = '';		
 		$nid = $vars['nid'];
 		$project = new Project($nid);
+		$content = node_view($project->project);
 		$comment_permission = TRUE;
 		
 		// if videographer role, get the profile
@@ -253,8 +253,7 @@ function bxdev_project_preprocess_node(&$vars){
 			$production_details .= (isset($content['field_unique'])) ? render($content['field_unique']) : '';
 			$production_details .=	'</div></div>';
 			$vars['production_details'] = $production_details;
-		}
-		
+		}		
 		
 		// production history
 		if(user_access('view production history')){
@@ -299,8 +298,12 @@ function bxdev_project_preprocess_node(&$vars){
 			}
 		}
 		$photos_teaser .= '</div>';
-		// $vars['photos_full'] = $photos_full;
 		$vars['photos_teaser'] = $photos_teaser;
+		
+		// business logo upload
+		if(user_access('upload business logo')){
+			$vars['business_logo_upload'] = render(drupal_get_form('bxdev_project_logo_upload_form'));
+		}
 		
 	}
 }
@@ -380,6 +383,62 @@ function bxdev_project_photo_approval_form($form, $form_state){
 	}
 	
 	return $form;
+}
+
+/**
+ * Form builder: business logo
+ */
+function bxdev_project_logo_upload_form($form, &$form_state){
+	$nid = arg(1);
+	$node = node_load($nid);
+	$form['business_logo'] = array(
+		'#type' => 'managed_file',
+		'#title' => t('Business logo'),
+		'#size' => 30,
+		'#default_value' => (!empty($node->field_logo['und'][0])) ? $node->field_logo['und'][0]['fid'] : '',
+		'#upload_location' => 'public://business_logos',
+		'#upload_validators' => array(
+			'file_validate_extensions' => array('jpg jpeg gif png'),
+		),
+	);
+	
+	$form['save'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Save'),
+	);	
+	
+	return $form;
+}
+
+
+/**
+ * Form submit handler: business logo
+ */
+function bxdev_project_logo_upload_form_submit($form, &$form_state){
+	$values = $form_state['values'];
+	$nid = arg(1);
+	$node = node_load($nid);
+	// if no file, remove logo file from the node
+	if(empty($values['business_logo'])){
+		unset($node->field_logo['und'][0]);
+		node_save($node);
+	}else{
+		// get the file object
+		$file = file_load($values['business_logo']);
+		$file->status = FILE_STATUS_PERMANENT;
+		file_save($file);
+		// create a file array to attach to the node
+		$node_file = array(
+			'uid' => $file->uid,
+			'uri' => $file->uri,
+			'fid' => $file->fid,
+			'status' => 1,
+			'display' => 1,
+			'description' => '',
+		);
+		$node->field_logo['und'][0] = $node_file;
+		node_save($node);
+	}
 }
 
 /**
