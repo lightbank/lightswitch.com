@@ -52,8 +52,6 @@
 		 * Project profile
 		 */	
 		
-		// $('#edit-business-logo-upload').attr('size', 15);			
-		
 		// comment textarea focus / blur
 		$('#edit-field-comment-und-0-value').focus(function() {
 			var value = $(this).val();
@@ -89,7 +87,10 @@
 		$('.client-select a').click(function(){
 			$(this).parent().find('.active').removeClass('active');
 			$(this).addClass('active');
-		}) 	;
+		});
+		
+		// datepicker
+		$('#edit-bxdev-shoot-date').datepicker();
 		
 	});
 

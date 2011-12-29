@@ -160,8 +160,8 @@ td {
 }
 
 th img {
-	/*margin-left: 10px;*/
-	display: none!important;
+	margin-left: 10px;
+	/*display: none!important;*/
 }
 
 th .ajax-progress {
@@ -178,6 +178,11 @@ th .ajax-progress {
 .limiter {
 	width: 1034px;
 	margin: 0 auto;
+}
+
+.page-projects-master .limiter,
+.wide-table .limiter {
+	width: 80%;
 }
 
 header {
@@ -792,6 +797,22 @@ footer {
 	border-bottom: solid #ccc 1px;
 	padding-bottom: 10px;
 	margin-bottom: 10px;
+}
+
+#edit-bxdev-shoot-date-fieldset .form-item {
+	width: 200px;
+	float: left;
+}
+
+#edit-bxdev-shoot-date-fieldset {
+	width: 700px;
+	margin-top: 20px;
+	padding-top: 10px;
+}
+
+#edit-bxdev-shoot-date-fieldset .form-item input,
+#edit-bxdev-shoot-date-fieldset .form-item select {
+	width: 170px;
 }
 
 .progress-disabled {
