@@ -150,7 +150,7 @@ function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
 	$form['actions']['submit']['#value'] = t('Continue');
 	
 	// if sales/add/business
-	if($form['#node_edit_form'] === TRUE){
+	if(!empty($form['nid']['value'])){
 		$form['title']['#prefix'] = '<div class="left">';
 		$form['field_hours_operation']['#suffix'] = '</div><div class="right">';
 		$form['field_business_download_file']['#suffix'] = '</div>';

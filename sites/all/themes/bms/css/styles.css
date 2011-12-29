@@ -800,19 +800,19 @@ footer {
 }
 
 #edit-bxdev-shoot-date-fieldset .form-item {
-	width: 200px;
+	width: 300px;
 	float: left;
 }
 
 #edit-bxdev-shoot-date-fieldset {
-	width: 700px;
+	width: 332px;
 	margin-top: 20px;
 	padding-top: 10px;
 }
 
 #edit-bxdev-shoot-date-fieldset .form-item input,
 #edit-bxdev-shoot-date-fieldset .form-item select {
-	width: 170px;
+	width: 200px;
 }
 
 .progress-disabled {
@@ -1399,7 +1399,8 @@ footer {
 ================================================**/
 
 .page-node-edit .node-project-form,
-.page-node-edit .node-business-form {
+.page-node-edit .node-business-form,
+.page-node-delete form {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;
@@ -1410,6 +1411,8 @@ footer {
 	padding-top:0;
 }
 
-
+.page-node-delete form #edit-actions {
+	padding-top: 10px;
+}
 
 
