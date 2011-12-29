@@ -766,15 +766,32 @@ footer {
 	border-radius: 10px;
 }
 
-#bxdev-project-logo-upload-form #edit-business-logo-remove-button {
+#bxdev-project-logo-upload-form #edit-business-logo-remove-button,
+#bxdev-project-videographer-documents-form #edit-signed-production-release-remove-button,
+#bxdev-project-videographer-documents-form #edit-videographer-invoice-remove-button {
 	font-size: 12px;
 	height: auto;
 	background: transparent;
 	color: #f00;
 }
 
-#bxdev-project-logo-upload-form #edit-business-logo-upload-button {
+#bxdev-project-logo-upload-form #edit-business-logo-upload-button,
+#bxdev-project-videographer-documents-form #edit-signed-production-release-upload-button,
+#bxdev-project-videographer-documents-form #edit-videographer-invoice-upload-button {
 	display: none;
+}
+
+#bxdev-project-logo-upload-form #edit-save,
+#bxdev-project-videographer-documents-form #edit-save--2 {
+	font-size: 12px;
+	padding: 5px 10px;
+	height: auto;
+}
+
+#edit-signed-production-release-ajax-wrapper {
+	border-bottom: solid #ccc 1px;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .progress-disabled {

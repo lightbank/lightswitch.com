@@ -1,14 +1,17 @@
 (function ($) {
+	
+	Drupal.behaviors.bxdev_project = {
+    attach: function(context, settings) {
+			// set file inputs to size 15
+			$('#edit-business-logo-upload').attr('size', 15);
+			$('#edit-signed-production-release-upload').attr('size', 15);
+			$('#edit-videographer-invoice-upload').attr('size', 15);
+    }
+  };
   
 	$(function(){
 		
-		Shadowbox.init();
-		
-		Drupal.behaviors.bxdev_project = {
-	    attach: function(context, settings) {
-				$('#edit-business-logo-upload').attr('size', 15);
-	    }
-	  };
+		Shadowbox.init();		
 		
 		/**
 		 * Business profile

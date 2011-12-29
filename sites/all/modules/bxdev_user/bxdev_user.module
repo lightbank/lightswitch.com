@@ -57,6 +57,10 @@ function bxdev_user_permission() {
 		  'title' => t('Upload business logo'),
 		  'description' => t('Upload business logo.'),
 		),
+		'upload videographer documents' =>  array(
+		  'title' => t('Upload videographer documents'),
+		  'description' => t('Upload videographer documents.'),
+		),
   );
 }
 

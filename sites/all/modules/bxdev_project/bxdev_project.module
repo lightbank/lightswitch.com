@@ -305,6 +305,11 @@ function bxdev_project_preprocess_node(&$vars){
 			$vars['business_logo_upload'] = render(drupal_get_form('bxdev_project_logo_upload_form'));
 		}
 		
+		// videographer documents
+		if(user_access('upload videographer documents')){
+			$vars['videographer_documents'] = render(drupal_get_form('bxdev_project_videographer_documents_form'));
+		}
+		
 	}
 }
 
@@ -410,6 +415,43 @@ function bxdev_project_logo_upload_form($form, &$form_state){
 	return $form;
 }
 
+/**
+ * Form builder: videographer documents
+ */
+function bxdev_project_videographer_documents_form($form, &$form_state){
+	$nid = arg(1);
+	$node = node_load($nid);
+	
+	$form['signed_production_release'] = array(
+		'#type' => 'managed_file',
+		'#title' => t('Signed production release'),
+		'#size' => 15,
+		'#default_value' => (!empty($node->field_signed_production_release['und'][0])) ? $node->field_signed_production_release['und'][0]['fid'] : '',
+		'#upload_location' => 'public://videographer_forms',
+		'#upload_validators' => array(
+			'file_validate_extensions' => array('jpg jpeg gif png pdf doc docx'),
+		),
+	);
+	
+	$form['videographer_invoice'] = array(
+		'#type' => 'managed_file',
+		'#title' => t('Videographer invoice'),
+		'#size' => 15,
+		'#default_value' => (!empty($node->field_videographer_invoice['und'][0])) ? $node->field_videographer_invoice['und'][0]['fid'] : '',
+		'#upload_location' => 'public://videographer_forms',
+		'#upload_validators' => array(
+			'file_validate_extensions' => array('jpg jpeg gif png pdf doc docx'),
+		),
+	);
+	
+	$form['save'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Save'),
+	);	
+	
+	return $form;
+}
+
 
 /**
  * Form submit handler: business logo
@@ -440,6 +482,59 @@ function bxdev_project_logo_upload_form_submit($form, &$form_state){
 		node_save($node);
 	}
 }
+
+/**
+ * Form submit handler: videographer documents
+ */
+function bxdev_project_videographer_documents_form_submit($form, &$form_state){
+	$values = $form_state['values'];
+	$nid = arg(1);
+	$node = node_load($nid);
+		
+	// if no file, remove logo file from the node
+	if(empty($values['signed_production_release'])){
+		unset($node->field_signed_production_release['und'][0]);
+	}else{
+		// get the file object
+		$file = file_load($values['signed_production_release']);
+		$file->status = FILE_STATUS_PERMANENT;
+		file_save($file);
+		// create a file array to attach to the node
+		$node_file = array(
+			'uid' => $file->uid,
+			'uri' => $file->uri,
+			'fid' => $file->fid,
+			'status' => 1,
+			'display' => 1,
+			'description' => '',
+		);
+		$node->field_signed_production_release['und'][0] = $node_file;
+	}
+	
+	// if no file, remove logo file from the node
+	if(empty($values['videographer_invoice'])){
+		unset($node->field_videographer_invoice['und'][0]);
+	}else{
+		// get the file object
+		$file = file_load($values['videographer_invoice']);
+		$file->status = FILE_STATUS_PERMANENT;
+		file_save($file);
+		// create a file array to attach to the node
+		$node_file = array(
+			'uid' => $file->uid,
+			'uri' => $file->uri,
+			'fid' => $file->fid,
+			'status' => 1,
+			'display' => 1,
+			'description' => '',
+		);
+		$node->field_videographer_invoice['und'][0] = $node_file;
+	}
+	
+	node_save($node);
+	
+}
+
 
 /**
  * Form submit handler: comment node form

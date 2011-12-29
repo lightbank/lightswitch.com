@@ -47,6 +47,12 @@
 		</div>
 	<?php endif; ?>
 	
+	<?php if(isset($videographer_documents)): ?>
+		<div class="block">
+			<?php print $videographer_documents; ?>
+		</div>
+	<?php endif; ?>
+	
 	<?php if(isset($operations)): ?>
 		<div class="block operations">
 			<?php print $operations; ?>
