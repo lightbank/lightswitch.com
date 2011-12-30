@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * HOOKS
  */
@@ -89,6 +88,7 @@ function bxdev_project_mail($key, &$message, $params) {
 			break;
 
 	}
+	// make emails HTML-enabled
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 }
 
@@ -98,10 +98,15 @@ function bxdev_project_mail($key, &$message, $params) {
 function bxdev_project_node_insert($node) {
   switch($node->type){	
 		case 'project':
+			// get the business full name
 			$full_name = $node->field_business_contact_name['und'][0]['value'];
+			// get the business phone
 			$phone = $node->field_phone['und'][0]['value'];
+			// load the business node object
 			$business = node_load($node->field_project_business_ref['und'][0]['nid']);
+			// load the client user object
 			$client = user_load($business->field_client_ref['und'][0]['uid']);
+			// assign new fields to the client user
 			$edit = (array)$client;
 			$edit['field_name']['und'][0]['value'] = $full_name;
 			$edit['field_phone']['und'][0]['value'] = $phone;
@@ -971,6 +976,9 @@ function bxdev_project_get_production_log($nid){
  * CLASSES
  */
 
+/**
+ * Contains all information related to a single project
+ */
 class Project {
 	
 	var $project;
@@ -983,23 +991,29 @@ class Project {
 	var $comments;
 	var $overridden;
 	
+	/**
+	 * Load a new Project and set all initial variables.
+	 *
+	 * @param $nid (int)
+	 *   The nid of the project node
+	 */
 	function __construct($nid){
-		
+		// load the users
 		$project = node_load($nid);
 		$business = node_load($project->field_project_business_ref['und'][0]['nid']);
 		$client = user_load($business->field_client_ref['und'][0]['uid']);
 		$sales = user_load($project->uid);
 		$pc = '';
 		$videographer = '';
-		
+		// if pc has been assigned to the project
 		if(!empty($project->field_pc_ref)){
 			$pc = user_load($project->field_pc_ref['und'][0]['uid']);
 		}
-		
+		// if videographer has been assigned to the project
 		if(!empty($project->field_videog_ref)){
 			$videographer = user_load($project->field_videog_ref['und'][0]['uid']);
 		}
-		
+		// assign all intitial properties
 		$this->project = $project;
 		$this->project_path = drupal_lookup_path('alias', 'node/' . $this->project->nid);
 		$this->business = $business;
@@ -1011,9 +1025,20 @@ class Project {
 		$this->overridden = $project->field_status_override['und'][0]['value'];
 	}
 	
+	/**
+	 * Log an action performed on or by the Project.
+	 *
+	 * @param $type (string)
+	 *   The type of action to log
+	 *
+	 * @param $message (string)
+	 *   The message to log with the action.
+	 */
 	function log($type, $message){
 		global $user;
+		// get the user role
 		$role = bxdev_user_get_role($user->uid);
+		// store in db
 		db_insert('production_log')
 			->fields(array(
 				'project_nid' => $this->project->nid,
@@ -1027,16 +1052,32 @@ class Project {
 			->execute();
 	}
 	
+	/**
+	 * Set the status of the Project.
+	 *
+	 * @param $id (int)
+	 *   The id of the status (1 - 7)
+	 */
 	function set_status($id){
 		$this->project->field_status['und'][0]['value'] = $id;
 		$this->project->field_status_date['und'][0]['value'] = time();
 		node_save($this->project);
 	}
 	
+	/**
+	 * Get the current status of a Project.
+	 *
+	 * @return int
+	 */
 	function get_status(){
 		return $this->project->field_status['und'][0]['value'];
 	}
 	
+	/**
+	 * Get all users associated with a Project.
+	 *
+	 * @return array
+	 */	
 	function get_users(){
 		$users = array();
 		if(!empty($this->client)){
@@ -1054,18 +1095,32 @@ class Project {
 		return $users;		
 	}
 	
+	/**
+	 * Notify all appropriate users when a comment has been posted.
+	 *
+	 * @param $cid (int)
+	 *   The nid of the comment node
+	 */
 	function comment_notify($cid){
 		global $base_url;
+		// construct the project link
 		$project_link = $base_url . '/' . $this->project_path;
+		// load the comment node object
 		$comment = node_load($cid);
+		// get the poster's uid
 		$owner_uid = $comment->uid;
+		// get the sales user's uid
 		$sales_uid = $this->sales->uid;
+		// get all users associated with Project
 		$users = $this->get_users();
+		// remove the poster
 		unset($users[$owner_uid]);
+		// remove the sales user
 		unset($users[$sales_uid]);
 		foreach($users as $uid => $user){
 			$comment_author = user_load($comment->uid);
 			$comment_author = $comment_author->field_name['und'][0]['value'];
+			// set all params to pass to the email message
 			$params = array();
 			$params['project_title'] = $this->project->title;
 			$params['project_link'] = $project_link;
@@ -1076,6 +1131,11 @@ class Project {
 		}
 	}
 
+	/**
+	 * Get all comments that belong to a Project.
+	 *
+	 * @return array
+	 */
 	function get_comments(){
 		$comments = array();
 		$results = db_query("SELECT entity_id FROM {field_data_field_project_ref} WHERE field_project_ref_nid = :nid", array(':nid' => $this->project->nid));
@@ -1087,16 +1147,25 @@ class Project {
 		}
 		return $comments;
 	}
-
+	
+	/**
+	 * Send an email to the Client containing login and project info.
+	 */
 	function send_client_login(){
 		drupal_mail('bxdev_project', 'first_comment', $this->client->mail, language_default(), array('project_path' => $this->project_path));
 		$this->log('admin', 'Client sent login information');
 	}
 	
+	/**
+	 * Notify all appropriate users when a Project has been approved.
+	 */
 	function send_approved(){
 		global $base_url;
+		// build the project link
 		$project_link = $base_url . '/' . $this->project_path;
+		// build a list of email addresses (pc, sales, and client)
 		$emails = $this->pc->mail . ', ' . $this->sales->mail . ', ' . $this->client->mail;
+		// build params to pass to the email message
 		$params = array(
 			'project_title' => $this->project->title,
 			'project_link' => $project_link,
@@ -1113,6 +1182,11 @@ class Project {
 		drupal_mail('bxdev_project', 'approved', $emails, language_default(), $params);
 	}
 	
+	/**
+	 * Get all approved photos associated with a Project.
+	 *
+	 * @return array
+	 */
 	function get_approved_photos(){
 		$results = db_query("SELECT fid FROM {project_photos_approval} WHERE nid = :nid", array(':nid' => $this->project->nid));
 		$approved_photos = array();

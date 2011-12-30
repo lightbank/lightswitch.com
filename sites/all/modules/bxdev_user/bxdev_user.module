@@ -311,9 +311,6 @@ function bxdev_user_block_view($delta = '') {
 }
 
 
-
-
-
 /**
  * FORMS
  */
@@ -337,14 +334,12 @@ function bxdev_user_form_user_pass_alter(&$form, &$form_state) {
 	$form['#submit'][0] = 'bxdev_user_user_pass_submit';
 }
 
-
 /**
  * Implements hook_form_alter().
  */
 function bxdev_user_form_user_profile_form_alter(&$form, &$form_state) {
 	$uid = arg(1);
 	$form['account']['current_pass']['#description'] = '<a href="/user/' . $uid . '/password/forgot">Forgot your password?</a>';
-	// dpm($form);
 }
 
 /**
@@ -361,13 +356,11 @@ function bxdev_user_create_user_form($form, $form_state){
 	$form['name'] = array(
 	  '#type' => 'textfield',
 	  '#title' => t('Full name'),
-		// '#required' => TRUE,
 	);
 	
 	$form['phone'] = array(
 	  '#type' => 'textfield',
 	  '#title' => t('Phone'),
-		// '#required' => TRUE,
 	);
 	
 	$form['role'] = array(
@@ -402,7 +395,6 @@ function bxdev_user_change_password_form($form, $form_state){
 	);	
 	return $form;
 }
-
 
 /**
  * Form submit handler: user create
@@ -455,11 +447,13 @@ function bxdev_user_change_password_form_submit($form, &$form_state){
  */
 function bxdev_user_user_pass_submit($form, &$form_state){
 	$values = $form_state['values'];
+	// if the user email exists
 	if($account = user_load_by_name($values['name'])){
 		$user = new User();
 		$user->load($account->uid);
 		$user->send_password_reset();
 		drupal_set_message('New password has been sent to ' . $account->mail);
+	// if the email cannot be found in the system
 	}else{
 		drupal_set_message('Email address does not exist.', 'error');
 	}
@@ -543,6 +537,9 @@ function bxdev_user_convert_videographer_nodes(){
  * CLASS
  */
 
+/**
+ * Creates or loads a user. Contains custom role / email functionality. 
+ */
 class User {
 	
 	var $password;
@@ -554,9 +551,24 @@ class User {
 	var $roles;
 	var $role;
 	
+	/**
+	 * Create a new User object.
+	 *
+	 * @param $email (string)
+	 *   User email address. Will act as the username.
+	 *
+	 * @param $role (string)
+	 *   User role (pc, sales, client, videographer).
+	 *
+	 * @param $full_name (string)
+	 *   User full name.
+	 *
+	 * @param $phone (string)
+	 *   User phone number.
+	 */
 	function __construct($email = NULL, $role = NULL, $full_name = NULL, $phone = NULL){
 		$this->password = user_password();
-		// if arguments have been supplied
+		// if arguments have been supplied, create the user and send a notification email
 		if(!is_null($email) && !is_null($role)){
 			$this->set_email($email);
 			$this->set_role($role);
@@ -568,12 +580,21 @@ class User {
 		}
 	}
 	
+	/**
+	 * Load a User.
+	 *
+	 * @param $uid (int)
+	 *   User id (uid)
+	 */
 	function load($uid){
 		$this->user = user_load($uid);
 		$role = bxdev_user_get_role($uid);
 		$this->set_role($role);
 	}
 	
+	/**
+	 * Create a new user.
+	 */
 	function create(){
 		$edit = array(
 			'name' => $this->name,
@@ -591,19 +612,43 @@ class User {
 		$this->user = user_save(NULL, $edit);
 	}
 	
+	/**
+	 * Set the User's email address.
+	 *
+	 * @param $email (string)
+	 *   User email address. Will act as the username.
+	 */
 	function set_email($email){
 		$this->name = $email;
 		$this->mail = $email;
 	}
 	
+	/**
+	 * Set the User's full name.
+	 *
+	 * @param $full_name (string)
+	 *   User's full name.
+	 */
 	function set_full_name($full_name){
 		$this->full_name = $full_name;
 	}
 	
+	/**
+	 * Set the User's phone.
+	 *
+	 * @param $phone (string)
+	 *   User's phone.
+	 */
 	function set_phone($phone){
 		$this->phone = $phone;
 	}	
 	
+	/**
+	 * Set the User's role.
+	 *
+	 * @param $role (string)
+	 *   User role (pc, sales, client, videographer).
+	 */
 	function set_role($role){
 		switch($role){
 			case 'sales':
@@ -628,6 +673,9 @@ class User {
 		}	
 	}
 	
+	/**
+	 * Reset the User's password.
+	 */
 	function reset_password(){
 		$edit = (array)$this->user;
 		$edit['pass'] = $this->password;
@@ -635,6 +683,9 @@ class User {
 		$this->user = user_save($this->user, $edit);
 	}
 	
+	/**
+	 * Send an email to the User contain login information.
+	 */
 	function send(){
 		$params = array(
 			'name' => $this->user->name,
@@ -644,6 +695,12 @@ class User {
 		drupal_mail('bxdev_user', $this->role, $this->user->mail, language_default(), $params);
 	}
 	
+	/**
+	 * Send an email to the Client user containing login / project info.
+	 *
+	 * @param $nid (int)
+	 *   Project nid.
+	 */
 	function send_client_project_login($nid){
 		$this->reset_password();
 		$project = new Project($nid);
@@ -662,6 +719,9 @@ class User {
 		$project->log('admin', 'Login information reset and sent to Client');
 	}
 	
+	/**
+	 * Reset a User's password and send a notification email.
+	 */
 	function send_password_reset(){
 		$this->reset_password();
 		$params = array(
@@ -671,6 +731,9 @@ class User {
 		drupal_mail('bxdev_user', 'password_reset', $this->user->mail, language_default(), $params);
 	}
 	
+	/**
+	 * Create a watchdog entry for the User.
+	 */
 	function log(){
 		switch($this->role){
 			case 'sales':
@@ -687,6 +750,11 @@ class User {
 		}		
 	}
 	
+	/**
+	 * Get the Drupal user object.
+	 *
+	 * @return object
+	 */
 	function get_user(){
 		return $this->user;
 	}
