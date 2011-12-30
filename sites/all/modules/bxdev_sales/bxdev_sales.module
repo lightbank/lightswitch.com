@@ -131,6 +131,7 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
 			'#type' => 'submit',
 			'#value' => t('Submit & Return to Form'),
 			'#submit' => array('node_form_submit', 'bxdev_sales_project_node_form_submit'),
+			'#validate' => array('bxdev_project_form_project_node_form_validate'),
 		);
 		
 		// add left / right markup
@@ -145,12 +146,13 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
  * Form: business node form
  */
 function bxdev_sales_form_business_node_form_alter(&$form, $form_state){
+	
 	$form['#attributes']['class'][] = 'clearfix';
 	$form['actions']['submit']['#submit'][] = 'bxdev_sales_form_business_node_form_submit';
 	$form['actions']['submit']['#value'] = t('Continue');
 	
 	// if sales/add/business
-	if(!empty($form['nid']['value'])){
+	if(arg(2) !== 'edit'){
 		$form['title']['#prefix'] = '<div class="left">';
 		$form['field_hours_operation']['#suffix'] = '</div><div class="right">';
 		$form['field_business_download_file']['#suffix'] = '</div>';

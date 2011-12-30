@@ -90,7 +90,9 @@
 		});
 		
 		// datepicker
-		$('#edit-bxdev-shoot-date').datepicker();
+		if($('#edit-bxdev-shoot-date').length > 0){
+			$('#edit-bxdev-shoot-date').datepicker();
+		}
 		
 	});
 

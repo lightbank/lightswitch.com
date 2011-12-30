@@ -347,10 +347,11 @@ function bxdev_project_form_comment_node_form_alter(&$form, $form_state){
  * Implements hook_form_FORM_ID_alter().
  */
 function bxdev_project_form_project_node_form_alter(&$form, $form_state){
+	// dpm($form);
 	// add custom validation handler
 	$form['actions']['submit']['#validate'][] = 'bxdev_project_form_project_node_form_validate';
 	// hide the original date field
-	$form['field_shoot_date']['#type'] = 'hidden';
+	// $form['field_shoot_date']['#type'] = 'hidden';
 	// create a fieldset
 	$form['bxdev_shoot_date_fieldset'] = array(
 		'#type' => 'fieldset',
@@ -363,12 +364,14 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_date'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Shoot date'),
+		'#required' => TRUE,
 		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('m/d/Y', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
 	);
 	// create a custom start time field
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time1'] = array(
 		'#title' => t('Start time'),
 		'#type' => 'select',
+		'#required' => TRUE,
 		'#options' => array(
 			'0:00' => '12:00am',
 			'0:15' => '12:15am',
@@ -473,6 +476,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time2'] = array(
 		'#title' => t('End time'),
 		'#type' => 'select',
+		'#required' => TRUE,
 		'#options' => array(
 			'0:00' => '12:00am',
 			'0:15' => '12:15am',

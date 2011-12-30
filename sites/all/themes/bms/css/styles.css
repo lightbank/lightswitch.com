@@ -791,12 +791,17 @@ footer {
 	font-size: 12px;
 	padding: 5px 10px;
 	height: auto;
+	line-height: 14px;
 }
 
 #edit-signed-production-release-ajax-wrapper {
 	border-bottom: solid #ccc 1px;
 	padding-bottom: 10px;
 	margin-bottom: 10px;
+}
+
+#edit-field-shoot-date {
+	display:none;
 }
 
 #edit-bxdev-shoot-date-fieldset .form-item {
