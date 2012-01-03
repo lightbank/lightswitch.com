@@ -164,21 +164,25 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 	switch($node->type){
 		case 'project':
 		
-		  $project = new Project($node->nid);
-			$old_status = $project->get_status();			
-			$new_status = $values['field_status']['und'][0]['value'];
+			if(!is_null($node->nid)){
+		
+			  $project = new Project($node->nid);
+				$old_status = $project->get_status();			
+				$new_status = $values['field_status']['und'][0]['value'];
 			
-			// detect if manually overridden
-			if($old_status !== $new_status){
-				$node->field_status_date['und'][0]['value'] = time();
-				$node->field_status_override['und'][0]['value'] = 1;
-			}
+				// detect if manually overridden
+				if($old_status !== $new_status){
+					$node->field_status_date['und'][0]['value'] = time();
+					$node->field_status_override['und'][0]['value'] = 1;
+				}
 			
-			// check if project is currently status 2 (claimed), a videographer has been assigned, and project is not manually overridden
-			if($project->get_status() == 2 && !empty($node->field_videog_ref['und']) && $node->field_status_override['und'][0]['value'] !== 1){
-				// set status to 3 (assigned)
-				$node->field_status['und'][0]['value'] = 3;
-				$project->log('admin', 'Project auto updated to 3 - Assigned');
+				// check if project is currently status 2 (claimed), a videographer has been assigned, and project is not manually overridden
+				if($project->get_status() == 2 && !empty($node->field_videog_ref['und']) && $node->field_status_override['und'][0]['value'] !== 1){
+					// set status to 3 (assigned)
+					$node->field_status['und'][0]['value'] = 3;
+					$project->log('admin', 'Project auto updated to 3 - Assigned');
+				}
+			
 			}
 			break;			
 	}

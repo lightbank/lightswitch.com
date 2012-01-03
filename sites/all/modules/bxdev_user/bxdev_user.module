@@ -61,6 +61,10 @@ function bxdev_user_permission() {
 		  'title' => t('Upload videographer documents'),
 		  'description' => t('Upload videographer documents.'),
 		),
+		'add new project' => array(
+			'title' => t('Add a new project'),
+			'description' => t('Add a new project.'),
+		),
   );
 }
 
@@ -251,7 +255,7 @@ function bxdev_user_preprocess_user_profile(&$vars){
 	// pc
 	if(isset($vars['user']->roles[4])){
 		$output .= '<div class="">';
-		$output .= '<a href="/projects/master" class="add-project btn">Master project list</a> <a class="add-project btn" href="/videographers">Videographers directory</a>';
+		$output .= '<a href="/projects/master" class="add-project btn">Master project list</a> <a class="add-project btn" href="/videographers">Videographers directory</a> <a href="/sales/add/business" class="add-project btn">+ Add project</a>';
 		$output .= '</div><br />';
 		$output .= views_embed_view('projects', 'page_1', $vars['user']->uid);
 	// videographer

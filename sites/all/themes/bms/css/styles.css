@@ -398,6 +398,17 @@ footer {
 	background: url(../images/sprite_global.png) no-repeat 0 -129px #fb942e;
 }
 
+.page-sales-add #edit-field-public-access,
+.page-sales-add #edit-field-profile-video-ref,
+.page-sales-add #edit-field-client-rating,
+.page-sales-add #edit-field-pc-ref,
+.page-sales-add #edit-field-videog-ref,
+.page-sales-add #edit-field-project-video,
+.page-sales-add #edit-field-status,
+.page-sales-add #edit-field-project-photos {
+	display: none;
+}
+
 .edit-field-social-name1-und-0-value {
 	width: 200px;
 }
