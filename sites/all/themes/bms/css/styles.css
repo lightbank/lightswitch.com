@@ -466,6 +466,8 @@ footer {
 .page-sales-add #edit-field-pc-notes {
 	clear: left;
 	margin-bottom: 20px;
+	border-top: solid #ccc 1px;
+	padding-top: 20px;
 }
 
 .page-sales-add #edit-field-pc-notes textarea {
@@ -705,6 +707,7 @@ footer {
 
 .node-type-project .left h1 {
 	margin-bottom: 5px;
+	line-height: 30px;
 }
 
 .node-type-project .left h2 {
@@ -944,6 +947,7 @@ footer {
 
 .node-type-business #content .left h1 {
 	margin-bottom: 3px;
+	line-height: 30px;
 }
 
 .category {

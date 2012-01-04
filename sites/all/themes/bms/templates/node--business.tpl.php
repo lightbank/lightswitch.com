@@ -39,11 +39,11 @@
 			<?php endif; ?>			
 		</div><!-- end .section.info -->
 	
-		<div class="section hours">
-			<?php if(isset($content['field_hours_operation'])): ?>
-				<div class="hours-operation"><?php print nl2br(render($content['field_hours_operation'])); ?></div>
-			<?php endif; ?>			
-		</div><!-- end .section.info -->
+		<?php if(isset($content['field_hours_operation'])): ?>
+			<div class="section hours">
+				<div class="hours-operation"><?php print nl2br(render($content['field_hours_operation'])); ?></div>					
+			</div><!-- end .section.info -->
+		<?php endif; ?>	
 	
 		<div class="section social">
 			<?php if(!empty($content['field_social_name1']) && !empty($content['field_social_url1'])): ?>
@@ -87,7 +87,7 @@
 		<?php if(isset($content['field_business_overview'])): ?>
 			<div class="overview">
 				<h2>About <?php print $title; ?></h2>
-				<?php print render($content['field_business_overview']); ?>
+				<?php print nl2br(render($content['field_business_overview'])); ?>
 			</div>
 		<?php endif; ?>
 		

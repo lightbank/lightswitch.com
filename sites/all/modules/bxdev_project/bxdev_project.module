@@ -87,6 +87,14 @@ function bxdev_project_mail($key, &$message, $params) {
 			$message['body'][] = $body;
 			break;
 
+		case 'claimed':
+			$subject = t('@pc has claimed project @project_name', array('@pc' => $params['pc']['full_name'], '@project_name' => $params['project_title']));
+			$body = 'View project here: ' . $params['project_link'];
+
+			$message['subject'] = $subject;
+			$message['body'][] = $body;
+			break;
+
 	}
 	// make emails HTML-enabled
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
@@ -260,6 +268,8 @@ function bxdev_project_preprocess_node(&$vars){
 			$production_details .= (isset($content['field_features_include'])) ? render($content['field_features_include']) : '';
 			$production_details .= (isset($content['field_features_avoid'])) ? render($content['field_features_avoid']) : '';
 			$production_details .= (isset($content['field_unique'])) ? render($content['field_unique']) : '';
+			$production_details .= (isset($content['field_video_type'])) ? render($content['field_video_type']) : '';
+			$production_details .= (isset($content['field_pc_notes'])) ? render($content['field_pc_notes']) : '';
 			$production_details .=	'</div></div>';
 			$vars['production_details'] = $production_details;
 		}		
@@ -889,6 +899,7 @@ function bxdev_project_claim_callback($node){
 	if(!$project->overridden){
 		$project->set_status(2);
 		$project->log('admin', 'Project auto updated to 2 - Claimed');
+		$project->send_claim();
 	}
 	drupal_goto('projects/master');
 }
@@ -1165,6 +1176,28 @@ class Project {
 	}
 	
 	/**
+	 * Send an email to the PC and Sales when a Project has been claimed.
+	 */
+	function send_claim(){
+		global $base_url;
+		// build the project link
+		$project_link = $base_url . '/' . $this->project_path;
+		// build a list of email addresses (pc and sales)
+		$emails = $this->pc->mail . ', ' . $this->sales->mail;
+		// build params to pass to the email message
+		$params = array(
+			'project_title' => $this->project->title,
+			'project_link' => $project_link,			
+			'pc' => array(
+				'full_name' => $this->pc->field_name['und'][0]['value'],
+				'email' => $this->pc->mail,
+				'phone' => $this->pc->field_phone['und'][0]['value'],
+			),
+		);		
+		drupal_mail('bxdev_project', 'claimed', $emails, language_default(), $params);
+	}
+	
+	/**
 	 * Notify all appropriate users when a Project has been approved.
 	 */
 	function send_approved(){
@@ -1174,10 +1207,6 @@ class Project {
 		// build a list of email addresses (pc, sales, and client)
 		$emails = $this->pc->mail . ', ' . $this->sales->mail . ', ' . $this->client->mail;
 		// build params to pass to the email message
-		$params = array(
-			'project_title' => $this->project->title,
-			'project_link' => $project_link,
-		);
 		$params = array(
 			'project_title' => $this->project->title,
 			'project_link' => $project_link,			
