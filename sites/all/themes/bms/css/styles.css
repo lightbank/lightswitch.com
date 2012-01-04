@@ -86,6 +86,12 @@ label {
 	border: 1px solid #b9b9b9;
 }
 
+.page-admin .form-text,
+.page-admin textarea,
+.page-admin select {
+	width: auto;
+}
+
 textarea {
 	width: 350px;
 	height: 80px;
