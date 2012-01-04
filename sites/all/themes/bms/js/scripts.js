@@ -94,6 +94,24 @@
 			$('#edit-bxdev-shoot-date').datepicker();
 		}
 		
+		// custom date fields
+		update_date_fields();
+		$('#edit-bxdev-shoot-time1, #edit-bxdev-shoot-time2').change(function() {
+			update_date_fields();
+		});
+		
+		
+		/**
+		 * Match the hidden CCK date fields with our custom time drop-downs
+		 */
+		function update_date_fields(){
+			var time1 = $('#edit-bxdev-shoot-time1').val();
+			var time2 = $('#edit-bxdev-shoot-time2').val();
+			$('#edit-field-shoot-date-und-0-value-timeEntry-popup-1').val(time1);
+			$('#edit-field-shoot-date-und-0-value2-timeEntry-popup-1').val(time2);
+		}
+		
+		
 	});
 
 

@@ -932,6 +932,14 @@ footer {
 	display:none;
 }
 
+.social .icon {
+	float: left;
+	margin-right: 15px;
+}
+
+.social .link {
+	clear: left;
+}
 
 
 /** USER INFO
