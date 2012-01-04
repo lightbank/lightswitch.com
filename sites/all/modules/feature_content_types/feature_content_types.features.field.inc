@@ -487,7 +487,6 @@ function feature_content_types_field_default_fields() {
           2 => '2',
           3 => '3',
           4 => '4',
-          5 => '5',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -2500,6 +2499,77 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-project-field_pc_notes'
+  $fields['node-project-field_pc_notes'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_pc_notes',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 29,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_pc_notes',
+      'label' => 'PC notes',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '23',
+      ),
+    ),
+  );
+
   // Exported field: 'node-project-field_pc_ref'
   $fields['node-project-field_pc_ref'] = array(
     'field_config' => array(
@@ -3224,7 +3294,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '23',
+        'weight' => '24',
       ),
     ),
   );
@@ -3768,7 +3838,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '24',
+        'weight' => '25',
       ),
     ),
   );
@@ -3872,6 +3942,7 @@ function feature_content_types_field_default_fields() {
         'allowed_values' => array(
           'male' => 'Male',
           'female' => 'Female',
+          'no_preference' => 'No preference',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -3949,6 +4020,7 @@ function feature_content_types_field_default_fields() {
   t('Features & areas to avoid?');
   t('Features & areas to include?');
   t('Hours of operation');
+  t('PC notes');
   t('Phone');
   t('Price');
   t('Production coordinator');
