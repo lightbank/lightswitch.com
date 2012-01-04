@@ -457,6 +457,16 @@ footer {
 	clear: left;
 }
 
+.page-sales-add #edit-field-pc-notes {
+	clear: left;
+	margin-bottom: 20px;
+}
+
+.page-sales-add #edit-field-pc-notes textarea {
+	width: 600px;
+	height: 120px;
+}
+
 
 /** SIGN IN FORM
 ================================================**/

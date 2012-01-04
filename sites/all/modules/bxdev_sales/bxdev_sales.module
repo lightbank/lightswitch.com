@@ -135,8 +135,12 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
 		);
 		
 		// add left / right markup
+		// $form['right']['#suffix'] = '</div>';
+		// $form['right']['#type'] = 'textfield';
+		// $form['right']['#weight'] = 500;
+		
 		$form['field_project_business_ref']['#prefix'] = '<div class="left">';
-		$form['field_script_notes']['#suffix'] = '</div><div class="right">';
+		$form['field_owner_interview']['#suffix'] = '</div><div class="right">';
 		$form['field_unique']['#suffix'] = '</div>';		
 	}
 }
