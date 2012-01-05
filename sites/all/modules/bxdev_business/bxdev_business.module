@@ -94,7 +94,7 @@ function bxdev_business_preprocess_node(&$variables) {
 				foreach($teaser['field_project_photos'] as $key => $value){
 					if(is_numeric($key)){
 						if(in_array($value['#item']['fid'], $approved_photos)){
-							$video_output .= '<div class="slide"><a rel="shadowbox" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme($value['#theme'], $value) . '</a></div>';
+							$video_output .= '<div class="slide"><a rel="shadowbox[images]" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme($value['#theme'], $value) . '</a></div>';
 						}
 					}
 				}

@@ -260,6 +260,15 @@ div#media-browser .throbber {
   border-left: 1px solid #aaa;
   border-right: 1px solid #aaa;
   border-top: 1px solid #aaa;
+	display: none;
+}
+
+#media-tab-media_internet {
+	display: block!important;
+}
+
+#media-tab-upload {
+	display: none;
 }
 
 .fake-ok {

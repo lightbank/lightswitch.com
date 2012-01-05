@@ -373,6 +373,27 @@ footer {
 	width: 300px;
 }
 
+#edit-profile-videographer-field-videographer-terms {
+	clear: left;
+	position: relative;
+	top: 90px;
+	width: 420px;
+}
+
+#edit-profile-videographer-field-videographer-terms .description,
+#bxdev-user-accept-terms-form .description {
+	padding: 7px 0 0 23px;
+}
+
+#edit-profile-videographer-field-videographer-terms label,
+#bxdev-user-accept-terms-form label {
+	padding-left: 7px;
+}
+
+#edit-profile-videographer-field-videographer-terms span.form-required,
+#bxdev-user-accept-terms-form span.form-required {
+	display: none;
+}
 
 
 /** ADD BIZ
@@ -597,9 +618,9 @@ footer {
 
 .flag-1 {
 	margin: 0 auto;
-	width: 13px;
-	height: 9px;
-	background: url(../images/sprite_global.png) no-repeat -234px -421px;
+	width: 20px;
+	height: 27px;
+	background: url(../images/icon_flag.png) no-repeat;
 }
 
 .view-empty {
@@ -848,6 +869,10 @@ footer {
 #edit-bxdev-shoot-date-fieldset .form-item input,
 #edit-bxdev-shoot-date-fieldset .form-item select {
 	width: 200px;
+}
+
+#media-browser-tabset .ui-tabs-nav {
+	display: none;
 }
 
 .progress-disabled {
@@ -1324,6 +1349,16 @@ footer {
 
 .pager {
 	float: right;
+}
+
+.view-projects .pager,
+.view-projects .pager-prev,
+.view-projects .pager-next {
+	float: left;
+}
+
+.view-projects .pager-current {
+	padding-top: 1px;
 }
 
 .page-clients #page #content .links,
