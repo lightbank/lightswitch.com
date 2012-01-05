@@ -1,5 +1,20 @@
 (function ($) {
 	
+	/**
+	 * Attach an event to the input form buttons
+	 *
+	 * Tried to bind to all forms but didn't work and this did... I'm sure it can be improved
+	 */
+	Drupal.behaviors.safari_upload = {
+		attach: function(context) {
+			if (/AppleWebKit|MSIE/.test(navigator.userAgent)) {
+		  	$("input.form-submit").bind('mousedown', function(){
+					$.get("/ping/close");
+				});
+			}
+		}
+	};
+		
 	Drupal.behaviors.bxdev_project = {
     attach: function(context, settings) {
 			// set file inputs to size 15

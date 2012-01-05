@@ -1936,6 +1936,91 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-project-field_author'
+  $fields['node-project-field_author'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_author',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'uid' => array(
+          'columns' => array(
+            'uid' => 'uid',
+          ),
+          'table' => 'users',
+        ),
+      ),
+      'indexes' => array(
+        'uid' => array(
+          0 => 'uid',
+        ),
+      ),
+      'module' => 'user_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_roles' => array(
+          2 => 0,
+          3 => 0,
+          4 => '4',
+          5 => 0,
+          6 => '6',
+          7 => 0,
+        ),
+        'referenceable_status' => array(
+          0 => 0,
+          1 => '1',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'references_1',
+          'view_name' => 'users',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'user_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
+          'weight' => 31,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_author',
+      'label' => 'Author',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '27',
+      ),
+    ),
+  );
+
   // Exported field: 'node-project-field_business_contact_name'
   $fields['node-project-field_business_contact_name'] = array(
     'field_config' => array(
@@ -2320,7 +2405,7 @@ function feature_content_types_field_default_fields() {
   $fields['node-project-field_logo'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_logo',
@@ -3180,8 +3265,8 @@ function feature_content_types_field_default_fields() {
       'label' => 'Shoot date',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'blank',
-        'default_value2' => 'same',
+        'default_value' => 'now',
+        'default_value2' => 'now',
         'default_value_code' => '',
         'default_value_code2' => '',
         'user_register_form' => FALSE,
@@ -3192,7 +3277,7 @@ function feature_content_types_field_default_fields() {
         'settings' => array(
           'display_all_day' => 0,
           'increment' => '15',
-          'input_format' => 'Y-m-d H:i:s',
+          'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
           'repeat_collapsed' => 0,
@@ -4089,6 +4174,7 @@ function feature_content_types_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Address');
   t('Approved');
+  t('Author');
   t('Business');
   t('Business PDF file');
   t('Business PDF label');

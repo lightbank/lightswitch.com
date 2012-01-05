@@ -528,6 +528,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'field_public_access' => 'field_public_access',
     'php' => 'php',
     'field_status_override' => 'field_status_override',
+    'field_name_2' => 'field_name_2',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -614,6 +615,12 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'separator' => '',
     ),
     'field_status_override' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+    ),
+    'field_name_2' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -827,6 +834,12 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['relationships']['field_pc_ref_uid']['label'] = 'pc';
   $handler->display->display_options['relationships']['field_pc_ref_uid']['required'] = 0;
   $handler->display->display_options['relationships']['field_pc_ref_uid']['delta'] = '-1';
+  /* Relationship: Content: Author (field_author) */
+  $handler->display->display_options['relationships']['field_author_uid']['id'] = 'field_author_uid';
+  $handler->display->display_options['relationships']['field_author_uid']['table'] = 'field_data_field_author';
+  $handler->display->display_options['relationships']['field_author_uid']['field'] = 'field_author_uid';
+  $handler->display->display_options['relationships']['field_author_uid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_author_uid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
@@ -1213,6 +1226,30 @@ print \'Never public\';
   $handler->display->display_options['fields']['field_status_override']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_status_override']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_status_override']['field_api_classes'] = 0;
+  /* Field: User: Full name */
+  $handler->display->display_options['fields']['field_name_2']['id'] = 'field_name_2';
+  $handler->display->display_options['fields']['field_name_2']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name_2']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name_2']['relationship'] = 'field_author_uid';
+  $handler->display->display_options['fields']['field_name_2']['label'] = 'Author';
+  $handler->display->display_options['fields']['field_name_2']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_name_2']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_name_2']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_name_2']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_name_2']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_2']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
