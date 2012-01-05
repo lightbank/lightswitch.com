@@ -39,24 +39,24 @@
 			<?php endif; ?>			
 		</div><!-- end .section.info -->
 	
-		<div class="section hours">
-			<?php if(isset($content['field_hours_operation'])): ?>
-				<div class="hours-operation"><?php print nl2br(render($content['field_hours_operation'])); ?></div>
-			<?php endif; ?>			
-		</div><!-- end .section.info -->
+		<?php if(isset($content['field_hours_operation'])): ?>
+			<div class="section hours">
+				<div class="hours-operation"><?php print nl2br(render($content['field_hours_operation'])); ?></div>					
+			</div><!-- end .section.info -->
+		<?php endif; ?>	
 	
-		<div class="section social">
+		<div class="section social clearfix">
 			<?php if(!empty($content['field_social_name1']) && !empty($content['field_social_url1'])): ?>
-				<div><a href="<?php print $content['field_social_url1'][0]['#markup']; ?>"><?php print render($content['field_social_name1']) ?></a></div>
+				<div class="icon"><a href="<?php print $content['field_social_url1'][0]['#markup']; ?>" target="_blank"><img src="/sites/all/themes/bms/images/icon_facebook.png" /></a></div>
 			<?php endif; ?>
 			<?php if(!empty($content['field_social_name2']) && !empty($content['field_social_url2'])): ?>
-				<div><a href="<?php print $content['field_social_url2'][0]['#markup']; ?>"><?php print render($content['field_social_name2']) ?></a></div>
+				<div class="icon"><a href="<?php print $content['field_social_url2'][0]['#markup']; ?>" target="_blank"><img src="/sites/all/themes/bms/images/icon_twitter.png" /></a></div>
 			<?php endif; ?>
 			<?php if(!empty($content['field_social_name3']) && !empty($content['field_social_url3'])): ?>
-				<div><a href="<?php print $content['field_social_url3'][0]['#markup']; ?>"><?php print render($content['field_social_name3']) ?></a></div>
+				<div class="link"><a href="<?php print $content['field_social_url3'][0]['#markup']; ?>" target="_blank"><?php print render($content['field_social_name3']) ?></a></div>
 			<?php endif; ?>
 			<?php if(!empty($content['field_social_name4']) && !empty($content['field_social_url4'])): ?>
-				<div><a href="<?php print $content['field_social_url4'][0]['#markup']; ?>"><?php print render($content['field_social_name4']) ?></a></div>
+				<div class="link"><a href="<?php print $content['field_social_url4'][0]['#markup']; ?>" target="_blank"><?php print render($content['field_social_name4']) ?></a></div>
 			<?php endif; ?>
 		</div>
 	
@@ -87,7 +87,7 @@
 		<?php if(isset($content['field_business_overview'])): ?>
 			<div class="overview">
 				<h2>About <?php print $title; ?></h2>
-				<?php print render($content['field_business_overview']); ?>
+				<?php print nl2br(render($content['field_business_overview'])); ?>
 			</div>
 		<?php endif; ?>
 		

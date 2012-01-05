@@ -130,6 +130,9 @@ input[type="submit"] {
 
 td input[type="submit"] {
 	height: 20px;
+	line-height: 24px;
+	font-size: 14px;
+	padding: 0 5px;
 }
 
 
@@ -349,6 +352,12 @@ footer {
 	background-position: 165px -120px;
 }
 
+.page-node-31 #content {
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+
 #business-node-form #edit-actions input {
 	background-position: 80px -120px;
 }
@@ -373,6 +382,27 @@ footer {
 	width: 300px;
 }
 
+#edit-profile-videographer-field-videographer-terms {
+	clear: left;
+	position: relative;
+	top: 90px;
+	width: 420px;
+}
+
+#edit-profile-videographer-field-videographer-terms .description,
+#bxdev-user-accept-terms-form .description {
+	padding: 7px 0 0 23px;
+}
+
+#edit-profile-videographer-field-videographer-terms label,
+#bxdev-user-accept-terms-form label {
+	padding-left: 7px;
+}
+
+#edit-profile-videographer-field-videographer-terms span.form-required,
+#bxdev-user-accept-terms-form span.form-required {
+	display: none;
+}
 
 
 /** ADD BIZ
@@ -466,6 +496,8 @@ footer {
 .page-sales-add #edit-field-pc-notes {
 	clear: left;
 	margin-bottom: 20px;
+	border-top: solid #ccc 1px;
+	padding-top: 20px;
 }
 
 .page-sales-add #edit-field-pc-notes textarea {
@@ -473,6 +505,16 @@ footer {
 	height: 120px;
 }
 
+.page-sales-add #project-node-form #edit-field-logo .form-submit {
+	height: 20px;
+	line-height: 24px;
+	font-size: 14px;
+	padding: 0 5px;
+}
+
+.page-sales-add #project-node-form #edit-field-logo .tabledrag-toggle-weight {
+	display: none;
+}
 
 /** SIGN IN FORM
 ================================================**/
@@ -595,9 +637,9 @@ footer {
 
 .flag-1 {
 	margin: 0 auto;
-	width: 13px;
-	height: 9px;
-	background: url(../images/sprite_global.png) no-repeat -234px -421px;
+	width: 20px;
+	height: 27px;
+	background: url(../images/icon_flag.png) no-repeat;
 }
 
 .view-empty {
@@ -705,6 +747,7 @@ footer {
 
 .node-type-project .left h1 {
 	margin-bottom: 5px;
+	line-height: 30px;
 }
 
 .node-type-project .left h2 {
@@ -798,13 +841,26 @@ footer {
 	border-radius: 10px;
 }
 
-#bxdev-project-logo-upload-form #edit-business-logo-remove-button,
 #bxdev-project-videographer-documents-form #edit-signed-production-release-remove-button,
 #bxdev-project-videographer-documents-form #edit-videographer-invoice-remove-button {
 	font-size: 12px;
-	height: auto;
+	height: 20px;
+	line-height: 24px;
 	background: transparent;
 	color: #f00;
+}
+
+#bxdev-project-logo-upload-form input[value="Remove"],
+#bxdev-project-logo-upload-form input[value="Upload"] {
+	display: none;
+}
+
+#bxdev-project-logo-upload-form input[value="Add"] {
+	font-size: 12px;
+	padding: 5px 10px;
+	height: auto;
+	line-height: 14px;
+	margin-right: 10px;
 }
 
 #bxdev-project-logo-upload-form #edit-business-logo-upload-button,
@@ -845,6 +901,10 @@ footer {
 #edit-bxdev-shoot-date-fieldset .form-item input,
 #edit-bxdev-shoot-date-fieldset .form-item select {
 	width: 200px;
+}
+
+#media-browser-tabset .ui-tabs-nav {
+	display: none;
 }
 
 .progress-disabled {
@@ -929,6 +989,14 @@ footer {
 	display:none;
 }
 
+.social .icon {
+	float: left;
+	margin-right: 15px;
+}
+
+.social .link {
+	clear: left;
+}
 
 
 /** USER INFO
@@ -944,6 +1012,7 @@ footer {
 
 .node-type-business #content .left h1 {
 	margin-bottom: 3px;
+	line-height: 30px;
 }
 
 .category {
@@ -1312,6 +1381,16 @@ footer {
 
 .pager {
 	float: right;
+}
+
+.view-projects .pager,
+.view-projects .pager-prev,
+.view-projects .pager-next {
+	float: left;
+}
+
+.view-projects .pager-current {
+	padding-top: 1px;
 }
 
 .page-clients #page #content .links,

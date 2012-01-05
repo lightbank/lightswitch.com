@@ -49,27 +49,35 @@ function bxdev_sales_menu() {
  * Implements hook_node_insert().
  */
 function bxdev_sales_node_presave($node) {
-  switch($node->type){			
-		case 'business':
+  switch($node->type){
+		case 'project':
 			// get email
 			$email = $node->field_email['und'][0]['email'];
 			// load the user
 			$account = user_load_by_name($email);
 			// if the user exists
 			if(!$account){
-				$full_name = $node->field_email['und'][0]['email'];
+				// get phone
+				$phone = $node->field_phone['und'][0]['value'];
+				// get full name
+				$full_name = $node->field_business_contact_name['und'][0]['value'];
 				// create a new client
 				$user = new User();
 				$user->set_email($email);
 				$user->set_role('client');
+				$user->set_full_name($full_name);
+				$user->set_phone($phone);
 				$user->create();
 				$account = $user->get_user();
 				// log action
 				watchdog('lightswitch', 'New client: @name, uid: @uid', array('@name' => $account->name, '@uid' => $account->uid));
 			}
-			$node->field_client_ref['und'][0]['uid'] = $account->uid;
-			// log action
-			watchdog('lightswitch', 'New business: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
+			// load the business node
+			$business = node_load($node->field_project_business_ref['und'][0]['nid']);
+			// assign the business to the client account 
+			$business->field_client_ref['und'][0]['uid'] = $account->uid;
+			// save the business node
+			node_save($business);
 			break;
 	}
 }
@@ -134,14 +142,9 @@ function bxdev_sales_form_project_node_form_alter(&$form, $form_state){
 			'#validate' => array('bxdev_project_form_project_node_form_validate'),
 		);
 		
-		// add left / right markup
-		// $form['right']['#suffix'] = '</div>';
-		// $form['right']['#type'] = 'textfield';
-		// $form['right']['#weight'] = 500;
-		
 		$form['field_project_business_ref']['#prefix'] = '<div class="left">';
 		$form['field_owner_interview']['#suffix'] = '</div><div class="right">';
-		$form['field_unique']['#suffix'] = '</div>';		
+		$form['field_video_type']['#suffix'] = '</div>';		
 	}
 }
 

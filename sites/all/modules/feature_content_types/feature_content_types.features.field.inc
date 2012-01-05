@@ -76,7 +76,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '9',
+        'weight' => '7',
       ),
     ),
   );
@@ -731,8 +731,8 @@ function feature_content_types_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_email',
-      'label' => 'Email',
-      'required' => 1,
+      'label' => 'Public email',
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -743,7 +743,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'email_textfield',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -802,7 +802,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_hours_operation',
       'label' => 'Hours of operation',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -886,7 +886,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '7',
+        'weight' => '6',
       ),
     ),
   );
@@ -1080,7 +1080,11 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'business',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'Facebook',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -1152,7 +1156,11 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'business',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'Twitter',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -1677,7 +1685,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_website',
       'label' => 'Website',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -1689,7 +1697,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '6',
+        'weight' => '8',
       ),
     ),
   );
@@ -1924,6 +1932,91 @@ function feature_content_types_field_default_fields() {
         ),
         'type' => 'options_onoff',
         'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_author'
+  $fields['node-project-field_author'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_author',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'uid' => array(
+          'columns' => array(
+            'uid' => 'uid',
+          ),
+          'table' => 'users',
+        ),
+      ),
+      'indexes' => array(
+        'uid' => array(
+          0 => 'uid',
+        ),
+      ),
+      'module' => 'user_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_roles' => array(
+          2 => 0,
+          3 => 0,
+          4 => '4',
+          5 => 0,
+          6 => '6',
+          7 => 0,
+        ),
+        'referenceable_status' => array(
+          0 => 0,
+          1 => '1',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'references_1',
+          'view_name' => 'users',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'user_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
+          'weight' => 31,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_author',
+      'label' => 'Author',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '27',
       ),
     ),
   );
@@ -2312,7 +2405,7 @@ function feature_content_types_field_default_fields() {
   $fields['node-project-field_logo'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_logo',
@@ -2391,7 +2484,7 @@ function feature_content_types_field_default_fields() {
       'settings' => array(
         'description_field' => 0,
         'file_directory' => '',
-        'file_extensions' => 'png gif jpg jpeg',
+        'file_extensions' => 'png gif jpg jpeg pdf',
         'max_filesize' => '',
         'user_register_form' => FALSE,
       ),
@@ -2405,8 +2498,12 @@ function feature_content_types_field_default_fields() {
           'insert_styles' => array(
             'auto' => 'auto',
             'image' => 0,
+            'image_approval' => 0,
+            'image_business_large' => 0,
+            'image_business_thumb' => 0,
             'image_large' => 0,
             'image_medium' => 0,
+            'image_project_thumb' => 0,
             'image_square_thumbnail' => 0,
             'image_thumbnail' => 0,
             'image_video_thumb_home_border' => 0,
@@ -2565,7 +2662,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '23',
+        'weight' => '24',
       ),
     ),
   );
@@ -3013,7 +3110,12 @@ function feature_content_types_field_default_fields() {
             'image' => 0,
             'video' => 'video',
           ),
-          'file_extensions' => 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp mp3 mov m4v mp4 mpeg avi ogg wmv ico',
+          'browser_plugins' => array(
+            'library' => 0,
+            'media_default--media_browser_1' => 0,
+            'media_internet' => 'media_internet',
+            'upload' => 0,
+          ),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
@@ -3163,8 +3265,8 @@ function feature_content_types_field_default_fields() {
       'label' => 'Shoot date',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'blank',
-        'default_value2' => 'same',
+        'default_value' => 'now',
+        'default_value2' => 'now',
         'default_value_code' => '',
         'default_value_code2' => '',
         'user_register_form' => FALSE,
@@ -3175,7 +3277,7 @@ function feature_content_types_field_default_fields() {
         'settings' => array(
           'display_all_day' => 0,
           'increment' => '15',
-          'input_format' => 'Y-m-d H:i:s',
+          'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
           'repeat_collapsed' => 0,
@@ -3294,7 +3396,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '24',
+        'weight' => '25',
       ),
     ),
   );
@@ -3640,6 +3742,76 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-project-field_video_type'
+  $fields['node-project-field_video_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_video_type',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'spec' => 'Spec',
+          'direct_sale' => 'Direct sale',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => array(
+        0 => array(
+          'value' => 'spec',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 30,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_video_type',
+      'label' => 'Video type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '23',
+      ),
+    ),
+  );
+
   // Exported field: 'node-project-field_videog_ref'
   $fields['node-project-field_videog_ref'] = array(
     'field_config' => array(
@@ -3838,7 +4010,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '25',
+        'weight' => '26',
       ),
     ),
   );
@@ -3863,8 +4035,8 @@ function feature_content_types_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          1 => 'yes',
-          0 => 'no',
+          1 => 'Yes',
+          0 => 'No',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -4002,6 +4174,7 @@ function feature_content_types_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Address');
   t('Approved');
+  t('Author');
   t('Business');
   t('Business PDF file');
   t('Business PDF label');
@@ -4016,7 +4189,6 @@ function feature_content_types_field_default_fields() {
   t('Client');
   t('Client responded');
   t('Comment');
-  t('Email');
   t('Features & areas to avoid?');
   t('Features & areas to include?');
   t('Hours of operation');
@@ -4028,6 +4200,7 @@ function feature_content_types_field_default_fields() {
   t('Project');
   t('Project photos');
   t('Public access');
+  t('Public email');
   t('Rating');
   t('Script notes');
   t('Shoot date');
@@ -4044,6 +4217,7 @@ function feature_content_types_field_default_fields() {
   t('Status date');
   t('Status override');
   t('Video');
+  t('Video type');
   t('Videographer');
   t('Videographer invoice');
   t('Voice over');
