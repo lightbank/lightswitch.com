@@ -6,6 +6,7 @@
 			$('#edit-business-logo-upload').attr('size', 15);
 			$('#edit-signed-production-release-upload').attr('size', 15);
 			$('#edit-videographer-invoice-upload').attr('size', 15);
+			$('.left input[type="file"]').attr('size', 15);
     }
   };
   
@@ -95,8 +96,9 @@
 		}
 		
 		// custom date fields
+		$('#edit-field-shoot-date-und-0-show-todate:not(:checked)').click();
 		update_date_fields();
-		$('#edit-bxdev-shoot-time1, #edit-bxdev-shoot-time2').change(function() {
+		$('#edit-bxdev-shoot-time1, #edit-bxdev-shoot-time2, #edit-bxdev-shoot-date').change(function() {
 			update_date_fields();
 		});
 		
@@ -105,8 +107,10 @@
 		 * Match the hidden CCK date fields with our custom time drop-downs
 		 */
 		function update_date_fields(){
+			var date = $('#edit-bxdev-shoot-date').val();
 			var time1 = $('#edit-bxdev-shoot-time1').val();
 			var time2 = $('#edit-bxdev-shoot-time2').val();
+			$('#edit-field-shoot-date-und-0-value-datepicker-popup-0, #edit-field-shoot-date-und-0-value2-datepicker-popup-0').val(date);
 			$('#edit-field-shoot-date-und-0-value-timeEntry-popup-1').val(time1);
 			$('#edit-field-shoot-date-und-0-value2-timeEntry-popup-1').val(time2);
 		}

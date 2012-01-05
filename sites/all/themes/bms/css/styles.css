@@ -130,6 +130,9 @@ input[type="submit"] {
 
 td input[type="submit"] {
 	height: 20px;
+	line-height: 24px;
+	font-size: 14px;
+	padding: 0 5px;
 }
 
 
@@ -502,6 +505,16 @@ footer {
 	height: 120px;
 }
 
+.page-sales-add #project-node-form #edit-field-logo .form-submit {
+	height: 20px;
+	line-height: 24px;
+	font-size: 14px;
+	padding: 0 5px;
+}
+
+.page-sales-add #project-node-form #edit-field-logo .tabledrag-toggle-weight {
+	display: none;
+}
 
 /** SIGN IN FORM
 ================================================**/
@@ -828,13 +841,26 @@ footer {
 	border-radius: 10px;
 }
 
-#bxdev-project-logo-upload-form #edit-business-logo-remove-button,
 #bxdev-project-videographer-documents-form #edit-signed-production-release-remove-button,
 #bxdev-project-videographer-documents-form #edit-videographer-invoice-remove-button {
 	font-size: 12px;
-	height: auto;
+	height: 20px;
+	line-height: 24px;
 	background: transparent;
 	color: #f00;
+}
+
+#bxdev-project-logo-upload-form input[value="Remove"],
+#bxdev-project-logo-upload-form input[value="Upload"] {
+	display: none;
+}
+
+#bxdev-project-logo-upload-form input[value="Add"] {
+	font-size: 12px;
+	padding: 5px 10px;
+	height: auto;
+	line-height: 14px;
+	margin-right: 10px;
 }
 
 #bxdev-project-logo-upload-form #edit-business-logo-upload-button,

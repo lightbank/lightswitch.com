@@ -24,6 +24,12 @@ function bxdev_vid_menu() {
     'access arguments' => array('pc'),
 		'type' => MENU_CALLBACK,
 	);
+	
+	$items['terms/get'] = array(
+		'page callback' => 'bxdev_vid_terms_get_page',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
 
   return $items;
 }
@@ -87,6 +93,24 @@ function bxdev_vid_preprocess_page(&$variables) {
  */
 
 /**
+ * Implements hook_form_alter().
+ */
+function bxdev_vid_form_alter(&$form, &$form_state, $form_id) {
+	// if editing a user
+	if(!empty($form['#user'])){
+		global $user;
+		// get the logged in user's role
+		$current_user_role = bxdev_user_get_role($user->uid);
+		// get the user's role being edited
+		$form_role = bxdev_user_get_role($form['#user']->uid);
+		// if the user profile form and logged in user is 'pc' and user being edited is a 'videographer'
+		if($form_id == 'user_profile_form' && $current_user_role == 'pc' && $form_role == 'videographer'){
+			$form['#submit'][] = 'bxdev_vid_edit_redirect';
+		}
+	}
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
@@ -134,6 +158,14 @@ function bxdev_vid_user_register_submit($form, &$form_state){
 }
 
 /**
+ * Submit handler: videographer edit (by pc)
+ */
+function bxdev_vid_edit_redirect(&$form, &$form_state){
+	$uid = arg(1);
+	$form_state['redirect'] = 'user/' . $uid . '/info';
+}
+
+/**
  * Validation handler: user register
  */
 function bxdev_vid_user_register_validate($form, &$form_state){
@@ -145,7 +177,7 @@ function bxdev_vid_user_register_validate($form, &$form_state){
 	}
 	// if videographer has not checked the accept box
 	if($values['profile_videographer']['field_videographer_terms']['und'][0]['value'] === 0){
-		form_set_error('profile_videographer[field_videographer_terms][und', 'You must accept the Lightswitch terms and policies');
+		form_set_error('profile_videographer[field_videographer_terms][und', 'You must accept the Independent Contractor Agreement');
 	}
 }
 
@@ -201,7 +233,7 @@ function bxdev_vid_user_view_page($user){
 		
 		$output .= '<div class="left-bottom">';
 			$output .= '<div class="controls">
-				<div class="edit"><a href="/user/' . $user->uid . '/edit">EDIT</a></div>
+				<div class="edit"><a href="/user/' . $user->uid . '/edit/videographer">EDIT</a></div>
 				<div class="delete"><a href="/user/' . $user->uid . '/cancel">DELETE</a></div>
 			</div>';		
 		$output .= '</div>';
@@ -222,7 +254,15 @@ function bxdev_vid_user_view_page($user){
 	return $output;
 }
 
-
+/**
+ * Page callback: get terms
+ */
+function bxdev_vid_terms_get_page(){
+	// load the terms page node
+	$node = node_load(1005);
+	// dpm($node);
+	print $node->body['und'][0]['value'];
+}
 
 
 

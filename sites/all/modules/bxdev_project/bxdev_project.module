@@ -650,20 +650,41 @@ function bxdev_project_photo_approval_form($form, $form_state){
 function bxdev_project_logo_upload_form($form, &$form_state){
 	$nid = arg(1);
 	$node = node_load($nid);
-	$form['business_logo'] = array(
+	$count = 0;
+	
+	$form['#tree'] = TRUE;
+	
+	$form['title']['#markup'] = t('<label>Business logos</label>');
+	$form['title']['#prefix'] = '<div class="logo-upload-wrapper">';
+	
+	if(!empty($node->field_logo['und'])){
+		foreach($node->field_logo['und'] as $key => $fid){
+			$form['business_logo'][$key] = array(
+				'#type' => 'managed_file',
+				'#size' => 30,
+				'#default_value' => $fid['fid'],
+				'#upload_location' => 'public://business_logos',
+				'#upload_validators' => array(
+					'file_validate_extensions' => array('jpg jpeg gif png pdf'),
+				),
+			);
+			$count++;	
+		}
+	}
+	
+	$form['business_logo'][$count] = array(
 		'#type' => 'managed_file',
-		'#title' => t('Business logo'),
 		'#size' => 30,
-		'#default_value' => (!empty($node->field_logo['und'][0])) ? $node->field_logo['und'][0]['fid'] : '',
 		'#upload_location' => 'public://business_logos',
 		'#upload_validators' => array(
-			'file_validate_extensions' => array('jpg jpeg gif png'),
+			'file_validate_extensions' => array('jpg jpeg gif png pdf'),
 		),
 	);
 	
 	$form['save'] = array(
 	  '#type' => 'submit',
 	  '#value' => t('Save'),
+		'#suffix' => '</div>',
 	);	
 	
 	return $form;
@@ -725,7 +746,6 @@ function bxdev_project_form_project_node_form_validate($form, &$form_state){
 	// set the original date fields
 	form_set_value($form['field_shoot_date']['und'][0]['value'], $timestamp1, $form_state);
 	form_set_value($form['field_shoot_date']['und'][0]['value2'], $timestamp2, $form_state);
-	dpm($form_state);
 }
 
 /**
@@ -735,27 +755,26 @@ function bxdev_project_logo_upload_form_submit($form, &$form_state){
 	$values = $form_state['values'];
 	$nid = arg(1);
 	$node = node_load($nid);
-	// if no file, remove logo file from the node
-	if(empty($values['business_logo'])){
-		unset($node->field_logo['und'][0]);
-		node_save($node);
-	}else{
-		// get the file object
-		$file = file_load($values['business_logo']);
-		$file->status = FILE_STATUS_PERMANENT;
-		file_save($file);
-		// create a file array to attach to the node
-		$node_file = array(
-			'uid' => $file->uid,
-			'uri' => $file->uri,
-			'fid' => $file->fid,
-			'status' => 1,
-			'display' => 1,
-			'description' => '',
-		);
-		$node->field_logo['und'][0] = $node_file;
-		node_save($node);
+	unset($node->field_logo['und']);
+	foreach($values['business_logo'] as $key => $fid){
+		if($fid !== 0){
+			// get the file object
+			$file = file_load($fid);
+			$file->status = FILE_STATUS_PERMANENT;
+			file_save($file);
+			// create a file array to attach to the node
+			$node_file = array(
+				'uid' => $file->uid,
+				'uri' => $file->uri,
+				'fid' => $file->fid,
+				'status' => 1,
+				'display' => 1,
+				'description' => '',
+			);
+			$node->field_logo['und'][$key] = $node_file;	
+		}		
 	}
+	node_save($node);
 }
 
 /**
