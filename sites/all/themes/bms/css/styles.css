@@ -349,6 +349,12 @@ footer {
 	background-position: 165px -120px;
 }
 
+.page-node-31 #content {
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+
 #business-node-form #edit-actions input {
 	background-position: 80px -120px;
 }

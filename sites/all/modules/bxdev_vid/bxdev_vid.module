@@ -147,7 +147,6 @@ function bxdev_vid_user_register_validate($form, &$form_state){
 	if($values['profile_videographer']['field_videographer_terms']['und'][0]['value'] === 0){
 		form_set_error('profile_videographer[field_videographer_terms][und', 'You must accept the Lightswitch terms and policies');
 	}
-	dpm($values);
 }
 
 /**

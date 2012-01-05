@@ -520,8 +520,8 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'title' => 'title',
     'created' => 'created',
     'field_shoot_date' => 'field_shoot_date',
-    'field_pc_ref' => 'field_pc_ref',
-    'field_videog_ref' => 'field_videog_ref',
+    'field_name' => 'field_name',
+    'field_name_1' => 'field_name_1',
     'field_status' => 'field_status',
     'field_status_date_value' => 'field_status_date_value',
     'field_status_date' => 'field_status_date',
@@ -573,13 +573,13 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'align' => '',
       'separator' => '',
     ),
-    'field_pc_ref' => array(
+    'field_name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
     ),
-    'field_videog_ref' => array(
+    'field_name_1' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -793,6 +793,12 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['autosubmit'] = 1;
   $handler->display->display_options['exposed_form']['options']['autosubmit_hide'] = 1;
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '20';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Author */
@@ -814,6 +820,13 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['relationships']['field_videog_ref_uid']['label'] = 'videog';
   $handler->display->display_options['relationships']['field_videog_ref_uid']['required'] = 0;
   $handler->display->display_options['relationships']['field_videog_ref_uid']['delta'] = '-1';
+  /* Relationship: Content: Production coordinator (field_pc_ref) */
+  $handler->display->display_options['relationships']['field_pc_ref_uid']['id'] = 'field_pc_ref_uid';
+  $handler->display->display_options['relationships']['field_pc_ref_uid']['table'] = 'field_data_field_pc_ref';
+  $handler->display->display_options['relationships']['field_pc_ref_uid']['field'] = 'field_pc_ref_uid';
+  $handler->display->display_options['relationships']['field_pc_ref_uid']['label'] = 'pc';
+  $handler->display->display_options['relationships']['field_pc_ref_uid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_pc_ref_uid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
@@ -987,54 +1000,55 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'show_repeat_rule' => 'show',
   );
   $handler->display->display_options['fields']['field_shoot_date']['field_api_classes'] = 0;
-  /* Field: Content: Production coordinator */
-  $handler->display->display_options['fields']['field_pc_ref']['id'] = 'field_pc_ref';
-  $handler->display->display_options['fields']['field_pc_ref']['table'] = 'field_data_field_pc_ref';
-  $handler->display->display_options['fields']['field_pc_ref']['field'] = 'field_pc_ref';
-  $handler->display->display_options['fields']['field_pc_ref']['label'] = 'PC';
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_pc_ref']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_pc_ref']['empty'] = '<a href="/project/[nid]/claim">claim</a>';
-  $handler->display->display_options['fields']['field_pc_ref']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_pc_ref']['field_api_classes'] = 0;
-  /* Field: Content: Videographer */
-  $handler->display->display_options['fields']['field_videog_ref']['id'] = 'field_videog_ref';
-  $handler->display->display_options['fields']['field_videog_ref']['table'] = 'field_data_field_videog_ref';
-  $handler->display->display_options['fields']['field_videog_ref']['field'] = 'field_videog_ref';
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['make_link'] = 1;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['path'] = 'user/[uid]/info';
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_videog_ref']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_videog_ref']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_videog_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_videog_ref']['type'] = 'user_reference_plain';
-  $handler->display->display_options['fields']['field_videog_ref']['field_api_classes'] = 0;
+  /* Field: User: Full name */
+  $handler->display->display_options['fields']['field_name']['id'] = 'field_name';
+  $handler->display->display_options['fields']['field_name']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name']['relationship'] = 'field_pc_ref_uid';
+  $handler->display->display_options['fields']['field_name']['label'] = 'PC';
+  $handler->display->display_options['fields']['field_name']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_name']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_name']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_name']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_name']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_name']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_name']['empty'] = '<a href="/project/[nid]/claim">claim</a>';
+  $handler->display->display_options['fields']['field_name']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_name']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_name']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_name']['field_api_classes'] = 0;
+  /* Field: User: Full name */
+  $handler->display->display_options['fields']['field_name_1']['id'] = 'field_name_1';
+  $handler->display->display_options['fields']['field_name_1']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name_1']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name_1']['relationship'] = 'field_videog_ref_uid';
+  $handler->display->display_options['fields']['field_name_1']['label'] = 'Videographer';
+  $handler->display->display_options['fields']['field_name_1']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['field_api_classes'] = 0;
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_status']['id'] = 'field_status';
   $handler->display->display_options['fields']['field_status']['table'] = 'field_data_field_status';

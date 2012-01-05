@@ -120,16 +120,10 @@ function bxdev_user_user_presave(&$edit, $account, $category) {
  */
 function bxdev_user_user_login(&$edit, $account) {
 	// if first time login
-	if($account->data['first_time_login']){
-		$options = array();
-		// check for destination param
-		if(isset($_GET['url'])){
-			$options['query'] = array(
-				'destination' => $_GET['url'],
-			);
-		}
-		drupal_goto('user/change/password', $options);
-	}
+	bxdev_user_first_time_login_check($account);
+	
+	// if first time login does not redirect user, check for terms acceptance
+	bxdev_user_terms_accept_check($account);	
 }
 
 /**
@@ -473,16 +467,12 @@ function bxdev_user_change_password_form_submit($form, &$form_state){
 	drupal_set_message('Your password has been saved!');
 	watchdog('lightswitch', 'Changed password - first time login: @name, uid: @uid', array('@name' => $user->name, '@uid' => $user->uid));
 	
-	// check if videographer
-	if(bxdev_user_get_role($user->uid) == 'videographer'){
-		// load the user's profile		
-		$profile = profile2_load_by_user($user, 'videographer');
-		// check if videographer has accepted terms
-		if($profile->field_videographer_terms['und'][0]['value'] == 0){
-			drupal_goto('user/accept-terms');
-		}
-	}
-	drupal_goto('user/' . $user->uid);
+	// check if the user has accepted the Lightswitch terms
+	bxdev_user_terms_accept_check($user);
+	
+	// if terms accept check has not redirected user, redirect to the profile page
+	drupal_goto('user');
+	
 }
 
 /**
@@ -601,6 +591,40 @@ function bxdev_user_convert_videographer_nodes(){
 		profile2_save($profile);
 	}
 }
+
+/**
+ * Check if user has accepted the terms and policies
+ */
+function bxdev_user_terms_accept_check($account){
+	// check if videographer
+	if(bxdev_user_get_role($account->uid) == 'videographer'){
+		// load the user's profile		
+		$profile = profile2_load_by_user($account, 'videographer');
+		// check if videographer has accepted terms
+		if($profile->field_videographer_terms['und'][0]['value'] == 0){
+			drupal_goto('user/accept-terms');
+		}
+	}
+	drupal_goto('user/' . $account->uid);
+}
+
+/**
+ * Check if first time login for user
+ */
+function bxdev_user_first_time_login_check($account){
+	// if first time login
+	if($account->data['first_time_login']){
+		$options = array();
+		// check for destination param
+		if(isset($_GET['url'])){
+			$options['query'] = array(
+				'destination' => $_GET['url'],
+			);
+		}
+		drupal_goto('user/change/password', $options);
+	}
+}
+
 
 /**
  * CLASS
