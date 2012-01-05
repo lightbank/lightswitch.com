@@ -104,9 +104,9 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 	
 	// modify validation / submit handlers
 	array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
-	unset($form['#submit'][0]);
-	unset($form['#submit'][1]);
-	array_unshift($form['#submit'], 'bxdev_vid_user_register_submit');
+	$form['#submit'][0] = 'bxdev_vid_user_register_submit';
+	// unset($form['#submit'][1]);
+	// array_unshift($form['#submit'], 'bxdev_vid_user_register_submit');
 	
 	// left / right wrappers
 	$form['field_name']['#prefix'] = '<div class="left">';
