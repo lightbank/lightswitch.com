@@ -2088,6 +2088,30 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
     'videographer' => 'videographer',
   );
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Profile: Select the nearest city */
+  $handler->display->display_options['fields']['field_region']['id'] = 'field_region';
+  $handler->display->display_options['fields']['field_region']['table'] = 'field_data_field_region';
+  $handler->display->display_options['fields']['field_region']['field'] = 'field_region';
+  $handler->display->display_options['fields']['field_region']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_region']['label'] = '';
+  $handler->display->display_options['fields']['field_region']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_region']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_region']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_region']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_region']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_region']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_region']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_region']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_region']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_region']['field_api_classes'] = 0;
   /* Field: User: Full name */
   $handler->display->display_options['fields']['field_name']['id'] = 'field_name';
   $handler->display->display_options['fields']['field_name']['table'] = 'field_data_field_name';
@@ -2113,6 +2137,11 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['field_name']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Profile: Select the nearest city (field_region) */
+  $handler->display->display_options['sorts']['field_region_value']['id'] = 'field_region_value';
+  $handler->display->display_options['sorts']['field_region_value']['table'] = 'field_data_field_region';
+  $handler->display->display_options['sorts']['field_region_value']['field'] = 'field_region_value';
+  $handler->display->display_options['sorts']['field_region_value']['relationship'] = 'profile';
   /* Sort criterion: User: Full name (field_name) */
   $handler->display->display_options['sorts']['field_name_value']['id'] = 'field_name_value';
   $handler->display->display_options['sorts']['field_name_value']['table'] = 'field_data_field_name';
@@ -2124,12 +2153,10 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['arguments']['field_region_value']['table'] = 'field_data_field_region';
   $handler->display->display_options['arguments']['field_region_value']['field'] = 'field_region_value';
   $handler->display->display_options['arguments']['field_region_value']['relationship'] = 'profile';
-  $handler->display->display_options['arguments']['field_region_value']['default_action'] = 'default';
   $handler->display->display_options['arguments']['field_region_value']['default_argument_type'] = 'php';
   $handler->display->display_options['arguments']['field_region_value']['default_argument_options']['code'] = '$nid = arg(1);
 $project = new Project($nid);
-//return $project->business-> field_business_city[\'und\'][0][\'value\'];
-return \'chicago\';';
+return $project->business-> field_business_city[\'und\'][0][\'value\'];';
   $handler->display->display_options['arguments']['field_region_value']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['field_region_value']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_region_value']['summary']['format'] = 'default_summary';

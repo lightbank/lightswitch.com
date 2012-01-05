@@ -1,9 +1,7 @@
 (function ($) {
 	
 	/**
-	 * Attach an event to the input form buttons
-	 *
-	 * Tried to bind to all forms but didn't work and this did... I'm sure it can be improved
+	 * Silly Safari hack to prevent file upload hanging
 	 */
 	Drupal.behaviors.safari_upload = {
 		attach: function(context) {

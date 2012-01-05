@@ -260,7 +260,6 @@ function bxdev_vid_user_view_page($user){
 function bxdev_vid_terms_get_page(){
 	// load the terms page node
 	$node = node_load(1005);
-	// dpm($node);
 	print $node->body['und'][0]['value'];
 }
 

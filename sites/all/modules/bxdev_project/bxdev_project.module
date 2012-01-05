@@ -371,9 +371,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		$form['field_author']['und']['#type'] = 'hidden';
 		$form['field_author']['und']['#default_value'] = $user->uid;		
 	}
-	
-	dpm($form);
-	
+		
 	// add custom validation handler
 	$form['actions']['submit']['#validate'][] = 'bxdev_project_form_project_node_form_validate';
 	// create a fieldset
@@ -627,7 +625,6 @@ function bxdev_project_photo_approval_form($form, $form_state){
 		// build the images and checkboxes
 		foreach($render['field_project_photos'] as $key => $value){
 			if(is_numeric($key)){
-				// dpm($value);
 				$path = file_create_url($full['field_project_photos'][$key]['#item']['uri']);
 				$form['approve'][$value['#item']['fid']] = array(
 				  '#type' => 'checkbox',
