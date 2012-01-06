@@ -103,6 +103,17 @@ function feature_content_types_field_default_fields() {
         'allowed_values' => array(
           'chicago' => 'Chicago',
           'new_york' => 'New York',
+          'test' => 'Test',
+          'dallas' => 'Dallas',
+          'houston' => 'Houston',
+          'denver' => 'Denver',
+          'charlotte' => 'Charlotte',
+          'sacramento' => 'Sacramento',
+          'san_fran' => 'San Fran',
+          'portland' => 'Portland',
+          'tampa' => 'Tampa',
+          'washington_dc' => 'Washington DC',
+          'los_angeles' => 'Los Angeles',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -419,6 +430,12 @@ function feature_content_types_field_default_fields() {
         'allowed_values' => array(
           'retail' => 'Retail',
           'food' => 'Food',
+          'real_estate' => 'Real Estate',
+          'beauty' => 'Beauty',
+          'health' => 'Health',
+          'hospitality' => 'Hospitality',
+          'auto' => 'Auto',
+          'fitness' => 'Fitness',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -1973,12 +1990,12 @@ function feature_content_types_field_default_fields() {
         ),
         'referenceable_status' => array(
           0 => 0,
-          1 => '1',
+          1 => 0,
         ),
         'view' => array(
           'args' => array(),
           'display_name' => 'references_1',
-          'view_name' => 'users',
+          'view_name' => 'Users',
         ),
       ),
       'translatable' => '0',
@@ -1995,7 +2012,7 @@ function feature_content_types_field_default_fields() {
           'module' => 'user_reference',
           'settings' => array(),
           'type' => 'user_reference_default',
-          'weight' => 31,
+          'weight' => 30,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3110,12 +3127,7 @@ function feature_content_types_field_default_fields() {
             'image' => 0,
             'video' => 'video',
           ),
-          'browser_plugins' => array(
-            'library' => 0,
-            'media_default--media_browser_1' => 0,
-            'media_internet' => 'media_internet',
-            'upload' => 0,
-          ),
+          'file_extensions' => 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp mp3 mov m4v mp4 mpeg avi ogg wmv ico',
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
@@ -3265,8 +3277,8 @@ function feature_content_types_field_default_fields() {
       'label' => 'Shoot date',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
-        'default_value2' => 'now',
+        'default_value' => 'blank',
+        'default_value2' => 'same',
         'default_value_code' => '',
         'default_value_code2' => '',
         'user_register_form' => FALSE,
@@ -3786,7 +3798,7 @@ function feature_content_types_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 30,
+          'weight' => 31,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4170,11 +4182,947 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'profile2-client-field_businesses_ref'
+  $fields['profile2-client-field_businesses_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_businesses_ref',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => 0,
+        'referenceable_types' => array(
+          'business' => 'business',
+          'fact' => 0,
+          'faq' => 0,
+          'page' => 0,
+          'project' => 0,
+          'video' => 0,
+          'videographer' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'client',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 20,
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_businesses_ref',
+      'label' => 'Businesses',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => 0,
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_address'
+  $fields['profile2-videographer-field_address'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_address',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '1',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_address',
+      'label' => 'Address',
+      'required' => 1,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_availability'
+  $fields['profile2-videographer-field_availability'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_availability',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '7',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_availability',
+      'label' => 'Availablity',
+      'required' => 1,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '7',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_equipment'
+  $fields['profile2-videographer-field_equipment'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_equipment',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '5',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_equipment',
+      'label' => 'Equipment',
+      'required' => 1,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '5',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_links_work'
+  $fields['profile2-videographer-field_links_work'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_links_work',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '6',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_links_work',
+      'label' => 'Links to examples of work',
+      'required' => 1,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_notes'
+  $fields['profile2-videographer-field_notes'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_notes',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '10',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_notes',
+      'label' => 'Notes',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '10',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_post_comments'
+  $fields['profile2-videographer-field_post_comments'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_post_comments',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '2',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_post_comments',
+      'label' => 'Post comments',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '0',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_rating'
+  $fields['profile2-videographer-field_rating'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_rating',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          1 => '1',
+          2 => '2',
+          3 => '3',
+          4 => '4',
+          5 => '5',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '9',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_rating',
+      'label' => 'Rating',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '9',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_region'
+  $fields['profile2-videographer-field_region'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_region',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'new_york' => 'New York',
+          'los_angeles' => 'Los Angeles',
+          'chicago' => 'Chicago',
+          'philadelphia' => 'Philadelphia',
+          'dallas' => 'Dallas-Ft. Worth',
+          'san_fran' => 'San Fran-Oak-San Jose',
+          'boston' => 'Boston',
+          'washington' => 'Washington, DC',
+          'atlanta' => 'Atlanta',
+          'houston' => 'Houston',
+          'detroit' => 'Detroit',
+          'seattle' => 'Seattle-Tacoma',
+          'phoenix' => 'Phoenix',
+          'tampa' => 'Tampa-St. Pete',
+          'st_paul' => 'Minneapolis-St. Paul',
+          'miami' => 'Miami-Ft. Lauderdale',
+          'denver' => 'Denver',
+          'cleveland' => 'Cleveland',
+          'orlando' => 'Orlando',
+          'sacramento' => 'Sacramento',
+          'Vancouver' => 'Vancouver',
+          'austin' => 'Austin',
+          'portland' => 'Portland',
+          'salt_lake' => 'Salt Lake',
+          'charlotte' => 'Charlotte',
+          'nashville' => 'Nashville',
+          'new_buffalo' => 'New Buffalo',
+          'traverse_city' => 'Traverse City',
+          'orange_county' => 'Orange County',
+          'toronto' => 'Toronto',
+          'las_vegas' => 'Las Vegas',
+          'san_diego' => 'San Diego',
+          'baltimore' => 'Baltimore',
+          'cincinnati' => 'Cincinnati',
+          'columbus' => 'Columbus',
+          'indianapolis' => 'Indianapolis',
+          'kansas_city' => 'Kansas City',
+          'north_jersey' => 'North Jersey',
+          'pittsburgh' => 'Pittsburgh',
+          'raleigh' => 'Raleigh',
+          'san_antonio' => 'San Antonio',
+          'st_louis' => 'St. Louis',
+          'ventura_ca' => 'Ventura, CA',
+          'milwaukee' => 'Milwaukee',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '0',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_region',
+      'label' => 'Select the nearest city',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_resume'
+  $fields['profile2-videographer-field_resume'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_resume',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'profile2_private' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => '8',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'ffp_field_resume' => array(
+        'active_updating' => 0,
+        'file_name' => '[file:ffp-name-only-original].[file:ffp-extension-original]',
+        'file_name_cleanup' => array(
+          'file_name_pathauto' => 0,
+          'file_name_tolower' => 0,
+          'file_name_transliterate' => 0,
+        ),
+        'file_path' => '',
+        'file_path_cleanup' => array(
+          'file_path_pathauto' => 0,
+          'file_path_tolower' => 0,
+          'file_path_transliterate' => 0,
+        ),
+        'retroactive_update' => 0,
+      ),
+      'field_name' => 'field_resume',
+      'label' => 'Upload resume',
+      'required' => 1,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'pdf doc docx txt',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'insert' => 0,
+          'insert_class' => '',
+          'insert_default' => 'auto',
+          'insert_styles' => array(
+            'auto' => 'auto',
+            'image' => 0,
+            'image_approval' => 0,
+            'image_business_large' => 0,
+            'image_business_thumb' => 0,
+            'image_large' => 0,
+            'image_medium' => 0,
+            'image_project_thumb' => 0,
+            'image_square_thumbnail' => 0,
+            'image_thumbnail' => 0,
+            'image_video_thumb_home_border' => 0,
+            'image_video_thumb_home_bw' => 0,
+            'link' => 0,
+          ),
+          'insert_width' => '',
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_skills'
+  $fields['profile2-videographer-field_skills'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_skills',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'shooter' => 'Video Shooter',
+          'editor' => 'Video Editor',
+          'shooter_editor' => 'Video Shooter & Editor',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '4',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_skills',
+      'label' => 'Skills',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_transportation'
+  $fields['profile2-videographer-field_transportation'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_transportation',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '3',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_transportation',
+      'label' => 'Transporation',
+      'required' => 1,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_videographer_terms'
+  $fields['profile2-videographer-field_videographer_terms'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_videographer_terms',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '<a href="/terms/get" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 11,
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_videographer_terms',
+      'label' => 'I accept the Independent Contractor Agreement',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '11',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
+  t('<a href="/terms/get" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
   t('Address');
   t('Approved');
   t('Author');
+  t('Availablity');
   t('Business');
   t('Business PDF file');
   t('Business PDF label');
@@ -4184,16 +5132,22 @@ function feature_content_types_field_default_fields() {
   t('Business logo file');
   t('Business overview paragraph');
   t('Business owner interview');
+  t('Businesses');
   t('Category');
   t('City');
   t('Client');
   t('Client responded');
   t('Comment');
+  t('Equipment');
   t('Features & areas to avoid?');
   t('Features & areas to include?');
   t('Hours of operation');
+  t('I accept the Independent Contractor Agreement');
+  t('Links to examples of work');
+  t('Notes');
   t('PC notes');
   t('Phone');
+  t('Post comments');
   t('Price');
   t('Production coordinator');
   t('Profile video');
@@ -4203,8 +5157,10 @@ function feature_content_types_field_default_fields() {
   t('Public email');
   t('Rating');
   t('Script notes');
+  t('Select the nearest city');
   t('Shoot date');
   t('Signed production release');
+  t('Skills');
   t('Social URL 1');
   t('Social URL 2');
   t('Social URL 3');
@@ -4216,6 +5172,8 @@ function feature_content_types_field_default_fields() {
   t('Status');
   t('Status date');
   t('Status override');
+  t('Transporation');
+  t('Upload resume');
   t('Video');
   t('Video type');
   t('Videographer');
