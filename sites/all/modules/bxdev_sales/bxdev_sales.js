@@ -37,6 +37,15 @@
 			this.selected = false;
 			$(this.ariaLive).empty();			
 		}
+				
+		// visibility toggle for new / existing client
+		$('.new-client-btn').click(function(){
+			$('.new-client-wrapper').toggle();
+			$('#edit-field-client-ref').toggle();
+			$('#edit-field-client-ref-und').val('_none');
+			$('#edit-new-client-email, #edit-new-client-name, #edit-new-client-phone').val('');
+			return false;
+		});
 		
 	});	
 

@@ -13,7 +13,7 @@ function bxdev_user_preprocess_page(&$vars){
 		$user = user_load(arg(1));
 		// set the title
 		drupal_set_title('Welcome, ' . $user->field_name['und'][0]['value']);
-	}
+	}	
 }
 
 /**
@@ -189,6 +189,72 @@ function bxdev_user_mail($key, &$message, $params) {
 			$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
 			$body .= 'Contact us with any questions or concerns.<br><br>';
 			$body .= 'Sincerely,<br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+			
+		case 'direct_sale_new':
+			$subject = t('Your Lightswitch video is ready for review!');
+			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts. Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '<br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
+			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you’d like changes made to your video, login  and fill out all requested changes in the "Post a comment" field under your video. Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it.  Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
+			$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
+			$body .= 'Contact us with any questions or concerns.<br><br>';
+			$body .= 'Sincerely,<br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+			
+		case 'direct_sale_existing':
+			$subject = t('Your Lightswitch video is ready for review!');
+			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts. Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/user?destination=' . $params['project_path'] . '">' . $base_url . '/user?destination=' . $params['project_path'] . '</a><br><br>';
+			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you’d like changes made to your video, login  and fill out all requested changes in the "Post a comment" field under your video. Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it.  Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
+			$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
+			$body .= 'Contact us with any questions or concerns.<br><br>';
+			$body .= 'Sincerely,<br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+
+		case 'spec_new':
+			$subject = t('Your Lightswitch video is ready for review!');
+			$body = 'Hello ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'A lightswitch videographer was in ' . $params['business'] . ' a couple of weeks ago to capture footage of your business. Your video is complete and ready for your viewing! If you are interested in purchasing the video you would be able to make a round of edits/changes to the video as you wish. We would also remove all lightswitch branding from the final version and send you the video in easy to download file formats. You would own full rights to your video and can use it on any of your online marketing pages. The video is a one time fee of only $299!<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '<br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
+			$body .= 'Please review the video and let me know what you think!<br><br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+
+		case 'spec_existing':
+			$subject = t('Your Lightswitch video is ready for review!');
+			$body = 'Hello ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'A lightswitch videographer was in ' . $params['business'] . ' a couple of weeks ago to capture footage of your business. Your video is complete and ready for your viewing! If you are interested in purchasing the video you would be able to make a round of edits/changes to the video as you wish. We would also remove all lightswitch branding from the final version and send you the video in easy to download file formats. You would own full rights to your video and can use it on any of your online marketing pages. The video is a one time fee of only $299!<br><br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/user?destination=' . $params['project_path'] . '">' . $base_url . '/user?destination=' . $params['project_path'] . '</a><br><br>';
+			$body .= 'Please review the video and let me know what you think!<br><br>';
 			$body .= $params['pc']['full_name'] . '<br>';
 			$body .= $params['pc']['email'] . '<br>';
 			$body .= $params['pc']['phone'];
@@ -802,20 +868,42 @@ class User {
 	 *   Project nid.
 	 */
 	function send_client_project_login($nid){
-		$this->reset_password();
 		$project = new Project($nid);
 		$params = array(
 			'name' => $this->user->name,
 			'pass' => $this->password,
 			'project_path' => $project->project_path,
 			'full_name' => $this->user->field_name['und'][0]['value'],
+			'business' => $project->business->title,
 			'pc' => array(
 				'full_name' => $project->pc->field_name['und'][0]['value'],
 				'email' => $project->pc->mail,
 				'phone' => $project->pc->field_phone['und'][0]['value'],
 			),
 		);
-		drupal_mail('bxdev_user', 'client_reset', $this->user->mail, language_default(), $params);
+		
+		// if client has never logged in (is new)
+		if($this->user->data['first_time_login'] == 1){
+			// reset the password
+			$this->reset_password();
+			// if project is spec
+			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
+				drupal_mail('bxdev_user', 'spec_new', $this->user->mail, language_default(), $params);
+			// if project is direct sale
+			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
+				drupal_mail('bxdev_user', 'direct_sale_new', $this->user->mail, language_default(), $params);
+			}
+		// if client has logged in before (existing)
+		}else{
+			// if project is spec
+			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
+				drupal_mail('bxdev_user', 'spec_existing', $this->user->mail, language_default(), $params);
+			// if project is direct sale
+			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
+				drupal_mail('bxdev_user', 'direct_sale_existing', $this->user->mail, language_default(), $params);
+			}			
+		}	
+		
 		$project->log('admin', 'Login information reset and sent to Client');
 	}
 	

@@ -106,19 +106,21 @@ function bxdev_project_mail($key, &$message, $params) {
 function bxdev_project_node_insert($node) {
   switch($node->type){	
 		case 'project':
-			// get the business full name
-			$full_name = $node->field_business_contact_name['und'][0]['value'];
-			// get the business phone
-			$phone = $node->field_phone['und'][0]['value'];
+		
+			// // get the business full name
+			// $full_name = $node->field_business_contact_name['und'][0]['value'];
+			// // get the business phone
+			// $phone = $node->field_phone['und'][0]['value'];
+			// // load the client user object
+			// $client = user_load($business->field_client_ref['und'][0]['uid']);
+			// // assign new fields to the client user
+			// $edit = (array)$client;
+			// $edit['field_name']['und'][0]['value'] = $full_name;
+			// $edit['field_phone']['und'][0]['value'] = $phone;
+			// user_save($client, $edit);
+			
 			// load the business node object
 			$business = node_load($node->field_project_business_ref['und'][0]['nid']);
-			// load the client user object
-			$client = user_load($business->field_client_ref['und'][0]['uid']);
-			// assign new fields to the client user
-			$edit = (array)$client;
-			$edit['field_name']['und'][0]['value'] = $full_name;
-			$edit['field_phone']['und'][0]['value'] = $phone;
-			user_save($client, $edit);
 			// log action
 			watchdog('lightswitch', 'New project: @title, nid: @nid', array('@title' => $node->title, '@nid' => $node->nid));
 			$project = new Project($node->nid);
@@ -1052,7 +1054,7 @@ class Project {
 		$project = node_load($nid);
 		$business = node_load($project->field_project_business_ref['und'][0]['nid']);
 		$client = user_load($business->field_client_ref['und'][0]['uid']);
-		$sales = user_load($project->uid);
+		$sales = user_load($project->field_author['und'][0]['uid']);
 		$pc = '';
 		$videographer = '';
 		// if pc has been assigned to the project
