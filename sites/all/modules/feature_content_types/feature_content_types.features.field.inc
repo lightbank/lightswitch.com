@@ -662,8 +662,8 @@ function feature_content_types_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+          'display_name' => 'references_2',
+          'view_name' => 'users',
         ),
       ),
       'translatable' => '0',
@@ -701,7 +701,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '0',
+        'weight' => 0,
       ),
     ),
   );
@@ -715,7 +715,7 @@ function feature_content_types_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_email',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '2',
       ),
       'foreign keys' => array(),
       'indexes' => array(),
@@ -845,7 +845,7 @@ function feature_content_types_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_phone',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '2',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -1962,7 +1962,7 @@ function feature_content_types_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_author',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '2',
       ),
       'foreign keys' => array(
         'uid' => array(
@@ -1995,7 +1995,7 @@ function feature_content_types_field_default_fields() {
         'view' => array(
           'args' => array(),
           'display_name' => 'references_1',
-          'view_name' => 'Users',
+          'view_name' => 'users',
         ),
       ),
       'translatable' => '0',
@@ -2023,7 +2023,7 @@ function feature_content_types_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_author',
-      'label' => 'Author',
+      'label' => 'Sales',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -2047,7 +2047,7 @@ function feature_content_types_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_business_contact_name',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '2',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -2100,7 +2100,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_business_contact_name',
       'label' => 'Business contact name',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -2205,7 +2205,7 @@ function feature_content_types_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_email',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '2',
       ),
       'foreign keys' => array(),
       'indexes' => array(),
@@ -2246,7 +2246,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_email',
       'label' => 'Business contact email',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -2785,7 +2785,7 @@ function feature_content_types_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_phone',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '2',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -2838,7 +2838,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_phone',
       'label' => 'Business contact phone',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -4583,7 +4583,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -4712,7 +4712,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -5111,7 +5111,112 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '11',
+        'weight' => '12',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_videographer_w9'
+  $fields['profile2-videographer-field_videographer_w9'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_videographer_w9',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'profile2_private' => 0,
+        'uri_scheme' => 'private',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'deleted' => '0',
+      'description' => 'Click <a href="/sites/default/files/lightswitch_w9.pdf">here</a> to download the W9 form. Then upload a signed copy.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 12,
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'ffp_field_videographer_w9' => array(
+        'active_updating' => 0,
+        'file_name' => '[current-user:field_name]_w9.[file:ffp-extension-original]',
+        'file_name_cleanup' => array(
+          'file_name_pathauto' => 0,
+          'file_name_tolower' => 0,
+          'file_name_transliterate' => 0,
+        ),
+        'file_path' => 'videographer_w9',
+        'file_path_cleanup' => array(
+          'file_path_pathauto' => 0,
+          'file_path_tolower' => 0,
+          'file_path_transliterate' => 0,
+        ),
+        'retroactive_update' => 0,
+      ),
+      'field_name' => 'field_videographer_w9',
+      'label' => 'W9 form',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'jpg jpeg gif png pdf doc docx',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'insert' => 0,
+          'insert_class' => '',
+          'insert_default' => 'auto',
+          'insert_styles' => array(
+            'auto' => 'auto',
+            'image' => 0,
+            'image_approval' => 0,
+            'image_business_large' => 0,
+            'image_business_thumb' => 0,
+            'image_large' => 0,
+            'image_medium' => 0,
+            'image_project_thumb' => 0,
+            'image_square_thumbnail' => 0,
+            'image_thumbnail' => 0,
+            'image_video_thumb_home_border' => 0,
+            'image_video_thumb_home_bw' => 0,
+            'link' => 0,
+          ),
+          'insert_width' => '',
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '9',
       ),
     ),
   );
@@ -5121,7 +5226,6 @@ function feature_content_types_field_default_fields() {
   t('<a href="/terms/get" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
   t('Address');
   t('Approved');
-  t('Author');
   t('Availablity');
   t('Business');
   t('Business PDF file');
@@ -5135,6 +5239,7 @@ function feature_content_types_field_default_fields() {
   t('Businesses');
   t('Category');
   t('City');
+  t('Click <a href="/sites/default/files/lightswitch_w9.pdf">here</a> to download the W9 form. Then upload a signed copy.');
   t('Client');
   t('Client responded');
   t('Comment');
@@ -5156,6 +5261,7 @@ function feature_content_types_field_default_fields() {
   t('Public access');
   t('Public email');
   t('Rating');
+  t('Sales');
   t('Script notes');
   t('Select the nearest city');
   t('Shoot date');
@@ -5180,6 +5286,7 @@ function feature_content_types_field_default_fields() {
   t('Videographer invoice');
   t('Voice over');
   t('Voice over gender');
+  t('W9 form');
   t('Website');
   t('What makes the biz unique different?');
 
