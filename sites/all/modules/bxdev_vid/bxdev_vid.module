@@ -135,6 +135,10 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 	$form['profile_videographer']['field_skills']['#suffix'] = '</div><div class="right">';
 	$form['profile_videographer']['field_resume']['#suffix'] = '</div>';
 	$form['#attributes']['class'][] = 'clearfix';
+	
+	if(arg(0) == 'join-our-team'){
+		unset($form['profile_videographer']['field_videographer_w9']);
+	}
 }
 
 /**
