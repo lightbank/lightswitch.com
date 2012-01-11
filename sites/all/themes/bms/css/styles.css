@@ -917,7 +917,7 @@ footer {
 }
 
 #media-browser-tabset .ui-tabs-nav {
-	display: none;
+	/*display: none;*/
 }
 
 .progress-disabled {
