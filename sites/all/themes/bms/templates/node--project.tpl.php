@@ -66,10 +66,10 @@
 	<div class="block">
 		<div class="video">
 			<div class="video-wrap-outer">
-				<?php if(isset($content['field_project_video'])): ?>
+				<?php if(!empty($content['field_project_video']['#items'])): ?>
 					<?php print render($content['field_project_video']); ?>
 				<?php else: ?>
-					<div class="no-vid">No video has been added.</div>
+					<div class="no-vid"><img src="/sites/all/themes/bms/images/pic_coming_soon.jpg" /></div>
 				<?php endif; ?>
 			</div><!-- end .video-wrap-outer -->
 			<?php if(isset($photos_teaser)): ?>

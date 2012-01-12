@@ -742,7 +742,7 @@ function _node_reference_options($field, $flat = TRUE) {
   $options = array();
   foreach ($references as $key => $value) {
     if (empty($value['group']) || $flat) {
-      $options[$key] = $value['rendered'];
+      $options[$key] = $value['title'];
     }
     else {
       // The group name, displayed in selects, cannot contain tags, and should

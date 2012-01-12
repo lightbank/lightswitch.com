@@ -215,6 +215,7 @@ function bxdev_sales_existing_business_form_submit($form, &$form_state){
  * Form submit handler: add project
  */
 function bxdev_sales_project_node_form_submit($form, &$form_state){
+		
 	// send to client add form if "return to form" button was clicked
 	if($form_state['clicked_button']['#value'] == 'Submit & Return to Form'){
 		$form_state['redirect'] = 'sales/add/business';
