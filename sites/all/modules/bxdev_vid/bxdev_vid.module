@@ -237,7 +237,7 @@ function bxdev_vid_user_view_page($user){
 			
 			$output .= '<div class="section bottom">';
 				if(isset($user_render['field_phone'])) $output .= '<div class="phone">' . $user_render['field_phone'][0]['#markup'] . '</div>';
-				$output .= '<div class="email">' . $user->mail . '</div>';
+				$output .= '<div class="email"><a href="mailto:' . $user->mail . '">' . $user->mail . '</a></div>';
 				if(isset($profile['field_address'])) $output .= '<div class="address">' . nl2br($profile['field_address'][0]['#markup']) . '</div>';
 				if(isset($profile['field_resume'])) $output .= '<div class="resume">' . render($profile['field_resume']) . '</div>';
 			$output .= '</div>';
