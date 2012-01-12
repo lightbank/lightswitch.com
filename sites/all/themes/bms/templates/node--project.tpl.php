@@ -16,7 +16,7 @@
 			<div class="contact">
 				<h3>Production Coordinator:</h3>
 				<div class="name"><?php print $pc->field_name['und'][0]['value']; ?></div>
-				<div class="email"><?php print $pc->mail; ?></div>
+				<div class="email"><a href="mailto:<?php print $pc->mail; ?>"><?php print $pc->mail; ?></a></div>
 				<div class="phone"><?php print $pc->field_phone['und'][0]['value']; ?></div>
 			</div><!-- end .contact -->
 		<?php endif; ?>
@@ -25,7 +25,7 @@
 			<div class="contact">
 				<h3>Videographer:</h3>
 				<div class="name"><?php print $videographer->field_name['und'][0]['value']; ?></div>
-				<div class="email"><?php print $videographer->mail; ?></div>
+				<div class="email"><a href="mailto:<?php print $videographer->mail; ?>"><?php print $videographer->mail; ?></a></div>
 				<div class="phone"><?php print $videographer->field_phone['und'][0]['value']; ?></div>
 			</div><!-- end .contact -->			
 		<?php endif; ?>
@@ -34,7 +34,7 @@
 			<div class="contact">
 				<h3>Client:</h3>
 				<div class="name"><?php print $client->field_name['und'][0]['value']; ?></div>
-				<div class="email"><?php print $client->mail; ?></div>
+				<div class="email"><a href="mailto:<?php print $client->mail; ?>"><?php print $client->mail; ?></a></div>
 				<div class="phone"><?php print $client->field_phone['und'][0]['value']; ?></div>
 			</div><!-- end .contact -->			
 		<?php endif; ?>

@@ -2151,9 +2151,10 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['field_rating']['alter']['html'] = 0;
   $handler->display->display_options['fields']['field_rating']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rating']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_rating']['empty'] = '0';
   $handler->display->display_options['fields']['field_rating']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_rating']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_rating']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_rating']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_rating']['field_api_classes'] = 0;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
@@ -2188,16 +2189,11 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['nothing']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nothing']['hide_alter_empty'] = 0;
   /* Sort criterion: Profile: Rating (field_rating) */
-  $handler->display->display_options['sorts']['field_rating_value_1']['id'] = 'field_rating_value_1';
-  $handler->display->display_options['sorts']['field_rating_value_1']['table'] = 'field_data_field_rating';
-  $handler->display->display_options['sorts']['field_rating_value_1']['field'] = 'field_rating_value';
-  $handler->display->display_options['sorts']['field_rating_value_1']['relationship'] = 'profile';
-  $handler->display->display_options['sorts']['field_rating_value_1']['order'] = 'DESC';
-  /* Sort criterion: Profile: Rating (field_rating) */
   $handler->display->display_options['sorts']['field_rating_value']['id'] = 'field_rating_value';
   $handler->display->display_options['sorts']['field_rating_value']['table'] = 'field_data_field_rating';
   $handler->display->display_options['sorts']['field_rating_value']['field'] = 'field_rating_value';
   $handler->display->display_options['sorts']['field_rating_value']['relationship'] = 'profile';
+  $handler->display->display_options['sorts']['field_rating_value']['order'] = 'DESC';
   $handler->display->display_options['sorts']['field_rating_value']['exposed'] = TRUE;
   $handler->display->display_options['sorts']['field_rating_value']['expose']['label'] = 'Rating';
   /* Sort criterion: User: Created date */

@@ -84,7 +84,13 @@ function bxdev_vid_preprocess_page(&$variables) {
 		$variables['videographer'] = ($variables['node']->type == 'videographer') ? TRUE : FALSE;
 	}else{
 		$variables['videographer'] = FALSE;
-	}	
+	}
+	
+	// check if page is videographer directory
+	if(arg(0) == 'videographers'){
+		$_SESSION['vid_filters'] = $_SERVER['REQUEST_URI'];
+	}
+	
 }
 
 
@@ -139,6 +145,9 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 	if(arg(0) == 'join-our-team'){
 		unset($form['profile_videographer']['field_videographer_w9']);
 	}
+	
+	dpm($form);
+	
 }
 
 /**
@@ -209,7 +218,7 @@ function bxdev_vid_user_view_page($user){
 	// get renderable array - user
 	$user_render = field_attach_view('user', $user, 'full');
 	// get the previous page
-	$referer = $_SERVER['HTTP_REFERER'];
+	$referer = (!empty($_SESSION['vid_filters'])) ? $_SESSION['vid_filters'] : '/videographers';
 	
 	drupal_set_title('lightswitch videographer directory');
 	
@@ -249,6 +258,9 @@ function bxdev_vid_user_view_page($user){
 		$output .= (!empty($profile['field_notes'][0]['#markup'])) ? '<div class="videographer-item videographer-notes"><h3>NOTES:</h3>' . strip_tags(nl2br(render($profile['field_notes']))) . '</div>' : '';
 		$output .= (!empty($profile['field_skills'][0]['#markup'])) ? '<div class="videographer-item"><h3>Skills:</h3>' . nl2br(render($profile['field_skills'])) . '</div>' : '';
 		$output .= (!empty($profile['field_transportation'][0]['#markup'])) ? '<div class="videographer-item"><h3>Transportation:</h3>' . nl2br(render($profile['field_transportation'])) . '</div>' : ''; 
+		$output .= (!empty($profile['field_camera_type'][0]['#markup'])) ? '<div class="videographer-item"><h3>Camera type:</h3>' . nl2br(render($profile['field_camera_type'])) . '</div>' : '';
+		$output .= (!empty($profile['field_audio'][0]['#markup'])) ? '<div class="videographer-item"><h3>Audio:</h3>' . nl2br(render($profile['field_audio'])) . '</div>' : '';
+		$output .= (!empty($profile['field_lighting'][0]['#markup'])) ? '<div class="videographer-item"><h3>Lighting:</h3>' . nl2br(render($profile['field_lighting'])) . '</div>' : '';
 	  $output .= (!empty($profile['field_equipment'][0]['#markup'])) ? '<div class="videographer-item"><h3>Equipment:</h3>' . nl2br(render($profile['field_equipment'])) . '</div>' : '';
 		$output .= (!empty($profile['field_links_work'][0]['#markup'])) ? '<div class="videographer-item"><h3>Links to Examples of Work:</h3>' . nl2br(render($profile['field_links_work'])) . '</div>' : '';
 		$output .= (!empty($profile['field_availability'][0]['#markup'])) ? '<div class="videographer-item"><h3>Availability:</h3>' . nl2br(render($profile['field_availability'])) . '</div>' : '';	

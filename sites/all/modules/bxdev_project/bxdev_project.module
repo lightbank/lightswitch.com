@@ -981,6 +981,8 @@ function bxdev_project_download_production_details($node){
 	header( 'Content-Type: application/msword' ); 
 	header( 'Content-Disposition: attachment; filename="' . str_replace(' ', '_', strtolower($node->title)) .  '_production_details.doc"' );
 	
+	$project = new Project($node->nid);
+	
 	$output = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">';
 	$output .= '<style type="text/css">
 		body {font-family: Arial; font-size: 20px;}
@@ -989,6 +991,14 @@ function bxdev_project_download_production_details($node){
 	</style>';
 	$output .= '<body>';
 	$output .= '<h1>' . $node->title . ' Production Details</h1>';
+	
+	$output .= '<div class="field-label">Client name:</div>';
+	$output .= '<div class="field">' . $project->client->field_name['und'][0]['value'] . '</div>';
+	$output .= '<div class="field-label">Client email:</div>';
+	$output .= '<div class="field">' . $project->client->mail . '</div>';
+	$output .= '<div class="field-label">Client phone:</div>';
+	$output .= '<div class="field">' . $project->client->field_phone['und'][0]['value'] . '</div>';	
+	
 	$output .= render(field_view_field('node', $node, 'field_shoot_date'));
 	$output .= render(field_view_field('node', $node, 'field_voice_over'));
 	$output .= render(field_view_field('node', $node, 'field_voice_over_gender'));

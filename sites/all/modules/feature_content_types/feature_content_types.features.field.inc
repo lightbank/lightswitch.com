@@ -500,6 +500,7 @@ function feature_content_types_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
+          0 => 'Non specified',
           1 => '1',
           2 => '2',
           3 => '3',
@@ -513,7 +514,11 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'business',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -4328,6 +4333,72 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'profile2-videographer-field_audio'
+  $fields['profile2-videographer-field_audio'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_audio',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_audio',
+      'label' => 'Audio',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '15',
+      ),
+    ),
+  );
+
   // Exported field: 'profile2-videographer-field_availability'
   $fields['profile2-videographer-field_availability'] = array(
     'field_config' => array(
@@ -4393,6 +4464,72 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'profile2-videographer-field_camera_type'
+  $fields['profile2-videographer-field_camera_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_camera_type',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '13',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_camera_type',
+      'label' => 'Camera type',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '14',
+      ),
+    ),
+  );
+
   // Exported field: 'profile2-videographer-field_equipment'
   $fields['profile2-videographer-field_equipment'] = array(
     'field_config' => array(
@@ -4402,7 +4539,7 @@ function feature_content_types_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_equipment',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '2',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -4453,7 +4590,73 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '5',
+        'weight' => '17',
+      ),
+    ),
+  );
+
+  // Exported field: 'profile2-videographer-field_lighting'
+  $fields['profile2-videographer-field_lighting'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_lighting',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'videographer',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '15',
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_lighting',
+      'label' => 'Lighting',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '16',
       ),
     ),
   );
@@ -4518,7 +4721,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '6',
+        'weight' => '4',
       ),
     ),
   );
@@ -4980,7 +5183,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -5094,7 +5297,7 @@ function feature_content_types_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 11,
+          'weight' => '11',
         ),
       ),
       'entity_type' => 'profile2',
@@ -5160,7 +5363,7 @@ function feature_content_types_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => 12,
+          'weight' => '12',
         ),
       ),
       'entity_type' => 'profile2',
@@ -5226,6 +5429,7 @@ function feature_content_types_field_default_fields() {
   t('<a href="/terms/get" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
   t('Address');
   t('Approved');
+  t('Audio');
   t('Availablity');
   t('Business');
   t('Business PDF file');
@@ -5237,6 +5441,7 @@ function feature_content_types_field_default_fields() {
   t('Business overview paragraph');
   t('Business owner interview');
   t('Businesses');
+  t('Camera type');
   t('Category');
   t('City');
   t('Click <a href="/sites/default/files/lightswitch_w9.pdf">here</a> to download the W9 form. Then upload a signed copy.');
@@ -5248,6 +5453,7 @@ function feature_content_types_field_default_fields() {
   t('Features & areas to include?');
   t('Hours of operation');
   t('I accept the Independent Contractor Agreement');
+  t('Lighting');
   t('Links to examples of work');
   t('Notes');
   t('PC notes');

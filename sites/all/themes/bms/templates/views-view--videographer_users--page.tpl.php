@@ -66,13 +66,14 @@
 				<?php
 					$output = '';
 					$query = $_SERVER['REQUEST_URI'];
-					$symbol = (strpos($query, '?') > 0) ? '&' : '?';
-					if(($pos = strpos($query, '&sort_by=')) > 0){
-						$query = substr($query, 0, $pos);
+					$order = strpos($query, 'ASC') ? 'DESC' : 'ASC';
+					if(($pos = strpos($query, 'sort_by=')) > 0){
+						$query = substr($query, 0, $pos - 1);
 					}
+					$symbol = (strpos($query, '?')) ? '&' : '?';
 					$output .= 'Sort by: ';
-					$output .= '<a href="' . $query . $symbol . 'sort_by=field_rating_value&sort_order=DESC">Rating</a> | ';
-					$output .= '<a href="' . $query . $symbol . 'sort_by=field_name_value&sort_order=ASC">ABC</a>'; 
+					$output .= '<a href="' . $query . $symbol . 'sort_by=field_rating_value&sort_order=' . $order . '">Rating</a> | ';
+					$output .= '<a href="' . $query . $symbol . 'sort_by=field_name_value&sort_order=' . $order . '">ABC</a>'; 
 					print $output;		
 				?>
 			</div>

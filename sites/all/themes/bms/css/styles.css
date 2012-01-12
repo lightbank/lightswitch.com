@@ -319,7 +319,6 @@ footer {
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
 }
 
-#user-register-form .left,
 #business-node-form .left,
 #project-node-form .left {
 	margin-bottom: 40px;
@@ -386,8 +385,9 @@ footer {
 	clear: left;
 	position: relative;
 	top: 90px;
-	width: 420px;
+	width: 540px;
 }
+
 
 #edit-profile-videographer-field-videographer-terms .description,
 #bxdev-user-accept-terms-form .description {
@@ -1053,6 +1053,7 @@ footer {
 .rating-3, .videographer-rating-3 { background-position: 0 -208px; }
 .rating-2, .videographer-rating-2 { background-position: 0 -226px; }
 .rating-1, .videographer-rating-1 { background-position: 0 -244px; }
+.rating-0, .videographer-rating-0 { background: none; }
 
 .price {
 	float: right;
@@ -1066,6 +1067,7 @@ footer {
 .price-3 { background-position: 0 -278px; }
 .price-2 { background-position: 0 -294px; }
 .price-1 { background-position: 0 -310px; }
+.price-0 { background: none; }
 
 
 .left .website,
