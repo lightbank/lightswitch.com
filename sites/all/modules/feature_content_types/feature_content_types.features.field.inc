@@ -436,6 +436,11 @@ function feature_content_types_field_default_fields() {
           'hospitality' => 'Hospitality',
           'auto' => 'Auto',
           'fitness' => 'Fitness',
+          'marketing' => 'Marketing',
+          'technology' => 'Technology',
+          'environmental' => 'Environmental',
+          'construction' => 'Construction',
+          'transportation' => 'Transportation',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -1918,7 +1923,7 @@ function feature_content_types_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 0,
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -2112,6 +2117,85 @@ function feature_content_types_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '27',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_business_contact_name'
+  $fields['node-project-field_business_contact_name'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_business_contact_name',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '0',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_business_contact_name',
+      'label' => 'Business contact name',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '10',
       ),
     ),
   );
@@ -2738,14 +2822,18 @@ function feature_content_types_field_default_fields() {
         'profile2_private' => FALSE,
         'referenceable_types' => array(
           'business' => 'business',
-          'comment' => 0,
+          'fact' => 0,
+          'faq' => 0,
           'page' => 0,
           'project' => 0,
+          'video' => 0,
+          'videographer' => 0,
+          'webform' => 0,
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'references_1',
-          'view_name' => 'businesses',
+          'display_name' => '',
+          'view_name' => '',
         ),
       ),
       'translatable' => '0',
@@ -2790,7 +2878,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 0,
+        'weight' => '0',
       ),
     ),
   );
@@ -3127,10 +3215,10 @@ function feature_content_types_field_default_fields() {
       'label' => 'Shoot date',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
-        'default_value2' => 'strtotime',
+        'default_value' => 'blank',
+        'default_value2' => 'same',
         'default_value_code' => '',
-        'default_value_code2' => '+90 days',
+        'default_value_code2' => '',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -4155,7 +4243,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '15',
+        'weight' => '7',
       ),
     ),
   );
@@ -4220,7 +4308,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -4286,7 +4374,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '14',
+        'weight' => '6',
       ),
     ),
   );
@@ -4351,7 +4439,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '17',
+        'weight' => '7',
       ),
     ),
   );
@@ -4417,7 +4505,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '16',
+        'weight' => '8',
       ),
     ),
   );
@@ -4547,7 +4635,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -4652,7 +4740,11 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'videographer',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '1',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -4676,7 +4768,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -4883,7 +4975,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -5075,7 +5167,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -5180,7 +5272,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -5196,6 +5288,7 @@ function feature_content_types_field_default_fields() {
   t('Business');
   t('Business PDF file');
   t('Business PDF label');
+  t('Business contact name');
   t('Business logo file');
   t('Business overview paragraph');
   t('Business owner interview');

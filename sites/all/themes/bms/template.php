@@ -501,3 +501,12 @@ function bms_image_style($variables) {
   
   return theme('image', $variables);
 }
+
+/**
+ * Remove the (all day) label from views
+ */
+function bms_date_all_day_label(){
+	return t('');
+}
+
+
