@@ -128,6 +128,15 @@
 			$('#edit-field-shoot-date-und-0-value2-timeEntry-popup-1').val(time2);
 		}
 		
+		/**
+		 * Add a business
+		 */
+		
+		// phone number formatting
+		$('#edit-field-phone-und-0-value, #edit-new-client-phone').mask('999-999-9999');
+		
+		// lock facebok / twitter labels
+		$('#edit-field-social-name1-und-0-value, #edit-field-social-name2-und-0-value').attr('disabled', 'disabled');		
 		
 	});
 

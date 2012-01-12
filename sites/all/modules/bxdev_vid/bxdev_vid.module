@@ -146,8 +146,6 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 		unset($form['profile_videographer']['field_videographer_w9']);
 	}
 	
-	dpm($form);
-	
 }
 
 /**
