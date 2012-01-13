@@ -823,11 +823,11 @@ footer {
 	font-style: italic;
 }
 
-#edit-field-comment--2 .form-required {
+#edit-field-comment .form-required {
 	display: none;
 }
 
-#edit-field-comment--2 textarea {
+#edit-field-comment textarea {
 	width: 660px;
 	height: 100px;
 }

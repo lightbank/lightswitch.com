@@ -17,8 +17,13 @@ function bxdev_project_views_api() {
  * Implements hook_init().
  */
 function bxdev_project_init() {
-	//   module_load_include('inc', 'node', 'node.pages'); 
-	// $form = node_add('comment');
+	if(arg(0) == 'node' && is_numeric(arg(1))){
+		$node = node_load(arg(1));
+		if($node->type == 'project'){
+			module_load_include('inc', 'node', 'node.pages'); 
+			$GLOBALS['comment_form'] = render(node_add('comment'));
+		}
+	}
 }
 
 
@@ -233,9 +238,6 @@ function bxdev_project_preprocess_node(&$vars){
 		
 	if($vars['type'] == 'project'){
 		
-		// include for the node add form
-		module_load_include('inc', 'node', 'node.pages');
-		
 		// load up some variables
 		global $user;
 		$role = bxdev_user_get_role($user->uid);
@@ -266,11 +268,7 @@ function bxdev_project_preprocess_node(&$vars){
 		$vars['comment_permission'] = $comment_permission;
 		
 		// get the comment add form
-		$comment_form = '<h2>Post a Comment:</h2>';
-		$comment_form .= drupal_render(node_add('comment'));
-		// $comment_form = module_invoke('bxdev_project', 'block_view', 'comment_form');
-		$comment_form = render($comment_form);
-		$vars['comment_form'] = $comment_form;
+		$vars['comment_form'] = $GLOBALS['comment_form'];
 		
 		// get the comments
 		$vars['comments'] = views_embed_view('comments', 'block');

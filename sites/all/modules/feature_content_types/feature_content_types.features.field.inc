@@ -4427,7 +4427,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'profile2',
       'field_name' => 'field_equipment',
       'label' => 'Equipment',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,

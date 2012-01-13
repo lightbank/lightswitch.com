@@ -39,7 +39,7 @@ function bxdev_business_preprocess_node(&$variables) {
 		// if user is pc, allow project select
 		if(user_access('pc')){
 			$client_projects = '<div class="block client-projects">';
-			$client_projects .= '<h2>Client Projects:</h2>';
+			$client_projects .= '<h2>Business Projects:</h2>';
 			$client_projects .= views_embed_view('projects', 'block_3');
 			$client_projects .= '</div>';
 			$variables['client_projects'] = $client_projects;

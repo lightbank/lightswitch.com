@@ -1724,7 +1724,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   /* Display: Business project list */
   $handler = $view->new_display('block', 'Business project list', 'block_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Client Projects:';
+  $handler->display->display_options['title'] = 'Business Projects:';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -1845,7 +1845,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['title_1']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title_1']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['title_1']['link_to_node'] = 0;
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = 1;
   /* Field: Global: PHP */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
@@ -2313,7 +2313,7 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['field_notes']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_notes']['element_default_classes'] = 1;
   $handler->display->display_options['fields']['field_notes']['hide_empty'] = 1;
-  $handler->display->display_options['fields']['field_notes']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_notes']['empty_zero'] = 1;
   $handler->display->display_options['fields']['field_notes']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_notes']['field_api_classes'] = 0;
   /* Field: Profile: Rating */
@@ -2339,8 +2339,8 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['field_rating']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rating']['element_default_classes'] = 1;
   $handler->display->display_options['fields']['field_rating']['empty'] = '0';
-  $handler->display->display_options['fields']['field_rating']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_rating']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_rating']['hide_empty'] = 1;
+  $handler->display->display_options['fields']['field_rating']['empty_zero'] = 1;
   $handler->display->display_options['fields']['field_rating']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_rating']['field_api_classes'] = 0;
   /* Field: Global: Custom text */
