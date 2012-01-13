@@ -8,11 +8,18 @@
  * Implements hook_preprocess_page().
  */
 function bxdev_user_preprocess_page(&$vars){
+	global $user;
+	$role = bxdev_user_get_role($user->uid);
 	// if user page
 	if(arg(0) == 'user' && is_numeric(arg(1))){
-		$user = user_load(arg(1));
+		$account = user_load(arg(1));
 		// set the title
-		drupal_set_title('Welcome, ' . $user->field_name['und'][0]['value']);
+		drupal_set_title('Welcome, ' . $account->field_name['und'][0]['value']);
+		
+		// if user is pc and viewing a videographer profile page
+		if($role == 'pc' && arg(2) == 'info'){
+			drupal_set_title('Lightswitch Videographer Directory');
+		}
 	}	
 }
 
@@ -295,6 +302,8 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			if(!empty($data['tabs'][0])){
 				$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
 				$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
+				unset($data['tabs'][0]['output'][1]);
+				// dpm($data);
 			}
 			if(!empty($data['tabs'][1])){
 				$data['tabs'][1]['output'][0]['#link']['title'] = 'Account settings';
@@ -312,6 +321,15 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 	}else if(arg(0) !== 'admin'){
 		unset($data['tabs']);
 	}
+	
+	// get the logged in user
+	global $user;
+	// if user is pc and viewing a videographer profile page
+	if(bxdev_user_get_role($user->uid) == 'pc' && arg(2) == 'info'){
+		// remove the user tabs
+		unset($data['tabs']);
+	}
+	
 }
 
 /**

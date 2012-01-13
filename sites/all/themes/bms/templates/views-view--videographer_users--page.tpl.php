@@ -73,7 +73,8 @@
 					$symbol = (strpos($query, '?')) ? '&' : '?';
 					$output .= 'Sort by: ';
 					$output .= '<a href="' . $query . $symbol . 'sort_by=field_rating_value&sort_order=' . $order . '">Rating</a> | ';
-					$output .= '<a href="' . $query . $symbol . 'sort_by=field_name_value&sort_order=' . $order . '">ABC</a>'; 
+					$output .= '<a href="' . $query . $symbol . 'sort_by=field_name_value&sort_order=' . $order . '">ABC</a> | ';
+					$output .= '<a href="' . $query . $symbol . 'sort_by=created_1&sort_order=' . $order . '">Recent</a>'; 
 					print $output;		
 				?>
 			</div>

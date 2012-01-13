@@ -14,6 +14,16 @@ function bxdev_project_views_api() {
 }
 
 /**
+ * Implements hook_init().
+ */
+function bxdev_project_init() {
+	//   module_load_include('inc', 'node', 'node.pages'); 
+	// $form = node_add('comment');
+}
+
+
+
+/**
  * Implements hook_menu().
  */
 function bxdev_project_menu() {
@@ -258,6 +268,8 @@ function bxdev_project_preprocess_node(&$vars){
 		// get the comment add form
 		$comment_form = '<h2>Post a Comment:</h2>';
 		$comment_form .= drupal_render(node_add('comment'));
+		// $comment_form = module_invoke('bxdev_project', 'block_view', 'comment_form');
+		$comment_form = render($comment_form);
 		$vars['comment_form'] = $comment_form;
 		
 		// get the comments
@@ -376,7 +388,8 @@ function bxdev_project_form_comment_node_form_alter(&$form, $form_state){
 	// hide the project ref field
 	$form['field_project_ref']['#type'] = 'hidden';
 	// add custom validate handler
-	array_unshift($form['#validate'], 'bxdev_project_comment_node_form_validate'); 
+	// array_unshift($form['#validate'], 'bxdev_project_comment_node_form_validate'); 
+	$form['#validate'][] = 'bxdev_project_comment_node_form_validate'; 
 	// add custom submit handler
 	$form['actions']['submit']['#submit'][] = 'bxdev_project_comment_node_form_submit';
 }

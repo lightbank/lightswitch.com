@@ -18,11 +18,12 @@ function bxdev_vid_menu() {
   );
 
 	$items['user/%user/info'] = array(
-    'title' => t('lightswitch videographer directory'),
+    'title' => t('Profile'),
     'page callback' => 'bxdev_vid_user_view_page',
 		'page arguments' => array(1),
-    'access arguments' => array('pc'),
-		'type' => MENU_CALLBACK,
+    'access arguments' => array(1),
+		'access callback' => 'bxdev_vid_profile_access_callback',
+		'type' => MENU_LOCAL_TASK,
 	);
 	
 	$items['terms/get'] = array(
@@ -200,6 +201,59 @@ function bxdev_vid_join_form(){
 	return $output;
 }
 
+/**
+ * Form builder: w9 form
+ */
+function bxdev_vid_w9_form($form, &$form_state){
+	$uid = arg(1);
+	$profile = profile2_load_by_user($uid, 'videographer');
+	$form['w9_form'] = array(
+	  '#type' => 'managed_file',
+	  '#title' => t('W9 form'),
+	  '#description' => t('Click <a href="/sites/default/files/lightswitch_w9.pdf">here</a> to download a new W9 form.'),
+		'#default_value' => (!empty($profile->field_videographer_w9['und'][0]['fid'])) ? $profile->field_videographer_w9['und'][0]['fid'] : '',
+	);
+	
+	$form['submit'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Save'),
+	);
+	
+	return $form;
+}
+
+/**
+ * Form submit handler: w9 form
+ */
+function bxdev_vid_w9_form_submit($form, &$form_state){
+	$values = $form_state['values'];
+	$uid = arg(1);
+	// load the videographer profile
+	$profile = profile2_load_by_user($uid, 'videographer');
+	// remove any existing file
+	unset($profile->field_videographer_w9['und']);
+	// get the fid from the form
+	$fid = $values['w9_form'];
+	if($fid != 0){
+		// get the file object
+		$file = file_load($fid);
+		$file->status = FILE_STATUS_PERMANENT;
+		file_save($file);
+		// create a file array to attach to the node
+		$profile_file = array(
+			'uid' => $file->uid,
+			'uri' => $file->uri,
+			'fid' => $file->fid,
+			'status' => 1,
+			'display' => 1,
+			'description' => '',
+		);
+		$profile->field_videographer_w9['und'][0] = $profile_file;	
+	}
+	profile2_save($profile);
+}
+
+
 
 /**
  * CUSTOM
@@ -208,52 +262,55 @@ function bxdev_vid_join_form(){
 /**
  * Page builder: videographer view
  */
-function bxdev_vid_user_view_page($user){
+function bxdev_vid_user_view_page($account){
+	global $user;
+	$role = bxdev_user_get_role($user->uid);
 	// load the profile
-	$profile = profile2_load_by_user($user->uid, 'videographer');
+	$profile = profile2_load_by_user($account->uid, 'videographer');
 	// get renderable array - profile
 	$profile = field_attach_view('profile2', $profile, 'full');
 	// get renderable array - user
-	$user_render = field_attach_view('user', $user, 'full');
+	$account_render = field_attach_view('user', $account, 'full');
 	// get the previous page
 	$referer = (!empty($_SESSION['vid_filters'])) ? $_SESSION['vid_filters'] : '/videographers';
 	
-	drupal_set_title('lightswitch videographer directory');
-	
 	// build page markup
 	$output = '';
-	$output .= '<div class="videographer-back"><a href="' . $referer . '">&lt; Back to Videographer List</a></div>';
+	$output .= ($role == 'pc') ? '<div class="videographer-back"><a href="' . $referer . '">&lt; Back to Videographer List</a></div>' : '';
 	
 	$output .= '<div class="left">';
 		$output .= '<div class="left-top">';
 		
 			$output .= '<div class="section top">';
-				$output .= '<h2>' . $user->field_name['und'][0]['value'] . '</h2>';
+				$output .= '<h2>' . $account->field_name['und'][0]['value'] . '</h2>';
 				if(isset($profile['field_region']))	$output .= '<div class="category">' . $profile['field_region'][0]['#markup'] . '</div>';
-				if(isset($profile['field_rating'])) $output .= '<div class="symbols"><div class="videographer-rating videographer-rating-' . $profile['field_rating'][0]['#markup'] . '"></div></div>';
+				if(isset($profile['field_rating']) && $role == 'pc') $output .= '<div class="symbols"><div class="videographer-rating videographer-rating-' . $profile['field_rating'][0]['#markup'] . '"></div></div>';
 			$output .= '</div>';
 			
 			$output .= '<div class="section bottom">';
-				if(isset($user_render['field_phone'])) $output .= '<div class="phone">' . $user_render['field_phone'][0]['#markup'] . '</div>';
-				$output .= '<div class="email"><a href="mailto:' . $user->mail . '">' . $user->mail . '</a></div>';
+				if(isset($account_render['field_phone'])) $output .= '<div class="phone">' . $account_render['field_phone'][0]['#markup'] . '</div>';
+				$output .= '<div class="email"><a href="mailto:' . $account->mail . '">' . $account->mail . '</a></div>';
 				if(isset($profile['field_address'])) $output .= '<div class="address">' . nl2br($profile['field_address'][0]['#markup']) . '</div>';
 				if(isset($profile['field_resume'])) $output .= '<div class="resume">' . render($profile['field_resume']) . '</div>';
 			$output .= '</div>';
 			
 		$output .= '</div>';
 		
+		$output .= '<div class="left-mid">';
+		$output .= render(drupal_get_form('bxdev_vid_w9_form'));
+		$output .= '</div>';
+		
 		$output .= '<div class="left-bottom">';
-			$output .= '<div class="controls">
-				<div class="edit"><a href="/user/' . $user->uid . '/edit/videographer">EDIT</a></div>
-				<div class="delete"><a href="/user/' . $user->uid . '/cancel">DELETE</a></div>
-			</div>';		
+		$output .= '<div class="controls"><div class="edit"><a href="/user/' . $account->uid . '/edit/videographer">EDIT</a></div>';
+		$output .= ($role == 'pc') ? '<div class="delete"><a href="/user/' . $account->uid . '/cancel">DELETE</a></div>' : '';
+		$output .= '</div>';		
 		$output .= '</div>';
 		
 	$output .= '</div>'; // end .left
 	
 	$output .= '<div class="right">';
 	
-		$output .= (!empty($profile['field_notes'][0]['#markup'])) ? '<div class="videographer-item videographer-notes"><h3>NOTES:</h3>' . strip_tags(nl2br(render($profile['field_notes']))) . '</div>' : '';
+		$output .= (!empty($profile['field_notes'][0]['#markup']) && $role == 'pc') ? '<div class="videographer-item videographer-notes"><h3>NOTES:</h3>' . strip_tags(nl2br(render($profile['field_notes']))) . '</div>' : '';
 		$output .= (!empty($profile['field_skills'][0]['#markup'])) ? '<div class="videographer-item"><h3>Skills:</h3>' . nl2br(render($profile['field_skills'])) . '</div>' : '';
 		$output .= (!empty($profile['field_transportation'][0]['#markup'])) ? '<div class="videographer-item"><h3>Transportation:</h3>' . nl2br(render($profile['field_transportation'])) . '</div>' : ''; 
 		$output .= (!empty($profile['field_camera_type'][0]['#markup'])) ? '<div class="videographer-item"><h3>Camera type:</h3>' . nl2br(render($profile['field_camera_type'])) . '</div>' : '';
@@ -277,7 +334,23 @@ function bxdev_vid_terms_get_page(){
 	print $node->body['und'][0]['value'];
 }
 
-
+/**
+ * Access callback: videographer profile
+ */
+function bxdev_vid_profile_access_callback($account){
+	global $user;
+	// if logged in user is videographer
+	if(bxdev_user_get_role($user->uid) == 'videographer'){
+		// if videographer is viewing own profile
+		if($user->uid == $account->uid){
+			return TRUE;
+		}
+	// if logged in user is pc
+	}else if(bxdev_user_get_role($user->uid) == 'pc'){
+		return TRUE;
+	}
+	return FALSE;
+}
 
 
 

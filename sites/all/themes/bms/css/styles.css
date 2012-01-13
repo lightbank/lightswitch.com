@@ -823,11 +823,11 @@ footer {
 	font-style: italic;
 }
 
-#edit-field-comment .form-required {
+#edit-field-comment--2 .form-required {
 	display: none;
 }
 
-#edit-field-comment textarea {
+#edit-field-comment--2 textarea {
 	width: 660px;
 	height: 100px;
 }
@@ -855,7 +855,8 @@ footer {
 }
 
 #bxdev-project-videographer-documents-form #edit-signed-production-release-remove-button,
-#bxdev-project-videographer-documents-form #edit-videographer-invoice-remove-button {
+#bxdev-project-videographer-documents-form #edit-videographer-invoice-remove-button,
+#bxdev-vid-w9-form #edit-w9-form-remove-button {
 	font-size: 12px;
 	height: 20px;
 	line-height: 24px;
@@ -883,7 +884,8 @@ footer {
 }
 
 #bxdev-project-logo-upload-form #edit-save,
-#bxdev-project-videographer-documents-form #edit-save--2 {
+#bxdev-project-videographer-documents-form #edit-save--2,
+#bxdev-vid-w9-form #edit-submit {
 	font-size: 12px;
 	padding: 5px 10px;
 	height: auto;
@@ -953,6 +955,7 @@ footer {
 
 .left .left-top,
 .left .left-bottom,
+.left .left-mid,
 .node-type-business .main .block,
 .node-type-project #content .left .block,
 .node-type-project .main .block,
@@ -1019,6 +1022,13 @@ footer {
 	margin-bottom: 20px;
 }
 
+.page-user-info .links {
+	margin-bottom: 25px;
+}
+
+#edit-w9-form-upload-button {
+	display: none;
+}
 
 /** BUSINESS PROFILE LEFT
 ================================================**/
