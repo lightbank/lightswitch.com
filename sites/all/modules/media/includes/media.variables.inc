@@ -149,9 +149,8 @@ function media_variable_default($name = NULL) {
       'icon_base_directory' => drupal_get_path('module', 'media') . '/images/icons',
       'icon_set' => 'default',
 
-       // This is set in media_enable().  It will show a persistant dsm on every page
-       // until the user runs the batch operation provided by media_admin_rebuild_types_form().
-      'show_file_type_rebuild_nag' => FALSE,
+       // Deprecated variables.
+      'show_file_type_rebuild_nag' => NULL,
     );
   }
 

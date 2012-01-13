@@ -1038,6 +1038,31 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['relationships']['field_author_uid']['required'] = 0;
   $handler->display->display_options['relationships']['field_author_uid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Status */
+  $handler->display->display_options['fields']['field_status_1']['id'] = 'field_status_1';
+  $handler->display->display_options['fields']['field_status_1']['table'] = 'field_data_field_status';
+  $handler->display->display_options['fields']['field_status_1']['field'] = 'field_status';
+  $handler->display->display_options['fields']['field_status_1']['label'] = '';
+  $handler->display->display_options['fields']['field_status_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_status_1']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_status_1']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_status_1']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_status_1']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_status_1']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_status_1']['type'] = 'list_key';
+  $handler->display->display_options['fields']['field_status_1']['field_api_classes'] = 0;
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'users';
@@ -1370,7 +1395,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_status_override']['field'] = 'field_status_override';
   $handler->display->display_options['fields']['field_status_override']['label'] = 'Override';
   $handler->display->display_options['fields']['field_status_override']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['field_status_override']['alter']['text'] = '<div class="flag flag-[field_status_override-value]"></div>';
+  $handler->display->display_options['fields']['field_status_override']['alter']['text'] = '<div class="flag flag-[field_status_override-value] status-[field_status_1]"></div>';
   $handler->display->display_options['fields']['field_status_override']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_status_override']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['field_status_override']['alter']['external'] = 0;

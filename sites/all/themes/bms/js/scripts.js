@@ -107,55 +107,7 @@
 		if($('#edit-bxdev-shoot-date').length > 0){
 			$('#edit-bxdev-shoot-date').datepicker();
 		}
-		
-		// // custom date fields
-		// // $('#edit-field-shoot-date-und-0-show-todate:not(:checked)').click();
-		// update_date_fields();
-		// $('#edit-bxdev-shoot-time1, #edit-bxdev-shoot-time2, #edit-bxdev-shoot-date').change(function() {
-		// 	// update_date_fields();
-		// });
-		// 
-		// 
-		// $('#edit-bxdev-shoot-date').change(function() {
-		// 	var date = $('#edit-bxdev-shoot-date').val();
-		// 	$('#edit-field-shoot-date-und-0-value-datepicker-popup-0').val(date);
-		// });
-		// 
-		// $('#edit-bxdev-shoot-time1').change(function() {
-		// 	var start_time = $('#edit-bxdev-shoot-time1').val();
-		// 	$('#edit-field-shoot-date-und-0-value-timeEntry-popup-1').val(start_time);
-		// });		
-		// 
-		// click_date_to_field();
-		// 
-		// $('#edit-bxdev-shoot-time2').change(function() {
-		// 	click_date_to_field();
-		// });
-		// 
-		// function click_date_to_field(){
-		// 	var end_time = $('#edit-bxdev-shoot-time2').val();
-		// 	if(end_time != ''){
-		// 		$('#edit-field-shoot-date-und-0-show-todate:not(:checked)').click();
-		// 		var date = $('#edit-bxdev-shoot-date').val();
-		// 		$('#edit-field-shoot-date-und-0-value2-datepicker-popup-0').val(date);
-		// 		$('#edit-field-shoot-date-und-0-value2-timeEntry-popup-1').val(end_time);
-		// 	}else{
-		// 		$('#edit-field-shoot-date-und-0-show-todate:checked').click();
-		// 	}
-		// }
-		// 
-		// /**
-		//  * Match the hidden CCK date fields with our custom time drop-downs
-		//  */
-		// function update_date_fields(){
-		// 	var date = $('#edit-bxdev-shoot-date').val();
-		// 	var time1 = $('#edit-bxdev-shoot-time1').val();
-		// 	var time2 = $('#edit-bxdev-shoot-time2').val();
-		// 	$('#edit-field-shoot-date-und-0-value-datepicker-popup-0, #edit-field-shoot-date-und-0-value2-datepicker-popup-0').val(date);
-		// 	$('#edit-field-shoot-date-und-0-value-timeEntry-popup-1').val(time1);
-		// 	$('#edit-field-shoot-date-und-0-value2-timeEntry-popup-1').val(time2);
-		// }
-		
+				
 		/**
 		 * Add a business
 		 */
@@ -164,7 +116,7 @@
 		$('#edit-field-phone-und-0-value, #edit-new-client-phone').mask('999-999-9999');
 		
 		// lock facebok / twitter labels
-		$('#edit-field-social-name1-und-0-value, #edit-field-social-name2-und-0-value').attr('disabled', 'disabled');		
+		$('#edit-field-social-name1-und-0-value, #edit-field-social-name2-und-0-value, #edit-field-social-name3-und-0-value').attr('disabled', 'disabled');		
 		
 	});
 

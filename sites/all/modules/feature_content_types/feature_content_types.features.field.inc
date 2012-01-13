@@ -1259,7 +1259,11 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'business',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'Yelp',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -3002,7 +3006,7 @@ function feature_content_types_field_default_fields() {
           0 => 'fid',
         ),
       ),
-      'module' => 'media',
+      'module' => 'mediafield',
       'settings' => array(
         'profile2_private' => FALSE,
       ),
@@ -3016,7 +3020,7 @@ function feature_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'media',
+          'module' => 'mediafield',
           'settings' => array(
             'file_view_mode' => 'media_large',
           ),
@@ -3025,7 +3029,7 @@ function feature_content_types_field_default_fields() {
         ),
         'full' => array(
           'label' => 'hidden',
-          'module' => 'media',
+          'module' => 'mediafield',
           'settings' => array(
             'file_view_mode' => 'media_small',
           ),
@@ -3034,7 +3038,7 @@ function feature_content_types_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'media',
+          'module' => 'mediafield',
           'settings' => array(
             'file_view_mode' => 'media_preview',
           ),
@@ -3065,7 +3069,12 @@ function feature_content_types_field_default_fields() {
             'image' => 0,
             'video' => 'video',
           ),
-          'file_extensions' => 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp mp3 mov m4v mp4 mpeg avi ogg wmv ico',
+          'browser_plugins' => array(
+            'library' => 0,
+            'media_default--media_browser_1' => 0,
+            'media_internet' => 'media_internet',
+            'upload' => 0,
+          ),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',

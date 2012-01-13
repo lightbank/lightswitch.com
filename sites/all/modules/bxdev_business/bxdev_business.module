@@ -30,6 +30,12 @@ function bxdev_business_menu() {
  */
 function bxdev_business_preprocess_node(&$variables) {
 	if($variables['node']->type == 'business'){
+		// navigation controls
+		$navigation = '<a href="/clients" class="back">&lt; Back to Local Directory</a>';
+		if(user_access('pc')){
+			$navigation .= ' <a href="/projects/master" class="back">&lt; Back to master list</a>';
+		}
+		$variables['navigation'] = $navigation;
 	  // if user is sales or pc, allow edit / delete
 		if(user_access('sales') || user_access('pc')){
 			$operations = '<div class="edit"><a href="/node/' . $variables['node']->nid . '/edit">Edit</a></div>';
@@ -61,20 +67,6 @@ function bxdev_business_preprocess_node(&$variables) {
 			if(!empty($project['field_project_video'][0]['file'])){
 				$video_output .= theme('media_vimeo_video', $project['field_project_video'][0]['file']);
 			}
-			
-			// REMOVED THE IMAGE FADE FUNCTIONALITY
-			// BELOW IS THE OLD CODE
-			
-			// // add the full size photos			
-			// if(!empty($approved_photos)){
-			// 	foreach($project['field_project_photos'] as $key => $value){
-			// 		if(is_numeric($key)){
-			// 			if(in_array($value['#item']['fid'], $approved_photos)){
-			// 				$video_output .= '<div class="slide">' . theme($value['#theme'], $value) . '</div>';
-			// 			}
-			// 		}
-			// 	}
-			// }
 			
 			$video_output .= '</div></div>';
 			

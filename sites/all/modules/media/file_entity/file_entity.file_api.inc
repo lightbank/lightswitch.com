@@ -5,12 +5,6 @@
  * API extensions of Drupal core's file.inc.
  */
 
-
-/**
- * The {file_managed}.type value when the file type has not yet been determined.
- */
-define('FILE_TYPE_NONE', 'undefined');
-
 /**
  * Returns information about file types from hook_file_type_info().
  *
@@ -25,10 +19,21 @@ function file_info_file_types($file_type = NULL) {
   $info = &drupal_static(__FUNCTION__);
   if (!isset($info)) {
     $info = module_invoke_all('file_type_info');
+
+    // Add support for the standard file types until this can be fully
+    // abstracted out of Media module.
+    $info += array(
+      'application' => array('label' => t('Application (multipurpose)')),
+      'audio' => array('label' => t('Audio')),
+      'image' => array('label' => t('Image')),
+      'text' => array('label' => t('Text')),
+      'video' => array('label' => t('Video')),
+    );
+
     drupal_alter('file_type_info', $info);
-    _file_sort_array_by_weight($info);
+    uasort($info, '_file_entity_sort_weight_label');
   }
-  if (isset($file_type)) {
+  if ($file_type) {
     if (isset($info[$file_type])) {
       return $info[$file_type];
     }
@@ -39,32 +44,20 @@ function file_info_file_types($file_type = NULL) {
 }
 
 /**
- * Returns an object with file type information, so that %file_type can be used in hook_menu() paths.
- *
- * In addition to the information returned by file_info_file_types(), the 'type'
- * property is set for use by field_extract_bundle().
- */
-function file_type_load($type) {
-  $info = file_info_file_types($type);
-  if (isset($info)) {
-    $info = (object) $info;
-    $info->type = $type;
-    return $info;
-  }
-  else {
-    return FALSE;
-  }
-}
-
-/**
  * Determines the file type of a passed in file object.
+ *
+ * The file type is determined by extracting the 'first' part of the file's
+ * MIME type. For example, a PNG image with a MIME type of 'image/png' will
+ * have a file type of 'image'.
+ *
+ * @link http://www.iana.org/assignments/media-types/index.html IANA list of official MIME media types @endlink
  */
 function file_get_type($file) {
-  foreach (file_info_file_types() as $type => $info) {
-    if (isset($info['claim callback']) && ($function = $info['claim callback']) && function_exists($function) && $function($file, $type)) {
-      return $type;
-    }
+  // Ensure that a MIME type has been determined first.
+  if (empty($file->filemime)) {
+    $file->filemime = file_get_mimetype($file->uri);
   }
+  return substr($file->filemime, 0, strpos($file->filemime, '/'));
 }
 
 /**
@@ -84,7 +77,7 @@ function file_info_formatter_types($formatter_type = NULL) {
   if (!isset($info)) {
     $info = module_invoke_all('file_formatter_info');
     drupal_alter('file_formatter_info', $info);
-    _file_sort_array_by_weight($info);
+    uasort($info, '_file_entity_sort_weight_label');
   }
   if ($formatter_type) {
     if (isset($info[$formatter_type])) {
@@ -120,18 +113,22 @@ function file_info_cache_clear() {
  * @return
  *   An array in the format expected by drupal_render().
  */
-function file_view_multiple($files, $view_mode = 'default', $weight = 0, $langcode = NULL) {
-  field_attach_prepare_view('file', $files, $view_mode);
-  entity_prepare_view('file', $files);
+function file_view_multiple($files, $view_mode = 'full', $weight = 0, $langcode = NULL) {
+  if (empty($files)) {
+    return array();
+  }
 
-  $build = array(
-    '#sorted' => TRUE,
-  );
+  field_attach_prepare_view('file', $files, $view_mode, $langcode);
+  entity_prepare_view('file', $files, $langcode);
+
+  $build = array();
   foreach ($files as $file) {
     $build[$file->fid] = file_view($file, $view_mode, $langcode);
     $build[$file->fid]['#weight'] = $weight;
     $weight++;
   }
+  $build['#sorted'] = TRUE;
+
   return $build;
 }
 
@@ -149,34 +146,96 @@ function file_view_multiple($files, $view_mode = 'default', $weight = 0, $langco
  * @return
  *   An array as expected by drupal_render().
  */
-function file_view($file, $view_mode = 'default', $langcode = NULL) {
+function file_view($file, $view_mode = 'full', $langcode = NULL) {
   if (!isset($langcode)) {
     $langcode = $GLOBALS['language_content']->language;
   }
 
-  // Prepare the file object for viewing, in case file_view() was called by
-  // something other than file_view_multiple(). These functions exit quickly if
-  // they've already run, so it's okay to call them even if they've already been
-  // called by file_view_multiple().
-  field_attach_prepare_view('file', array($file->fid => $file), $view_mode);
-  entity_prepare_view('file', array($file->fid => $file));
+  // Populate $file->content with a render() array.
+  file_build_content($file, $view_mode, $langcode);
 
-  // Create the render array with the file itself and with fields.
-  $build = array(
+  $build = $file->content;
+  // We don't need duplicate rendering info in $file->content.
+  unset($file->content);
+
+  $build += array(
+    '#theme' => 'file_entity',
     '#file' => $file,
     '#view_mode' => $view_mode,
     '#language' => $langcode,
   );
-  $build += field_attach_view('file', $file, $view_mode, $langcode);
-  $build['file'] = file_view_file($file, $view_mode, $langcode);
 
-  // Allow modules to add and alter.
-  module_invoke_all('file_view', $file, $view_mode, $langcode);
-  module_invoke_all('entity_view', $file, 'file', $view_mode, $langcode);
+  // Add contextual links for this file, except when the file is already being
+  // displayed on its own page. Modules may alter this behavior (for example,
+  // to restrict contextual links to certain view modes) by implementing
+  // hook_file_view_alter().
+  if (!empty($file->fid) && !($view_mode == 'full' && file_is_page($file))) {
+    $build['#contextual_links']['file'] = array('file', array($file->fid));
+  }
+
+  // Allow modules to modify the structured file.
   $type = 'file';
   drupal_alter(array('file_view', 'entity_view'), $build, $type);
 
   return $build;
+}
+
+/**
+ * Builds a structured array representing the file's content.
+ *
+ * @param $file
+ *   A file object.
+ * @param $view_mode
+ *   View mode, e.g. 'default', 'full', etc.
+ * @param $langcode
+ *   (optional) A language code to use for rendering. Defaults to the global
+ *   content language of the current request.
+ */
+function file_build_content($file, $view_mode = 'full', $langcode = NULL) {
+  if (!isset($langcode)) {
+    $langcode = $GLOBALS['language_content']->language;
+  }
+
+  // Remove previously built content, if exists.
+  $file->content = array();
+
+  // Build the actual file display.
+  // @todo Figure out how to clean this crap up.
+  $file->content['file'] = file_view_file($file, $view_mode, $langcode);
+  if (isset($file->content['file'])) {
+    if (isset($file->content['file']['#theme']) && $file->content['file']['#theme'] != 'file_link') {
+      unset($file->content['file']['#file']);
+    }
+    unset($file->content['file']['#view_mode']);
+    unset($file->content['file']['#language']);
+  }
+  else {
+    unset($file->content['file']);
+  }
+
+  // Build fields content.
+  // In case of a multiple view, file_view_multiple() already ran the
+  // 'prepare_view' step. An internal flag prevents the operation from running
+  // twice.
+  field_attach_prepare_view('file', array($file->fid => $file), $view_mode, $langcode);
+  entity_prepare_view('file', array($file->fid => $file), $langcode);
+  $file->content += field_attach_view('file', $file, $view_mode, $langcode);
+
+  $links = array();
+  $file->content['links'] = array(
+    '#theme' => 'links__file',
+    '#pre_render' => array('drupal_pre_render_links'),
+    '#attributes' => array('class' => array('links', 'inline')),
+  );
+  $file->content['links']['file'] = array(
+    '#theme' => 'links__file__file',
+    '#links' => $links,
+    '#attributes' => array('class' => array('links', 'inline')),
+  );
+
+  // Allow modules to make their own additions to the file.
+  module_invoke_all('file_view', $file, $view_mode, $langcode);
+  module_invoke_all('entity_view', $file, 'file', $view_mode, $langcode);
 }
 
 /**
@@ -195,7 +254,7 @@ function file_view($file, $view_mode = 'default', $langcode = NULL) {
  * @return
  *   An array as expected by drupal_render().
  */
-function file_view_file($file, $displays = 'default', $langcode = NULL) {
+function file_view_file($file, $displays = 'full', $langcode = NULL) {
   if (!isset($langcode)) {
     $langcode = $GLOBALS['language_content']->language;
   }
@@ -295,29 +354,33 @@ function file_view_file($file, $displays = 'default', $langcode = NULL) {
  * @see hook_file_formatter_info()
  * @see file_view_file()
  */
-function file_displays($file_type, $view_mode = 'default') {
+function file_displays($file_type, $view_mode) {
+  $cache = &drupal_static(__FUNCTION__, array());
+
   // If the requested view mode isn't configured to use a custom display for its
   // fields, then don't use a custom display for its file either.
-  $view_mode_settings = field_view_mode_settings('file', $file_type);
-  if (empty($view_mode_settings[$view_mode]['custom_settings'])) {
-    $view_mode = 'default';
-  }
-
-  // Load the display configurations for the file type and view mode. If none
-  // exist for the view mode, use the default view mode.
   if ($view_mode != 'default') {
+    $view_mode_settings = field_view_mode_settings('file', $file_type);
+    $view_mode = !empty($view_mode_settings[$view_mode]['custom_settings']) ? $view_mode : 'default';
+  }
+
+  if (!isset($cache[$file_type][$view_mode])) {
+    // Load the display configurations for the file type and view mode. If none
+    // exist for the view mode, use the default view mode.
     $displays = file_displays_load($file_type, $view_mode, TRUE);
-  }
-  if (empty($displays)) {
-    $displays = file_displays_load($file_type, 'default', TRUE);
+    if (empty($displays) && $view_mode != 'default') {
+      $cache[$file_type][$view_mode] = file_displays($file_type, 'default');
+    }
+    else {
+      // Convert the display objects to arrays and remove unnecessary keys.
+      foreach ($displays as $formatter_name => $display) {
+        $displays[$formatter_name] = array_intersect_key((array) $display, drupal_map_assoc(array('status', 'weight', 'settings')));
+      }
+      $cache[$file_type][$view_mode] = $displays;
+    }
   }
 
-  // Convert the display objects to arrays and remove unnecessary keys.
-  foreach ($displays as $formatter_name => $display) {
-    $displays[$formatter_name] = array_intersect_key((array) $display, drupal_map_assoc(array('status', 'weight', 'settings')));
-  }
-
-  return $displays;
+  return $cache[$file_type][$view_mode];
 }
 
 /**
@@ -380,4 +443,84 @@ function _file_sort_array_by_weight(&$a) {
   foreach ($a as $key => $item) {
     $a[$key]['weight'] = $original_weight[$key];
   }
+}
+
+/**
+ * User sort function to sort by weight, then label/name.
+ */
+function _file_entity_sort_weight_label($a, $b) {
+  $a_weight = isset($a['weight']) ? $a['weight'] : 0;
+  $b_weight = isset($b['weight']) ? $b['weight'] : 0;
+  if ($a_weight == $b_weight) {
+    $a_label = isset($a['label']) ? $a['label'] : '';
+    $b_label = isset($b['label']) ? $b['label'] : '';
+    return strcasecmp($a_label, $b_label);
+  }
+  else {
+    return $a_weight < $b_weight ? -1 : 1;
+  }
+}
+
+/**
+ * Returns a file object which can be passed to file_save().
+ *
+ * @param $uri
+ *   A string containing the URI, path, or filename.
+ * @param $use_existing
+ *   (Optional) If TRUE and there's an existing file in the {file_managed}
+ *   table with the passed in URI, then that file object is returned.
+ *   Otherwise, a new file object is returned. Default is TRUE.
+ *
+ * @return
+ *   A file object, or FALSE on error.
+ *
+ * @todo This should probably be named file_load_by_uri($uri, $create_if_not_exists).
+ * @todo Remove this function when http://drupal.org/node/685818 is fixed.
+ */
+function file_uri_to_object($uri, $use_existing = TRUE) {
+  $file = FALSE;
+  $uri = file_stream_wrapper_uri_normalize($uri);
+
+  if ($use_existing) {
+    // We should always attempt to re-use a file if possible.
+    $files = entity_load('file', FALSE, array('uri' => $uri));
+    $file = !empty($files) ? reset($files) : FALSE;
+  }
+
+  if (empty($file)) {
+    $file = new stdClass();
+    $file->uid = $GLOBALS['user']->uid;
+    $file->filename = basename($uri);
+    $file->uri = $uri;
+    $file->filemime = file_get_mimetype($uri);
+    // This is gagged because some uris will not support it.
+    $file->filesize = @filesize($uri);
+    $file->timestamp = REQUEST_TIME;
+    $file->status = FILE_STATUS_PERMANENT;
+  }
+
+  return $file;
+}
+
+/**
+ * A list of operations which can be called on files.
+ *
+ * @return
+ *  An associave array of operations keyed by a system name.
+ *    - label: A string to show in the operations dropdown.
+ *    - callback (string): A callback function to call for the operation. This
+ *        function will be passed an array of file_ids which were selected.
+ *    - confirm (boolean): Whether or not this operation requires a confirm form
+ *        In the case where confirm is set to true, callback should be a function
+ *        which can return a confirm form.
+ */
+function hook_file_operations_info() {
+  $operations = array(
+    'archive_and_email' => array(
+      'label' => t('Archive the selected files and email them'),
+      'callback' => 'file_archiver_confirm_form',
+      'confirm' => TRUE,
+    ),
+  );
+  return $operations;
 }

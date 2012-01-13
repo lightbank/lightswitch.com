@@ -121,27 +121,29 @@ function bxdev_vid_form_alter(&$form, &$form_state, $form_id) {
  * Implements hook_form_FORM_ID_alter().
  */
 function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
-	// hide / reposition user fields
-	$form['account']['name']['#type'] = 'hidden';
-	$form['account']['name']['#value'] = NULL;
-	$form['account']['mail']['#title'] = t('Email');
-	$form['account']['mail']['#description'] = '';
-	$form['account']['mail']['#weight'] = -50;
-	$form['account']['pass']['#type'] = 'hidden';
-	$form['account']['pass']['#value'] = NULL;
-	$form['field_name']['#weight'] = -49;
-	$form['field_phone']['#weight'] = -48;
-	$form['field_name']['und'][0]['value']['#required'] = TRUE;
+	if(arg(0) != 'admin'){
+		// hide / reposition user fields
+		$form['account']['name']['#type'] = 'hidden';
+		$form['account']['name']['#value'] = NULL;
+		$form['account']['mail']['#title'] = t('Email');
+		$form['account']['mail']['#description'] = '';
+		$form['account']['mail']['#weight'] = -50;
+		$form['account']['pass']['#type'] = 'hidden';
+		$form['account']['pass']['#value'] = NULL;
+		$form['field_name']['#weight'] = -49;
+		$form['field_phone']['#weight'] = -48;
+		$form['field_name']['und'][0]['value']['#required'] = TRUE;
 	
-	// modify validation / submit handlers
-	array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
-	$form['#submit'][0] = 'bxdev_vid_user_register_submit';
+		// modify validation / submit handlers
+		array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
+		$form['#submit'][0] = 'bxdev_vid_user_register_submit';
 	
-	// left / right wrappers
-	$form['field_name']['#prefix'] = '<div class="left">';
-	$form['profile_videographer']['field_skills']['#suffix'] = '</div><div class="right">';
-	$form['profile_videographer']['field_resume']['#suffix'] = '</div>';
-	$form['#attributes']['class'][] = 'clearfix';
+		// left / right wrappers
+		$form['field_name']['#prefix'] = '<div class="left">';
+		$form['profile_videographer']['field_skills']['#suffix'] = '</div><div class="right">';
+		$form['profile_videographer']['field_resume']['#suffix'] = '</div>';
+		$form['#attributes']['class'][] = 'clearfix';	
+	}
 	
 	if(arg(0) == 'join-our-team'){
 		unset($form['profile_videographer']['field_videographer_w9']);

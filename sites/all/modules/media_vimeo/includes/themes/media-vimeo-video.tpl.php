@@ -17,7 +17,7 @@
  * the JS will respect that when resizing later.
  */
 ?>
-<div class="media-vimeo-outer-wrapper slide" id="media-vimeo-<?php print $id; ?>" style="width: <?php print $width; ?>px; height: <?php print $height; ?>px;">
+<div class="media-vimeo-outer-wrapper" id="media-vimeo-<?php print $id; ?>" style="width: <?php print $width; ?>px; height: <?php print $height; ?>px;">
   <div class="media-vimeo-preview-wrapper" id="<?php print $wrapper_id; ?>">
     <?php print $output; ?>
   </div>

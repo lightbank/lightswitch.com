@@ -1,7 +1,7 @@
 <?php //dpm($content); ?>
 <?php //dpm($node); ?>
 
-<a href="/clients" class="back">&lt; Back to Local Directory</a>
+<?php print $navigation; ?>
 
 <div class="left">
 	
@@ -53,7 +53,7 @@
 				<div class="icon"><a href="<?php print $content['field_social_url2'][0]['#markup']; ?>" target="_blank"><img src="/sites/all/themes/bms/images/icon_twitter.png" /></a></div>
 			<?php endif; ?>
 			<?php if(!empty($content['field_social_name3']) && !empty($content['field_social_url3'])): ?>
-				<div class="link"><a href="<?php print $content['field_social_url3'][0]['#markup']; ?>" target="_blank"><?php print render($content['field_social_name3']) ?></a></div>
+				<div class="icon"><a href="<?php print $content['field_social_url3'][0]['#markup']; ?>" target="_blank"><img src="/sites/all/themes/bms/images/icon_yelp.jpg" /></a></div>
 			<?php endif; ?>
 			<?php if(!empty($content['field_social_name4']) && !empty($content['field_social_url4'])): ?>
 				<div class="link"><a href="<?php print $content['field_social_url4'][0]['#markup']; ?>" target="_blank"><?php print render($content['field_social_name4']) ?></a></div>

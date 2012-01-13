@@ -655,6 +655,12 @@ footer {
 	background: url(../images/icon_flag.png) no-repeat;
 }
 
+.flag-1.status-7 {
+	width: 22px;
+	height: 19px;
+	background: url(../images/icon_green_check.png) no-repeat;
+}
+
 .view-empty {
 	padding-top: 20px;
 }
@@ -947,7 +953,7 @@ footer {
 
 .back, .videographer-back {
 	float: left;
-	margin: 10px 0;
+	margin: 10px 20px 10px 0;
 	font-family: Georgia, serif;
 	font-size: 13px;
 	font-weight: bold;
