@@ -241,9 +241,9 @@ function bxdev_user_mail($key, &$message, $params) {
 			$body .= 'Password: ' . $params['pass'] . '<br>';
 			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
 			$body .= 'Please review the video and let me know what you think!<br><br>';
-			$body .= $params['pc']['full_name'] . '<br>';
-			$body .= $params['pc']['email'] . '<br>';
-			$body .= $params['pc']['phone'];
+			$body .= $params['sales']['full_name'] . '<br>';
+			$body .= $params['sales']['email'] . '<br>';
+			$body .= $params['sales']['phone'];
 
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
@@ -255,9 +255,9 @@ function bxdev_user_mail($key, &$message, $params) {
 		  $body .= 'A lightswitch videographer was in ' . $params['business'] . ' a couple of weeks ago to capture footage of your business. Your video is complete and ready for your viewing! If you are interested in purchasing the video you would be able to make a round of edits/changes to the video as you wish. We would also remove all lightswitch branding from the final version and send you the video in easy to download file formats. You would own full rights to your video and can use it on any of your online marketing pages. The video is a one time fee of only $299!<br><br>';
 			$body .= 'Video landing page: <a href="' . $base_url . '/user?destination=' . $params['project_path'] . '">' . $base_url . '/user?destination=' . $params['project_path'] . '</a><br><br>';
 			$body .= 'Please review the video and let me know what you think!<br><br>';
-			$body .= $params['pc']['full_name'] . '<br>';
-			$body .= $params['pc']['email'] . '<br>';
-			$body .= $params['pc']['phone'];
+			$body .= $params['sales']['full_name'] . '<br>';
+			$body .= $params['sales']['email'] . '<br>';
+			$body .= $params['sales']['phone'];
 
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
@@ -881,6 +881,15 @@ class User {
 				'phone' => $project->pc->field_phone['und'][0]['value'],
 			),
 		);
+		
+		// if sales user has been assigned to project
+		if(!empty($project->sales)){
+			$params['sales'] = array(
+				'full_name' => $project->sales->field_name['und'][0]['value'],
+				'email' => $project->sales->mail,
+				'phone' => $project->sales->field_phone['und'][0]['value'],
+			);
+		}
 		
 		// if client has never logged in (is new)
 		if($this->user->data['first_time_login'] == 1){

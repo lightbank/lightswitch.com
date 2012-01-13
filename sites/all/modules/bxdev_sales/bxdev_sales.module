@@ -259,8 +259,6 @@ function bxdev_sales_form_business_node_form_submit($form, &$form_state){
 function bxdev_sales_form_business_node_form_validate($form, &$form_state){
 	$values = $form_state['values'];
 	
-	dpm($values);
-	
 	// if neither an existing or new client has been entered
 	if(is_null($values['field_client_ref']['und'][0]['uid']) && empty($values['new_client_email'])){
 		form_set_error('field_client_ref[und]', 'You must select an existing Client or add a new one');
