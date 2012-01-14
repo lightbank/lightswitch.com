@@ -3,3 +3,5 @@ name = bxdev User
 description = "Extends system user functionality."
 package = bx
 core = 7.x
+
+files[] = bxdev_user.user.inc

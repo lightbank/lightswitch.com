@@ -5,3 +5,4 @@ package = bx
 core = 7.x
 
 files[] = includes/views_handler_status_days_ago_field.inc
+files[] = bxdev_project.project.inc

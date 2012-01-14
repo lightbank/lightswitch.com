@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('inc', 'bxdev_business', 'bxdev_business.forms');
+
 /**
  * HOOKS
  */
@@ -20,6 +22,21 @@ function bxdev_business_menu() {
 		'page arguments' => array(1, 3),
 	  'access arguments' => array('pc'),
 	  'type' => MENU_CALLBACK,
+	);
+	
+	$items['sales/add/business'] = array(
+    'title' => t('Create a New Video Project'),
+		'page callback' => 'bxdev_business_create_business_page',
+		'file path' => drupal_get_path('module','node'),
+    'file' => 'node.pages.inc',
+    'access arguments' => array('add new project'),
+    'type' => MENU_CALLBACK,
+  );
+  
+	$items['sales/autocomplete/businesses'] = array(
+		'page callback' => 'bxdev_business_autocomplete_businesses',
+	  'access arguments' => array('add new project'),
+		'type' => MENU_CALLBACK,
 	);
 
   return $items;
@@ -131,14 +148,27 @@ function bxdev_business_block_view($delta = '') {
 
 
 /**
- * FORMS
- */
-
-
-
-/**
  * CUSTOM
  */
+
+/**
+ * Page callback: add business
+ */
+function bxdev_business_create_business_page(){	
+	drupal_add_js(drupal_get_path('module', 'bxdev_business') . '/bxdev_business.js');
+	
+	$output = '<h2><strong>Business Profile Info</strong> (step 1 of 2)</h2>';
+	$output .= '<div class="client-select">';
+	$output .= '<a href="#new" class="show-client-add-form">New business</a>';
+	$output .= '<a href="#existing" class="show-client-existing-form">Existing business</a>';
+	$output .= '</div>';
+	
+	$output .= '<div class="client-add-form">' . drupal_render(node_add('business')) . '</div>';
+	
+	$output .= '<div class="client-existing-form" style="display:none;">' . drupal_render(drupal_get_form('bxdev_business_existing_business_form')) . '</div>';
+	
+	return $output;	
+}
 
 /**
  * Page callback: business public
@@ -161,6 +191,19 @@ function bxdev_business_video_callback($business, $project_nid){
 }
 
 
+/**
+ * Menu callback: clients autocomplete
+ */
+function bxdev_business_autocomplete_businesses($string){
+	$results = db_query("SELECT nid, title FROM {node} WHERE type = 'business' AND title LIKE :string", array(':string' => $string . '%'));
+	if($results->rowCount() > 0){
+		$items = array();
+		foreach($results as $business){
+			$items[$business->nid] = $business->title;
+		}
+		drupal_json_output($items);
+	}
+}
 
 
 
