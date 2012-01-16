@@ -6,7 +6,6 @@ sites/*/files
 sites/*/private
 
 # Ignore bxdev module as it contains terminal information
-sites/all/modules/bxdev
 sites/all/modules/mupload
 
 # Ignore SEO XML files

@@ -1,0 +1,167 @@
+<?php
+
+/**
+ * Alter content in Administration menu bar before it is rendered.
+ */
+function bxdev_admin_menu_output_alter(&$content) {
+  // remove Tasks and Index
+  $admin_menu_exclusions = array(
+    t('Tasks'),
+    t('Index'),
+  );
+  foreach($content['menu'] as $menu_key => $menu_tree) {
+    if (in_array($menu_tree['#title'], $admin_menu_exclusions))
+      unset($content['menu'][$menu_key]);
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function bxdev_node_access($node, $op, $account) {
+	global $user;
+	$is_anon = $user->uid == 0;	
+	if($op == 'view'){	
+		// project
+		if($node->type == 'project'){
+			if($is_anon){
+				$path = substr($_SERVER['REQUEST_URI'], 1);
+				drupal_goto('user', array('query' => array('url' => $path)));
+			}		
+		// business
+		}else if($node->type == 'business'){
+			if($is_anon && $node->field_public_access['und'][0]['value'] !== '1'){
+				return NODE_ACCESS_DENY;
+			}	
+		}	
+		return NODE_ACCESS_ALLOW;	
+	}	
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function bxdev_preprocess_page(&$vars){
+	drupal_add_js('Drupal.behaviors.password = function () {};', array('type' => 'inline', 'scope' => 'footer'));
+	$vars['no_title'] = FALSE;
+	// node type business, project
+	if(isset($vars['node'])){
+		if(($vars['node']->type == 'business' || $vars['node']->type == 'project') && arg(2) !== 'edit' && arg(2) !== 'delete'){
+			$vars['no_title'] = TRUE;
+		}		
+	}
+	// sales/add/business
+	if(arg(0) == 'sales' && arg(1) == 'add' && arg(2) == 'business'){
+		$vars['no_title'] = TRUE;
+	}
+	// sales/add/project
+	if(arg(0) == 'sales' && arg(1) == 'add' && arg(2) == 'project'){
+		$vars['no_title'] = TRUE;
+	}
+}
+
+/**
+ * Return an array of times for an html select field
+ */
+function bxdev_get_times_array(){
+	$times = array(
+		'' => '',
+		'0:00' => '12:00am',
+		'0:15' => '12:15am',
+		'0:30' => '12:30am',
+		'0:45' => '12:45am',
+		'1:00' => '1:00am',
+		'1:15' => '1:15am',
+		'1:30' => '1:30am',
+		'1:45' => '1:45am',
+		'2:00' => '2:00am',
+		'2:15' => '2:15am',
+		'2:30' => '2:30am',
+		'2:45' => '2:45am',
+		'3:00' => '3:00am',
+		'3:15' => '3:15am',
+		'3:30' => '3:30am',
+		'3:45' => '3:45am',
+		'4:00' => '4:00am',
+		'4:15' => '4:15am',
+		'4:30' => '4:30am',
+		'4:45' => '4:45am',
+		'5:00' => '5:00am',
+		'5:15' => '5:15am',
+		'5:30' => '5:30am',
+		'5:45' => '5:45am',
+		'6:00' => '6:00am',
+		'6:15' => '6:15am',
+		'6:30' => '6:30am',
+		'6:45' => '6:45am',
+		'7:00' => '7:00am',
+		'7:15' => '7:15am',
+		'7:30' => '7:30am',
+		'7:45' => '7:45am',
+		'8:00' => '8:00am',
+		'8:15' => '8:15am',
+		'8:30' => '8:30am',
+		'8:45' => '8:45am',
+		'9:00' => '9:00am',
+		'9:15' => '9:15am',
+		'9:30' => '9:30am',
+		'9:45' => '9:45am',
+		'10:00' => '10:00am',
+		'10:15' => '10:15am',
+		'10:30' => '10:30am',
+		'10:45' => '10:45am',
+		'11:00' => '11:00am',
+		'11:15' => '11:15am',
+		'11:30' => '11:30am',
+		'11:45' => '11:45am',
+		'12:00' => '12:00pm',
+		'12:15' => '12:15pm',
+		'12:30' => '12:30pm',
+		'12:45' => '12:45pm',
+		'13:00' => '1:00pm',
+		'13:15' => '1:15pm',
+		'13:30' => '1:30pm',
+		'13:45' => '1:45pm',
+		'14:00' => '2:00pm',
+		'14:15' => '2:15pm',
+		'14:30' => '2:30pm',
+		'14:45' => '2:45pm',
+		'15:00' => '3:00pm',
+		'15:15' => '3:15pm',
+		'15:30' => '3:30pm',
+		'15:45' => '3:45pm',
+		'16:00' => '4:00pm',
+		'16:15' => '4:15pm',
+		'16:30' => '4:30pm',
+		'16:45' => '4:45pm',
+		'17:00' => '5:00pm',
+		'17:15' => '5:15pm',
+		'17:30' => '5:30pm',
+		'17:45' => '5:45pm',
+		'18:00' => '6:00pm',
+		'18:15' => '6:15pm',
+		'18:30' => '6:30pm',
+		'18:45' => '6:45pm',
+		'19:00' => '7:00pm',
+		'19:15' => '7:15pm',
+		'19:30' => '7:30pm',
+		'19:45' => '7:45pm',
+		'20:00' => '8:00pm',
+		'20:15' => '8:15pm',
+		'20:30' => '8:30pm',
+		'20:45' => '8:45pm',
+		'21:00' => '9:00pm',
+		'21:15' => '9:15pm',
+		'21:30' => '9:30pm',
+		'21:45' => '9:45pm',
+		'22:00' => '10:00pm',
+		'22:15' => '10:15pm',
+		'22:30' => '10:30pm',
+		'22:45' => '10:45pm',
+		'23:00' => '11:00pm',
+		'23:15' => '11:15pm',
+		'23:30' => '11:30pm',
+		'23:45' => '11:45pm',			
+	);
+	return $times;
+}
