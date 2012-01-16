@@ -262,7 +262,7 @@ class Project {
 				$emails[] = $account->mail;
 			}
 			$emails = implode(',', $emails);
-			$emails = 'wandoledzep@gmail.com';
+			// $emails = 'wandoledzep@gmail.com';
 			$params = array(
 				'project_title' => $this->project->title,
 				'project_link' => $project_link,

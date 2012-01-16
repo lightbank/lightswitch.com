@@ -1,0 +1,5 @@
+; $Id
+name = bxdev
+description = "Implements site wide global customizations."
+package = bx
+core = 7.x
