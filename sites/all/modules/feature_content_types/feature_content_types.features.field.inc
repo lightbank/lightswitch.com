@@ -3047,11 +3047,7 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'project',
-      'default_value' => array(
-        0 => array(
-          'value' => '1',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -3079,7 +3075,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_owner_interview',
       'label' => 'Business owner interview',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -4461,11 +4457,7 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'project',
-      'default_value' => array(
-        0 => array(
-          'value' => '1',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -4493,7 +4485,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_voice_over',
       'label' => 'Voice over',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -4539,11 +4531,7 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'project',
-      'default_value' => array(
-        0 => array(
-          'value' => 'male',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -4571,7 +4559,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_voice_over_gender',
       'label' => 'Voice over gender',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),

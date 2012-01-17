@@ -124,12 +124,29 @@ function bxdev_user_mail($key, &$message, $params) {
 	switch($key){
 		case 'videographer':
 			$subject = t('Thank you for your interest in becoming a Lightswitch videographer!');
-			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-		  $body .= 'Thank you for your interest in becoming a Lightswitch videographer! We have received your submission and are currently reviewing your information. Below you will find a unique username and password needed to access your videographer profile page on Lightswitch.com. If you would like to update your profile or make any changes you can do so by clicking the Login link.<br><br>';
+			$body = 'Dear ' . $params['full_name'] . '!<br><br>';
+		  $body .= 'Thank you for your interest in becoming a lightswitch videographer! We have received your submission and are currently reviewing your information. Below you will find a unique username and password needed to access your videographer profile page on Lightswitch.com. If you would like to update your profile or make any changes you can do so by clicking the Login link.<br><br>';
 			$body .= 'Login link: <a href="' . $base_url . '/user">' . $base_url . '/user</a><br>';
 			$body .= 'Username: ' . $params['name'] . '<br>';
 			$body .= 'Password: ' . $params['pass'] . '<br><br>';
-			$body .= 'Feel free to reach out to us at info@lightswitch.com with any questions.<br><br>';
+			$body .= 'Feel free to reach out to us at production@lightswitch.com with any questions.<br><br>';
+			$body .= 'Thanks!<br>';
+			$body .= 'Team Lightswitch';
+			
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+		
+		case 'videographer_existing':
+			$subject = t('Thank you for your interest in becoming a Lightswitch videographer!');
+			$body = 'Hi ' . $params['full_name'] . '!<br><br>';
+		  $body .= 'Thank you for recently submitting your application to be a lightswitch videographer. We\'d like to let you know that the new lightswitch website is now up and running! It features an expanded videographer page that will let you update and edit your profile with new equipment, contact, or general info.  Our review process has a heavy emphasis on the type of equipment you currently own and operate.  Please be as detailed as possible.<br><br>';
+			$body .= 'Also, we have an exciting nationwide project that requires very specific equipment.  If you have a 7D or comparable camera, an off -board recorder (tascam, edirol), and a lav mic please fill out your videographer profile page and send an email to production@lightswitch.com . <strong>If you don\'t have this equipment, don\'t worry about it, you may still be qualified for other lightswitch productions.</strong><br><br>';
+			$body .= 'Below you will find the unique username and password needed to access your videographer profile page on lightswitch.com. Please click the Login link to get started!<br><br>';
+			$body .= 'Login link: <a href="' . $base_url . '/user">' . $base_url . '/user</a><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '<br><br>';
+			$body .= 'Feel free to reach out to us at production@lightswitch.com with any questions.<br><br>';
 			$body .= 'Thanks!<br>';
 			$body .= 'Team Lightswitch';
 			
@@ -190,13 +207,13 @@ function bxdev_user_mail($key, &$message, $params) {
 		case 'direct_sale_new':
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts. Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
+		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
 			$body .= 'Username: ' . $params['name'] . '<br>';
 			$body .= 'Password: ' . $params['pass'] . '<br>';
 			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
-			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you’d like changes made to your video, login  and fill out all requested changes in the "Post a comment" field under your video. Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it.  Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
-			$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
-			$body .= 'Contact us with any questions or concerns.<br><br>';
+			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you\'d like changes made to your video, log in and post revisions in the "Post a comment" field under your video. You have 5 days to submit revision requests, after which the video will be considered approved as is.  Please make all of your requests very specific so we can work to get your Lightswitch video exactly how you want it. Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
+			$body .= 'If you are happy with the video in its current form, please click "approve" on the video landing page after you log in, and we\'ll send you the final product in convenient file formats.<br><br>';
+			$body .= 'Do not reply to this email; if you have questions please contact me via the information below!.<br><br>';
 			$body .= 'Sincerely,<br>';
 			$body .= $params['pc']['full_name'] . '<br>';
 			$body .= $params['pc']['email'] . '<br>';
@@ -209,11 +226,11 @@ function bxdev_user_mail($key, &$message, $params) {
 		case 'direct_sale_existing':
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts. Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user?destination=' . $params['project_path'] . '">' . $base_url . '/user?destination=' . $params['project_path'] . '</a><br><br>';
-			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you’d like changes made to your video, login  and fill out all requested changes in the "Post a comment" field under your video. Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it.  Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
-			$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
-			$body .= 'Contact us with any questions or concerns.<br><br>';
+		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com:<br><br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
+			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you\'d like changes made to your video, log in and post revisions in the "Post a comment" field under your video. You have 5 days to submit revision requests, after which the video will be considered approved as is.  Please make all of your requests very specific so we can work to get your Lightswitch video exactly how you want it. Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
+			$body .= 'If you are happy with the video in its current form, please click "approve" on the video landing page after you log in, and we\'ll send you the final product in convenient file formats.<br><br>';
+			$body .= 'Do not reply to this email; if you have questions please contact me via the information below!.<br><br>';
 			$body .= 'Sincerely,<br>';
 			$body .= $params['pc']['full_name'] . '<br>';
 			$body .= $params['pc']['email'] . '<br>';

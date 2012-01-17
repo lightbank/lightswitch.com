@@ -62,13 +62,13 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 function bxdev_vid_user_register_submit($form, &$form_state){
 	$values = $form_state['values'];
 	// create a new user
-	// $user = new User($values['mail'], 'videographer', $values['field_name']['und'][0]['value'], $values['field_phone']['und'][0]['value']);
-	$user = new User();
-	$user->set_email($values['mail']);
-	$user->set_full_name($values['field_name']['und'][0]['value']);
-	$user->set_phone($values['field_phone']['und'][0]['value']);
-	$user->set_role('videographer');
-	$user->create();
+	$user = new User($values['mail'], 'videographer', $values['field_name']['und'][0]['value'], $values['field_phone']['und'][0]['value']);
+	// $user = new User();
+	// $user->set_email($values['mail']);
+	// $user->set_full_name($values['field_name']['und'][0]['value']);
+	// $user->set_phone($values['field_phone']['und'][0]['value']);
+	// $user->set_role('videographer');
+	// $user->create();
 	$user = $user->get_user();
 	// send along the user object
 	$form_state['user'] = $user;

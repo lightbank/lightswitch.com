@@ -27,6 +27,7 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 		$form['field_social_url2']['und'][0]['value']['#title'] =  '';
 		$form['field_social_url3']['und'][0]['value']['#title'] =  '';
 		$form['field_social_url4']['und'][0]['value']['#title'] =  '';
+	}
 		
 		$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
 
@@ -51,7 +52,7 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 			'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
 		);
 		
-	}
+	// }
 	
 }
 
@@ -59,8 +60,6 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
  * Form submit handler: add business
  */
 function bxdev_business_form_business_node_form_submit($form, &$form_state){
-	// only if adding new business, not editing
-	if(arg(2) != 'edit'){
 		
 		$values = $form_state['values'];
 		
@@ -82,8 +81,11 @@ function bxdev_business_form_business_node_form_submit($form, &$form_state){
 			node_save($node);
 		}
 		
-		$form_state['redirect'] = 'sales/add/project/' . $values['nid'];
-	}
+		// only if adding new business, not editing
+		if(arg(2) != 'edit'){		
+			$form_state['redirect'] = 'sales/add/project/' . $values['nid'];
+		}
+		
 }
 
 /**
