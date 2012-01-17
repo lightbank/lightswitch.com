@@ -17,42 +17,40 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 		$form['title']['#prefix'] = '<div class="left">';
 		$form['field_hours_operation']['#suffix'] = '</div><div class="right">';
 		$form['field_business_download_file']['#suffix'] = '</div>';
-		
-		// remove labels and set input values for social media inputs
-		$form['field_social_name1']['und'][0]['value']['#title'] = t('Social Name');
-		$form['field_social_name2']['und'][0]['value']['#title'] = '';
-		$form['field_social_name3']['und'][0]['value']['#title'] = '';
-		$form['field_social_name4']['und'][0]['value']['#title'] = '';
-		$form['field_social_url1']['und'][0]['value']['#title'] =  t('Social URL');
-		$form['field_social_url2']['und'][0]['value']['#title'] =  '';
-		$form['field_social_url3']['und'][0]['value']['#title'] =  '';
-		$form['field_social_url4']['und'][0]['value']['#title'] =  '';
 	}
 		
-		$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
+	// remove labels and set input values for social media inputs
+	$form['field_social_name1']['und'][0]['value']['#title'] = t('Social Name');
+	$form['field_social_name2']['und'][0]['value']['#title'] = '';
+	$form['field_social_name3']['und'][0]['value']['#title'] = '';
+	$form['field_social_name4']['und'][0]['value']['#title'] = '';
+	$form['field_social_url1']['und'][0]['value']['#title'] =  t('Social URL');
+	$form['field_social_url2']['und'][0]['value']['#title'] =  '';
+	$form['field_social_url3']['und'][0]['value']['#title'] =  '';
+	$form['field_social_url4']['und'][0]['value']['#title'] =  '';
+	
+	$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
 
-		$form['new_client_email'] = array(
-			'#type' => 'textfield',
-			'#title' => t('Client email'),
-			'#weight' => -50,
-			'#prefix' => '<div class="new-client-wrapper">',
-		);
+	$form['new_client_email'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Client email'),
+		'#weight' => -50,
+		'#prefix' => '<div class="new-client-wrapper">',
+	);
 
-		$form['new_client_name'] = array(
-			'#type' => 'textfield',
-			'#title' => t('Client full name'),
-			'#weight' => -49,
-		);
+	$form['new_client_name'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Client full name'),
+		'#weight' => -49,
+	);
 
-		$form['new_client_phone'] = array(
-			'#type' => 'textfield',
-			'#title' => t('Client phone'),
-			'#weight' => -48,
-			'#suffix' => '</div>',
-			'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
-		);
-		
-	// }
+	$form['new_client_phone'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Client phone'),
+		'#weight' => -48,
+		'#suffix' => '</div>',
+		'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
+	);
 	
 }
 

@@ -2976,7 +2976,7 @@ function feature_content_types_field_default_fields() {
         'retroactive_update' => 0,
       ),
       'field_name' => 'field_logo',
-      'label' => 'Business logo file',
+      'label' => 'Business logos and photos',
       'required' => 0,
       'settings' => array(
         'description_field' => 0,
@@ -3194,6 +3194,7 @@ function feature_content_types_field_default_fields() {
           5 => 0,
           6 => 0,
           7 => 0,
+          8 => 0,
         ),
         'referenceable_status' => array(
           0 => 0,
@@ -3201,8 +3202,8 @@ function feature_content_types_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+          'display_name' => 'references_3',
+          'view_name' => 'users',
         ),
       ),
       'translatable' => '0',
@@ -5826,7 +5827,7 @@ function feature_content_types_field_default_fields() {
   t('Business PDF file');
   t('Business PDF label');
   t('Business contact name');
-  t('Business logo file');
+  t('Business logos and photos');
   t('Business overview paragraph');
   t('Business owner interview');
   t('Businesses');

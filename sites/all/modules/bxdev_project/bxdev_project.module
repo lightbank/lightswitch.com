@@ -493,7 +493,12 @@ function bxdev_project_download_production_details($node){
 	$output .= '<div class="field-label">Client email:</div>';
 	$output .= '<div class="field">' . $project->client->mail . '</div>';
 	$output .= '<div class="field-label">Client phone:</div>';
-	$output .= '<div class="field">' . $project->client->field_phone['und'][0]['value'] . '</div>';	
+	$output .= '<div class="field">' . $project->client->field_phone['und'][0]['value'] . '</div>';
+	
+	$output .= '<div class="field-label">Business address:</div>';
+	$output .= '<div class="field">' . nl2br($project->business->field_address['und'][0]['value']) . '</div>';
+	$output .= '<div class="field-label">Business website:</div>';
+	$output .= '<div class="field">' . $project->business->field_website['und'][0]['value'] . '</div>';	
 	
 	$output .= render(field_view_field('node', $node, 'field_shoot_date'));
 	$output .= render(field_view_field('node', $node, 'field_voice_over'));

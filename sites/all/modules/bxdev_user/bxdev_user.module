@@ -294,13 +294,13 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 		$user = user_load(arg(1));
 		// pc
 		if(isset($user->roles[4])){
-			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
 			unset($data['tabs'][1]);	
 		// videographer
 		}else	if(isset($user->roles[5])){
 			if(!empty($data['tabs'][0])){
-				$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
+				$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
 				$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
 				unset($data['tabs'][0]['output'][1]);
 				// dpm($data);
@@ -311,11 +311,11 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			}
 		// sales
 		}else	if(isset($user->roles[6])){
-			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
 		// client
 		}else if(isset($user->roles[7])){
-			$data['tabs'][0]['output'][0]['#link']['title'] = 'Projects';
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';			
 		}
 	}else if(arg(0) !== 'admin'){
@@ -345,7 +345,7 @@ function bxdev_user_preprocess_user_profile(&$vars){
 		$output .= '<a class="add-project btn" href="/videographers">Videographers directory</a> ';
 		$output .= '<a href="/admin/structure/types" class="add-project btn">Admin settings</a> ';
 		$output .= '</div><br />';
-		$output .= views_embed_view('projects', 'page_1', $vars['user']->uid);
+		$output .= views_embed_view('projects', 'pc_landing', $vars['user']->uid);
 	// videographer
 	}else if(isset($vars['user']->roles[5])){
 		$output .= views_embed_view('projects', 'block_2');

@@ -89,7 +89,7 @@
 		 */
 		
 		// phone number formatting
-		$('#edit-field-phone-und-0-value, #edit-new-client-phone').mask('999-999-9999');
+		$('#edit-field-phone-und-0-value, #edit-new-client-phone').mask('999-999-9999? x99999');
 		
 		// lock facebok / twitter labels
 		$('#edit-field-social-name1-und-0-value, #edit-field-social-name2-und-0-value, #edit-field-social-name3-und-0-value').attr('disabled', 'disabled');		
