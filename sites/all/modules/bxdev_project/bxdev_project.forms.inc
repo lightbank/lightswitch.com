@@ -4,6 +4,7 @@
  * FORMS
  */
 
+
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -242,7 +243,7 @@ function bxdev_project_logo_upload_form($form, &$form_state){
 	
 	$form['#tree'] = TRUE;
 	
-	$form['title']['#markup'] = t('<label>Business logos</label>');
+	$form['title']['#markup'] = t('<label>Business logos and photos</label>');
 	$form['title']['#prefix'] = '<div class="logo-upload-wrapper">';
 	
 	if(!empty($node->field_logo['und'])){
@@ -396,4 +397,32 @@ function bxdev_project_videographer_documents_form_submit($form, &$form_state){
 	
 }
 
+/**
+ * Implements hook_form_alter(). PC landing exposed filter alter.
+ */
+function bxdev_project_form_alter(&$form, &$form_state, $form_id) {
+  if($form['#id'] == 'views-exposed-form-projects-pc-landing'){
+		// get the business drop down options
+		$options = $form['field_project_business_ref_nid']['#options'];
+		global $user;
+		// get all businesses associated with current user
+		$results = db_query("SELECT field_data_field_project_business_ref.field_project_business_ref_nid as nid FROM {field_data_field_project_business_ref} INNER JOIN {field_data_field_pc_ref} ON field_data_field_project_business_ref.entity_id = field_data_field_pc_ref.entity_id WHERE field_data_field_pc_ref.field_pc_ref_uid = :uid", array(':uid' => $user->uid));
+		// if businesses exist
+		if($results->rowCount() > 0){
+			// build an array of business nids
+			$business_nids = array();
+			foreach($results as $row){
+				$business_nids[$row->nid] = $row->nid;
+			}
+			// get only businesses links to the current user
+			$new_options = array_intersect_key($options, $business_nids);
+			// add the "Any" option
+			$new_options['All'] = '- Any -';
+			// sort alphabetically by key
+			ksort($new_options);
+			// assign the new options
+			$form['field_project_business_ref_nid']['#options'] = $new_options;
+		}
+	}
+}
 
