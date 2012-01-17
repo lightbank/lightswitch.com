@@ -4,9 +4,15 @@
  * Form builder: client comment form
  */
 function bxdev_comment_client_form($form, &$form_state){
+	
+	$nid = arg(1);
+	$project = new Project($nid);
+	$zero_comments = 'Your video is now ready for review! Use the comment form below to communicate and leave feedback.';
+	
 	$form['comment'] = array(
 	  '#type' => 'textarea',
 		'#title' => t('Post a comment:'),
+		'#default_value' => (count($project->comments) == 0) ? $zero_comments : t('Type your comments here...'),
 	);
 	
 	$form['revision_list'] = array(
@@ -18,6 +24,20 @@ function bxdev_comment_client_form($form, &$form_state){
 	$form['submit'] = array(
 	  '#type' => 'submit',
 	  '#value' => t('Post comment'),
+	);
+	
+	$form['approve'] = array(
+		'#type' => 'submit',
+		'#value' => t('Approve final video'),
+		'#prefix' => '<div class="approve-or">or</div>',
+		'#attributes' => array(
+			'class' => array('approve-btn'),
+		),
+		'#access' => user_access('client'),
+	);
+	
+	$form['approve_confirm'] = array(
+		'#markup' => '<div class="approve-confirm" style="display:none;"><h3>Are you sure you wish to approve this project?</h3><p>After approval, comments will no longer be able to be posted.</p><a class="approve-yes" href="/project/' . $nid . '/approve">Approve</a> <a href="" class="approve-cancel">Cancel</a></div>',
 	);
 	
 	return $form;	
@@ -99,24 +119,12 @@ function bxdev_comment_client_decline_form_submit($form, &$form_state){
 	global $user;
 	$values = $form_state['values'];
 	$comment_node = node_load($form_state['comment_nid']);
+	// set declined reason
 	$comment_node->field_declined_reason['und'][0]['value'] = $values['decline_reason'];
+	// set declined date
 	$comment_node->field_declined_date['und'][0]['value'] = mktime();
-	node_save($comment_node);
-	
-	// $project_nid = arg(1);
-	// $project = new Project($project_nid);
-	// 
-	// $node = new stdClass();
-	// $node->language = LANGUAGE_NONE;
-	// $node->uid = $user->uid;
-	// $node->type = 'comment';
-	// 
-	// $node->title = $project->project->title . ' - Declined';
-	// $node->field_project_ref['und'][0]['nid'] = $project_nid;
-	// $node->field_declined_reason['und'][0]['value'] = $values['decline_reason'];
-
-	// node_save($node);	
-	
+	// save the comment
+	node_save($comment_node);	
 }
 
 

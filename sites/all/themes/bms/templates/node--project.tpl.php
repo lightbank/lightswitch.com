@@ -86,9 +86,8 @@
 			<?php if($comment_permission): ?>
 				<?php print $comment_form; ?>
 			<?php endif; ?>
-			<?php if(isset($approve_button)) print $approve_button; ?>
 		<?php else: ?>
-			<p>Project has been approved.</p>
+			<div class="project-approved">Project has been approved.</div>
 		<?php endif; ?>
 		
 	</div><!-- end .block -->

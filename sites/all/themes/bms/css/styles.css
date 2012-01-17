@@ -737,9 +737,9 @@ footer {
 	margin-bottom: 10px;
 }
 
-.approve-btn, .approve-yes {
+input[type="submit"].approve-btn, .approve-yes {
 	display: block;
-	width: 110px;
+	width: 180px;
 	height: 40px;
 	background: #198300;
 	color: #fff;
@@ -753,6 +753,15 @@ footer {
 
 .approve-cancel {
 	color: #f00;
+}
+
+.project-approved {
+	background: green;
+	color: #fff;
+	font-size: 18px;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
 }
 
 
@@ -833,14 +842,23 @@ footer {
 	display: none;
 }
 
-#edit-field-comment textarea {
+#edit-field-comment textarea,
+#edit-comment--2 {
 	width: 660px;
 	height: 100px;
+	font-size: 14px;
+	line-height: 18px;
+}
+
+.form-item-revision-list label {
+	font-size: 14px;
 }
 
 #comment-node-form #edit-submit,
 .approve-or,
-.approve-btn {
+.approve-btn,
+#bxdev-comment-client-form--2 #edit-submit--2,
+#bxdev-comment-client-form--3 #edit-approve--2 {
 	float: left;
 	margin-right: 20px;
 }

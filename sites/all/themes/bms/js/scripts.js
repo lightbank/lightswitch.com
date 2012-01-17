@@ -67,7 +67,8 @@
 		 */	
 		
 		// comment textarea focus / blur
-		$('#edit-field-comment-und-0-value').focus(function() {
+		var $comment_textarea = $('#bxdev-comment-client-form--2 #edit-comment--2');
+		$comment_textarea.focus(function() {
 			var value = $(this).val();
 			if(value == 'Type your comments here...'){
 				$(this).val('');

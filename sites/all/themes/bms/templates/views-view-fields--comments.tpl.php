@@ -54,8 +54,8 @@
 		// if revision list is declined
 		}else if(!empty($row->field_field_declined_reason)){
 			
-			$output .= '<div class="revision-declined">DECLINED on ' . $row->field_field_declined_date[0]['rendered']['#markup'] . ' with the following reason:';
-			$output .= '<div class="reason">' . $row->field_field_declined_reason[0]['raw']['value'] . '</div>';			
+			$output .= '<div class="revision-declined">DECLINED on ' . $row->field_field_declined_date[0]['rendered']['#markup'];
+			$output .= '<div class="reason"><strong>Reason:</strong><br/>' . $row->field_field_declined_reason[0]['raw']['value'] . '</div>';			
 			$output .= '</div>';
 		
 		// if revision list needs the user's response
