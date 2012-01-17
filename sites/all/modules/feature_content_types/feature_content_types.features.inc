@@ -50,6 +50,14 @@ function feature_content_types_node_info() {
  */
 function feature_content_types_default_profile2_type() {
   $items = array();
+  $items['client'] = entity_import('profile2_type', '{
+    "userCategory" : true,
+    "userView" : true,
+    "type" : "client",
+    "label" : "Client",
+    "weight" : "0",
+    "data" : { "registration" : 0 }
+  }');
   $items['videographer'] = entity_import('profile2_type', '{
     "userCategory" : true,
     "userView" : true,

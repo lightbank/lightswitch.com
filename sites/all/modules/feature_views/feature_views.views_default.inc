@@ -74,8 +74,8 @@ function feature_views_views_default_views() {
   $handler->display->display_options['fields']['field_client_rating']['field'] = 'field_client_rating';
   $handler->display->display_options['fields']['field_client_rating']['label'] = '';
   $handler->display->display_options['fields']['field_client_rating']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_client_rating']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_client_rating']['alter']['text'] = '<div class="rating-rating"><div>';
+  $handler->display->display_options['fields']['field_client_rating']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['field_client_rating']['alter']['text'] = '<div class="rating-[field_client_rating-value] rating"></div>';
   $handler->display->display_options['fields']['field_client_rating']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_client_rating']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['field_client_rating']['alter']['external'] = 0;
@@ -208,7 +208,6 @@ function feature_views_views_default_views() {
 <div class="right">
 	<div class="photo">[field_project_video]</div>
 	<div class="category">[field_client_category]</div>
-	<div class="rating-[field_client_rating] rating"></div>
 </div>';
   $handler->display->display_options['fields']['nothing']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['nothing']['alter']['absolute'] = 0;
@@ -296,6 +295,16 @@ function feature_views_views_default_views() {
   $handler->display->display_options['filters']['field_public_access_value']['value'] = array(
     1 => '1',
   );
+  /* Filter criterion: Content: City (field_business_city) */
+  $handler->display->display_options['filters']['field_business_city_value']['id'] = 'field_business_city_value';
+  $handler->display->display_options['filters']['field_business_city_value']['table'] = 'field_data_field_business_city';
+  $handler->display->display_options['filters']['field_business_city_value']['field'] = 'field_business_city_value';
+  $handler->display->display_options['filters']['field_business_city_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['operator_id'] = 'field_business_city_value_op';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['label'] = 'City';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['operator'] = 'field_business_city_value_op';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['identifier'] = 'field_business_city_value';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['reduce'] = 0;
 
   /* Display: Public listing page */
   $handler = $view->new_display('page', 'Public listing page', 'page');

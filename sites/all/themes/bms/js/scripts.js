@@ -94,6 +94,15 @@
 		// lock facebok / twitter labels
 		$('#edit-field-social-name1-und-0-value, #edit-field-social-name2-und-0-value, #edit-field-social-name3-und-0-value').attr('disabled', 'disabled');		
 		
+		// visibility toggle for new / existing client
+		$('.new-client-btn').click(function(){
+			$('.new-client-wrapper').toggle();
+			$('#edit-field-client-ref').toggle();
+			$('#edit-field-client-ref-und').val('_none');
+			$('#edit-new-client-email, #edit-new-client-name, #edit-new-client-phone').val('');
+			return false;
+		});
+		
 	});
 
 
