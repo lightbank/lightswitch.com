@@ -114,6 +114,8 @@ function feature_content_types_field_default_fields() {
           'tampa' => 'Tampa',
           'washington_dc' => 'Washington DC',
           'los_angeles' => 'Los Angeles',
+          'atlanta' => 'Atlanta',
+          'salt_lake_city' => 'Salt Lake City',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -1787,7 +1789,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_comment',
       'label' => 'Comment',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -1945,7 +1947,7 @@ function feature_content_types_field_default_fields() {
         'settings' => array(
           'display_all_day' => 0,
           'increment' => '15',
-          'input_format' => 'm/d/Y - g:i:sa',
+          'input_format' => 'Y-m-d H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
           'repeat_collapsed' => 0,
@@ -2000,7 +2002,7 @@ function feature_content_types_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 4,
+          'weight' => 5,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2234,7 +2236,7 @@ function feature_content_types_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => 5,
+          'weight' => 4,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4583,6 +4585,87 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'profile2-client-field_businesses_ref'
+  $fields['profile2-client-field_businesses_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_businesses_ref',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => 0,
+        'referenceable_types' => array(
+          'business' => 'business',
+          'fact' => 0,
+          'faq' => 0,
+          'page' => 0,
+          'project' => 0,
+          'video' => 0,
+          'videographer' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'client',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 20,
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_businesses_ref',
+      'label' => 'Businesses',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => 0,
+      ),
+    ),
+  );
+
   // Exported field: 'profile2-videographer-field_address'
   $fields['profile2-videographer-field_address'] = array(
     'field_config' => array(
@@ -5758,6 +5841,7 @@ function feature_content_types_field_default_fields() {
   t('Business logo file');
   t('Business overview paragraph');
   t('Business owner interview');
+  t('Businesses');
   t('Camera type');
   t('Category');
   t('City');
