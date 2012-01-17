@@ -206,11 +206,12 @@ function bxdev_project_node_insert($node) {
  */
 function bxdev_project_node_submit(&$node, $form, &$form_state) {
 	global $user;
+	$role = bxdev_user_get_role($user->uid);
 	$values = $form_state['values'];
 	switch($node->type){
 		case 'project':
 		
-			if(!is_null($node->nid)){
+			if(!is_null($node->nid) && $role == 'pc'){
 		
 			  $project = new Project($node->nid);
 				$old_status = $project->get_status();			
