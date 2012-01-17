@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Comment
+description = Commenting / approval system integrated within Projects.
+package = bx
+core = 7.x

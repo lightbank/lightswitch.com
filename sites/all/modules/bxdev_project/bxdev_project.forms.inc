@@ -118,59 +118,59 @@ function bxdev_project_form_project_node_form_validate($form, &$form_state){
 	
 }
 
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function bxdev_project_form_comment_node_form_alter(&$form, $form_state){
-	$project = new Project(arg(1));
-	$zero_comments = 'Your video is now ready for review! Use the comment form below to leave communicate and leave feedback.';
-	// change submit button
-	$form['actions']['submit']['#value'] = t('Post Comment');
-	// hide the title field
-	$form['title']['#type'] = 'hidden';
-	$form['title']['#value'] = NULL;
-	// hide the comment label
-	$form['field_comment']['und'][0]['value']['#title'] = '';
-	$form['field_comment']['und'][0]['value']['#default_value'] = (count($project->comments) == 0) ? $zero_comments : t('Type your comments here...');
-	// hide the project ref field
-	$form['field_project_ref']['#type'] = 'hidden';
-	// add custom validate handler
-	// array_unshift($form['#validate'], 'bxdev_project_comment_node_form_validate'); 
-	$form['#validate'][] = 'bxdev_project_comment_node_form_validate'; 
-	// add custom submit handler
-	$form['actions']['submit']['#submit'][] = 'bxdev_project_comment_node_form_submit';
-}
-
-/**
- * Form submit handler: comment node form
- */
-function bxdev_project_comment_node_form_submit($form, &$form_state){
-	$form_state['redirect'] = substr($_SERVER['REQUEST_URI'], 1);
-}
-
-/**
- * Form validation handler: comment node form
- */
-function bxdev_project_comment_node_form_validate($form, &$form_state){
-	
-	$values = $form_state['values'];
-	
-	// set the node title
-	$comment = $values['field_comment']['und'][0]['value'];
-	$title = substr($comment, 0, 100);
-	form_set_value($form['title'], $title, $form_state);
-	
-	// set the project ref
-	$project_nid = arg(1);
-	$form['field_project_ref']['#parents'] = array('field_project_ref', 'und', 0, 'nid');
-	form_set_value($form['field_project_ref'], $project_nid, $form_state);
-	
-	// check if the project is type "spec"
-	$project = new Project($project_nid);
-	if($project->project->field_video_type['und'][0]['value'] == 'spec' && empty($project->project->field_author['und'][0]['uid']) && count($project->comments) == 0){
-		form_set_error('title', 'A sales user must be assigned before posting a comment to a Project of type <em>Spec</em>');
-	}
-}
+// /**
+//  * Implements hook_form_FORM_ID_alter().
+//  */
+// function bxdev_project_form_comment_node_form_alter(&$form, $form_state){
+// 	$project = new Project(arg(1));
+// 	$zero_comments = 'Your video is now ready for review! Use the comment form below to leave communicate and leave feedback.';
+// 	// change submit button
+// 	$form['actions']['submit']['#value'] = t('Post Comment');
+// 	// hide the title field
+// 	$form['title']['#type'] = 'hidden';
+// 	$form['title']['#value'] = NULL;
+// 	// hide the comment label
+// 	$form['field_comment']['und'][0]['value']['#title'] = '';
+// 	$form['field_comment']['und'][0]['value']['#default_value'] = (count($project->comments) == 0) ? $zero_comments : t('Type your comments here...');
+// 	// hide the project ref field
+// 	$form['field_project_ref']['#type'] = 'hidden';
+// 	// add custom validate handler
+// 	// array_unshift($form['#validate'], 'bxdev_project_comment_node_form_validate'); 
+// 	$form['#validate'][] = 'bxdev_project_comment_node_form_validate'; 
+// 	// add custom submit handler
+// 	$form['actions']['submit']['#submit'][] = 'bxdev_project_comment_node_form_submit';
+// }
+// 
+// /**
+//  * Form submit handler: comment node form
+//  */
+// function bxdev_project_comment_node_form_submit($form, &$form_state){
+// 	$form_state['redirect'] = substr($_SERVER['REQUEST_URI'], 1);
+// }
+// 
+// /**
+//  * Form validation handler: comment node form
+//  */
+// function bxdev_project_comment_node_form_validate($form, &$form_state){
+// 	
+// 	$values = $form_state['values'];
+// 	
+// 	// set the node title
+// 	$comment = $values['field_comment']['und'][0]['value'];
+// 	$title = substr($comment, 0, 100);
+// 	form_set_value($form['title'], $title, $form_state);
+// 	
+// 	// set the project ref
+// 	$project_nid = arg(1);
+// 	$form['field_project_ref']['#parents'] = array('field_project_ref', 'und', 0, 'nid');
+// 	form_set_value($form['field_project_ref'], $project_nid, $form_state);
+// 	
+// 	// check if the project is type "spec"
+// 	$project = new Project($project_nid);
+// 	if($project->project->field_video_type['und'][0]['value'] == 'spec' && empty($project->project->field_author['und'][0]['uid']) && count($project->comments) == 0){
+// 		form_set_error('title', 'A sales user must be assigned before posting a comment to a Project of type <em>Spec</em>');
+// 	}
+// }
 
 /**
  * Form builder: photo approval

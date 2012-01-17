@@ -1,0 +1,20 @@
+.revision-decline-client-form {
+	display: none;
+	position: absolute;
+	bottom: 50px;
+	left: 40px;
+	padding: 20px;
+	background: #fff0f0;
+	border: solid #ff4f4f 3px;
+	border-radius: 5px;
+	width: 570px;
+}
+
+.revision-decline-client-form textarea {
+	width: 100%;
+	height: 170px;
+}
+
+.revision-decline-client-form .form-submit {
+	background: #ff4f4f;
+}

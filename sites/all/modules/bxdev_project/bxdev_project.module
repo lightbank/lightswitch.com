@@ -16,21 +16,6 @@ function bxdev_project_views_api() {
 }
 
 /**
- * Implements hook_init().
- */
-function bxdev_project_init() {
-	if(arg(0) == 'node' && is_numeric(arg(1))){
-		$node = node_load(arg(1));
-		if($node->type == 'project'){
-			module_load_include('inc', 'node', 'node.pages'); 
-			$GLOBALS['comment_form'] = render(node_add('comment'));
-		}
-	}
-}
-
-
-
-/**
  * Implements hook_menu().
  */
 function bxdev_project_menu() {
@@ -206,18 +191,19 @@ function bxdev_project_node_insert($node) {
  */
 function bxdev_project_node_submit(&$node, $form, &$form_state) {
 	global $user;
+	$role = bxdev_user_get_role($user->uid);
 	$values = $form_state['values'];
 	switch($node->type){
 		case 'project':
 		
-			if(!is_null($node->nid)){
+			if(!is_null($node->nid) && $role == 'pc'){
 		
 			  $project = new Project($node->nid);
 				$old_status = $project->get_status();			
 				$new_status = $values['field_status']['und'][0]['value'];
 			
 				// detect if manually overridden
-				if($old_status !== $new_status){
+				if($old_status != $new_status){
 					$node->field_status_date['und'][0]['value'] = time();
 					$node->field_status_override['und'][0]['value'] = 1;
 				}
@@ -290,10 +276,7 @@ function bxdev_project_preprocess_node(&$vars){
 			$comment_permission = FALSE;
 		}
 		$vars['comment_permission'] = $comment_permission;
-		
-		// get the comment add form
-		$vars['comment_form'] = $GLOBALS['comment_form'];
-		
+				
 		// get the comments
 		$vars['comments'] = views_embed_view('comments', 'block');
 		

@@ -981,6 +981,7 @@ footer {
 .page-user-info .right {
 	overflow: hidden;
 	width: 660px;
+	position: relative;
 }
 
 .node-type-business #content .left,
