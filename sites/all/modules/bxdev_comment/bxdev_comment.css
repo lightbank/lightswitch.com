@@ -1,0 +1,133 @@
+.main form {
+	clear: left;
+}
+
+.main textarea {
+	width: 660px;
+	height: 100px;
+	font-size: 14px;
+	line-height: 18px;
+}
+
+.main .form-submit,
+.approve-or {
+	float: left;
+	margin-right: 20px;
+}
+
+.videographer-comments-wrap.pc {
+	display: none;
+}
+
+.loading {
+	display: block;
+	width: 32px;
+	height: 32px;
+	margin: 40px auto;
+}
+
+.approve-or {
+	line-height: 40px;
+}
+
+.comment-switch {
+	margin-bottom: 20px;
+}
+
+.comment-switch a {
+	background: #ccc;
+  border-radius: 5px 5px 5px 5px;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 3px 7px;
+	margin-right: 7px;
+}
+
+.comment-switch a.active {
+	background: #4A4949;
+}
+
+.approve-confirm {
+	position: absolute;
+	bottom: 100px;
+	left: 80px;
+	width: 500px;
+	padding: 20px;
+	border: solid green 5px;
+	background: #edfff5;
+	border-radius: 10px;
+}
+
+.revision-decline-client-form {
+	display: none;
+	position: absolute;
+	bottom: 50px;
+	left: 40px;
+	padding: 20px;
+	background: #fff0f0;
+	border: solid #ff4f4f 3px;
+	border-radius: 5px;
+	width: 570px;
+}
+
+.revision-decline-client-form textarea {
+	width: 100%;
+	height: 170px;
+}
+
+.revision-decline-client-form .form-submit {
+	background: red;
+}
+
+.comment-approval {
+	padding: 20px 20px 30px 20px;
+	border-radius: 10px;
+	background: #f9f9f9;
+	margin-top: 15px;
+	font-size: 18px;
+}
+
+.comment-approval em {
+	font-size: 12px;
+	font-style: normal;
+}
+
+.comment-approval .btn {
+	margin-right: 20px;
+}
+
+a.revision-approve-client {
+	background: green;
+	color: #fff;
+	padding: 8px 14px;
+	border-radius: 10px;
+}
+
+a.revision-decline-client {
+	background: red;
+	color: #fff;
+	padding: 8px 14px;
+	border-radius: 10px;
+}
+
+.revision-approved {
+	font-size: 16px;
+	color: green;
+	padding: 10px 0;
+	font-weight: bold;
+}
+
+.revision-declined {
+	font-size: 16px;
+	color: red;
+	padding: 10px 0;
+	font-weight: bold;
+}
+
+.revision-declined .reason {
+	font-size: 14px;
+	color: #333;
+	font-weight: normal;
+}
+
+

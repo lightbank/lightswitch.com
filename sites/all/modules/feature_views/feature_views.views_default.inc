@@ -314,7 +314,6 @@ function feature_views_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Post Comments Here:';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -329,24 +328,10 @@ function feature_views_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['label'] = 'Comments:';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['empty'] = FALSE;
   $handler->display->display_options['header']['area']['content'] = '<h2>Comments:</h2>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
-  $handler->display->display_options['header']['area_1']['table'] = 'views';
-  $handler->display->display_options['header']['area_1']['field'] = 'area';
-  $handler->display->display_options['header']['area_1']['label'] = 'Resend client';
-  $handler->display->display_options['header']['area_1']['empty'] = FALSE;
-  $handler->display->display_options['header']['area_1']['content'] = '<?php
-global $user;
-if(bxdev_user_get_role($user->uid) == \'pc\'):
-?>
-<a href="/project/[nid]/reset/client">Resend</a>
-<?php endif; ?>';
-  $handler->display->display_options['header']['area_1']['format'] = 'php_code';
-  $handler->display->display_options['header']['area_1']['tokenize'] = 1;
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -453,6 +438,138 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
+  /* Field: Content: Declined reason */
+  $handler->display->display_options['fields']['field_declined_reason']['id'] = 'field_declined_reason';
+  $handler->display->display_options['fields']['field_declined_reason']['table'] = 'field_data_field_declined_reason';
+  $handler->display->display_options['fields']['field_declined_reason']['field'] = 'field_declined_reason';
+  $handler->display->display_options['fields']['field_declined_reason']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_declined_reason']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_declined_reason']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_declined_reason']['field_api_classes'] = 0;
+  /* Field: Content: Declined date */
+  $handler->display->display_options['fields']['field_declined_date']['id'] = 'field_declined_date';
+  $handler->display->display_options['fields']['field_declined_date']['table'] = 'field_data_field_declined_date';
+  $handler->display->display_options['fields']['field_declined_date']['field'] = 'field_declined_date';
+  $handler->display->display_options['fields']['field_declined_date']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_declined_date']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_declined_date']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_declined_date']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  $handler->display->display_options['fields']['field_declined_date']['field_api_classes'] = 0;
+  /* Field: Content: Revision approved */
+  $handler->display->display_options['fields']['field_revision_approved']['id'] = 'field_revision_approved';
+  $handler->display->display_options['fields']['field_revision_approved']['table'] = 'field_data_field_revision_approved';
+  $handler->display->display_options['fields']['field_revision_approved']['field'] = 'field_revision_approved';
+  $handler->display->display_options['fields']['field_revision_approved']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved']['field_api_classes'] = 0;
+  /* Field: Content: Revision list */
+  $handler->display->display_options['fields']['field_revision_list']['id'] = 'field_revision_list';
+  $handler->display->display_options['fields']['field_revision_list']['table'] = 'field_data_field_revision_list';
+  $handler->display->display_options['fields']['field_revision_list']['field'] = 'field_revision_list';
+  $handler->display->display_options['fields']['field_revision_list']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_revision_list']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_revision_list']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_revision_list']['type'] = 'list_key';
+  $handler->display->display_options['fields']['field_revision_list']['field_api_classes'] = 0;
+  /* Field: Content: Revision approved date */
+  $handler->display->display_options['fields']['field_revision_approved_date']['id'] = 'field_revision_approved_date';
+  $handler->display->display_options['fields']['field_revision_approved_date']['table'] = 'field_data_field_revision_approved_date';
+  $handler->display->display_options['fields']['field_revision_approved_date']['field'] = 'field_revision_approved_date';
+  $handler->display->display_options['fields']['field_revision_approved_date']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved_date']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_revision_approved_date']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_revision_approved_date']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  $handler->display->display_options['fields']['field_revision_approved_date']['field_api_classes'] = 0;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -483,9 +600,41 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['type']['value'] = array(
     'comment' => 'comment',
   );
+  /* Filter criterion: Content: Comment type (field_comment_type) */
+  $handler->display->display_options['filters']['field_comment_type_value']['id'] = 'field_comment_type_value';
+  $handler->display->display_options['filters']['field_comment_type_value']['table'] = 'field_data_field_comment_type';
+  $handler->display->display_options['filters']['field_comment_type_value']['field'] = 'field_comment_type_value';
+  $handler->display->display_options['filters']['field_comment_type_value']['value'] = array(
+    'client' => 'client',
+  );
 
-  /* Display: Block */
-  $handler = $view->new_display('block', 'Block', 'block');
+  /* Display: Client */
+  $handler = $view->new_display('block', 'Client', 'client');
+
+  /* Display: Videographer */
+  $handler = $view->new_display('block', 'Videographer', 'videographer');
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'comment' => 'comment',
+  );
+  /* Filter criterion: Content: Comment type (field_comment_type) */
+  $handler->display->display_options['filters']['field_comment_type_value']['id'] = 'field_comment_type_value';
+  $handler->display->display_options['filters']['field_comment_type_value']['table'] = 'field_data_field_comment_type';
+  $handler->display->display_options['filters']['field_comment_type_value']['field'] = 'field_comment_type_value';
+  $handler->display->display_options['filters']['field_comment_type_value']['value'] = array(
+    'videographer' => 'videographer',
+  );
   $export['comments'] = $view;
 
   $view = new view;

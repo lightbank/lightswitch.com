@@ -1,0 +1,151 @@
+<?php
+
+module_load_include('inc', 'bxdev_comment', 'bxdev_comment.forms');
+
+/**
+ * HOOKS
+ */
+
+/**
+ * Implements hook_init().
+ */
+function bxdev_comment_init() {
+	// check if a node display page (not edit or admin)
+	$arg2 = arg(2);
+	if(arg(0) == 'node' && is_numeric(arg(1)) && empty($arg2)){
+		$node = node_load(arg(1));
+		if($node->type == 'project'){
+			drupal_add_js(drupal_get_path('module', 'bxdev_comment') . '/bxdev_comment.js');
+			drupal_add_css(drupal_get_path('module', 'bxdev_comment') . '/bxdev_comment.css');
+			// we must load the form here to ensure the form messages are rendered at the proper time
+			drupal_get_form('bxdev_comment_client_form');
+			drupal_get_form('bxdev_comment_videographer_form');
+		}
+	}
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bxdev_comment_permission() {
+  return array(
+    'approve client revision list' =>  array(
+      'title' => t('Approve client revision list'),
+      'description' => t('Approve client revision list.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bxdev_comment_menu() {
+  $items['comment/approve/client/%node/%'] = array(
+    'page callback' => 'bxdev_comment_revision_approve_client',
+		'page arguments' => array(3, 4),
+    'access arguments' => array('approve client revision list'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function bxdev_comment_preprocess_node(&$vars){	
+	$node = $vars['node'];	
+  switch($node->type){
+  	case 'project':
+
+			$project = new Project($node->nid);
+			
+			if(user_access('pc')){
+				$vars['comment_switch'] = '<div class="comment-switch"><a href="" class="client-switch active">Client</a><a href="" class="videographer-switch">Videographer</a></div>';
+			}
+			
+			// if client or pc
+			if(user_access('client') || user_access('pc')){
+				// get the client comments view
+				$vars['client_comments'] = '<div class="client-comments-wrap">' . views_embed_view('comments', 'client');
+			}
+			
+			// if videographer or pc
+			if(user_access('videographer') || user_access('pc')){
+				$pc = user_access('pc') ? 'pc' : '';
+				$vars['videographer_comments'] = '<div class="videographer-comments-wrap ' . $pc . '">' . views_embed_view('comments', 'videographer');
+			}
+			
+			// if project has not been approved
+			if(!$project->approved){
+				// if client or pc
+				if(user_access('client') || user_access('pc')){
+					// get the comment form
+					$client_comment_form = render(drupal_get_form('bxdev_comment_client_form'));
+					// if comments exist
+					if(!empty($project->comments)){
+						// get the last comment
+						$last_comment = end($project->comments);
+						// if the last comment is a revision list and its not approved or declined
+						if($last_comment->field_revision_list['und'][0]['value'] == 1 && $last_comment->field_revision_approved['und'][0]['value'] == 0 && empty($last_comment->field_declined_reason)){
+							// show the comment form
+							$client_comment_form = '<div class="revision-decline-client-form">' . render(drupal_get_form('bxdev_comment_client_decline_form', $last_comment->nid)) . '</div>';
+						}				
+					}
+					$vars['client_comment_form'] = $client_comment_form . '</div>';
+				}
+			
+				// if videographer or pc
+				if(user_access('videographer') || user_access('pc')){				
+					$vars['videographer_comment_form'] = render(drupal_get_form('bxdev_comment_videographer_form')) . '</div>';
+				}
+			
+			// project has been approved
+			}else{
+				$approved_html = '<div class="project-approved">This project has been approved.</div></div>';
+				if(user_access('client') || user_access('pc')){
+					$vars['client_comment_form'] = $approved_html;
+				}
+				if(user_access('videographer') || user_access('pc')){
+					$vars['videographer_comment_form'] = $approved_html;
+				}
+			}
+  		
+  		break;
+  }
+}
+
+
+/**
+ * CUSTOM
+ */
+
+/**
+ * Page callback: client approve revision list
+ */
+function bxdev_comment_revision_approve_client($comment_node, $project_nid){
+	// set the revision approved field to true (1)
+	$comment_node->field_revision_approved['und'][0]['value'] = 1;
+	// set the revision approved date to now
+	$comment_node->field_revision_approved_date['und'][0]['value'] = mktime();
+	// add the videographer rights to the comment
+	$comment_node->field_comment_type['und'][1]['value'] = 'videographer';	
+	// save the comment node
+	node_save($comment_node);
+	// load the project object
+	$project = new Project($project_nid);
+	// notify pc and videog of revision approval
+	$project->send_revision_approved($comment_node->nid);
+	// log the action
+	$project->log('admin', 'Client approved revision list');	
+	// return to the project page
+	drupal_goto('node/' . $project->project->nid);
+}
+
+
+
+
+
+
+
+
+

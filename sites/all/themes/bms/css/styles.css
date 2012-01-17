@@ -737,9 +737,9 @@ footer {
 	margin-bottom: 10px;
 }
 
-.approve-btn, .approve-yes {
+input[type="submit"].approve-btn, .approve-yes {
 	display: block;
-	width: 110px;
+	width: 180px;
 	height: 40px;
 	background: #198300;
 	color: #fff;
@@ -753,6 +753,15 @@ footer {
 
 .approve-cancel {
 	color: #f00;
+}
+
+.project-approved {
+	background: green;
+	color: #fff;
+	font-size: 18px;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
 }
 
 
@@ -833,31 +842,8 @@ footer {
 	display: none;
 }
 
-#edit-field-comment textarea {
-	width: 660px;
-	height: 100px;
-}
-
-#comment-node-form #edit-submit,
-.approve-or,
-.approve-btn {
-	float: left;
-	margin-right: 20px;
-}
-
-.approve-or {
-	line-height: 40px;
-}
-
-.approve-confirm {
-	position: absolute;
-	bottom: 100px;
-	left: 80px;
-	width: 500px;
-	padding: 20px;
-	border: solid green 5px;
-	background: #edfff5;
-	border-radius: 10px;
+.form-item-revision-list label {
+	font-size: 14px;
 }
 
 #bxdev-project-videographer-documents-form #edit-signed-production-release-remove-button,
@@ -981,6 +967,7 @@ footer {
 .page-user-info .right {
 	overflow: hidden;
 	width: 660px;
+	position: relative;
 }
 
 .node-type-business #content .left,
