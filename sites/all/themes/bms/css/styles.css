@@ -842,40 +842,8 @@ input[type="submit"].approve-btn, .approve-yes {
 	display: none;
 }
 
-#edit-field-comment textarea,
-#edit-comment--2 {
-	width: 660px;
-	height: 100px;
-	font-size: 14px;
-	line-height: 18px;
-}
-
 .form-item-revision-list label {
 	font-size: 14px;
-}
-
-#comment-node-form #edit-submit,
-.approve-or,
-.approve-btn,
-#bxdev-comment-client-form--2 #edit-submit--2,
-#bxdev-comment-client-form--3 #edit-approve--2 {
-	float: left;
-	margin-right: 20px;
-}
-
-.approve-or {
-	line-height: 40px;
-}
-
-.approve-confirm {
-	position: absolute;
-	bottom: 100px;
-	left: 80px;
-	width: 500px;
-	padding: 20px;
-	border: solid green 5px;
-	background: #edfff5;
-	border-radius: 10px;
 }
 
 #bxdev-project-videographer-documents-form #edit-signed-production-release-remove-button,

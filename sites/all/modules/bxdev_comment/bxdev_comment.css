@@ -1,3 +1,63 @@
+.main form {
+	clear: left;
+}
+
+.main textarea {
+	width: 660px;
+	height: 100px;
+	font-size: 14px;
+	line-height: 18px;
+}
+
+.main .form-submit,
+.approve-or {
+	float: left;
+	margin-right: 20px;
+}
+
+.videographer-comments-wrap.pc {
+	display: none;
+}
+
+.loading {
+	display: block;
+	width: 32px;
+	height: 32px;
+	margin: 40px auto;
+}
+
+.approve-or {
+	line-height: 40px;
+}
+
+.comment-switch {
+	margin-bottom: 20px;
+}
+
+.comment-switch a {
+	background: #ccc;
+  border-radius: 5px 5px 5px 5px;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 3px 7px;
+	margin-right: 7px;
+}
+
+.comment-switch a.active {
+	background: #4A4949;
+}
+
+.approve-confirm {
+	position: absolute;
+	bottom: 100px;
+	left: 80px;
+	width: 500px;
+	padding: 20px;
+	border: solid green 5px;
+	background: #edfff5;
+	border-radius: 10px;
+}
+
 .revision-decline-client-form {
 	display: none;
 	position: absolute;

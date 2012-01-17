@@ -36,38 +36,13 @@
 			displaySlideQty: 4,
 			moveSlideQty: 4
 		});
-		
-		/** INSTEAD OF FADING THE VIDEO INTO IMAGES, USING SHADOWBOX INSTEAD
-		/** BELOW IS THE FADE CODE
-		
-		// // video / image slider init
-		// var business_slider = $('.main .video-wrap-inner').bxSlider({
-		// 	mode: 'fade',
-		// 	controls: false
-		// });
-		
-		// // click an image thumb
-		// $('.video-thumbs-wrap .slide.pager').click(function(){
-		// 	var index = $('.video-thumbs-wrap .slide.pager').index(this) + 1;
-		// 	business_slider.goToSlide(index);
-		// 	setTimeout(function(){
-		// 		var video_content = $('#media-vimeo-1').clone().html();
-		// 		$('#media-vimeo-1').html(video_content);
-		// 	}, 500);
-		// });
-		// 
-		// // click the video thumb
-		// $('.field-name-field-project-video img').click(function(){
-		// 	business_slider.goToSlide(0);
-		// });
 				
-		
 		/**
 		 * Project profile
 		 */	
 		
 		// comment textarea focus / blur
-		var $comment_textarea = $('#bxdev-comment-client-form--2 #edit-comment--2');
+		var $comment_textarea = $('.comments-wrap textarea');
 		$comment_textarea.focus(function() {
 			var value = $(this).val();
 			if(value == 'Type your comments here...'){

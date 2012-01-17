@@ -98,6 +98,26 @@ function bxdev_project_mail($key, &$message, $params) {
 			$message['subject'] = $subject;
 			$message['body'][] = $body;
 			break;
+			
+		case 'revision_declined':
+			$subject = t('@title: DECLINED REVISION', array('@title' => $params['project_title']));
+			$body = $params['client'] . ' has declined a revision list.<br><br>';
+			$body .= 'Reason:<br>' . $params['declined_reason'] . '<br><br>';
+			$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
+
+			$message['subject'] = $subject;
+			$message['body'][] = $body;
+			break;
+			
+		case 'revision_approved':
+			$subject = t('@title: APPROVED REVISION', array('@title' => $params['project_title']));
+			$body = $params['client'] . ' has approved a revision list.<br><br>';
+			$body .= 'Revision list:<br>' . $params['comment'] . '<br><br>';
+			$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
+
+			$message['subject'] = $subject;
+			$message['body'][] = $body;
+			break;			
 
 		case 'claimed':
 			$subject = t('@pc has claimed project @project_name', array('@pc' => $params['pc']['full_name'], '@project_name' => $params['project_title']));
@@ -255,7 +275,8 @@ function bxdev_project_preprocess_node(&$vars){
 		$nid = $vars['nid'];
 		$project = new Project($nid);
 		$content = node_view($project->project);
-		$comment_permission = TRUE;
+		
+		// $comment_permission = TRUE;
 		
 		// if videographer role, get the profile
 		if($role == 'videographer'){
@@ -271,14 +292,14 @@ function bxdev_project_preprocess_node(&$vars){
 		// check if project has been approved
 		$vars['approved'] = $vars['field_approved'][0]['value'];
 		
-		// check commenting permissions
-		if($role == 'videographer' && !$profile->field_post_comments['und'][0]['value']){
-			$comment_permission = FALSE;
-		}
-		$vars['comment_permission'] = $comment_permission;
-				
-		// get the comments
-		$vars['comments'] = views_embed_view('comments', 'block');
+		// // check commenting permissions
+		// if($role == 'videographer' && !$profile->field_post_comments['und'][0]['value']){
+		// 	$comment_permission = FALSE;
+		// }
+		// $vars['comment_permission'] = $comment_permission;
+		// 		
+		// // get the comments
+		// $vars['comments'] = views_embed_view('comments', 'block');
 		
 		// approve button
 		if(bxdev_user_get_role($user->uid) == 'client'){

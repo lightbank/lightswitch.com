@@ -80,15 +80,13 @@
 			<?php endif; ?>
 		</div><!-- end .video -->
 		
-		<?php print $comments; ?>
-		
-		<?php if(!$approved): ?>
-			<?php if($comment_permission): ?>
-				<?php print $comment_form; ?>
-			<?php endif; ?>
-		<?php else: ?>
-			<div class="project-approved">Project has been approved.</div>
-		<?php endif; ?>
+		<div class="comments-wrap clearfix">
+			<?php if(!empty($comment_switch)) print $comment_switch; ?>
+			<?php if(!empty($client_comments)) print $client_comments; ?>
+			<?php if(!empty($client_comment_form)) print $client_comment_form; ?>
+			<?php if(!empty($videographer_comments)) print $videographer_comments; ?>
+			<?php if(!empty($videographer_comment_form)) print $videographer_comment_form; ?>
+		</div>
 		
 	</div><!-- end .block -->
 	

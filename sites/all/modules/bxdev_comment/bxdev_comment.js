@@ -10,7 +10,34 @@
 	//     }
 	//   };
   
-	$(function(){				
+	$(function(){
+		
+		// check for a url hash, add appropriate class
+		if(window.location.hash == '#videographer'){
+			$('.comment-switch a').removeClass('active');
+			$('.videographer-switch').addClass('active');
+			$('.client-comments-wrap').hide();
+			$('.videographer-comments-wrap').show();
+		}
+		
+		// click a comment switch link
+		$('.comment-switch a').click(function(){
+			// initially remove active classes from the switch links
+			$('.comment-switch a').removeClass('active');
+			// check which link was clicked and add a url hash
+			if($(this).hasClass('client-switch')){
+				$('.client-comments-wrap').show();
+				$('.videographer-comments-wrap').hide();
+				window.location.hash = '#client';
+			}else if($(this).hasClass('videographer-switch')){
+				$('.client-comments-wrap').hide();
+				$('.videographer-comments-wrap').show();
+				window.location.hash = '#videographer';
+			}
+			// add the active class
+			$(this).addClass('active');
+			return false;
+		});
 		
 		// click 'I decline'
 		$('.revision-decline-client').click(function(){
@@ -33,6 +60,8 @@
 				decline_reason: 'Enter a reason for declining'
 			}
 		});
+		
+		
 		
 	});
 

@@ -81,6 +81,7 @@ function bxdev_comment_client_form_submit($form, &$form_state){
 	$node->field_comment['und'][0]['value'] = $values['comment'];	
 	$node->field_project_ref['und'][0]['nid'] = $nid;
 	$node->field_revision_list['und'][0]['value'] = $values['revision_list'];
+	$node->field_comment_type['und'][0]['value'] = 'client';
 
 	node_save($node);
 	
@@ -124,9 +125,67 @@ function bxdev_comment_client_decline_form_submit($form, &$form_state){
 	// set declined date
 	$comment_node->field_declined_date['und'][0]['value'] = mktime();
 	// save the comment
-	node_save($comment_node);	
+	node_save($comment_node);
+	$project = new Project(arg(1));
+	$project->send_revision_declined($comment_node->nid);
 }
 
+/**
+ * Form builder: videographer comment form
+ */
+function bxdev_comment_videographer_form($form, &$form_state){
+	
+	$nid = arg(1);
+	$project = new Project($nid);
+	
+	$form['comment'] = array(
+	  '#type' => 'textarea',
+		'#title' => t('Post a comment:'),
+		'#default_value' => t('Type your comments here...'),
+	);
+	
+	$form['submit'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Post comment'),
+	);
+	
+	return $form;	
+}
 
+/**
+ * Form validation handler: videographer comment form
+ */
+function bxdev_comment_videographer_form_validate($form, &$form_state){
+	
+	$values = $form_state['values'];
+	
+	// make sure comment field is not empty
+	if(empty($values['comment'])){
+		form_set_error('comment', 'Enter a comment');
+	}
+		
+}
+
+/**
+ * Form submit handler: videographer comment form
+ */
+function bxdev_comment_videographer_form_submit($form, &$form_state){
+	global $user;
+	$values = $form_state['values'];
+	$nid = arg(1);
+
+	$node = new stdClass();
+	$node->language = LANGUAGE_NONE;
+	$node->uid = $user->uid;
+	$node->type = 'comment';
+	
+	$node->title = substr($values['comment'], 0, 50);
+	$node->field_comment['und'][0]['value'] = $values['comment'];	
+	$node->field_project_ref['und'][0]['nid'] = $nid;
+	$node->field_comment_type['und'][0]['value'] = 'videographer';
+
+	node_save($node);
+	
+}
 
 

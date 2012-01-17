@@ -14,6 +14,7 @@ class Project {
 	var $sales;
 	var $comments;
 	var $overridden;
+	var $approved;
 	
 	/**
 	 * Load a new Project and set all initial variables.
@@ -51,6 +52,7 @@ class Project {
 		$this->videographer = $videographer;		
 		$this->comments = $this->get_comments();
 		$this->overridden = $project->field_status_override['und'][0]['value'];
+		$this->approved = $project->field_approved['und'][0]['value'];
 	}
 	
 	/**
@@ -135,16 +137,19 @@ class Project {
 		$project_link = $base_url . '/' . $this->project_path;
 		// load the comment node object
 		$comment = node_load($cid);
+		// get the comment type
+		$comment_type = $comment->field_comment_type['und'][0]['value'];
 		// get the poster's uid
 		$owner_uid = $comment->uid;
-		// get the sales user's uid
-		$sales_uid = $this->sales->uid;
-		// get all users associated with Project
-		$users = $this->get_users();
+		$users = array();
+		$users[$this->pc->uid] = $this->pc;
+		if($comment_type == 'client'){
+			$users[$this->client->uid] = $this->client;
+		}else if($comment_type == 'videographer'){
+			$users[$this->videographer->uid] = $this->videographer;
+		}
 		// remove the poster
 		unset($users[$owner_uid]);
-		// remove the sales user
-		unset($users[$sales_uid]);
 		foreach($users as $uid => $user){
 			$comment_author = user_load($comment->uid);
 			$comment_author = $comment_author->field_name['und'][0]['value'];
@@ -226,6 +231,43 @@ class Project {
 			),
 		);		
 		drupal_mail('bxdev_project', 'approved', $emails, language_default(), $params);
+	}
+	
+	/**
+	 * Send email to pc notifying of a declined revision list
+	 */
+	function send_revision_declined($cid){
+		global $base_url;
+		$comment = node_load($cid);
+		// build the project link
+		$project_link = $base_url . '/' . $this->project_path;
+		// build params to pass to the email message
+		$params = array(
+			'project_title' => $this->project->title,
+			'project_link' => $project_link,
+			'declined_reason' => $comment->field_declined_reason['und'][0]['value'],
+			'client' => $this->client->field_name['und'][0]['value'],
+		);		
+		drupal_mail('bxdev_project', 'revision_declined', $this->pc->mail, language_default(), $params);		
+	}
+	
+	/**
+	 * Send email to pc and videographer notifying of an approved revision list
+	 */
+	function send_revision_approved($cid){
+		global $base_url;
+		$comment = node_load($cid);
+		$emails = $this->pc->mail . ',' . $this->videographer->mail;
+		// build the project link
+		$project_link = $base_url . '/' . $this->project_path;
+		// build params to pass to the email message
+		$params = array(
+			'project_title' => $this->project->title,
+			'project_link' => $project_link,
+			'comment' => nl2br($comment->field_comment['und'][0]['value']),
+			'client' => $this->client->field_name['und'][0]['value'],
+		);		
+		drupal_mail('bxdev_project', 'revision_approved', $emails, language_default(), $params);		
 	}
 	
 	/**
