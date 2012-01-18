@@ -13,9 +13,11 @@
 				<div class="category"><?php print render($content['field_client_category']); ?></div>
 			<?php endif; ?>
 			<div class="symbols clearfix">
+				<?php /* ?>
 				<?php if(isset($content['field_client_rating'])): ?>				
 					<div class="rating rating-<?php print $content['field_client_rating'][0]['#markup']; ?>"><?php print render($content['field_client_rating']); ?></div>
 				<?php endif; ?>
+				<?php */?>
 				<?php if(isset($content['field_client_price'])): ?>				
 					<div class="price price-<?php print $content['field_client_price']['#items'][0]['value']; ?>"><?php print render($content['field_client_price']); ?></div>
 				<?php endif; ?>

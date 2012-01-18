@@ -113,17 +113,17 @@ function bxdev_project_form_project_node_form_validate($form, &$form_state){
 	}
 	
 	// voice over cannot be left blank
-	if(!$values['field_voice_over']['und'][0]['value']){
+	if($values['field_voice_over']['und'][0]['value'] === FALSE){
 		form_set_error('field_voice_over[und]', 'Voice over option must be selected');
 	}
 	
 	// voice over gender cannot be left blank
-	if(!$values['field_voice_over_gender']['und'][0]['value']){
+	if($values['field_voice_over_gender']['und'][0]['value'] === FALSE){
 		form_set_error('field_voice_over_gender[und]', 'A voice over gender must be selected');
 	}
 	
 	// owner interview cannot be left blank
-	if(!$values['field_owner_interview']['und'][0]['value']){
+	if($values['field_owner_interview']['und'][0]['value'] === FALSE){
 		form_set_error('field_owner_interview[und]', 'Business owner interview must be selected');
 	}
 	

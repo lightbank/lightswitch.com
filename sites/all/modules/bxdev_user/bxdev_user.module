@@ -239,6 +239,36 @@ function bxdev_user_mail($key, &$message, $params) {
 		  $message['subject'] = $subject;
 		  $message['body'][] = $body;
 			break;
+			
+		case 'business_dev_new':
+			$subject = t('Your Lightswitch video is ready for review!');
+			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
+			$body .= 'Username: ' . $params['name'] . '<br>';
+			$body .= 'Password: ' . $params['pass'] . '<br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
+			$body .= 'Sincerely,<br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;
+
+		case 'business_dev_existing':
+			$subject = t('Your Lightswitch video is ready for review!');
+			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
+		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com:<br><br>';
+			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
+			$body .= 'Sincerely,<br>';
+			$body .= $params['pc']['full_name'] . '<br>';
+			$body .= $params['pc']['email'] . '<br>';
+			$body .= $params['pc']['phone'];
+
+		  $message['subject'] = $subject;
+		  $message['body'][] = $body;
+			break;		
 
 		case 'spec_new':
 			$subject = t('Your Lightswitch video is ready for review!');

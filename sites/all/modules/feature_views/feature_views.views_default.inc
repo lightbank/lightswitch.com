@@ -341,6 +341,11 @@ function feature_views_views_default_views() {
   $handler->display->display_options['header']['area']['content'] = '<h2>Comments:</h2>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
+  $handler->display->display_options['header']['area_1']['table'] = 'views';
+  $handler->display->display_options['header']['area_1']['field'] = 'area';
+  $handler->display->display_options['header']['area_1']['empty'] = FALSE;
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -619,6 +624,30 @@ function feature_views_views_default_views() {
 
   /* Display: Client */
   $handler = $view->new_display('block', 'Client', 'client');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['label'] = 'Comments:';
+  $handler->display->display_options['header']['area']['empty'] = FALSE;
+  $handler->display->display_options['header']['area']['content'] = '<h2>Comments:</h2>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
+  $handler->display->display_options['header']['area_1']['table'] = 'views';
+  $handler->display->display_options['header']['area_1']['field'] = 'area';
+  $handler->display->display_options['header']['area_1']['label'] = 'Client resend';
+  $handler->display->display_options['header']['area_1']['empty'] = FALSE;
+  $handler->display->display_options['header']['area_1']['content'] = '<?php
+global $user;
+if(bxdev_user_get_role($user->uid) == \'pc\'):
+?>
+<a href="/project/[nid]/reset/client">Resend</a>
+<?php endif; ?>';
+  $handler->display->display_options['header']['area_1']['format'] = 'php_code';
+  $handler->display->display_options['header']['area_1']['tokenize'] = 0;
 
   /* Display: Videographer */
   $handler = $view->new_display('block', 'Videographer', 'videographer');

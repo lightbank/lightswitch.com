@@ -198,6 +198,8 @@ class User {
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
 				drupal_mail('bxdev_user', 'direct_sale_new', $this->user->mail, language_default(), $params);
+			}else{
+				drupal_mail('bxdev_user', 'business_dev_new', $this->user->mail, language_default(), $params);
 			}
 		// if client has logged in before (existing)
 		}else{
@@ -207,7 +209,9 @@ class User {
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
 				drupal_mail('bxdev_user', 'direct_sale_existing', $this->user->mail, language_default(), $params);
-			}			
+			}else{
+				drupal_mail('bxdev_user', 'business_dev_existing', $this->user->mail, language_default(), $params);
+			}	
 		}	
 		
 		$project->log('admin', 'Login information reset and sent to Client');
