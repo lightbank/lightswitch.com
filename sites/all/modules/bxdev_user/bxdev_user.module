@@ -208,9 +208,9 @@ function bxdev_user_mail($key, &$message, $params) {
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
 		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
+			$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br>';
 			$body .= 'Username: ' . $params['name'] . '<br>';
 			$body .= 'Password: ' . $params['pass'] . '<br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
 			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you\'d like changes made to your video, log in and post revisions in the "Post a comment" field under your video. You have 5 days to submit revision requests, after which the video will be considered approved as is.  Please make all of your requests very specific so we can work to get your Lightswitch video exactly how you want it. Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
 			$body .= 'If you are happy with the video in its current form, please click "approve" on the video landing page after you log in, and we\'ll send you the final product in convenient file formats.<br><br>';
 			$body .= 'Do not reply to this email; if you have questions please contact me via the information below!.<br><br>';
@@ -227,10 +227,10 @@ function bxdev_user_mail($key, &$message, $params) {
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
 		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com:<br><br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
+			$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br><br>';
 			$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you\'d like changes made to your video, log in and post revisions in the "Post a comment" field under your video. You have 5 days to submit revision requests, after which the video will be considered approved as is.  Please make all of your requests very specific so we can work to get your Lightswitch video exactly how you want it. Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
 			$body .= 'If you are happy with the video in its current form, please click "approve" on the video landing page after you log in, and we\'ll send you the final product in convenient file formats.<br><br>';
-			$body .= 'Do not reply to this email; if you have questions please contact me via the information below!.<br><br>';
+			$body .= 'Do not reply to this email; if you have questions please contact me via the information below!.<br>';
 			$body .= 'Sincerely,<br>';
 			$body .= $params['pc']['full_name'] . '<br>';
 			$body .= $params['pc']['email'] . '<br>';
@@ -244,9 +244,9 @@ function bxdev_user_mail($key, &$message, $params) {
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
 		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
+			$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br>';
 			$body .= 'Username: ' . $params['name'] . '<br>';
 			$body .= 'Password: ' . $params['pass'] . '<br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
 			$body .= 'Sincerely,<br>';
 			$body .= $params['pc']['full_name'] . '<br>';
 			$body .= $params['pc']['email'] . '<br>';
@@ -260,7 +260,7 @@ function bxdev_user_mail($key, &$message, $params) {
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Dear ' . $params['full_name'] . ',<br><br>';
 		  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com:<br><br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
+			$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br><br>';
 			$body .= 'Sincerely,<br>';
 			$body .= $params['pc']['full_name'] . '<br>';
 			$body .= $params['pc']['email'] . '<br>';
@@ -274,9 +274,9 @@ function bxdev_user_mail($key, &$message, $params) {
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Hello ' . $params['full_name'] . ',<br><br>';
 		  $body .= 'A lightswitch videographer was in ' . $params['business'] . ' a couple of weeks ago to capture footage of your business. Your video is complete and ready for your viewing! If you are interested in purchasing the video you would be able to make a round of edits/changes to the video as you wish. We would also remove all lightswitch branding from the final version and send you the video in easy to download file formats. You would own full rights to your video and can use it on any of your online marketing pages. The video is a one time fee of only $299!<br><br>';
+			$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br>';
 			$body .= 'Username: ' . $params['name'] . '<br>';
 			$body .= 'Password: ' . $params['pass'] . '<br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user?url=' . $params['project_path'] . '">' . $base_url . '/user?url=' . $params['project_path'] . '</a><br><br>';
 			$body .= 'Please review the video and let me know what you think!<br><br>';
 			$body .= $params['sales']['full_name'] . '<br>';
 			$body .= $params['sales']['email'] . '<br>';
@@ -290,7 +290,7 @@ function bxdev_user_mail($key, &$message, $params) {
 			$subject = t('Your Lightswitch video is ready for review!');
 			$body = 'Hello ' . $params['full_name'] . ',<br><br>';
 		  $body .= 'A lightswitch videographer was in ' . $params['business'] . ' a couple of weeks ago to capture footage of your business. Your video is complete and ready for your viewing! If you are interested in purchasing the video you would be able to make a round of edits/changes to the video as you wish. We would also remove all lightswitch branding from the final version and send you the video in easy to download file formats. You would own full rights to your video and can use it on any of your online marketing pages. The video is a one time fee of only $299!<br><br>';
-			$body .= 'Video landing page: <a href="' . $base_url . '/user?destination=' . $params['project_path'] . '">' . $base_url . '/user?destination=' . $params['project_path'] . '</a><br><br>';
+			$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br><br>';
 			$body .= 'Please review the video and let me know what you think!<br><br>';
 			$body .= $params['sales']['full_name'] . '<br>';
 			$body .= $params['sales']['email'] . '<br>';

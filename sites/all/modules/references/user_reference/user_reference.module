@@ -767,7 +767,7 @@ function _user_reference_options($field, $flat = TRUE) {
   $options = array();
   foreach ($references as $key => $value) {
     if (empty($value['group']) || $flat) {
-      $options[$key] = $value['rendered'];
+      $options[$key] = strip_tags($value['rendered']);
     }
     else {
       // The group name, displayed in selects, cannot contain tags, and should

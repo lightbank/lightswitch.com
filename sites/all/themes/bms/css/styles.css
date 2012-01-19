@@ -669,6 +669,19 @@ footer {
 	padding-top: 20px;
 }
 
+/** PROJECTS LANDING
+================================================**/
+
+.view-projects .view-filters label {
+	font-size: 14px;
+}
+
+.view-projects .view-filters select {
+	font-size: 12px;
+	padding: 3px;
+	width: 100px;
+}
+
 
 
 /** PHOTO APPROVAL
