@@ -116,6 +116,7 @@ function feature_content_types_field_default_fields() {
           'los_angeles' => 'Los Angeles',
           'atlanta' => 'Atlanta',
           'salt_lake_city' => 'Salt Lake City',
+          'austin' => 'Austin',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,

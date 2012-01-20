@@ -1578,6 +1578,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_business_city_value']['id'] = 'field_business_city_value';
   $handler->display->display_options['filters']['field_business_city_value']['table'] = 'field_data_field_business_city';
   $handler->display->display_options['filters']['field_business_city_value']['field'] = 'field_business_city_value';
+  $handler->display->display_options['filters']['field_business_city_value']['relationship'] = 'field_project_business_ref_nid';
   $handler->display->display_options['filters']['field_business_city_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_business_city_value']['expose']['operator_id'] = 'field_business_city_value_op';
   $handler->display->display_options['filters']['field_business_city_value']['expose']['label'] = 'City';
@@ -2472,8 +2473,8 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['field_shoot_date']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_shoot_date']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_shoot_date']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
+    'format_type' => 'short_date_and_time',
+    'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
