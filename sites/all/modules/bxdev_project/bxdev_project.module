@@ -73,80 +73,88 @@ function bxdev_project_menu() {
  */
 function bxdev_project_mail($key, &$message, $params) {
 	global $base_url;
-	switch($key){
-		case 'comment':
-			$subject = t('A new comment has been posted in @title', array('@title' => $params['project_title']));
-			$body = 'A new comment has been posted in ' . $params['project_title'] . '<br><br>';
-			$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
-			$body .= 'The comment was posted at: ' . $params['comment_date'] . '<br><br>';
-			$body .= 'Posted by: ' . $params['comment_author'] . '<br><br>';
-			$body .= 'Comment:<br>' . nl2br($params['comment']) . '<br><br>';			
-			
-			$message['subject'] = $subject;
-			$message['body'][] = $body;
-			break;
-			
-		case 'approved':
-			$subject = t('Congratulations, your @title video has been approved!', array('@title' => $params['project_title']));
-			$body = 'You will be receiving the final video formats of your lightswitch video within 2-3 business days.<br><br>';
-			$body .= 'As always, let us know if you have any questions or concerns. Thank you for your business!.<br><br>';
-			$body .= 'Sincerely,<br>';
-			$body .= $params['pc']['full_name'] . '<br>';
-			$body .= $params['pc']['email'] . '<br>';
-			$body .= $params['pc']['phone'];
-
-			$message['subject'] = $subject;
-			$message['body'][] = $body;
-			break;
-			
-		case 'revision_declined':
-			$subject = t('@title: DECLINED REVISION', array('@title' => $params['project_title']));
-			$body = $params['client'] . ' has declined a revision list.<br><br>';
-			$body .= 'Reason:<br>' . $params['declined_reason'] . '<br><br>';
-			$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
-
-			$message['subject'] = $subject;
-			$message['body'][] = $body;
-			break;
-			
-		case 'revision_approved':
-			$subject = t('@title: APPROVED REVISION', array('@title' => $params['project_title']));
-			$body = $params['client'] . ' has approved a revision list.<br><br>';
-			$body .= 'Revision list:<br>' . $params['comment'] . '<br><br>';
-			$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
-
-			$message['subject'] = $subject;
-			$message['body'][] = $body;
-			break;			
-
-		case 'claimed':
-			$subject = t('@pc has claimed project @project_name', array('@pc' => $params['pc']['full_name'], '@project_name' => $params['project_title']));
-			$body = 'View project here: ' . $params['project_link'];
-
-			$message['subject'] = $subject;
-			$message['body'][] = $body;
-			break;
-		
-		case 'sales_assigned':
-			$subject = t('You have been assigned to @project_name', array('@project_name' => $params['project_title']));
-			$body = 'View project here: ' . $params['project_link'];
-
-			$message['subject'] = $subject;
-			$message['body'][] = $body;
-			break;
-			
-		case 'project_added':
-			$subject = t('Project @project_name has been added by @sales', array('@project_name' => $params['project_title'], '@sales' => $params['sales']));
-			$body = 'View project here: ' . $params['project_link'];
-
-			$message['subject'] = $subject;
-			$message['body'][] = $body;
-			break;
-		
-
-	}
-	// make emails HTML-enabled
+	
+	$email = bxdev_email_get_email_by_name($key);
+	
+	$message['subject'] = token_replace($email->subject, $params);
+	$message['body'][] = token_replace($email->body, $params);
+	
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+	
+	// switch($key){
+	// 	case 'comment':
+	// 		$subject = t('A new comment has been posted in @title', array('@title' => $params['project_title']));
+	// 		$body = 'A new comment has been posted in ' . $params['project_title'] . '<br><br>';
+	// 		$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
+	// 		$body .= 'The comment was posted at: ' . $params['comment_date'] . '<br><br>';
+	// 		$body .= 'Posted by: ' . $params['comment_author'] . '<br><br>';
+	// 		$body .= 'Comment:<br>' . nl2br($params['comment']) . '<br><br>';			
+	// 		
+	// 		$message['subject'] = $subject;
+	// 		$message['body'][] = $body;
+	// 		break;
+	// 		
+	// 	case 'approved':
+	// 		$subject = t('Congratulations, your @title video has been approved!', array('@title' => $params['project_title']));
+	// 		$body = 'You will be receiving the final video formats of your lightswitch video within 2-3 business days.<br><br>';
+	// 		$body .= 'As always, let us know if you have any questions or concerns. Thank you for your business!.<br><br>';
+	// 		$body .= 'Sincerely,<br>';
+	// 		$body .= $params['pc']['full_name'] . '<br>';
+	// 		$body .= $params['pc']['email'] . '<br>';
+	// 		$body .= $params['pc']['phone'];
+	// 
+	// 		$message['subject'] = $subject;
+	// 		$message['body'][] = $body;
+	// 		break;
+	// 		
+	// 	case 'revision_declined':
+	// 		$subject = t('@title: DECLINED REVISION', array('@title' => $params['project_title']));
+	// 		$body = $params['client'] . ' has declined a revision list.<br><br>';
+	// 		$body .= 'Reason:<br>' . $params['declined_reason'] . '<br><br>';
+	// 		$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
+	// 
+	// 		$message['subject'] = $subject;
+	// 		$message['body'][] = $body;
+	// 		break;
+	// 		
+	// 	case 'revision_approved':
+	// 		$subject = t('@title: APPROVED REVISION', array('@title' => $params['project_title']));
+	// 		$body = $params['client'] . ' has approved a revision list.<br><br>';
+	// 		$body .= 'Revision list:<br>' . $params['comment'] . '<br><br>';
+	// 		$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
+	// 
+	// 		$message['subject'] = $subject;
+	// 		$message['body'][] = $body;
+	// 		break;			
+	// 
+	// 	case 'claimed':
+	// 		$subject = t('@pc has claimed project @project_name', array('@pc' => $params['pc']['full_name'], '@project_name' => $params['project_title']));
+	// 		$body = 'View project here: ' . $params['project_link'];
+	// 
+	// 		$message['subject'] = $subject;
+	// 		$message['body'][] = $body;
+	// 		break;
+	// 	
+	// 	case 'sales_assigned':
+	// 		$subject = t('You have been assigned to @project_name', array('@project_name' => $params['project_title']));
+	// 		$body = 'View project here: ' . $params['project_link'];
+	// 
+	// 		$message['subject'] = $subject;
+	// 		$message['body'][] = $body;
+	// 		break;
+	// 		
+	// 	case 'project_added':
+	// 		$subject = t('Project @project_name has been added by @sales', array('@project_name' => $params['project_title'], '@sales' => $params['sales']));
+	// 		$body = 'View project here: ' . $params['project_link'];
+	// 
+	// 		$message['subject'] = $subject;
+	// 		$message['body'][] = $body;
+	// 		break;
+	// 	
+	// 
+	// }
+	// // make emails HTML-enabled
+	// $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 }
 
 /**
@@ -186,7 +194,7 @@ function bxdev_project_node_insert($node) {
 				}
 				$user = new User();
 				$user->load($project->client->uid);
-				$user->send_client_project_login($project->project->nid);
+				$user->send_client_project_login($project);
 			}else{
 				// notify all appropriate users
 				$project->comment_notify($node->nid);

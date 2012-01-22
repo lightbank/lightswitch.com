@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Email
+description = Site email managment
+package = bx
+core = 7.x

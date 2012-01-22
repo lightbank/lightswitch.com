@@ -1,0 +1,291 @@
+<?php
+
+/**
+ * HOOKS
+ */
+/**
+ * Implements hook_menu().
+ */
+function bxdev_email_menu() {
+  $items['admin/emails'] = array(
+    'title' => 'Emails',
+    'page callback' => 'bxdev_email_overview_page',
+    'access arguments' => array('edit site email'),
+		'weight' => 50,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+	$items['admin/emails/%/edit'] = array(
+		'title callback' => 'bxdev_email_email_edit_title',
+		'title arguments' => array(2),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('bxdev_email_email_form', 2),
+		'access arguments' => array('edit site email'),
+		'type' => MENU_CALLBACK,
+	);
+	
+	$items['admin/emails/%/delete'] = array(
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('bxdev_email_email_delete_form', 2),
+		'access arguments' => array('edit site email'),
+		'type' => MENU_CALLBACK,
+	);
+	
+	$items['admin/emails/add'] = array(
+		'title' => t('Add new email'),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('bxdev_email_email_form'),
+		'access arguments' => array('add site email'),
+		'type' => MENU_LOCAL_ACTION,
+	);
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bxdev_email_permission() {
+  return array(
+    'edit site email' =>  array(
+      'title' => t('Edit site emails'),
+      'description' => t('Edit site emails.'),
+    ),
+	  'add site email' =>  array(
+	    'title' => t('Add site emails'),
+	    'description' => t('Add site emails.'),
+	  ),
+  );
+}
+
+
+/**
+ * FORMS
+ */
+
+/**
+ * Form builder: email edit
+ */
+function bxdev_email_email_form($form, $form_state, $eid = NULL){
+	
+	// check if edit page
+	if(!is_null($eid)){
+		$form_state['eid'] = $eid;
+		$email = bxdev_email_get_email($eid);
+	}
+		
+	$form['label'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Label'),
+		'#required' => TRUE,
+		'#default_value' => isset($email) ? $email->label : '',
+	);
+	
+	$form['name'] = array(
+		'#type' => 'machine_name',
+		'#machine_name' => array(
+			'exists' => 'bxdev_email_name_exists',
+			'source' => array('label'),
+		),
+		'#required' => TRUE,
+		'#default_value' => isset($email) ? $email->name : '',
+	);
+	
+	$form['subject'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Subject'),
+		'#required' => TRUE,
+		'#default_value' => isset($email) ? $email->subject : '',
+	);
+	
+	$form['body'] = array(
+	  '#type' => 'text_format',
+	  '#title' => t('Body'),
+		'#required' => TRUE,
+		'#default_value' => isset($email) ? $email->body : '',
+	);
+	
+	$form['submit'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Submit'),
+		'#required' => TRUE,
+	);
+	
+	return $form;
+	
+}
+
+/**
+ * Submit handler
+ */
+/**
+ * Form builder: email edit
+ */
+function bxdev_email_email_form_submit($form, &$form_state){
+	
+	$values = $form_state['values'];
+	
+	// if existing email (edit)
+	if(!empty($form_state['eid'])){
+		
+		db_update('emails')
+		->fields(array(
+			'name' => $values['name'],
+			'label' => $values['label'],
+			'subject' => $values['subject'],
+			'body' => $values['body']['value'],
+		))
+		->condition('eid', $form_state['eid'], '=')
+		->execute();
+		
+		drupal_set_message('<em>' . $values['label'] . '</em> has been successfully updated.');
+		
+	// if new email
+	}else{
+	
+		// store the values
+		db_insert('emails')
+			->fields(array(
+				'name' => $values['name'],
+				'label' => $values['label'],
+				'subject' => $values['subject'],
+				'body' => $values['body']['value'],
+			))
+			->execute();
+		
+		drupal_set_message('<em>' . $values['label'] . '</em> has been successfully added.');
+	
+	}
+	
+	$form_state['redirect'] = 'admin/emails';
+	
+}
+
+/**
+ * Form builder: email delete
+ */
+function bxdev_email_email_delete_form($form, &$form_state, $eid){
+	$form_state['eid'] = $eid;
+	$email = bxdev_email_get_email($eid);
+	return confirm_form($form,
+		t('Are you sure you want to delete @label?', array('@label' => $email->label)),
+		'admin/emails',
+		t('This action cannot be undone.'),
+		t('Delete')
+	);
+}
+
+/**
+ * Form submit handler: email delete
+ */
+function bxdev_email_email_delete_form_submit($form, &$form_state){
+	$email = bxdev_email_get_email($form_state['eid']);
+	db_delete('emails')
+		->condition('eid', $form_state['eid'], '=')
+		->execute();
+		
+	drupal_set_message($email['label'] . ' has been deleted.');
+	
+	$form_state['redirect'] = 'admin/emails';
+}
+
+
+/**
+ * CUSTOM
+ */
+
+/**
+ * Page callback: email overview page
+ */
+function bxdev_email_overview_page(){
+	
+	$output = '';
+	
+	// get all emails from db
+	$results = db_select('emails', 'e')
+		->fields('e', array('eid', 'label'))
+		->execute();
+		
+	// if no emails exist
+	if($results->rowCount() == 0){
+		$output .= t('No emails exist');
+	// if emails exist
+	}else{
+		$table = array();
+		$table['header'] = array('Label', '');
+		foreach($results as $row){
+			$table['rows'][$row->eid][] = $row->label;
+			$table['rows'][$row->eid][] = '<a href="/admin/emails/' . $row->eid . '/edit">edit</a> <a href="/admin/emails/' . $row->eid . '/delete">delete</a>';
+		}
+		$output .= theme('table', $table);
+	}
+	
+	return $output;
+	
+}
+
+/**
+ * Title callback: edit email
+ */
+function bxdev_email_email_edit_title($eid){
+	$email = bxdev_email_get_email($eid);
+	return 'Edit email ' . $email->label;
+}
+
+/**
+ * Machine name callback: name
+ */
+function bxdev_email_name_exists($value, $element, $form_state){
+	$result = db_select('emails', 'e')
+		->fields('e', array('name'))
+		->condition('name', $value, '=')
+		->execute();
+		
+	if($result->rowCount() > 0){
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
+/**
+ * Get email
+ */
+function bxdev_email_get_email($eid = NULL){
+	
+	if($eid){		
+		$result = db_select('emails', 'e')
+			->fields('e')
+			->condition('e.eid', $eid, '=')
+			->execute()
+			->fetchObject();		
+	}else{	
+		$result = db_select('emails', 'e')
+			->fields('e')
+			->execute()
+			->fetchAll();		
+	}
+		
+	return !empty($result) ? $result : FALSE;
+}
+
+/**
+ * Get email
+ */
+function bxdev_email_get_email_by_name($name){
+	
+	$result = db_select('emails', 'e')
+		->fields('e')
+		->condition('e.name', $name, '=')
+		->execute()
+		->fetchObject();		
+		
+	return !empty($result) ? $result : FALSE;
+}
+
+
+
+
+
+
+

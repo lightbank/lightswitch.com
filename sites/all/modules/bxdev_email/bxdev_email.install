@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function bxdev_email_schema() {
+  $schema['emails'] = array(
+		'description' => 'Stores information about site emails',
+		'fields' => array(
+			'eid' => array(
+				'type' => 'serial',
+				'not null' => TRUE,
+				'description' => 'Primary key: unique email ID',
+			),
+			'name' => array(
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => TRUE,
+				'description' => 'Email machine name',
+			),
+			'label' => array(
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => TRUE,
+				'description' => 'Email label',
+			),
+			'subject' => array(
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => TRUE,
+				'description' => 'Email subject line',
+			),
+			'body' => array(
+				'type' => 'text',
+				'not null' => TRUE,
+				'description' => 'Email body',
+			),			
+		),
+		'primary key' => array('eid'),
+	);
+	
+	return $schema;
+}
+

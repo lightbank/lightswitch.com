@@ -165,3 +165,152 @@ function bxdev_get_times_array(){
 	);
 	return $times;
 }
+
+/**
+ * Implementation hook_token_info().
+ */
+function bxdev_token_info() {
+  $types['project'] = array(
+    'name' => t('Project'),
+    'description' => t('Project tokens'),
+  );
+
+  $types['videographer'] = array(
+		'name' => t('Videographer'),
+		'description' => t('Videographer tokens'),
+	);
+	
+  // project tokens.
+  $project['project_url'] = array(
+    'name' => t('Project URL'),
+    'description' => t('The Project URL'),
+  );
+
+	$videographer['full_name'] = array(
+		'name' => t('Videographer full name'),
+		'description' => t('The Videographer full name'),
+	);
+  
+	return array(
+	  'types' => $types,
+	  'tokens' => array(
+	    'project' => $project,
+			'videographer' => $videographer,
+	  ),
+	);
+}
+
+/**
+ * Implementation of hook_tokens().
+ */
+function bxdev_tokens($type, $tokens, array $data = array(), array $options = array()){
+	
+	global $base_url;
+	$replacements = array();
+	
+	// offer tokens
+	if($type == 'project'){
+		
+		foreach($tokens as $name => $original){
+			switch($name){				
+				case 'title':
+					$replacements[$original] = $data['project']->project->title;
+					break;
+				
+				case 'project_url':
+					$replacements[$original] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $data['project']->project->nid);
+					break;
+					
+				case 'project_link':
+					$replacements[$original] = $data['project_link'];
+					break;
+					
+				case 'pc:full_name':
+					$replacements[$original] = $data['project']->pc->field_name['und'][0]['value'];
+					break;
+				
+				case 'pc:email':
+					$replacements[$original] = $data['project']->pc->mail;
+					break;
+				
+				case 'pc:phone':
+					$replacements[$original] = $data['project']->pc->field_phone['und'][0]['value'];
+					break;
+					
+				case 'sales:full_name':
+					$replacements[$original] = $data['project']->sales->field_name['und'][0]['value'];
+					break;
+
+				case 'sales:email':
+					$replacements[$original] = $data['project']->sales->mail;
+					break;
+
+				case 'sales:phone':
+					$replacements[$original] = $data['project']->sales->field_phone['und'][0]['value'];
+					break;						
+					
+				case 'client:full_name':
+					$replacements[$original] = $data['project']->client->field_name['und'][0]['value'];
+					break;
+					
+				case 'client:username':
+					$replacements[$original] = $data['project']->client->name;
+					break;
+			
+				case 'client:password':
+					$account = new User();
+					$account->load($data['project']->client->uid);
+					$account->reset_password();
+					$replacements[$original] = $account->password;
+					break;
+					
+				case 'business:title':
+					$replacements[$original] = $data['project']->business->title;
+					break;
+					
+				case 'comment:comment':
+					$replacements[$original] = $data['comment'];
+					break;
+					
+				case 'comment:date':
+					$replacements[$original] = $data['comment_date'];
+					break;
+					
+				case 'comment:author':
+					$replacements[$original] = $data['comment_author'];
+					break;
+					
+				case 'comment:declined_reason':
+					$replacements[$original] = $data['declined_reason'];
+					break;					
+			}
+		}
+	}else if($type == 'videographer'){
+		
+		foreach($tokens as $name => $original){
+			switch($name){				
+				case 'full_name':
+					$replacements[$original] = $data['full_name'];
+					break;
+					
+				case 'username':
+					$replacements[$original] = $data['username'];
+					break;
+			
+				case 'password':
+					$replacements[$original] = $data['password'];
+					break;
+					
+				case 'login_link':
+					$replacements[$original] = $data['login_link'];
+					break;
+				
+			}
+		}
+					
+	}
+			
+	return $replacements;
+}
+
+

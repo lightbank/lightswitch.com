@@ -150,10 +150,12 @@ class User {
 	 * Send an email to the User contain login information.
 	 */
 	function send(){
+		global $base_url;
 		$params = array(
-			'name' => $this->user->name,
-			'pass' => $this->password,
+			'username' => $this->user->name,
+			'password' => $this->password,
 			'full_name' => $this->user->field_name['und'][0]['value'],
+			'login_link' => '<a href="' . $base_url . '/user">' . $base_url . '/user</a>',
 		);
 		drupal_mail('bxdev_user', $this->role, $this->user->mail, language_default(), $params);
 	}
@@ -164,29 +166,31 @@ class User {
 	 * @param $nid (int)
 	 *   Project nid.
 	 */
-	function send_client_project_login($nid){
-		$project = new Project($nid);
-		$params = array(
-			'name' => $this->user->name,
-			'pass' => $this->password,
-			'project_path' => $project->project_path,
-			'full_name' => $this->user->field_name['und'][0]['value'],
-			'business' => $project->business->title,
-			'pc' => array(
-				'full_name' => $project->pc->field_name['und'][0]['value'],
-				'email' => $project->pc->mail,
-				'phone' => $project->pc->field_phone['und'][0]['value'],
-			),
-		);
+	function send_client_project_login($project){
+		// $project = new Project($nid);
+		// $params = array(
+		// 	'name' => $this->user->name,
+		// 	'pass' => $this->password,
+		// 	'project_path' => $project->project_path,
+		// 	'full_name' => $this->user->field_name['und'][0]['value'],
+		// 	'business' => $project->business->title,
+		// 	'pc' => array(
+		// 		'full_name' => $project->pc->field_name['und'][0]['value'],
+		// 		'email' => $project->pc->mail,
+		// 		'phone' => $project->pc->field_phone['und'][0]['value'],
+		// 	),
+		// );
+		// 
+		// // if sales user has been assigned to project
+		// if(!empty($project->sales)){
+		// 	$params['sales'] = array(
+		// 		'full_name' => $project->sales->field_name['und'][0]['value'],
+		// 		'email' => $project->sales->mail,
+		// 		'phone' => $project->sales->field_phone['und'][0]['value'],
+		// 	);
+		// }
 		
-		// if sales user has been assigned to project
-		if(!empty($project->sales)){
-			$params['sales'] = array(
-				'full_name' => $project->sales->field_name['und'][0]['value'],
-				'email' => $project->sales->mail,
-				'phone' => $project->sales->field_phone['und'][0]['value'],
-			);
-		}
+		$params['project'] = $project;
 		
 		// if client has never logged in (is new)
 		if($this->user->data['first_time_login'] == 1){
@@ -194,23 +198,23 @@ class User {
 			$this->reset_password();
 			// if project is spec
 			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
-				drupal_mail('bxdev_user', 'spec_new', $this->user->mail, language_default(), $params);
+				drupal_mail('bxdev_user', 'first_comment_spec_new', $this->user->mail, language_default(), $params);
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
-				drupal_mail('bxdev_user', 'direct_sale_new', $this->user->mail, language_default(), $params);
+				drupal_mail('bxdev_user', 'first_comment_direct_sale_new', $this->user->mail, language_default(), $params);
 			}else{
-				drupal_mail('bxdev_user', 'business_dev_new', $this->user->mail, language_default(), $params);
+				drupal_mail('bxdev_user', 'first_comment_business_dev_new', $this->user->mail, language_default(), $params);
 			}
 		// if client has logged in before (existing)
 		}else{
 			// if project is spec
 			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
-				drupal_mail('bxdev_user', 'spec_existing', $this->user->mail, language_default(), $params);
+				drupal_mail('bxdev_user', 'first_comment_spec_existing', $this->user->mail, language_default(), $params);
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
-				drupal_mail('bxdev_user', 'direct_sale_existing', $this->user->mail, language_default(), $params);
+				drupal_mail('bxdev_user', 'first_comment_direct_sale_existing', $this->user->mail, language_default(), $params);
 			}else{
-				drupal_mail('bxdev_user', 'business_dev_existing', $this->user->mail, language_default(), $params);
+				drupal_mail('bxdev_user', 'first_comment_business_dev_existing', $this->user->mail, language_default(), $params);
 			}	
 		}	
 		

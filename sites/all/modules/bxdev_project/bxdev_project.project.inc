@@ -150,16 +150,15 @@ class Project {
 		}
 		// remove the poster
 		unset($users[$owner_uid]);
+		$comment_author = user_load($comment->uid);
+		$comment_author = $comment_author->field_name['und'][0]['value'];
+		// set all params to pass to the email message
+		$params = array();
+		$params['project'] = $this;
+		$params['comment_author'] = $comment_author;
+		$params['comment_date'] = date('m-d-Y', $comment->created);
+		$params['comment'] = nl2br($comment->field_comment['und'][0]['value']);
 		foreach($users as $uid => $user){
-			$comment_author = user_load($comment->uid);
-			$comment_author = $comment_author->field_name['und'][0]['value'];
-			// set all params to pass to the email message
-			$params = array();
-			$params['project_title'] = $this->project->title;
-			$params['project_link'] = $project_link;
-			$params['comment_author'] = $comment_author;
-			$params['comment_date'] = date('m-d-Y', $comment->created);
-			$params['comment'] = $comment->field_comment['und'][0]['value'];
 			drupal_mail('bxdev_project', 'comment', $user->mail, language_default(), $params);
 		}
 	}
@@ -193,22 +192,11 @@ class Project {
 	 * Send an email to the PC and Sales when a Project has been claimed.
 	 */
 	function send_claim(){
-		global $base_url;
-		// build the project link
-		$project_link = $base_url . '/' . $this->project_path;
 		// build a list of email addresses (pc and sales)
 		$emails = $this->pc->mail . ', ' . $this->sales->mail;
 		// build params to pass to the email message
-		$params = array(
-			'project_title' => $this->project->title,
-			'project_link' => $project_link,			
-			'pc' => array(
-				'full_name' => $this->pc->field_name['und'][0]['value'],
-				'email' => $this->pc->mail,
-				'phone' => $this->pc->field_phone['und'][0]['value'],
-			),
-		);		
-		drupal_mail('bxdev_project', 'claimed', $emails, language_default(), $params);
+		$params = array('project' => $this);		
+		drupal_mail('bxdev_project', 'project_claimed', $emails, language_default(), $params);
 	}
 	
 	/**
@@ -216,20 +204,9 @@ class Project {
 	 */
 	function send_approved(){
 		global $base_url;
-		// build the project link
-		$project_link = $base_url . '/' . $this->project_path;
+		$params['project'] = $this;
 		// build a list of email addresses (pc, sales, and client)
 		$emails = $this->pc->mail . ', ' . $this->sales->mail . ', ' . $this->client->mail;
-		// build params to pass to the email message
-		$params = array(
-			'project_title' => $this->project->title,
-			'project_link' => $project_link,			
-			'pc' => array(
-				'full_name' => $this->pc->field_name['und'][0]['value'],
-				'email' => $this->pc->mail,
-				'phone' => $this->pc->field_phone['und'][0]['value'],
-			),
-		);		
 		drupal_mail('bxdev_project', 'approved', $emails, language_default(), $params);
 	}
 	
@@ -239,14 +216,10 @@ class Project {
 	function send_revision_declined($cid){
 		global $base_url;
 		$comment = node_load($cid);
-		// build the project link
-		$project_link = $base_url . '/' . $this->project_path;
-		// build params to pass to the email message
+		// build params to pass to the email message		
 		$params = array(
-			'project_title' => $this->project->title,
-			'project_link' => $project_link,
-			'declined_reason' => $comment->field_declined_reason['und'][0]['value'],
-			'client' => $this->client->field_name['und'][0]['value'],
+			'project' => $this,
+			'declined_reason' => nl2br($comment->field_declined_reason['und'][0]['value']),
 		);		
 		drupal_mail('bxdev_project', 'revision_declined', $this->pc->mail, language_default(), $params);		
 	}
@@ -258,14 +231,10 @@ class Project {
 		global $base_url;
 		$comment = node_load($cid);
 		$emails = $this->pc->mail . ',' . $this->videographer->mail;
-		// build the project link
-		$project_link = $base_url . '/' . $this->project_path;
 		// build params to pass to the email message
 		$params = array(
-			'project_title' => $this->project->title,
-			'project_link' => $project_link,
+			'project' => $this,
 			'comment' => nl2br($comment->field_comment['und'][0]['value']),
-			'client' => $this->client->field_name['und'][0]['value'],
 		);		
 		drupal_mail('bxdev_project', 'revision_approved', $emails, language_default(), $params);		
 	}
@@ -276,13 +245,8 @@ class Project {
 	function send_sales_assigned($uid){
 		global $base_url;
 		$account = user_load($uid);
-		// build the project link
-		$project_link = $base_url . '/' . $this->project_path;
 		// build params to pass to the email message
-		$params = array(
-			'project_title' => $this->project->title,
-			'project_link' => $project_link,			
-		);		
+		$params = array('project' => $this);		
 		drupal_mail('bxdev_project', 'sales_assigned', $account->mail, language_default(), $params);
 	}
 	
@@ -305,11 +269,7 @@ class Project {
 			}
 			$emails = implode(',', $emails);
 			// $emails = 'wandoledzep@gmail.com';
-			$params = array(
-				'project_title' => $this->project->title,
-				'project_link' => $project_link,
-				'sales' => $this->sales->field_name['und'][0]['value'],
-			);		
+			$params = array('project' => $this, 'project_link' => $project_link);		
 			drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
 		}
 	}
