@@ -181,14 +181,6 @@ class Project {
 	}
 	
 	/**
-	 * Send an email to the Client containing login and project info.
-	 */
-	function send_client_login(){
-		drupal_mail('bxdev_project', 'first_comment', $this->client->mail, language_default(), array('project_path' => $this->project_path));
-		$this->log('admin', 'Client sent login information');
-	}
-	
-	/**
 	 * Send an email to the PC and Sales when a Project has been claimed.
 	 */
 	function send_claim(){

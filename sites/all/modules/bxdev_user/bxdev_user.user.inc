@@ -167,28 +167,6 @@ class User {
 	 *   Project nid.
 	 */
 	function send_client_project_login($project){
-		// $project = new Project($nid);
-		// $params = array(
-		// 	'name' => $this->user->name,
-		// 	'pass' => $this->password,
-		// 	'project_path' => $project->project_path,
-		// 	'full_name' => $this->user->field_name['und'][0]['value'],
-		// 	'business' => $project->business->title,
-		// 	'pc' => array(
-		// 		'full_name' => $project->pc->field_name['und'][0]['value'],
-		// 		'email' => $project->pc->mail,
-		// 		'phone' => $project->pc->field_phone['und'][0]['value'],
-		// 	),
-		// );
-		// 
-		// // if sales user has been assigned to project
-		// if(!empty($project->sales)){
-		// 	$params['sales'] = array(
-		// 		'full_name' => $project->sales->field_name['und'][0]['value'],
-		// 		'email' => $project->sales->mail,
-		// 		'phone' => $project->sales->field_phone['und'][0]['value'],
-		// 	);
-		// }
 		
 		$params['project'] = $project;
 		
@@ -225,10 +203,12 @@ class User {
 	 * Reset a User's password and send a notification email.
 	 */
 	function send_password_reset(){
+		global $base_url;
 		$this->reset_password();
 		$params = array(
-			'name' => $this->user->name,
-			'pass' => $this->password,
+			'username' => $this->user->name,
+			'password' => $this->password,
+			'login_link' => '<a href="' . $base_url . '/user">' . $base_url . '/user</a>',
 		);
 		drupal_mail('bxdev_user', 'password_reset', $this->user->mail, language_default(), $params);
 	}

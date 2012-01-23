@@ -180,6 +180,21 @@ function bxdev_token_info() {
 		'description' => t('Videographer tokens'),
 	);
 	
+	$types['sales'] = array(
+		'name' => t('Sales'),
+		'description' => t('Sales tokens'),
+	);
+  
+	$types['pc'] = array(
+		'name' => t('PC'),
+		'description' => t('PC tokens'),
+	);
+	
+	$types['user'] = array(
+		'name' => t('User'),
+		'description' => t('User tokens'),
+	);
+	
   // project tokens.
   $project['project_url'] = array(
     'name' => t('Project URL'),
@@ -190,12 +205,30 @@ function bxdev_token_info() {
 		'name' => t('Videographer full name'),
 		'description' => t('The Videographer full name'),
 	);
+	
+	$sales['full_name'] = array(
+		'name' => t('Sales full name'),
+		'description' => t('The Sales full name'),
+	);
+	
+	$pc['full_name'] = array(
+		'name' => t('PC full name'),
+		'description' => t('The PC full name'),
+	);
+	
+	$user['username'] = array(
+		'name' => t('Username'),
+		'description' => t('Username'),
+	);
   
 	return array(
 	  'types' => $types,
 	  'tokens' => array(
 	    'project' => $project,
 			'videographer' => $videographer,
+			'sales' => $sales,
+			'pc' => $pc,
+			'user' => $user,
 	  ),
 	);
 }
@@ -285,6 +318,7 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					break;					
 			}
 		}
+		
 	}else if($type == 'videographer'){
 		
 		foreach($tokens as $name => $original){
@@ -303,11 +337,72 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					
 				case 'login_link':
 					$replacements[$original] = $data['login_link'];
+					break;				
+			}
+		}
+						
+	}else if($type == 'sales'){
+
+		foreach($tokens as $name => $original){
+			switch($name){				
+				case 'full_name':
+					$replacements[$original] = $data['full_name'];
 					break;
-				
+
+				case 'username':
+					$replacements[$original] = $data['username'];
+					break;
+
+				case 'password':
+					$replacements[$original] = $data['password'];
+					break;
+
+				case 'login_link':
+					$replacements[$original] = $data['login_link'];
+					break;
 			}
 		}
 					
+	}else if($type == 'pc'){
+
+		foreach($tokens as $name => $original){
+			switch($name){				
+				case 'full_name':
+					$replacements[$original] = $data['full_name'];
+					break;
+
+				case 'username':
+					$replacements[$original] = $data['username'];
+					break;
+
+				case 'password':
+					$replacements[$original] = $data['password'];
+					break;
+
+				case 'login_link':
+					$replacements[$original] = $data['login_link'];
+					break;
+			}
+		}	
+						
+	}else if($type == 'user'){
+		
+		foreach($tokens as $name => $original){
+			switch($name){				
+				case 'username':
+					$replacements[$original] = $data['username'];
+					break;
+
+				case 'password':
+					$replacements[$original] = $data['password'];
+					break;
+
+				case 'login_link':
+					$replacements[$original] = $data['login_link'];
+					break;
+			}
+		}					
+		
 	}
 			
 	return $replacements;
