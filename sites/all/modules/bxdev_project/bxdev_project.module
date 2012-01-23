@@ -448,7 +448,7 @@ function bxdev_project_reset_client_callback($nid){
 	$project = new Project($nid);
 	$user = new User();
 	$user->load($project->client->uid);
-	$user->send_client_project_login($nid);
+	$user->send_client_project_login($project);
 	drupal_set_message('Client login information has been reset and sent to the user.');
 	drupal_goto($project->project_path);
 }
