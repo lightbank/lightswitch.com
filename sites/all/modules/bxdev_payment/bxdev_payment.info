@@ -1,0 +1,7 @@
+; $Id
+name = bxdev Payment
+description = Implements payment functionality
+package = bx
+core = 7.x
+
+files[] = bxdev_payment.processor.inc

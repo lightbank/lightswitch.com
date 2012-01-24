@@ -63,7 +63,17 @@ function bxdev_project_menu() {
     'file' => 'node.pages.inc',
 	  'access arguments' => array('add new project'),
 	  'type' => MENU_CALLBACK,
-	);	
+	);
+	
+	// $items['project/add'] = array(
+	// 	'title' => t('Create a New Video Project'),
+	// 	'page callback' => 'drupal_get_form',
+	// 	'page arguments' => array('bxdev_project_add_project_form'),
+	// 	'access arguments' => array('add new project'),
+	// 	'file path' => drupal_get_path('module','node'),
+	// 	'file' => 'node.pages.inc',
+	// 	'type' => MENU_CALLBACK,
+	// );
 
   return $items;
 }

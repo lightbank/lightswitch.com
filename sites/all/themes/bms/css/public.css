@@ -1,13 +1,14 @@
 /*
 Author: Brad Sawicki
 URL: www.bradsawicki.com, www.elevenelevencreative.com
-test
 */
 
 @import url(http://fonts.googleapis.com/css?family=Mate);
+@import url(http://fonts.googleapis.com/css?family=Arimo:400,700);
+@import url(http://fonts.googleapis.com/css?family=Fjord+One);
 
 body {
-	font: 14px/1.5em "Helvetica Neue", Helvetica, Arial, "Lucida Grande";
+	font: 400 14px/1.5em "Helvetica Neue", Helvetica, Arial, "Lucida Grande";
 	color: #474747;
 }
 
@@ -17,6 +18,7 @@ body {
 
 h1,h2,h3,h4 {
 	font-family: Mate, Georgia, serif;
+	font-weight: 400;
 }
 
 h1 {
@@ -51,219 +53,7 @@ a:hover {
 	text-decoration: underline;
 }
 
-
-/** FORM
-================================================**/
-
-.messages {
-	margin: 20px 0;
-	padding: 10px 20px;
-}
-
-.messages li {
-	list-style: none;
-}
-
-.status {
-	background: #a3d39c;
-	border: 1px solid #197b30;
-}
-
-.form-item {
-	margin-bottom: 10px;
-}
-
-label {
-	display: block;
-	padding-bottom: 5px;
-	font-family: Mate, Georgia, serif;
-	font-size: 18px;
-	/*text-transform: lowercase;*/
-}
-
-.form-text, textarea, select {
-	width: 338px;
-	padding: 7px 5px;
-	border: 1px solid #b9b9b9;
-}
-
-.page-admin .form-text,
-.page-admin textarea,
-.page-admin select {
-	width: auto;
-}
-
-textarea {
-	width: 350px;
-	height: 80px;
-}
-
-select {
-	width: 350px;
-}
-
-button, 
-input[type="submit"] {
-	height: 40px;
-	padding: 2px 10px 0;
-  background: #fb942e;
-  border: none;
-  color: #fff;
-  line-height: 40px;
-	font-size: 16px;
-  font-weight: normal;
-  -moz-transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-}
-
-#edit-cancel, #edit-delete {
-	margin-left: 20px;
-}
-
-#edit-return {
-	margin-right: 20px;
-}
-
-#project-node-form #edit-return {
-	margin-left: 20px;
-	margin-right: 0;
-}
-
-td input[type="submit"] {
-	height: 20px;
-	line-height: 24px;
-	font-size: 14px;
-	padding: 0 5px;
-}
-
-
-
-
-/** TABLES
-================================================**/
-
-th {
-	border-right: 6px solid #fff;
-	text-align: left;
-	text-transform: uppercase;
-}
-
-th span {
-	padding: 5px 10px;
-	display: block;
-	color: #474747;
-	border-bottom: 5px solid #f0f0f0;
-}
-
-.ui-datepicker-calendar th span {
-	padding: 0;
-}
-
-td {
-	padding: 5px 10px;
-	font-size: 12px;
-	border-right: 6px solid #fff;
-}
-
-.even td {
-	background: #f0f0f0;
-}
-
-th img {
-	margin-left: 10px;
-	/*display: none!important;*/
-}
-
-th .ajax-progress {
-	display: none!important;
-}
-
-
-/** LAYOUT
-================================================**/
-
-.left { float: left; }
-.right { float: right; }
-
-.limiter {
-	width: 1034px;
-	margin: 0 auto;
-}
-
-.page-projects-master .limiter,
-.wide-table .limiter {
-	width: 80%;
-}
-
-header {
-	padding: 24px 0 16px;
-}
-
-#page {
-	padding-bottom: 80px;
-	background: url(../images/bg_page.jpg);
-}
-
-footer {
-}
-
-
-/** HEADER
-================================================**/
-
-.logo {
-	float: left;
-}
-
-.logo a {
-	display: block;
-	width: 234px;
-	height: 72px;
-	background: url(../images/sprite_global.png) no-repeat;
-	text-indent: -9999em;
-}
-
-.nav {
-	float: right;
-	padding-top: 22px;
-}
-
-.nav li {
-	float: left;
-	padding: 3px 0 3px 10px;
-	margin-left: 20px;
-	border-left: 1px solid #d4d4d4;
-	list-style: none;
-}
-
-.nav a {
-	padding: 8px 0 8px 10px;
-	font-family: 'Mate', Georgia, serif;
-	color: #434343;
-	font-size: 14px;
-	text-transform: uppercase;
-}
-
-.nav a:hover {
-	text-decoration: underline;
-}
-
-.nav .menu-mlid-417 {
-	border: none;
-}
-
-.nav .menu-mlid-638 a {
-	padding-right: 20px;
-	background: url(../images/sprite_global.png) no-repeat 78px -84px;
-}
-
-.nav .first {
-	padding: 0;
-	margin: 0 12px 0 0;
-	border: none;
-}
-
-.nav .first a {
+.btn {
     padding: 10px 15px;
     background-image: -moz-linear-gradient(top, #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
     background-image: -webkit-linear-gradient(top, #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
@@ -277,270 +67,127 @@ footer {
     text-transform: none;
 }
 
-.nav .first a:hover {
+.btn:hover {
     background-color: #F37873;
     background-image: -moz-linear-gradient(top, #FF7E2F 0%, #DB504D 50%, #CB4300 50%, #E06400 100%);
     background-image: -webkit-linear-gradient(top, #FF7E2F 0%, #DB504D 50%, #CB4300 50%, #E06400 100%);
     text-decoration: none;
 }
 
-.nav .first a:active {
+.btn:active {
     background-color: #D43C28;
     background-image: -moz-linear-gradient(top, #D43C28 0%, #AD3224 50%, #9C1500 50%, #700D00 100%);
     background-image: -webkit-linear-gradient(top, #D43C28 0%, #AD3224 50%, #9C1500 50%, #700D00 100%);
     box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset;
 }
 
-#block-bxdev-user-user-info {
-	float: right;
-	clear: right;
-	font-size: 12px;
-	padding-top: 10px;
+
+
+/** LAYOUT
+================================================**/
+
+.page-node-1 #page {
+	padding-top: 20px;
+	padding-bottom: 80px;
+	background: none;
 }
 
-#block-bxdev-user-user-info .username {
-	float: left;
+.page-node.logged-in #content {
+	padding: 0;
+	background: none;
+	box-shadow: none;
+/* 	box-shadow: 0 0 5px rgba(0,0,0,0.23); */
 }
 
-#block-bxdev-user-user-info .actions {
-	float: right;
-	padding-left: 20px;
+.page-node-1 .page-title {
+	display: none;
 }
 
 
-
-
-/** SIGN UP FORM / CREATE BIZ FORM
+/** HEADER
 ================================================**/
 
 
-#user-register-form {
-	padding: 40px;
-	background: #fff;
-	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+
+
+
+/** FRONT
+================================================**/
+
+.page-node-1 #content-top {
+	padding: 20px 0;
+	background: url(../images/bg_content_top_front.jpg) no-repeat top center;
+	color: #fff;
 }
 
-#business-node-form .left,
-#project-node-form .left {
+.page-node .left iframe {
+	width: 600px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
+.page-node-1 #content-top .right {
+	width: 340px;
+	padding-right: 40px;
+}
+
+.page-node-1 #content-top h1 {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgba(255,255,255,0.5);
+	font-family: 'Arimo';
+	font-size: 30px;
+	line-height: 33px;
+	font-weight: 700;
+	text-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+.page-node-1 #content-top p {
+	margin-bottom: 20px;
+	font-family: 'Fjord One';
+	font-size: 23px;
+	line-height: 27px;
+	text-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+.page-node-1 #content-top p .creme {
+	color: #fff9bb;
+}
+
+.page-node-1 #content-top p .q-name {
+	display: block;
+	font-size: 15px;
+}
+
+.home-cta {
 	margin-bottom: 40px;
 }
 
-#user-register-form .right,
-#business-node-form .right,
-#project-node-form .right {
-	width: 380px;
-	padding-right: 200px;
+.home-cta .left {
+	padding-top: 20px;
 }
 
-#user-register-form #edit-actions,
-#business-node-form #edit-actions,
-#project-node-form #edit-actions {
-	padding-top: 40px;
-	border-top: 1px solid #000;
-	clear: both;
+.home-cta .right {
+	padding: 20px 20px 20px 80px;
+	background: url(../images/sprite_public.png) no-repeat top left;
 }
 
-#user-register-form #edit-actions input,
-.page-sales-add #business-node-form #edit-actions input,
-.page-sales-add #project-node-form #edit-actions input {
-	float: right;
-	padding-right: 40px;
-	background: #fb942e url(../images/sprite_global.png) no-repeat 84px -120px;
+.home-cta .btn {
+	padding: 10px 40px;
 }
 
-#user-register-form #edit-actions input {
-	background-position: 165px -120px;
+.home-cta h2 {
+	font-size: 22px;
 }
 
-.page-node-31 #content {
-	padding: 20px;
-	background: #fff;
-	box-shadow: 0 0 5px rgba(0,0,0,0.23);
-}
-
-#business-node-form #edit-actions input {
-	background-position: 80px -120px;
-}
-
-#project-node-form #edit-actions input {
-	background-position: 175px -120px;
-}
-
-#project-node-form #edit-actions #edit-return {
-	background-position: 200px -120px;
-}
-
-#project-node-form #edit-actions #edit-submit {
-	background-position: 176px -120px;
-}
-
-.page-sales-add-business #page {
-	padding-top: 40px;
-}
-
-#ui-datepicker-div {
-	width: 300px;
-}
-
-#edit-profile-videographer-field-videographer-terms {
-	clear: left;
-	position: relative;
-	top: 90px;
-	width: 540px;
-}
-
-
-#edit-profile-videographer-field-videographer-terms .description,
-#bxdev-user-accept-terms-form .description {
-	padding: 7px 0 0 23px;
-}
-
-#edit-profile-videographer-field-videographer-terms label,
-#bxdev-user-accept-terms-form label {
-	padding-left: 7px;
-}
-
-#edit-profile-videographer-field-videographer-terms span.form-required,
-#bxdev-user-accept-terms-form span.form-required {
-	display: none;
-}
-
-.page-join-our-team #edit-profile-videographer-field-videographer-w9 {
-	display: none;
+.home-cta h2 span {
+	color: #ff6101;
 }
 
 
 /** ADD BIZ
 ================================================**/
-
-
-.page-sales-add #content h2 {
-	margin-bottom: 20px;
-	padding-bottom: 20px;
-	border-bottom: 1px solid #b5b5b5;
-	font-size: 25px;
-}
-
-.page-sales-add .client-select {
-	margin-bottom: 20px;
-}
-
-.page-sales-add .client-select a {
-	margin-right: 40px;
-	padding: 3px 0 3px 30px;
-	background: url(../images/sprite_global.png) no-repeat 0 -418px;
-}
-
-.page-sales-add .client-select .active {
-	background-position: 0 -379px;
-}
-
-.page-sales-add .edit-submit {
-	background: url(../images/sprite_global.png) no-repeat 0 -129px #fb942e;
-}
-
-.page-sales-add #edit-field-public-access,
-.page-sales-add #edit-field-profile-video-ref,
-.page-sales-add #edit-field-client-rating,
-.page-sales-add #edit-field-pc-ref,
-.page-sales-add #edit-field-videog-ref,
-.page-sales-add #edit-field-project-video,
-.page-sales-add #edit-field-status,
-.page-sales-add #edit-field-project-photos {
-	display: none;
-}
-
-.edit-field-social-name1-und-0-value {
-	width: 200px;
-}
-
-#edit-field-business-overview textarea {
-	height: 300px;
-}
-
-#edit-field-social-name1,
-#edit-field-social-url1,
-#edit-field-social-name2,
-#edit-field-social-url2,
-#edit-field-social-name3,
-#edit-field-social-url3,
-#edit-field-social-name4,
-#edit-field-social-url4 {
-	float: left;
-	margin-right: 10px;
-}
-
-#edit-field-social-name2,
-#edit-field-social-name3,
-#edit-field-social-name4 {
-	clear: left;
-}
-
-#edit-field-social-name1 input,
-#edit-field-social-name2 input,
-#edit-field-social-name3 input,
-#edit-field-social-name4 input {
-	width: 90px;
-}
-
-#edit-field-social-url1 input,
-#edit-field-social-url2 input,
-#edit-field-social-url3 input,
-#edit-field-social-url4 input {
-	width: 227px;
-}
-
-/*#edit-field-social-url1 input {
-	margin-top: 26px;
-}
-*/
-#edit-field-business-download-label {
-	clear: left;
-}
-
-/*.page-sales-add #edit-field-pc-notes {
-	clear: left;
-	margin-bottom: 20px;
-	border-top: solid #ccc 1px;
-	padding-top: 20px;
-}
-
-.page-sales-add #edit-field-pc-notes textarea {
-	width: 600px;
-	height: 120px;
-}
-*/
-.page-sales-add #project-node-form #edit-field-logo .form-submit {
-	height: 20px;
-	line-height: 24px;
-	font-size: 14px;
-	padding: 0 5px;
-}
-
-.page-sales-add #project-node-form #edit-field-logo .tabledrag-toggle-weight {
-	display: none;
-}
-
-.page-sales-add #edit-field-client-ref {
-	border-bottom: 1px solid #B5B5B5;
-	padding-bottom: 10px;
-	margin-bottom: 15px;
-	display: none;
-}
-
-.new-client-wrapper {
-	/*display: none;*/
-	border-bottom: 1px solid #B5B5B5;
-	padding-bottom: 10px;
-	margin-bottom: 15px;
-}
-
-.existing-client-wrapper {
-	display: none;
-	border-bottom: 1px solid #B5B5B5;
-	padding-bottom: 10px;
-	margin-bottom: 15px;
-}
 
 
 /** SIGN IN FORM
@@ -605,11 +252,6 @@ footer {
 ================================================**/
 
 
-.logged-in #content {
-	padding: 20px;
-	background: #fff;
-	box-shadow: 0 0 5px rgba(0,0,0,0.23);
-}
 
 .logged-in.page-join-our-team #content {
 	padding: 0;
@@ -1114,12 +756,6 @@ input[type="submit"].approve-btn, .approve-yes {
 .left .email { background-position: -234px -140px; }
 .left .address { background-position: -234px -171px; margin-bottom: 12px; }
 
-.left iframe {
-	width: 100%;
-	margin-bottom: 20px;
-	padding-bottom: 20px;
-	border-bottom: 1px solid #b5b5b5;
-}
 
 .left .hours {
 	margin-bottom: 20px;

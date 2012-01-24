@@ -97,8 +97,8 @@
 		// visibility toggle for new / existing client
 		$('.new-client-btn').click(function(){
 			$('.new-client-wrapper').toggle();
-			$('#edit-field-client-ref').toggle();
-			$('#edit-field-client-ref-und').val('_none');
+			$('#edit-field-client-ref, .existing-client-wrapper').toggle();
+			$('#edit-field-client-ref-und, #edit-existing-client').val('_none');
 			$('#edit-new-client-email, #edit-new-client-name, #edit-new-client-phone').val('');
 			return false;
 		});

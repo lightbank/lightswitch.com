@@ -426,3 +426,54 @@ function bxdev_project_form_alter(&$form, &$form_state, $form_id) {
 	}
 }
 
+
+/**
+ * CUSTOM
+ */
+
+/**
+ * Return shoot date form markup
+ */
+function bxdev_project_shoot_date_form_markup(){
+	
+	drupal_add_library('system', 'ui.datepicker');
+  drupal_add_library('date_popup', 'timeentry');
+
+	$times = bxdev_get_times_array();
+	
+	// create a fieldset
+	$form['bxdev_shoot_date_fieldset'] = array(
+		'#type' => 'fieldset',
+		'#weight' => 13,
+		'#attributes' => array(
+			'class' => array('clearfix'),
+		),
+	);
+	// create a custom date field
+	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_date'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Shoot date'),
+		'#required' => TRUE,
+		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('m/d/Y', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
+	);
+	// create a custom start time field
+	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time1'] = array(
+		'#title' => t('Start time'),
+		'#type' => 'select',
+		'#required' => TRUE,
+		'#options' => $times,
+		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
+	);
+	// create a custom end time field
+	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time2'] = array(
+		'#title' => t('End time'),
+		'#type' => 'select',
+		'#options' => $times,
+		'#default_value' => ($form['field_shoot_date']['und'][0]['#default_value']['value2'] != $form['field_shoot_date']['und'][0]['#default_value']['value']) ? date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value2']) : '',
+	);
+	
+	return $form;
+}
+
+
+

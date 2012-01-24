@@ -262,7 +262,7 @@ class Project {
 			$emails = implode(',', $emails);
 			// $emails = 'wandoledzep@gmail.com';
 			$params = array('project' => $this, 'project_link' => $project_link);		
-			drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
+			// drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
 		}
 	}
 	

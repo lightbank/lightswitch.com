@@ -4,10 +4,16 @@
   </div></header>
 <?php endif; ?>
 
+<?php if ($page['content_top']): ?>
+  <section id="content-top"><div class="limiter clearfix">
+    <?php print render($page['content_top']); ?>
+  </div></section>
+<?php endif; ?>
+
 <section id="page"><div class="limiter clearfix">
 
   <?php if ($page['left']): ?>
-    <aside id="left" class="clearfix"><?php print render($page['sidebar_first']) ?></aside>
+    <aside id="left" class="clearfix"><?php print render($page['left']) ?></aside>
   <?php endif; ?>
 
   <section id="main" class="clearfix">
@@ -22,7 +28,7 @@
   </section>
 
   <?php if ($page['right']): ?>
-    <aside id="right" class="clearfix"><?php print render($page['sidebar_second']) ?></aside>
+    <aside id="right" class="clearfix"><?php print render($page['right']) ?></aside>
   <?php endif; ?>
 
 </div></section>

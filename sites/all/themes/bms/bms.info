@@ -6,6 +6,7 @@ name = bms
 ; Regions =====================================================================
 
 regions[header] = Header
+regions[content_top] = Content Top
 regions[content] = Content
 regions[left] = Sidebar Left
 regions[right] = Sidebar Right
@@ -17,6 +18,7 @@ stylesheets[all][] = css/reset.css
 stylesheets[all][] = css/base.css
 stylesheets[screen][] = css/drupal.css
 stylesheets[screen][] = css/styles.css
+stylesheets[screen][] = css/public.css
 stylesheets[screen][] = js/shadowbox/shadowbox.css
 
 ; Scripts =================================================================
