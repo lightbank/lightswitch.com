@@ -29,28 +29,40 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 	$form['field_social_url3']['und'][0]['value']['#title'] =  '';
 	$form['field_social_url4']['und'][0]['value']['#title'] =  '';
 	
-	$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
+	$arg3 = arg(3);
+	
+	if(!empty($arg3)){
+		
+		$form['field_client_ref']['und']['#type'] = 'hidden';
+		$form['field_client_ref']['und']['#value'] = $arg3;
+		$form['field_client_ref']['und']['#prefix'] = t('Client');
+		
+	}else{
+	
+		$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
 
-	$form['new_client_email'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Client email'),
-		'#weight' => -50,
-		'#prefix' => '<div class="new-client-wrapper">',
-	);
+		$form['new_client_email'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Client email'),
+			'#weight' => -50,
+			'#prefix' => '<div class="new-client-wrapper">',
+		);
 
-	$form['new_client_name'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Client full name'),
-		'#weight' => -49,
-	);
+		$form['new_client_name'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Client full name'),
+			'#weight' => -49,
+		);
 
-	$form['new_client_phone'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Client phone'),
-		'#weight' => -48,
-		'#suffix' => '</div>',
-		'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
-	);
+		$form['new_client_phone'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Client phone'),
+			'#weight' => -48,
+			'#suffix' => '</div>',
+			'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
+		);
+	
+	}
 	
 	// dpm($form_state);
 	

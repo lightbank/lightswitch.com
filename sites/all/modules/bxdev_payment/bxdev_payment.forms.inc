@@ -5,23 +5,20 @@
  */
 function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 	
-	dpm($form_state);
-	// dpm($form_state);
-	
-	// require_once(drupal_get_path('module', 'bxdev_payment') . '/anet_php_sdk/AuthorizeNet.php'); // The SDK
-	// require_once(drupal_get_path('module', 'bxdev_payment') . '/vars.php');
-	// require_once(drupal_get_path('module', 'bxdev_payment') . '/util.php');
-	
-	// $processor = new Processor();
-	
-	// dpm($processor);
-	
-	// 6359848, 5477083
-	
-	
-	
 	// client selection
 	$form += bxdev_payment_client_selection_form_markup($form_state);
+	
+	$form['project_type'] = array(
+		'#type' => 'select',
+		'#title' => t('Project type'),
+		'#options' => array(
+			'299' => 'Standard video - $299',
+			'399' => 'Video with interview - $399',
+			'449' => 'Video with voice over - $449',
+			'' => 'Custom',
+		),
+		'#default_value' => '299',
+	);
 	
 	// credit card input
 	$form += bxdev_payment_cc_form_markup($form_state);
@@ -33,26 +30,15 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 	  '#type' => 'submit',
 	  '#value' => t('Continue >'),
 		'#weight' => 50,
-		// '#validate' => array('bxdev_payment_project_client_credit_card_form_validate', 'bxdev_payment_project_client_credit_card_form_validate2'),
 	);
 	
-	// $form['#submit'][] = 'test_submit';
-	
-	// $form['#validate'][] = 'bxdev_payment_project_client_credit_card_form_validate';
-	// $form['#validate'][] = 'bxdev_payment_project_client_credit_card_form_validate2';
-	
 	return $form;
-}
-
-function test_submit($form, &$form_state){
-	$form_state['test'] = 'test';
-	$form_state['rebuild'] = TRUE;
 }
 
 /**
  * Form validation: client, credit card, shoot date
  */
-function bxdev_payment_project_client_credit_card_form_validatexx($form, &$form_state){
+function bxdev_payment_project_client_credit_card_form_validate($form, &$form_state){
 	$values = $form_state['values'];
 	// dpm($values);
 	
@@ -90,7 +76,7 @@ function bxdev_payment_project_client_credit_card_form_validatexx($form, &$form_
  * Form submit: client, credit card, shoot date
  */
 function bxdev_payment_project_client_credit_card_form_submit($form, &$form_state){
-	
+
 	require('AuthnetCIM.class.php');
 	$cim = new AuthnetCIM('2hQT4t8ua', '3bNDCu4r334K9327', TRUE);
 	
@@ -99,6 +85,8 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 	$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];
 	$cc_code = $values['cc_code'];		
 	$cc_amount = $values['cc_amount'];
+	$shoot_date_start = strtotime($values['bxdev_shoot_date'] . ' ' . $values['bxdev_shoot_time1']);
+	$shoot_date_end = !empty($values['bxdev_shoot_time2']) ? strtotime($values['bxdev_shoot_date'] . ' ' . $values['bxdev_shoot_time2']) : '';
 		
 	// check if existing user
 	if($values['existing_client'] != '_none'){
@@ -205,7 +193,12 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 		
 		$account = user_save($account);
 		
-		$form_state['user_created'] = $account->uid;
+		$form_state['user_created'] = $account->uid;		
+		$form_state['input']['new_client_email'] = '';
+		$form_state['input']['new_client_name'] = '';
+		$form_state['input']['new_client_phone'] = '';
+		$form_state['input']['existing_client'] = $account->uid;
+		
 		$form_state['rebuild'] = TRUE;
 				
 		/**
@@ -258,20 +251,19 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				// if authorization was successful
 				if($cim->isSuccessful()){
 					drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
+					$_SESSION['shoot_date']['start'] = $shoot_date_start;
+					$_SESSION['shoot_date']['end'] = $shoot_date_end;
+					drupal_goto('sales/add/business/' . $account->uid);
 				
 				// if authorization failed
 				}else{
-					// form_set_error('cc_number', $cim->getResponse());
 					drupal_set_message($cim->getResponse(), 'error');				
-					// drupal_goto('sales/add/cc/' . $account->uid);
 				}
 				
 			// if the credit card could not be added, display the error and return to the form, prepopulating
 			// the Drupal user created in step 1			
 			}else{
-				// form_set_error('cc_number', $cim->getResponse());
 				drupal_set_message($cim->getResponse(), 'error');				
-				// drupal_goto('sales/add/cc/' . $account->uid);
 			}
 					
 		}else{				
@@ -296,13 +288,14 @@ function bxdev_payment_cc_form_markup($form_state){
 		'#type' => 'textfield',
 		'#title' => t('Charge amount'),
 		'#maxlength' => 16,
-		// '#default_value' => !empty($form_state['values']['cc_amount']) ? $form_state['values']['cc_amount'] : '',
+		'#required' => TRUE,
 	);
 	
 	$form['cc_number'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Credit card number'),
 		'#maxlength' => 16,
+		'#required' => TRUE,
 	);
 	
 	$form['cc_expiry_month'] = array(
@@ -323,6 +316,7 @@ function bxdev_payment_cc_form_markup($form_state){
 			'11' => '11',
 			'12' => '12',
 		),
+		'#required' => TRUE,
 	);
 	
 	$form['cc_expiry_year'] = array(
@@ -330,6 +324,7 @@ function bxdev_payment_cc_form_markup($form_state){
 		'#title' => t('Expiration date'),
 		'#options' => array(
 			'_none' => 'Year',
+			2011 => 2011,
 			2012 => 2012,
 			2013 => 2013,
 			2014 => 2014,
@@ -342,17 +337,19 @@ function bxdev_payment_cc_form_markup($form_state){
 			2021 => 2021,
 			2022 => 2022,
 		),
+		'#required' => TRUE,
 	);
 	
 	$form['cc_code'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Security code'),
+		'#required' => TRUE,
 	);
 	
-	$form['cc_full_name'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Full name'),
-	);
+	// $form['cc_full_name'] = array(
+	// 	'#type' => 'textfield',
+	// 	'#title' => t('Full name'),
+	// );
 	
 	return $form;
 	
@@ -366,6 +363,8 @@ function bxdev_payment_client_selection_form_markup($form_state){
 	// dpm($form_state);
 	
 	$uid = $form_state['user_created'];
+	
+	$values = $form_state['values'];
 	
 	// generate a list of existing clients
 	// get the client references view
@@ -383,6 +382,7 @@ function bxdev_payment_client_selection_form_markup($form_state){
 		'#title' => t('Client email'),
 		'#weight' => -50,
 		'#prefix' => !empty($uid) ? '<div class="new-client-wrapper" style="display:none;">' : '<div class="new-client-wrapper" style="display:block;">',
+		'#default_value' => !empty($values['new_client_email']) ?  $values['new_client_email'] : '',
 	);
 
 	$form['new_client_name'] = array(
@@ -398,17 +398,24 @@ function bxdev_payment_client_selection_form_markup($form_state){
 		'#suffix' => '</div>',
 		'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
 	);
-	
+		
 	$form['existing_client'] = array(
 		'#type' => 'select',
 		'#options' => $options,
-		'#default_value' => !empty($uid) ? $uid : '_none',
+		'#default_value' => ($values['existing_client'] != '_none') ?  $values['existing_client'] : '_none',
 		'#description' => t('<a href="" class="new-client-btn">+ Add new Client</a>'),
 		'#prefix' => !empty($uid) ? '<div class="existing-client-wrapper" style="display:block;">' : '<div class="existing-client-wrapper" style="display:none;">',
 		'#suffix' => '</div>',
 	);
 	
-	dpm($form);
+	// if(!empty($uid)){
+	// 	$form['new_client_email']['#value'] = '';
+	// 	$form['new_client_name']['#value'] = '';
+	// 	$form['new_client_phone']['#value'] = '';
+	// 	$form['existing_client']['#value'] = $uid;
+	// }
+	
+	// dpm($form);
 	
 	return $form;
 }

@@ -128,6 +128,23 @@ a:hover {
 /** HEADER
 ================================================**/
 
+header .limiter {
+	position: relative;
+}
+
+.badge-cta {
+	position: absolute;
+	top: 20px;
+	right: -160px;
+}
+
+.badge-cta a {
+	display: block;
+	width: 128px;
+	height: 128px;
+	background: url(../images/sprite_public.png) no-repeat -597px -129px;
+	text-indent: -9999em;	
+}
 
 
 
@@ -270,6 +287,28 @@ a:hover {
 }
 
 
+
+
+/** CONTACT
+================================================**/
+
+.page-node-5 .page-title {
+	display: none;
+}
+
+.page-node-5 #page {
+	padding-top: 40px;
+}
+
+.page-node-5 #main {
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.23);
+}
+
+
+
+
 /** FOOTER
 ================================================**/
 
@@ -292,12 +331,40 @@ footer .left {
 	border-right: 1px solid #ddd;
 }
 
+.the-works ul {
+	padding-top: 26px;
+}
+
 footer h5 {
 	margin-bottom: 10px;
 }
 
 footer ul {
 	list-style: none;
+}
+
+footer .social-links li {
+	float: left;
+	padding: 0 20px 10px 0;
+}
+
+footer .social-links a {
+	display: block;
+	width: 41px;
+	height: 41px;
+	background: url(../images/sprite_public.png) no-repeat;
+	text-indent: -9999em;
+}
+
+footer .social-links .youtube a { background-position: -556px -129px; }
+footer .social-links .facebook a { background-position: -556px -170px; }
+footer .social-links .vimeo a { background-position: -556px -211px; }
+footer .social-links .twitter a { background-position: -556px -252px; }
+
+.footer-blocks .small {
+	margin-bottom: 0;
+	font-size: 12px;
+	line-height: 18px;
 }
 
 

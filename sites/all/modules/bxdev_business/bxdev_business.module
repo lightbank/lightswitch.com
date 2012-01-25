@@ -24,9 +24,10 @@ function bxdev_business_menu() {
 	  'type' => MENU_CALLBACK,
 	);
 	
-	$items['sales/add/business'] = array(
+	$items['sales/add/business/!'] = array(
     'title' => t('Create a New Video Project'),
 		'page callback' => 'bxdev_business_create_business_page',
+		'page arguments' => array(3),
 		'file path' => drupal_get_path('module','node'),
     'file' => 'node.pages.inc',
     'access arguments' => array('add new project'),

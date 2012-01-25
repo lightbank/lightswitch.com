@@ -14,7 +14,6 @@ function bxdev_payment_menu() {
   $items['sales/add/cc'] = array(
     'title' => t('Create a New Video Project'),
 		'page callback' => 'bxdev_payment_client_payment_step_one_page',
-    'page arguments' => array(3),
     'access arguments' => array('add new project'),
     'type' => MENU_CALLBACK,
   );
@@ -43,59 +42,16 @@ function bxdev_payment_user_delete($account) {
  * CUSTOM
  */
 
-function credit_card_test(){
-	
-	require_once(drupal_get_path('module', 'bxdev_payment') . '/anet_php_sdk/AuthorizeNet.php'); // The SDK
-
-	$output = '<form method="post" action="https://secure.authorize.net/hosted/profile/manage" id="formAuthorizeNetPopup" name="formAuthorizeNetPopup" target="iframeAuthorizeNet" style="display:none;">
-	  <input type="hidden" name="Token" value="tbyS9qm+0CotK8XMQh+SOlIswsY8Vu1MBA8ZRMy2LGxye0D5ePc4DzzSV+d/8r0rG1NVMAYLo3wIzNnpVC7NhMBVY2hInDrqH1gmqwWy1ihQey/EYh/LXRs2GPshqTETePO6+kC1zylkQXshgnnxUN2WxeFUttPfMpiAaN+me9abJiChnML9rtaaI3C8aTb/2NOgiz61EA6VaVE4fKvL716O2pgQEo5jJZQH04Ee2KvUxQJSAyZvyF+1hWDWHIwwE35kdaYWfnH2dIzqGcZnVQ4cHgiA5pEQtywm9X2qF7SPiSk8/uqJ6mWrxm3mK9tKoPnuwQwNVoIe3cROReW+i5j//383Jkx0PpGT8trEOCbPH2cXrxmfRQ40DNvRgHOg" />
-	</form>
-	';
-	
-	$output .= '<div id="divAuthorizeNetPopup" style="display:none;" class="AuthorizeNetPopupGrayFrameTheme">
-	  <div class="AuthorizeNetPopupOuter">
-	    <div class="AuthorizeNetPopupTop">
-	      <div class="AuthorizeNetPopupClose">
-	        <a href="javascript:;" onclick="AuthorizeNetPopup.closePopup();" title="Close"> </a>
-	      </div>
-	    </div>
-	    <div class="AuthorizeNetPopupInner">
-	      <iframe name="iframeAuthorizeNet" id="iframeAuthorizeNet" src="contentx/empty.html" frameborder="0" scrolling="no"></iframe>
-	    </div>
-	    <div class="AuthorizeNetPopupBottom">
-	      <div class="AuthorizeNetPopupLogo" title="Powered by Authorize.Net"></div>
-	    </div>
-	  </div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowT"></div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowR"></div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowB"></div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowL"></div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowTR"></div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowBR"></div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowBL"></div>
-	  <div class="AuthorizeNetShadow AuthorizeNetShadowTL"></div>
-	</div>
-	'; 
-	
-	$output .= '<button onclick="AuthorizeNetPopup.openAddPaymentPopup()">Add a New Payment Method</button>';
-
-	// $relay_response_url = "http://ls.bxcreative.com/sales/add/cc-test"; // You will create this file in step 7.
-	// $api_login_id = '2hQT4t8ua';
-	// $transaction_key = '3bNDCu4r334K9327';
-	// $amount = '5.99';
-	// $fp_sequence = '123'; // Any sequential number like an invoice number.
-	// $output = AuthorizeNetDPM::getCreditCardForm($amount, $fp_sequence, $relay_response_url, $api_login_id, $transaction_key);
-
-  return $output;
-}
-
 /**
  * Page callback: client payment step one
  */
-function bxdev_payment_client_payment_step_one_page($type){
+function bxdev_payment_client_payment_step_one_page(){
+	
+	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	
 	$output = '<h2><strong>Client Payment Info</strong> (step 1 of 3)</h2>';
 	
-	$output .= render(drupal_get_form('bxdev_payment_project_client_credit_card_form', $type));
+	$output .= render(drupal_get_form('bxdev_payment_project_client_credit_card_form'));
 	
 	return $output;
 	

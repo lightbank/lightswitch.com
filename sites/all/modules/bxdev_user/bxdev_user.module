@@ -355,8 +355,8 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';			
 		}
-	}else if(arg(0) !== 'admin'){
-		unset($data['tabs']);
+	}else if(arg(0) != 'admin'){
+		// unset($data['tabs']);
 	}
 	
 	// get the logged in user
