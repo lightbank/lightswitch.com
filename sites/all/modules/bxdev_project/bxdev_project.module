@@ -276,6 +276,12 @@ function bxdev_project_preprocess_node(&$vars){
 		
 	if($vars['type'] == 'project'){
 		
+		// navigation controls
+		if(user_access('pc')){
+			$navigation = ' <a href="/projects/master" class="back">&lt; Back to master list</a>';
+			$vars['navigation'] = $navigation;
+		}
+		
 		// load up some variables
 		global $user;
 		$role = bxdev_user_get_role($user->uid);

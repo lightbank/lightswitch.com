@@ -785,7 +785,6 @@ input[type="submit"].approve-btn, .approve-yes {
 /** PROJECT PAGE
 ================================================**/
 
-.node-type-project #page,
 .page-sales-add-project #page {
 	padding-top: 40px;
 }

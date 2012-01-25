@@ -4,9 +4,11 @@
 <?php //dpm($pc); ?>
 <?php //dpm($videographer); ?>
 
+<?php if(!empty($navigation)) print $navigation; ?>
+
 <div class="left">
 	<div class="block">
-		<h1><?php print $business->title ?></h1>
+		<h1><a href="/<?php print drupal_lookup_path('alias', 'node/' . $business->nid) ?>"><?php print $business->title ?></a></h1>
 		<h2><?php print $title ?></h2>
 	</div>
 	
