@@ -354,10 +354,8 @@ class AuthnetCIM
                                   </duty>';
         }
         $this->xml .= '
-                                  <lineItems>' . $this->getLineItems() . '</lineItems>
                                   <customerProfileId>'.$this->params['customerProfileId'].'</customerProfileId>
-                                  <customerPaymentProfileId>'.$this->params['customerPaymentProfileId'].'</customerPaymentProfileId>
-                                  <customerShippingAddressId>'.$this->params['customerShippingAddressId'].'</customerShippingAddressId>';
+                                  <customerPaymentProfileId>'.$this->params['customerPaymentProfileId'].'</customerPaymentProfileId>';
         if (isset($this->params['orderInvoiceNumber']))
         {
             $this->xml .= '

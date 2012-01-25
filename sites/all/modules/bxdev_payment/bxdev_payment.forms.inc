@@ -5,9 +5,12 @@
  */
 function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 	
-	require_once(drupal_get_path('module', 'bxdev_payment') . '/anet_php_sdk/AuthorizeNet.php'); // The SDK
-	require_once(drupal_get_path('module', 'bxdev_payment') . '/vars.php');
-	require_once(drupal_get_path('module', 'bxdev_payment') . '/util.php');
+	dpm($form_state);
+	// dpm($form_state);
+	
+	// require_once(drupal_get_path('module', 'bxdev_payment') . '/anet_php_sdk/AuthorizeNet.php'); // The SDK
+	// require_once(drupal_get_path('module', 'bxdev_payment') . '/vars.php');
+	// require_once(drupal_get_path('module', 'bxdev_payment') . '/util.php');
 	
 	// $processor = new Processor();
 	
@@ -18,29 +21,40 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 	
 	
 	// client selection
-	$form += bxdev_payment_client_selection_form_markup();
+	$form += bxdev_payment_client_selection_form_markup($form_state);
 	
 	// credit card input
-	$form += bxdev_payment_cc_form_markup();
+	$form += bxdev_payment_cc_form_markup($form_state);
 	
 	// shoot date
 	$form += bxdev_project_shoot_date_form_markup();
 	
-	$form['continue_>'] = array(
+	$form['continue'] = array(
 	  '#type' => 'submit',
 	  '#value' => t('Continue >'),
 		'#weight' => 50,
-	);	
+		// '#validate' => array('bxdev_payment_project_client_credit_card_form_validate', 'bxdev_payment_project_client_credit_card_form_validate2'),
+	);
+	
+	// $form['#submit'][] = 'test_submit';
+	
+	// $form['#validate'][] = 'bxdev_payment_project_client_credit_card_form_validate';
+	// $form['#validate'][] = 'bxdev_payment_project_client_credit_card_form_validate2';
 	
 	return $form;
+}
+
+function test_submit($form, &$form_state){
+	$form_state['test'] = 'test';
+	$form_state['rebuild'] = TRUE;
 }
 
 /**
  * Form validation: client, credit card, shoot date
  */
-function bxdev_payment_project_client_credit_card_form_validate($form, &$form_state){
+function bxdev_payment_project_client_credit_card_form_validatexx($form, &$form_state){
 	$values = $form_state['values'];
-	dpm($values);
+	// dpm($values);
 	
 	// if neither an existing or new client has been entered
 	if($values['existing_client'] == '_none' && empty($values['new_client_email'])){
@@ -70,9 +84,6 @@ function bxdev_payment_project_client_credit_card_form_validate($form, &$form_st
 		}		
 		
 	}
-	
-	
-
 }
 
 /**
@@ -84,13 +95,24 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 	$cim = new AuthnetCIM('2hQT4t8ua', '3bNDCu4r334K9327', TRUE);
 	
 	$values = $form_state['values'];
-	
+	$cc_number = $values['cc_number'];
+	$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];
+	$cc_code = $values['cc_code'];		
+	$cc_amount = $values['cc_amount'];
+		
 	// check if existing user
 	if($values['existing_client'] != '_none'){
 		
 		$account = user_load($values['existing_client']);
+		$profile_id = '';
 		
-		// check if token has previously been created
+		/**
+		 * STEP 1: Obtain Authorize.net Profile ID.
+		 *
+		 * First we check if user has an existing Profile ID (stored in our database). If no db value is found, generate a new Profile.
+		 */
+		
+		// query the database
 		$result = db_select('users_auth', 'u')
 			->fields('u')
 			->condition('uid', $account->uid, '=')
@@ -118,28 +140,60 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			
 		// if user has token
 		}else{
-			$cc_number = $values['cc_number'];
-			$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];					
-			
-			$cim->setParameter('customerProfileId', $result->auth_token);
-			$cim->setParameter('cardNumber', $cc_number);
-			$cim->setParameter('expirationDate', $cc_expiry);
-			$cim->createCustomerPaymentProfile();
-			
-			if($cim->isSuccessful()){
-				drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());				
-			}else{
-				dpm($cim->getResponseSummary());
-				// drupal_set_message($cim->getResponse(), 'error');				
-				drupal_goto('sales/add/cc/' . $account->uid);
-			}
-			
+			$profile_id = $result->auth_token;
 		}
 		
-	// if new user
-	}else{
+		/**
+		 * STEP 2: Add a credit card
+		 */
 		
-		// create a new user
+		$cim->setParameter('customerProfileId', $profile_id);
+		$cim->setParameter('cardNumber', $cc_number);
+		$cim->setParameter('expirationDate', $cc_expiry);
+		$cim->setParameter('cardCode', $cc_code);
+		$cim->setParameter('billToAddress', '123 Main Street');
+		$cim->setParameter('billToZip', '12345');
+		$cim->createCustomerPaymentProfile();
+		
+		if($cim->isSuccessful()){
+			
+			$payment_id = $cim->getPaymentProfileId();
+			drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());
+			
+			/**
+			 * STEP 3: Authorize the credit card
+			 */
+			
+			$cim->setParameter('customerPaymentProfileId', $payment_id);
+			$cim->setParameter('amount', $cc_amount);
+			$cim->createCustomerProfileTransaction('profileTransAuthOnly');
+			
+			// if authorization was successful
+			if($cim->isSuccessful()){
+				drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
+			
+			// if authorization failed
+			}else{
+				form_set_error('cc_number', $cim->getResponse());
+				// drupal_set_message($cim->getResponse(), 'error');				
+				// drupal_goto('sales/add/cc/' . $account->uid);
+			}
+						
+		}else{
+			// dpm($cim->getResponseSummary());
+			// drupal_set_message($cim->getResponse(), 'error');
+			form_set_error('cc_number', $cim->getResponse());			
+			// drupal_goto('sales/add/cc/' . $account->uid);
+		}
+			
+		
+	// if new user
+	}else{		
+		
+		/**
+		 * STEP 1: create a new Drupal user and get the uid.
+		 */
+		
 		$account = new stdClass();
 		$account->is_new = TRUE;
 		$account->status = 1;
@@ -151,10 +205,18 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 		
 		$account = user_save($account);
 		
+		$form_state['user_created'] = $account->uid;
+		$form_state['rebuild'] = TRUE;
+				
+		/**
+		 * STEP 2: create an Authorize.net CIM Profile using the Drupal user uid
+		 */
+		
 		$cim->setParameter('email', $account->mail);
 		$cim->setParameter('merchantCustomerId', $account->uid);			
 		$cim->createCustomerProfile();
 		
+		 // if the Authorize.net Profile was successfully created, store the Profile ID and add a credit card
 		if($cim->isSuccessful()){
 			
 			// get the profile ID	
@@ -166,21 +228,50 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 					'auth_token' => $profile_id,
 				))
 				->execute();
-				
-			$cc_number = $values['cc_number'];
-			$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];					
 			
-			// attach credit card to profile
+			/**
+			 * STEP 3: Add a credit card
+			 */
+			
 			$cim->setParameter('customerProfileId', $profile_id);
 			$cim->setParameter('cardNumber', $cc_number);
 			$cim->setParameter('expirationDate', $cc_expiry);
+			$cim->setParameter('cardCode', $cc_code);
+			$cim->setParameter('billToAddress', '123 Main Street');
+			$cim->setParameter('billToZip', '12345');
 			$cim->createCustomerPaymentProfile();
 			
+			// if the credit was successfully added, get the Payment ID used to authorize funds
 			if($cim->isSuccessful()){
-				drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());				
+				
+				$payment_id = $cim->getPaymentProfileId();
+				drupal_set_message('Payment ID: ' . $payment_id);
+				
+				/**
+				 * Step 4: Authorize the credit card
+				 */
+				
+				$cim->setParameter('customerPaymentProfileId', $payment_id);
+				$cim->setParameter('amount', $cc_amount);
+				$cim->createCustomerProfileTransaction('profileTransAuthOnly');
+				
+				// if authorization was successful
+				if($cim->isSuccessful()){
+					drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
+				
+				// if authorization failed
+				}else{
+					// form_set_error('cc_number', $cim->getResponse());
+					drupal_set_message($cim->getResponse(), 'error');				
+					// drupal_goto('sales/add/cc/' . $account->uid);
+				}
+				
+			// if the credit card could not be added, display the error and return to the form, prepopulating
+			// the Drupal user created in step 1			
 			}else{
+				// form_set_error('cc_number', $cim->getResponse());
 				drupal_set_message($cim->getResponse(), 'error');				
-				drupal_goto('sales/add/cc/' . $account->uid);
+				// drupal_goto('sales/add/cc/' . $account->uid);
 			}
 					
 		}else{				
@@ -199,21 +290,22 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 /**
  * Return credit card form markup
  */
-function bxdev_payment_cc_form_markup(){
+function bxdev_payment_cc_form_markup($form_state){
 	
-	$form['cc']['cc_amount'] = array(
+	$form['cc_amount'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Charge amount'),
 		'#maxlength' => 16,
+		// '#default_value' => !empty($form_state['values']['cc_amount']) ? $form_state['values']['cc_amount'] : '',
 	);
 	
-	$form['cc']['cc_number'] = array(
+	$form['cc_number'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Credit card number'),
 		'#maxlength' => 16,
 	);
 	
-	$form['cc']['cc_expiry_month'] = array(
+	$form['cc_expiry_month'] = array(
 		'#type' => 'select',
 		'#title' => t('Expiration date'),
 		'#options' => array(
@@ -233,7 +325,7 @@ function bxdev_payment_cc_form_markup(){
 		),
 	);
 	
-	$form['cc']['cc_expiry_year'] = array(
+	$form['cc_expiry_year'] = array(
 		'#type' => 'select',
 		'#title' => t('Expiration date'),
 		'#options' => array(
@@ -252,12 +344,12 @@ function bxdev_payment_cc_form_markup(){
 		),
 	);
 	
-	$form['cc']['cc_cvv'] = array(
+	$form['cc_code'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Security code'),
 	);
 	
-	$form['cc']['cc_full_name'] = array(
+	$form['cc_full_name'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Full name'),
 	);
@@ -269,9 +361,11 @@ function bxdev_payment_cc_form_markup(){
 /**
  * Return client information form markup
  */
-function bxdev_payment_client_selection_form_markup(){
+function bxdev_payment_client_selection_form_markup($form_state){
 	
-	$uid = arg(3);
+	// dpm($form_state);
+	
+	$uid = $form_state['user_created'];
 	
 	// generate a list of existing clients
 	// get the client references view
@@ -313,6 +407,8 @@ function bxdev_payment_client_selection_form_markup(){
 		'#prefix' => !empty($uid) ? '<div class="existing-client-wrapper" style="display:block;">' : '<div class="existing-client-wrapper" style="display:none;">',
 		'#suffix' => '</div>',
 	);
+	
+	dpm($form);
 	
 	return $form;
 }

@@ -33,7 +33,7 @@
 
 </div></section>
 
-<footer id="footer"><div class="limiter clearfix">
+<footer id="footer" class="clearfix">
   <?php print $feed_icons ?>
   <?php print render($page['footer']) ?>
-</div></footer>
+</footer>

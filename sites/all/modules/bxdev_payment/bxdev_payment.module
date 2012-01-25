@@ -13,7 +13,8 @@ function bxdev_payment_menu() {
 	
   $items['sales/add/cc'] = array(
     'title' => t('Create a New Video Project'),
-    'page callback' => 'bxdev_payment_client_payment_step_one_page',
+		'page callback' => 'bxdev_payment_client_payment_step_one_page',
+    'page arguments' => array(3),
     'access arguments' => array('add new project'),
     'type' => MENU_CALLBACK,
   );
@@ -91,10 +92,10 @@ function credit_card_test(){
 /**
  * Page callback: client payment step one
  */
-function bxdev_payment_client_payment_step_one_page(){
+function bxdev_payment_client_payment_step_one_page($type){
 	$output = '<h2><strong>Client Payment Info</strong> (step 1 of 3)</h2>';
 	
-	$output .= render(drupal_get_form('bxdev_payment_project_client_credit_card_form'));
+	$output .= render(drupal_get_form('bxdev_payment_project_client_credit_card_form', $type));
 	
 	return $output;
 	
