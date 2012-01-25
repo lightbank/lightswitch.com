@@ -9,9 +9,9 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 	require_once(drupal_get_path('module', 'bxdev_payment') . '/vars.php');
 	require_once(drupal_get_path('module', 'bxdev_payment') . '/util.php');
 	
-	$processor = new Processor();
+	// $processor = new Processor();
 	
-	dpm($processor);
+	// dpm($processor);
 	
 	// 6359848, 5477083
 	
@@ -40,6 +40,7 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
  */
 function bxdev_payment_project_client_credit_card_form_validate($form, &$form_state){
 	$values = $form_state['values'];
+	dpm($values);
 	
 	// if neither an existing or new client has been entered
 	if($values['existing_client'] == '_none' && empty($values['new_client_email'])){
@@ -66,9 +67,11 @@ function bxdev_payment_project_client_credit_card_form_validate($form, &$form_st
 		// if client phone was not entered
 		if(empty($values['new_client_phone'])){
 			form_set_error('new_client_phone', 'When adding a new Client, the phone must be entered');
-		}
+		}		
 		
 	}
+	
+	
 
 }
 
@@ -76,7 +79,115 @@ function bxdev_payment_project_client_credit_card_form_validate($form, &$form_st
  * Form submit: client, credit card, shoot date
  */
 function bxdev_payment_project_client_credit_card_form_submit($form, &$form_state){
-
+	
+	require('AuthnetCIM.class.php');
+	$cim = new AuthnetCIM('2hQT4t8ua', '3bNDCu4r334K9327', TRUE);
+	
+	$values = $form_state['values'];
+	
+	// check if existing user
+	if($values['existing_client'] != '_none'){
+		
+		$account = user_load($values['existing_client']);
+		
+		// check if token has previously been created
+		$result = db_select('users_auth', 'u')
+			->fields('u')
+			->condition('uid', $account->uid, '=')
+			->execute()
+			->fetchObject();
+		
+		// if user does not have a token
+		if(empty($result)){
+			$cim->setParameter('email', $account->mail);
+			$cim->setParameter('merchantCustomerId', $account->uid);			
+			$cim->createCustomerProfile();
+			
+			if($cim->isSuccessful()){				
+				$profile_id = $cim->getProfileID();
+				db_insert('users_auth')
+					->fields(array(
+						'uid' => $account->uid,
+						'auth_token' => $profile_id,
+					))
+					->execute();					
+				drupal_set_message('User has been stored: ' . $profile_id);					
+			}else{				
+				drupal_set_message($cim->getResponse(), 'error');				
+			}			
+			
+		// if user has token
+		}else{
+			$cc_number = $values['cc_number'];
+			$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];					
+			
+			$cim->setParameter('customerProfileId', $result->auth_token);
+			$cim->setParameter('cardNumber', $cc_number);
+			$cim->setParameter('expirationDate', $cc_expiry);
+			$cim->createCustomerPaymentProfile();
+			
+			if($cim->isSuccessful()){
+				drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());				
+			}else{
+				dpm($cim->getResponseSummary());
+				// drupal_set_message($cim->getResponse(), 'error');				
+				drupal_goto('sales/add/cc/' . $account->uid);
+			}
+			
+		}
+		
+	// if new user
+	}else{
+		
+		// create a new user
+		$account = new stdClass();
+		$account->is_new = TRUE;
+		$account->status = 1;
+		$account->name = $values['new_client_email'];
+		$account->mail = $values['new_client_email'];
+		$account->field_name['und'][0]['value'] = $values['new_client_name'];
+		$account->field_phone['und'][0]['value'] = $values['new_client_name'];
+		$account->roles = array(2 => 'authenticated user', 7 => 'client');
+		
+		$account = user_save($account);
+		
+		$cim->setParameter('email', $account->mail);
+		$cim->setParameter('merchantCustomerId', $account->uid);			
+		$cim->createCustomerProfile();
+		
+		if($cim->isSuccessful()){
+			
+			// get the profile ID	
+			$profile_id = $cim->getProfileID();
+			// store the profile ID
+			db_insert('users_auth')
+				->fields(array(
+					'uid' => $account->uid,
+					'auth_token' => $profile_id,
+				))
+				->execute();
+				
+			$cc_number = $values['cc_number'];
+			$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];					
+			
+			// attach credit card to profile
+			$cim->setParameter('customerProfileId', $profile_id);
+			$cim->setParameter('cardNumber', $cc_number);
+			$cim->setParameter('expirationDate', $cc_expiry);
+			$cim->createCustomerPaymentProfile();
+			
+			if($cim->isSuccessful()){
+				drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());				
+			}else{
+				drupal_set_message($cim->getResponse(), 'error');				
+				drupal_goto('sales/add/cc/' . $account->uid);
+			}
+					
+		}else{				
+			drupal_set_message($cim->getResponse(), 'error');			
+		}		
+				
+	}	
 }
 
 
@@ -90,9 +201,16 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
  */
 function bxdev_payment_cc_form_markup(){
 	
+	$form['cc']['cc_amount'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Charge amount'),
+		'#maxlength' => 16,
+	);
+	
 	$form['cc']['cc_number'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Credit card number'),
+		'#maxlength' => 16,
 	);
 	
 	$form['cc']['cc_expiry_month'] = array(
@@ -100,18 +218,18 @@ function bxdev_payment_cc_form_markup(){
 		'#title' => t('Expiration date'),
 		'#options' => array(
 			'_none' => 'Month',
-			1 => '01',
-			2 => '02',
-			3 => '03',
-			4 => '04',
-			5 => '05',
-			6 => '06',
-			7 => '07',
-			8 => '08',
-			9 => '09',
-			10 => '10',
-			11 => '11',
-			12 => '12',
+			'01' => '01',
+			'02' => '02',
+			'03' => '03',
+			'04' => '04',
+			'05' => '05',
+			'06' => '06',
+			'07' => '07',
+			'08' => '08',
+			'09' => '09',
+			'10' => '10',
+			'11' => '11',
+			'12' => '12',
 		),
 	);
 	
@@ -153,9 +271,12 @@ function bxdev_payment_cc_form_markup(){
  */
 function bxdev_payment_client_selection_form_markup(){
 	
+	$uid = arg(3);
+	
 	// generate a list of existing clients
 	// get the client references view
-	$clients = views_get_view('users', 'references_2');
+	$clients = views_get_view('users');
+	$clients->set_display('references_2');
 	$clients->execute();
 	$options = array();
 	$options['_none'] = '- None -';
@@ -167,7 +288,7 @@ function bxdev_payment_client_selection_form_markup(){
 		'#type' => 'textfield',
 		'#title' => t('Client email'),
 		'#weight' => -50,
-		'#prefix' => '<div class="new-client-wrapper">',
+		'#prefix' => !empty($uid) ? '<div class="new-client-wrapper" style="display:none;">' : '<div class="new-client-wrapper" style="display:block;">',
 	);
 
 	$form['new_client_name'] = array(
@@ -187,9 +308,9 @@ function bxdev_payment_client_selection_form_markup(){
 	$form['existing_client'] = array(
 		'#type' => 'select',
 		'#options' => $options,
-		'#default_value' => '_none',
+		'#default_value' => !empty($uid) ? $uid : '_none',
 		'#description' => t('<a href="" class="new-client-btn">+ Add new Client</a>'),
-		'#prefix' => '<div class="existing-client-wrapper">',
+		'#prefix' => !empty($uid) ? '<div class="existing-client-wrapper" style="display:block;">' : '<div class="existing-client-wrapper" style="display:none;">',
 		'#suffix' => '</div>',
 	);
 	

@@ -72,7 +72,6 @@ function send_request_via_fsockopen($host,$path,$content)
 function send_request_via_curl($host,$path,$content)
 {
 	$posturl = "https://" . $host . $path;
-	// dpm($posturl);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $posturl);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

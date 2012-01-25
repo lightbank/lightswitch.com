@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function bxdev_payment_schema() {
+  $schema['users_auth'] = array(
+    'description' => 'Payment tokens',
+    'fields' => array(
+      'uid' => array(
+        'description' => 'The user uid',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'auth_token' => array(
+        'description' => 'The user payment token',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      ),
+    'primary key' => array('uid'),
+  );
+  return $schema;
+}
+
+// /**
+//  * Implements hook_uninstall().
+//  */
+// function bxdev_payment_uninstall() {
+//   db_delete('system')
+// 		->condition('name', 'bxdev_payment', '=')
+// 		->execute();
+// }
+

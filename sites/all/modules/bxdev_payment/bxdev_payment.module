@@ -28,7 +28,14 @@ function bxdev_payment_menu() {
   return $items;
 }
 
-
+/**
+ * Implements hook_user_delete().
+ */
+function bxdev_payment_user_delete($account) {
+  db_delete('users_auth')
+    ->condition('uid', $account->uid)
+    ->execute();
+}
 
 
 /**

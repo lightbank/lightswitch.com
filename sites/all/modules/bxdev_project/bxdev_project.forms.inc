@@ -453,14 +453,14 @@ function bxdev_project_shoot_date_form_markup(){
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_date'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Shoot date'),
-		'#required' => TRUE,
+		// '#required' => TRUE,
 		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('m/d/Y', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
 	);
 	// create a custom start time field
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time1'] = array(
 		'#title' => t('Start time'),
 		'#type' => 'select',
-		'#required' => TRUE,
+		// '#required' => TRUE,
 		'#options' => $times,
 		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
 	);

@@ -17,10 +17,10 @@ class Processor {
 			</merchantAuthentication>';
 	}
 	
-	function add_client($account){
+	function add_client($account, $cc_number, $cc_expiry){
 		$xml_tag = 'createCustomerProfileRequest';
 		$xml = $this->xml_header;
-		$xml .= '<createCustomerProfileRequest xmlns="' . $this->$xmlns . '">';
+		$xml .= '<createCustomerProfileRequest xmlns="' . $this->xmlns . '">';
 		$xml .= $this->merchant_authentication;
 		$xml .= '
 		<profile>
@@ -42,18 +42,51 @@ class Processor {
 		return $response;
 	}
 	
-	function send_xml_request($content){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $this->api_post_url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: text/xml"));
-		curl_setopt($ch, CURLOPT_HEADER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		$response = curl_exec($ch);
+	function get_client($id){
+		$xml_tag = 'createCustomerProfileRequest';
+		$xml = $this->xml_header;
+		$xml .= '<getCustomerProfileRequest xmlns="' . $this->xmlns . '">';
+		$xml .= $this->merchant_authentication;
+		$xml .= '<customerProfileId>' . $id . '</customerProfileId>';
+		$xml .= '</getCustomerProfileRequest>';
+		
+		$response = $this->send_xml_request($xml);
+		
 		return $response;
+		
 	}
+	
+	function send_xml_request($content){
+		// $ch = curl_init();
+		// curl_setopt($ch, CURLOPT_URL, $this->api_post_url);
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: text/xml"));
+		// // curl_setopt($ch, CURLOPT_HEADER, 1);
+		// curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+		// curl_setopt($ch, CURLOPT_POST, 1);
+		// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		// $response = curl_exec($ch);
+		// // dpm($response);
+		// // $response = simplexml_load_string($response);
+		// // dpm($response);
+		// return $response;		
+		
+		$ch = curl_init($this->api_post_url);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "$content");
+		// get the response
+		$data = curl_exec($ch);
+		// convert to xml object
+		// $xml = new SimpleXMLElement($data);
+		curl_close($ch);
+		return $data;
+		
+	}
+	
 	
 	
 }
