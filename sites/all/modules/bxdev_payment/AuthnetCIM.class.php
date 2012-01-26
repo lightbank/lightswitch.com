@@ -57,6 +57,8 @@ class AuthnetCIM
     private $paymentProfileId;
     private $results;
 
+		private $responseXml;
+
     public function __construct($login, $transkey, $test = self::USE_PRODUCTION_SERVER)
     {
         $this->login    = trim($login);
@@ -632,6 +634,8 @@ class AuthnetCIM
         $response = str_replace('xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"', '', $this->response);
         $xml = new SimpleXMLElement($response);
 
+				$this->responseXml = $xml;
+
         $this->resultCode       = (string) $xml->messages->resultCode;
         $this->code             = (string) $xml->messages->message->code;
         $this->text             = (string) $xml->messages->message->text;
@@ -732,6 +736,17 @@ class AuthnetCIM
     {
         return $this->results[39];
     }
+
+    public function getXml()
+    {
+        return $this->responseXml;
+    }
+
+		public function getPaymentProfiles()
+		{
+				return $this->responseXml->profile->paymentProfiles->payment;
+		}
+
 }
 
 ?>

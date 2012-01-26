@@ -275,6 +275,12 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 			$node->field_shoot_date['und'][0]['value'] = $timestamp1;
 			$node->field_shoot_date['und'][0]['value2'] = $timestamp2;
 			
+			// if a credit card was selected in step one, store the payment id with the Project
+			if(isset($_SESSION['payment']['payment_id']) && arg(0) == 'sales' && arg(1) == 'add' && arg(2) == 'project'){
+				$node->field_payment_id['und'][0]['value'] = $_SESSION['payment']['payment_id'];
+				unset($_SESSION['payment']);
+			}
+			
 			break;
 	}
 }

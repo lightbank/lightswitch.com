@@ -949,6 +949,19 @@ input[type="submit"].approve-btn, .approve-yes {
 	display: none;
 }
 
+.page-sales-add-cc .ajax-progress {
+	display: block;
+	color: #0A5C9B;
+	font-size: 12px
+}
+
+.page-sales-add-cc .progress-disabled {
+	float:left;	
+	margin-right: 20px;
+	-moz-transition: none;
+  -webkit-transition: none;
+}
+
 
 /** BUSINESS PROFILE / PROJECT PROFILE / CLIENTS DIRECTORY SHARED STYLES
 ================================================**/

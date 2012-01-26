@@ -41,22 +41,22 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	if(!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])){
 		$shoot_date_start_default = date('m/d/Y', $form['field_shoot_date']['und'][0]['#default_value']['value']);
 		$shoot_time_start_default = date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value']);
-	}else if(isset($_SESSION['shoot_date']['start'])){
-		$shoot_date_start_default = date('m/d/Y', $_SESSION['shoot_date']['start']);
-		$shoot_time_start_default = date('G:i', $_SESSION['shoot_date']['start']);
+	}else if(isset($_SESSION['payment']['shoot_date']['start'])){
+		$shoot_date_start_default = date('m/d/Y', $_SESSION['payment']['shoot_date']['start']);
+		$shoot_time_start_default = date('G:i', $_SESSION['payment']['shoot_date']['start']);
 	}
 	
 	// calculate default shoot time end value
 	if($form['field_shoot_date']['und'][0]['#default_value']['value2'] != $form['field_shoot_date']['und'][0]['#default_value']['value']){
 		$shoot_time_end_default = date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value2']);
-	}else if(isset($_SESSION['shoot_date']['end'])){
-		$shoot_time_end_default = date('G:i', $_SESSION['shoot_date']['end']);
+	}else if(isset($_SESSION['payment']['shoot_date']['end'])){
+		$shoot_time_end_default = date('G:i', $_SESSION['payment']['shoot_date']['end']);
 	}	
 		
 	// create a fieldset
 	$form['bxdev_shoot_date_fieldset'] = array(
 		'#type' => 'fieldset',
-		'#weight' => 13,
+		'#weight' => 10,
 		'#attributes' => array(
 			'class' => array('clearfix'),
 		),
@@ -112,7 +112,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 /**
  * Form submit handler: add project
  */
-function bxdev_project_project_node_form_submit($form, &$form_state){
+function bxdev_project_project_node_form_submit($form, &$form_state){	
 		
 	// send to client add form if "return to form" button was clicked
 	if($form_state['clicked_button']['#value'] == 'Submit & Return to Form'){
@@ -473,14 +473,14 @@ function bxdev_project_shoot_date_form_markup(){
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_date'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Shoot date'),
-		// '#required' => TRUE,
+		'#required' => TRUE,
 		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('m/d/Y', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
 	);
 	// create a custom start time field
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time1'] = array(
 		'#title' => t('Start time'),
 		'#type' => 'select',
-		// '#required' => TRUE,
+		'#required' => TRUE,
 		'#options' => $times,
 		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
 	);

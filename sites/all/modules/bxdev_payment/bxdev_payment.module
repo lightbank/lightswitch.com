@@ -2,6 +2,9 @@
 
 module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
 
+$GLOBALS['api_login_id'] = '2hQT4t8ua';
+$GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
+
 /**
  * HOOKS
  */
@@ -24,6 +27,13 @@ function bxdev_payment_menu() {
 	  'access arguments' => array('add new project'),
 	  'type' => MENU_CALLBACK,
 	);
+	
+	$items['payment/get/profile/%'] = array(
+		'page callback' => 'bxdev_payment_get_profile_page',
+		'page arguments' => array(3),
+		'access arguments' => array('add new project'),
+		'type' => MENU_CALLBACK,
+	);
 
   return $items;
 }
@@ -41,6 +51,64 @@ function bxdev_payment_user_delete($account) {
 /**
  * CUSTOM
  */
+
+/**
+ * AJAX callback: get existing credit cards
+ */
+function bxdev_payment_switch_client_state($form, $form_state){
+	return $form;
+}
+
+/**
+ * AJAX callback: get existing credit cards
+ */
+function bxdev_payment_get_existing_cc($form, $form_state){
+	return $form['cc'];
+}
+
+/**
+ * Page callback: get user profile
+ */
+function bxdev_payment_get_profile_page($uid){
+	
+	global $api_login_id;
+	global $transaction_key;
+	
+	// require('AuthnetCIM.class.php');
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	
+	// get the user profile id
+	$profile_id = db_select('users_auth', 'u')
+		->fields('u', array('auth_token'))
+		->condition('uid', $uid, '=')
+		->execute()
+		->fetchField();
+		
+	if(!empty($profile_id)){
+		
+		$cim->setParameter('customerProfileId', $profile_id);
+		$cim->getCustomerProfile();
+		
+		// print '<pre>';
+		// print_r($cim->getXml());
+		// print '</pre>';
+		
+		$xml = $cim->getXml();
+		
+		$payment_profiles = $xml->profile->paymentProfiles;
+		
+		if(!empty($payment_profiles)){		
+			$items = array();
+			foreach($payment_profiles as $payment_profile){
+				$payment_id = (int) $payment_profile->customerPaymentProfileId;
+				$items[$payment_id] = (string) $payment_profile->payment->creditCard->cardNumber;
+			}		
+			// drupal_json_output($items);		
+			return $items;
+		}		
+	}
+	return FALSE;
+}
 
 /**
  * Page callback: client payment step one

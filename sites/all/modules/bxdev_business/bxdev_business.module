@@ -36,7 +36,6 @@ function bxdev_business_menu() {
   
 	$items['sales/autocomplete/businesses'] = array(
 		'page callback' => 'bxdev_business_autocomplete_businesses',
-		'page arguments' => array(3),
 	  'access arguments' => array('add new project'),
 		'type' => MENU_CALLBACK,
 	);
@@ -199,11 +198,13 @@ function bxdev_business_video_callback($business, $project_nid){
 /**
  * Menu callback: clients autocomplete
  */
-function bxdev_business_autocomplete_businesses($string, $uid = NULL){
-	if(!is_null($uid)){
-		$results = db_query("SELECT n.nid, n.title FROM {node} n INNER JOIN {field_data_field_client_ref} c ON n.nid = c.entity_id WHERE c.field_client_ref_uid = :uid AND n.type = 'business' AND n.title LIKE :string", array(':string' => $string . '%', ':uid' => $uid));
-	}else{
-		$results = db_query("SELECT nid, title FROM {node} WHERE type = 'business' AND title LIKE :string", array(':string' => $string . '%'));
+function bxdev_business_autocomplete_businesses(){
+	$arg1 = arg(3);
+	$arg2 = arg(4);
+	if(!empty($arg2)){
+		$results = db_query("SELECT n.nid, n.title FROM {node} n INNER JOIN {field_data_field_client_ref} c ON n.nid = c.entity_id WHERE c.field_client_ref_uid = :uid AND n.type = 'business' AND n.title LIKE :string", array(':string' => $arg2 . '%', ':uid' => $arg1));
+	}else{		
+		$results = db_query("SELECT nid, title FROM {node} WHERE type = 'business' AND title LIKE :string", array(':string' => $arg1 . '%'));
 	}
 	if($results->rowCount() > 0){
 		$items = array();
