@@ -33,8 +33,26 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	
 	$times = bxdev_get_times_array();
 	
-	dpm($_SESSION);
+	$shoot_date_start_default = '';
+	$shoot_time_start_default = '';
+	$shoot_time_end_default = '';
+		
+	// calculate default shoot date and start time value
+	if(!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])){
+		$shoot_date_start_default = date('m/d/Y', $form['field_shoot_date']['und'][0]['#default_value']['value']);
+		$shoot_time_start_default = date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value']);
+	}else if(isset($_SESSION['shoot_date']['start'])){
+		$shoot_date_start_default = date('m/d/Y', $_SESSION['shoot_date']['start']);
+		$shoot_time_start_default = date('G:i', $_SESSION['shoot_date']['start']);
+	}
 	
+	// calculate default shoot time end value
+	if($form['field_shoot_date']['und'][0]['#default_value']['value2'] != $form['field_shoot_date']['und'][0]['#default_value']['value']){
+		$shoot_time_end_default = date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value2']);
+	}else if(isset($_SESSION['shoot_date']['end'])){
+		$shoot_time_end_default = date('G:i', $_SESSION['shoot_date']['end']);
+	}	
+		
 	// create a fieldset
 	$form['bxdev_shoot_date_fieldset'] = array(
 		'#type' => 'fieldset',
@@ -48,7 +66,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		'#type' => 'textfield',
 		'#title' => t('Shoot date'),
 		'#required' => TRUE,
-		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('m/d/Y', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
+		'#default_value' => $shoot_date_start_default,
 	);
 	// create a custom start time field
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time1'] = array(
@@ -56,14 +74,14 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		'#type' => 'select',
 		'#required' => TRUE,
 		'#options' => $times,
-		'#default_value' => (!empty($form['field_shoot_date']['und'][0]['#default_value']['value'])) ? date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value']) : '',
+		'#default_value' => $shoot_time_start_default,
 	);
 	// create a custom end time field
 	$form['bxdev_shoot_date_fieldset']['bxdev_shoot_time2'] = array(
 		'#title' => t('End time'),
 		'#type' => 'select',
 		'#options' => $times,
-		'#default_value' => ($form['field_shoot_date']['und'][0]['#default_value']['value2'] != $form['field_shoot_date']['und'][0]['#default_value']['value']) ? date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value2']) : '',
+		'#default_value' => $shoot_time_end_default,
 	);
 	
 	// do not modify on admin side

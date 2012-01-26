@@ -145,15 +145,24 @@ function bxdev_business_form_business_node_form_validate($form, &$form_state){
  * Form builder: existing client
  */
 function bxdev_business_existing_business_form($form, $form_state){
+	
+	// check if a client uid exists
+	$arg3 = arg(3);
+	$uri = $_SERVER['REQUEST_URI'];
+	
+	$form['#action'] = $uri . '#existing';
+	
 	$form['existing_business'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Existing business'),
-		'#autocomplete_path' => 'sales/autocomplete/businesses',
+		'#autocomplete_path' => !empty($arg3) ? 'sales/autocomplete/businesses/' . $arg3 : 'sales/autocomplete/businesses',
 		'#required' => TRUE,
 	);
 	
 	$form['existing_business_nid'] = array(
 	  '#type' => 'hidden',
+		'#title' => t('A vaild existing business'),
+		'#required' => TRUE,
 	  '#default_value' => '',
 	);	
 	
@@ -163,14 +172,6 @@ function bxdev_business_existing_business_form($form, $form_state){
 	);
 	
 	return $form;	
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- * Form: bxdev sales existing client form
- */
-function bxdev_business_form_bxdev_business_existing_business_form_alter(&$form, $form_state){
-	$form['#action'] = '/sales/add/business#existing';
 }
 
 /**
