@@ -29,17 +29,22 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 	$form['field_social_url3']['und'][0]['value']['#title'] =  '';
 	$form['field_social_url4']['und'][0]['value']['#title'] =  '';
 	
+	// if arg 3 is set, that means we have added a new client / credit card in a previous step
 	$arg3 = arg(3);
 	
 	if(!empty($arg3)){
 		
+		$account = user_load($arg3);
+		
 		$form['field_client_ref']['und']['#type'] = 'hidden';
 		$form['field_client_ref']['und']['#value'] = $arg3;
-		$form['field_client_ref']['und']['#prefix'] = t('Client');
-		
+		$form['field_client_ref']['und']['#prefix'] = t('<h3><strong>Client: @name</strong></h2>', array('@name' => $account->field_name['und'][0]['value']));
+	
+	// if arg 3 is not set, that means we have not added a new client / credit card in a previous step
 	}else{
 	
 		$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
+		$form['field_client_ref']['#attributes']['style'][] = 'display:none;';
 
 		$form['new_client_email'] = array(
 			'#type' => 'textfield',

@@ -33,6 +33,8 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	
 	$times = bxdev_get_times_array();
 	
+	dpm($_SESSION);
+	
 	// create a fieldset
 	$form['bxdev_shoot_date_fieldset'] = array(
 		'#type' => 'fieldset',
