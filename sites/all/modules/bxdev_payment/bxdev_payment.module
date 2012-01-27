@@ -143,7 +143,7 @@ function bxdev_payment_client_payment_step_one_page(){
  * Page callback: project payment
  */
 function bxdev_payment_project_payment_page($node){
-	
+		
 	$project = new Project($node->nid);
 	
 	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');

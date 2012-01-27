@@ -489,6 +489,11 @@ function bxdev_payment_project_payment_form($form, &$form_state, $node){
 	$form['cc']['charge'] = array(
 	  '#type' => 'submit',
 	  '#value' => t('Charge'),
+		'#suffix' => '<div class="popup charge-popup" style="display:none;">
+			<h3>Are you sure you wish to charge this credit card?</h3><p>This action cannot be undone.</p>
+			<div class="buttons"><a href="" class="btn-approve">Charge credit card</a>
+			<a href="" class="btn-cancel">Cancel</a></div>
+		</div>'
 	);
 	
 	
@@ -499,6 +504,38 @@ function bxdev_payment_project_payment_form($form, &$form_state, $node){
  * Form validate: project payment
  */
 function bxdev_payment_project_payment_form_validate($form, &$form_state){
+	
+	$values = $form_state['values'];
+	
+	// charge amount
+	if(!is_numeric($values['cc_amount'])){
+		form_set_error('cc_amount', 'Enter a numeric value for charge amount');
+	}
+	
+	// if new credit card
+	if($values['cc_select'] == 'new'){
+		
+		// credit card number
+		if(strlen($values['cc_number']) < 13){
+			form_set_error('cc_number', 'Enter a credit card number between 13 and 16 digits');
+		}
+		
+		// credit card expiration month
+		if(empty($values['cc_expiry_month'])){
+			form_set_error('cc_expiry_month', 'Select a credit card expiration month');
+		}
+		
+		// credit card expiration year
+		if(empty($values['cc_expiry_year'])){
+			form_set_error('cc_expiry_year', 'Select a credit card expiration year');
+		}
+		
+		// credit card security code
+		if(empty($values['cc_code'])){
+			form_set_error('cc_code', 'Enter a credit card security code');
+		}		
+		
+	}
 
 }
 
@@ -540,6 +577,10 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 				dpm($cim->getResponseSummary());				
 				$transaction_id = $cim->getTransactionId();				
 				bxdev_payment_log_payment($project->project->nid, $project->client->uid, $payment_id, $transaction_id, $amount);
+				
+				/**
+				 * TODO: email receipt to client and accounting
+				 */
 			
 			// transaction was not successful
 			}else{
@@ -577,6 +618,10 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 					dpm($cim->getResponseSummary());				
 					$transaction_id = $cim->getTransactionId();				
 					bxdev_payment_log_payment($project->project->nid, $project->client->uid, $payment_id, $transaction_id, $amount);
+					
+					/**
+					 * TODO: email receipt to client and accounting
+					 */
 
 				// transaction was not successful
 				}else{

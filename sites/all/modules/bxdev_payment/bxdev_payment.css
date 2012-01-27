@@ -16,6 +16,7 @@
 #content fieldset {
 	padding: 20px;
 	border: solid #ddd 1px;
+	position: relative;
 }
 
 #content legend {
@@ -46,3 +47,34 @@
 .payment-history .views-row-odd {
 	background: #eee;
 }
+
+.charge-popup {
+	position: absolute;
+	background: #eee;
+	border: solid #666 5px;
+	padding: 20px 20px 40px 20px;
+	bottom: -20px;
+	left: 470px;
+	width: 380px;
+}
+
+.charge-popup .buttons {
+	padding-top: 20px;
+}
+
+.btn-approve {
+	background: green;
+	padding: 15px;
+	color: #fff;
+	font-size: 16px;
+	margin-right: 20px;
+}
+
+.btn-cancel {
+	color: #f00;
+}
+
+
+
+
+

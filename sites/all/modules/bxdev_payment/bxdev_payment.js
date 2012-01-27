@@ -17,7 +17,26 @@
 			// apply date popup
 			if($('input[name="bxdev_shoot_date"]').length > 0){
 				$('input[name="bxdev_shoot_date"]').datepicker();
-			}			
+			}
+			
+			// click the "Charge" button - launch confirm
+			$('#bxdev-payment-project-payment-form .form-submit').click(function(){
+				$('.charge-popup').fadeIn(200);
+				return false;
+			});
+			
+			// click the "Cancel" button - close confirm
+			$('#bxdev-payment-project-payment-form .btn-cancel').click(function(){
+				$('.charge-popup').fadeOut(200);
+				return false;
+			});
+			
+			// click "Charge credit card" - submit form
+			$('#bxdev-payment-project-payment-form .btn-approve').click(function(){
+				$('#bxdev-payment-project-payment-form').submit();
+				return false;
+			});
+					
     }
   };
 	
