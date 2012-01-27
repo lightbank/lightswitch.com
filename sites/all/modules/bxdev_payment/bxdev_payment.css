@@ -1,16 +1,48 @@
 #content h1 {
 	font-size: 36px;
-	padding: 20px 0 35px;
+	padding: 20px 0;
+}
+
+#content h2 {
+	padding-bottom: 30px;
 }
 
 #bxdev-payment-project-payment-form {
 	width: 450px;
+	float: left;
+	margin-right: 100px;
 }
 
 #content fieldset {
 	padding: 20px;
+	border: solid #ddd 1px;
 }
 
 #content legend {
 	font-size: 20px;
+}
+
+.project-payment-history {
+	float: left;
+	width: 350px;
+}
+
+.payment-history .views-label {
+	font-weight: bold;
+	float: left;
+	clear: left;
+}
+
+.payment-history .field-content {
+	float: right;
+	clear: right;
+}
+
+.payment-history .views-row {
+	padding: 15px 20px;
+	overflow: auto;
+}
+
+.payment-history .views-row-odd {
+	background: #eee;
 }

@@ -4,4 +4,6 @@ description = Implements payment functionality
 package = bx
 core = 7.x
 
-files[] = bxdev_payment.processor.inc
+files[] = includes/views_handler_field_currency.inc
+files[] = includes/views_handler_field_date_bxdev_mysql.inc
+files[] = includes/views_handler_field_authorize_net.inc

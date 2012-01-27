@@ -11,6 +11,15 @@ module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
  */
 
 /**
+ * Implements hook_views_api().
+ */
+function bxdev_payment_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function bxdev_payment_menu() {
@@ -134,10 +143,23 @@ function bxdev_payment_client_payment_step_one_page(){
  * Page callback: project payment
  */
 function bxdev_payment_project_payment_page($node){
+	
+	$project = new Project($node->nid);
+	
 	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
 	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	
+	// header information
 	$output = '<h1>Payments</h1>';
+	$output .= '<h2>Client: <strong>' . $project->client->field_name['und'][0]['value'] . '</strong></h2>';
+	
+	// credit card form
 	$output .= render(drupal_get_form('bxdev_payment_project_payment_form', $node));
+	
+	// payment history
+	$output .= '<h2>Payment History</h2>';
+	$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log', $project->project->nid, $project->client->uid) . '</div>';
+	
 	return $output;
 }
 
@@ -154,6 +176,24 @@ function bxdev_payment_get_auth_token($uid){
 		
 	return !empty($profile_id) ? $profile_id : FALSE;	
 }
+
+/**
+ * Log a payment action
+ */
+function bxdev_payment_log_payment($nid, $uid, $payment_id, $transaction_id, $amount){
+	db_insert('payment_log')
+		->fields(array(
+			'nid' => $nid,
+			'uid' => $uid,
+			'payment_id' => $payment_id,
+			'transaction_id' => $transaction_id,
+			'amount' => $amount,
+		))
+		->execute();
+}
+
+
+
 
 
 

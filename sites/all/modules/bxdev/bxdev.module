@@ -408,4 +408,14 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 	return $replacements;
 }
 
-
+/**
+ * Format currency
+ */
+function bxdev_format_currency($value, $sign = TRUE){
+	if(!$sign){
+		$currency_formatted = money_format('%i', $value);
+	}else{
+		$currency_formatted = '$' . money_format('%i', $value);
+	}
+	return $currency_formatted;
+}

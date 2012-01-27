@@ -107,6 +107,9 @@ function bxdev_payment_project_client_credit_card_form_validate($form, &$form_st
  */
 function bxdev_payment_project_client_credit_card_form_submit($form, &$form_state){
 	
+	global $api_login_id;
+	global $transaction_key;
+	
 	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
 	
 	$values = $form_state['values'];
@@ -533,22 +536,59 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 			
 			// transaction was successful
 			if($cim->isSuccessful()){
-				dpm($cim->getResponseSummary());
 				
-				/**
-				 * TODO: Log payment action
-				 */
+				dpm($cim->getResponseSummary());				
+				$transaction_id = $cim->getTransactionId();				
+				bxdev_payment_log_payment($project->project->nid, $project->client->uid, $payment_id, $transaction_id, $amount);
 			
 			// transaction was not successful
 			}else{
 				drupal_set_message($cim->getResponseSummary(), 'error');
 			}			
-			
 			break;
 		
 		case 'new':
 		
+			$cc_number = $values['cc_number'];
+			$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];
+			$cc_code = $values['cc_code'];		
+		
+			$cim->setParameter('customerProfileId', $profile_id);
+			$cim->setParameter('cardNumber', $cc_number);
+			$cim->setParameter('expirationDate', $cc_expiry);
+			$cim->setParameter('cardCode', $cc_code);
+			$cim->setParameter('billToAddress', '123 Main Street');
+			$cim->setParameter('billToZip', '12345');
+			$cim->createCustomerPaymentProfile();
 			
+			if($cim->isSuccessful()){
+			
+				$payment_id = $cim->getPaymentProfileId();
+				drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());
+				
+				$cim->setParameter('customerPaymentProfileId', $payment_id);
+				$cim->setParameter('cardCode', $cc_code);
+				$cim->setParameter('amount', $amount);
+				$cim->createCustomerProfileTransaction();
+				
+				// transaction was successful
+				if($cim->isSuccessful()){
+
+					dpm($cim->getResponseSummary());				
+					$transaction_id = $cim->getTransactionId();				
+					bxdev_payment_log_payment($project->project->nid, $project->client->uid, $payment_id, $transaction_id, $amount);
+
+				// transaction was not successful
+				}else{
+					$form_state['rebuild'] = TRUE;
+					drupal_set_message($cim->getResponseSummary(), 'error');
+				}			
+							
+			// if adding the card failed				
+			}else{
+				$form_state['rebuild'] = TRUE;
+				drupal_set_message($cim->getResponse(), 'error');		
+			}			
 			
 			break;
 	}
