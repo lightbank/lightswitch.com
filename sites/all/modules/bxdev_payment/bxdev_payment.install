@@ -20,15 +20,43 @@ function bxdev_payment_schema() {
       ),
     'primary key' => array('uid'),
   );
+
+	// $schema['payment_log'] = array(
+	//   'description' => 'Payment log',
+	//   'fields' => array(
+	// 		'pid' => array(
+	// 			'description' => 'The payment id',
+	// 			'type' => 'serial'
+	// 			'unsigned' => TRUE,
+	//       'not null' => TRUE,
+	// 		),
+	//     'uid' => array(
+	//       'description' => 'The user uid',
+	//       'type' => 'int',
+	//       'unsigned' => TRUE,
+	//       'not null' => TRUE,
+	// 		),
+	//     'transaction_id' => array(
+	//       'description' => 'The transaction id',
+	//       'type' => 'varchar',
+	// 			'length' => 255,
+	//       'not null' => TRUE,
+	// 		),
+	// 		'amount' => array(
+	// 			'description' => 'The payment amount',
+	// 			'type' => 'float',
+	// 			'not null' => TRUE,
+	// 		),
+	// 		'date' => array(
+	// 			'description' => 'The payment date'
+	// 			'mysql_type' => 'datetime',
+	// 			
+	// 		),
+	//   ),
+	//   'primary key' => array('uid'),
+	// );
+
+
   return $schema;
 }
-
-// /**
-//  * Implements hook_uninstall().
-//  */
-// function bxdev_payment_uninstall() {
-//   db_delete('system')
-// 		->condition('name', 'bxdev_payment', '=')
-// 		->execute();
-// }
 

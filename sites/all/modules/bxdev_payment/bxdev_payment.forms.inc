@@ -27,7 +27,7 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 			'299' => 'Standard video - $299',
 			'399' => 'Video with interview - $399',
 			'449' => 'Video with voice over - $449',
-			'' => 'Custom',
+			'custom' => 'Custom',
 		),
 		'#default_value' => '299',
 	);
@@ -106,9 +106,6 @@ function bxdev_payment_project_client_credit_card_form_validate($form, &$form_st
  * Form submit: client, credit card, shoot date
  */
 function bxdev_payment_project_client_credit_card_form_submit($form, &$form_state){
-
-	global $api_login_id;
-	global $transaction_key;
 	
 	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
 	
@@ -119,6 +116,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 	$cc_amount = $values['cc_amount'];
 	$shoot_date_start = strtotime($values['bxdev_shoot_date'] . ' ' . $values['bxdev_shoot_time1']);
 	$shoot_date_end = !empty($values['bxdev_shoot_time2']) ? strtotime($values['bxdev_shoot_date'] . ' ' . $values['bxdev_shoot_time2']) : '';
+	$project_type = $values['project_type'];
 		
 	// check if existing user
 	if(!empty($values['existing_client'])){
@@ -200,6 +198,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 					$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
 					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 					$_SESSION['payment']['payment_id'] = $payment_id;
+					$_SESSION['payment']['project_type'] = $project_type;
 					drupal_goto('sales/add/business/' . $values['existing_client']);
 					
 			
@@ -219,6 +218,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
 			$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 			$_SESSION['payment']['payment_id'] = $values['payment_id'];
+			$_SESSION['payment']['project_type'] = $project_type;
 			drupal_goto('sales/add/business/' . $values['existing_client']);
 			
 		}
@@ -298,6 +298,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 					$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
 					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 					$_SESSION['payment']['payment_id'] = $payment_id;
+					$_SESSION['payment']['project_type'] = $project_type;
 					drupal_goto('sales/add/business/' . $account->uid);
 				
 				// if authorization failed
@@ -334,6 +335,226 @@ function bxdev_payment_add_new_client_submit($form, &$form_state){
 	$form_state['client_state'] = 'new';
 	$form_state['rebuild'] = TRUE;
 }
+
+/**
+ * Form builder: project payment
+ */
+function bxdev_payment_project_payment_form($form, &$form_state, $node){
+	
+	$project = new Project($node->nid);
+	
+	// project type
+	$form['project_type'] = array(
+		'#type' => 'select',
+		'#title' => t('Project type'),
+		'#options' => array(
+			'299' => 'Standard video - $299',
+			'399' => 'Video with interview - $399',
+			'449' => 'Video with voice over - $449',
+			'custom' => 'Custom',
+		),
+		'#default_value' => '299',
+	);
+		
+	// credit card outer wrapper
+	$form['cc'] = array(
+		'#type' => 'fieldset',
+		'#title' => t('Credit card'),
+		'#prefix' => '<div id="cc-selection-wrap">',
+		'#suffix' => '</div>',
+	);
+	
+	// charge amount
+	$form['cc']['cc_amount'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Charge amount'),
+		'#maxlength' => 16,
+		'#required' => TRUE,
+	);
+	
+	// credit new / existing selection
+	$form['cc']['cc_select'] = array(
+		'#type' => 'radios',
+		'#options' => array('new' => 'Add new credit card'),
+		'#default_value' => 'new',
+	);
+	
+	// get existing credit cards, if any
+	$payments = bxdev_payment_get_payment_profiles($project->client->uid);
+	
+	// credit cards exist
+	if($payments){
+	
+		// add the option to select an existing card
+		$form['cc']['cc_select']['#options'] = array('new' => 'Add new credit card', 'existing' => 'Use existing credit card');
+		$form['cc']['cc_select']['#default_value'] = 'existing';
+
+		// existing card outer wrapper
+		// - disable if "new" radio button has been selected
+		$form['cc']['cc_existing'] = array(
+			'#type' => 'fieldset',
+			'#title' => t('Existing credit card'),
+			'#states' => array(
+				'disabled' => array(
+					':input[name="cc_select"]' => array('value' => 'new'),
+				),
+			),
+		);
+	
+		// list the existing cards
+		$form['cc']['cc_existing']['payment_id'] = array(
+			'#type' => 'radios',
+			'#options' => $payments,
+			'#default_value' => $project->project->field_payment_id['und'][0]['value'],
+		);		
+	}else{
+		$form['cc']['cc_select']['#value'] = 'new';
+	}
+	
+	// new card outer wrapper
+	// - disable is "existing" radio button is selected
+	$form['cc']['cc_new'] = array(
+		'#type' => 'fieldset',
+		'#title' => t('New credit card'),
+		'#states' => array(
+			'disabled' => array(
+				':input[name="cc_select"]' => array('value' => 'existing'),
+			),
+		),
+		
+	);
+	
+	// credit card number
+	$form['cc']['cc_new']['cc_number'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Credit card number'),
+		'#maxlength' => 16,
+		// '#required' => TRUE,
+	);
+	
+	// credit card expiration month
+	$form['cc']['cc_new']['cc_expiry_month'] = array(
+		'#type' => 'select',
+		'#title' => t('Expiration month'),
+		'#options' => array(
+			'' => 'Month',
+			'01' => '01',
+			'02' => '02',
+			'03' => '03',
+			'04' => '04',
+			'05' => '05',
+			'06' => '06',
+			'07' => '07',
+			'08' => '08',
+			'09' => '09',
+			'10' => '10',
+			'11' => '11',
+			'12' => '12',
+		),
+		// '#required' => TRUE,
+	);
+	
+	// credit card expiration year
+	$form['cc']['cc_new']['cc_expiry_year'] = array(
+		'#type' => 'select',
+		'#title' => t('Expiration year'),
+		'#options' => array(
+			'' => 'Year',
+			2011 => 2011,
+			2012 => 2012,
+			2013 => 2013,
+			2014 => 2014,
+			2015 => 2015,
+			2016 => 2016,
+			2017 => 2017,
+			2018 => 2018,
+			2019 => 2019,
+			2020 => 2020,
+			2021 => 2021,
+			2022 => 2022,
+		),
+		// '#required' => TRUE,
+	);
+	
+	// credit card security code
+	$form['cc']['cc_new']['cc_code'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Security code'),
+		// '#required' => TRUE,
+	);
+	
+	$form['cc']['charge'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Charge'),
+	);
+	
+	
+	return $form;
+}
+
+/**
+ * Form validate: project payment
+ */
+function bxdev_payment_project_payment_form_validate($form, &$form_state){
+
+}
+
+/**
+ * Form submit: project payment
+ */
+function bxdev_payment_project_payment_form_submit($form, &$form_state){
+	
+	$values = $form_state['values'];
+	$nid = arg(1);
+	$project = new Project($nid);
+	$profile_id = bxdev_payment_get_auth_token($project->client->uid);
+	
+	// if the user does not have an auth token, stop and return
+	if(!$profile_id){
+		drupal_set_message('User does not have a payment profile', 'error');
+		return;
+	}
+	
+	global $api_login_id;
+	global $transaction_key;
+	
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	$amount = $values['cc_amount'];
+	
+	switch($values['cc_select']){
+		case 'existing':
+		
+			$payment_id = $values['payment_id'];
+			$cim->setParameter('customerPaymentProfileId', $payment_id);
+			$cim->setParameter('customerProfileId', $profile_id);
+			$cim->setParameter('cardCode', '000');
+			$cim->setParameter('amount', $amount);
+			$cim->createCustomerProfileTransaction();
+			
+			// transaction was successful
+			if($cim->isSuccessful()){
+				dpm($cim->getResponseSummary());
+				
+				/**
+				 * TODO: Log payment action
+				 */
+			
+			// transaction was not successful
+			}else{
+				drupal_set_message($cim->getResponseSummary(), 'error');
+			}			
+			
+			break;
+		
+		case 'new':
+		
+			
+			
+			break;
+	}
+	
+}
+
 
 
 /**
@@ -372,7 +593,7 @@ function bxdev_payment_cc_form_markup($form_state){
 	if(!empty($form_state['values']['existing_client'])){
 		
 		// get existing credit cards, if any
-		$payments = bxdev_payment_get_profile_page($form_state['values']['existing_client']);
+		$payments = bxdev_payment_get_payment_profiles($form_state['values']['existing_client']);
 		
 		// credit cards exist
 		if($payments){

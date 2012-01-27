@@ -7,16 +7,17 @@
 			populate_cc_amount();
 			
 			// populate the charge amount field on drop-down change
-			$('#edit-project-type').change(function() {
+			$('select[name="project_type"]').change(function() {
 				populate_cc_amount();
 			});
 			
 			// apply phone mask
-			$('#edit-field-phone-und-0-value, #edit-new-client-phone').mask('999-999-9999? x99999');
+			$('input[name="new_client_phone"]').mask('999-999-9999? x99999');
 			
 			// apply date popup
-			$('input[name="bxdev_shoot_date"]').datepicker();
-			
+			if($('input[name="bxdev_shoot_date"]').length > 0){
+				$('input[name="bxdev_shoot_date"]').datepicker();
+			}			
     }
   };
 	
@@ -27,8 +28,8 @@
 	
 	// populate the charge amount field based on project type drop-down
 	function populate_cc_amount(){
-		var value = $('#edit-project-type').val();
-		$('#edit-cc-amount').val(value);
+		var value = $('select[name="project_type"]').val();
+		$('input[name="cc_amount"]').val(value == 'custom' ? '' : value);
 	}
 
 }(jQuery));

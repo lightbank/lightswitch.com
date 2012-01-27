@@ -1,9 +1,10 @@
 <?php
 
-module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
-
 $GLOBALS['api_login_id'] = '2hQT4t8ua';
 $GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
+
+module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
+
 
 /**
  * HOOKS
@@ -34,6 +35,13 @@ function bxdev_payment_menu() {
 		'access arguments' => array('add new project'),
 		'type' => MENU_CALLBACK,
 	);
+	
+	$items['node/%node/edit/payment'] = array(
+		'page callback' => 'bxdev_payment_project_payment_page',
+		'page arguments' => array(1),
+		'access arguments' => array('add new project'),
+		'type' => MENU_LOCAL_TASK,
+	);
 
   return $items;
 }
@@ -53,7 +61,7 @@ function bxdev_payment_user_delete($account) {
  */
 
 /**
- * AJAX callback: get existing credit cards
+ * AJAX callback: new / existing client switch
  */
 function bxdev_payment_switch_client_state($form, $form_state){
 	return $form;
@@ -69,7 +77,7 @@ function bxdev_payment_get_existing_cc($form, $form_state){
 /**
  * Page callback: get user profile
  */
-function bxdev_payment_get_profile_page($uid){
+function bxdev_payment_get_payment_profiles($uid){
 	
 	global $api_login_id;
 	global $transaction_key;
@@ -83,18 +91,17 @@ function bxdev_payment_get_profile_page($uid){
 		->condition('uid', $uid, '=')
 		->execute()
 		->fetchField();
-		
+	
+	// if the profile exists
 	if(!empty($profile_id)){
 		
 		$cim->setParameter('customerProfileId', $profile_id);
 		$cim->getCustomerProfile();
 		
-		// print '<pre>';
-		// print_r($cim->getXml());
-		// print '</pre>';
-		
+		// get the raw xml response
 		$xml = $cim->getXml();
 		
+		// get the payment profiles
 		$payment_profiles = $xml->profile->paymentProfiles;
 		
 		if(!empty($payment_profiles)){		
@@ -103,7 +110,6 @@ function bxdev_payment_get_profile_page($uid){
 				$payment_id = (int) $payment_profile->customerPaymentProfileId;
 				$items[$payment_id] = (string) $payment_profile->payment->creditCard->cardNumber;
 			}		
-			// drupal_json_output($items);		
 			return $items;
 		}		
 	}
@@ -121,6 +127,35 @@ function bxdev_payment_client_payment_step_one_page(){
 	
 	$output .= render(drupal_get_form('bxdev_payment_project_client_credit_card_form'));
 	
-	return $output;
-	
+	return $output;	
 }
+
+/**
+ * Page callback: project payment
+ */
+function bxdev_payment_project_payment_page($node){
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
+	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	$output = '<h1>Payments</h1>';
+	$output .= render(drupal_get_form('bxdev_payment_project_payment_form', $node));
+	return $output;
+}
+
+/**
+ * Return user auth token, if it exists
+ */
+function bxdev_payment_get_auth_token($uid){
+	// get the user profile id
+	$profile_id = db_select('users_auth', 'u')
+		->fields('u', array('auth_token'))
+		->condition('uid', $uid, '=')
+		->execute()
+		->fetchField();
+		
+	return !empty($profile_id) ? $profile_id : FALSE;	
+}
+
+
+
+
+

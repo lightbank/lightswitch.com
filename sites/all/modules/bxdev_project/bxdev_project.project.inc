@@ -281,5 +281,5 @@ class Project {
 		}
 		return $approved_photos;
 	}
-
+	
 }
