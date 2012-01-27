@@ -16,7 +16,7 @@ class views_handler_field_date_bxdev_mysql extends views_handler_field_date {
 
 		// convert the mysql date to a unix timestamp
 		$value = strtotime($value);
-		$value = strtotime('+3 hours', $value);
+		$value = strtotime('+2 hours', $value);
 
     if ($value) {
       $time_diff = REQUEST_TIME - $value; // will be positive for a datetime in the past (ago), and negative for a datetime in the future (hence)

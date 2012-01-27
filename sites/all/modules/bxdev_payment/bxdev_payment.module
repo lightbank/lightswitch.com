@@ -20,6 +20,18 @@ function bxdev_payment_views_api() {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function bxdev_payment_permission() {
+  return array(
+    'administer client payments' =>  array(
+      'title' => t('Administer client payments'),
+      'description' => t('Administer client payments'),
+    ),
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function bxdev_payment_menu() {
@@ -51,6 +63,21 @@ function bxdev_payment_menu() {
 		'access arguments' => array('add new project'),
 		'type' => MENU_LOCAL_TASK,
 	);
+	
+	$items['admin/client/%user/payments'] = array(
+		'title' => t('Client Payments'),
+		'page callback' => 'bxdev_payment_client_payment_page',
+		'page arguments' => array(2),
+		'access arguments' => array('administer client payments'),
+		'type' => MENU_CALLBACK,
+	);
+	
+	$items['admin/payment/remove/%/%'] = array(
+		'page callback' => 'bxdev_payment_client_payment_remove',
+		'page arguments' => array(3, 4),
+		'access arguments' => array('administer client payments'),
+		'type' => MENU_CALLBACK,
+	);
 
   return $items;
 }
@@ -66,7 +93,7 @@ function bxdev_payment_user_delete($account) {
 
 
 /**
- * CUSTOM
+ * CALLBACKS
  */
 
 /**
@@ -162,6 +189,95 @@ function bxdev_payment_project_payment_page($node){
 	
 	return $output;
 }
+
+/**
+ * Page callback: client payment
+ */
+function bxdev_payment_client_payment_page($account){
+	
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
+	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	
+	$output = '<a class="back" href="/admin/clients">&lt; Back to Clients</a>';
+	
+	$output .= '<div class="client-info">
+	<h3>' . $account->field_name['und'][0]['value'] . '</h3>
+	<p>Email: <a href="mailto:' . $account->mail . '">' . $account->mail . '</a></br>
+	Phone: ' . $account->field_phone['und'][0]['value'] . '</p>
+	</div>';
+	
+	$output .= '<div class="credit-card-wrap">';
+	
+	$payment_profiles = bxdev_payment_get_payment_profiles($account->uid);
+	
+	if($payment_profiles){
+		$output .= '<div class="stored-cards"><h3>Stored credit cards</h3>';
+		foreach($payment_profiles as $payment_profile_id => $card){
+			$output .= '<div class="payment-profile" ><strong>' . $card . '</strong> <a href="" data-payment-profile="' . $payment_profile_id . '">remove</a></div>';
+			$output .= '<div class="remove-popup" data-payment-profile="' . $payment_profile_id . '" style="display:none;">
+			<h3>Are you sure you want to remove the credit card: <strong>' . $card . '</strong>?</h3>
+			<p>This action cannot be undone.</p>
+			<div class="buttons"><a class="btn-remove" href="/admin/payment/remove/' . $account->uid . '/' . $payment_profile_id . '">Remove credit card</a>
+			<a class="btn-cancel" href="">Cancel</a></div>
+			</div>';
+		}
+	}else{
+		$output .= '<p>No stored credit cards.</p>';
+	}
+	
+	$output .= '</div>';
+	
+	$output .= '<h3>Add new credit card</h3>';
+	
+	$output .= render(drupal_get_form('bxdev_payment_client_new_credit_card_form'));
+	
+	$output .= '</div>';
+	
+	$output .= '<div class="client-payment-history payment-history"><h3>Payment History</h3>' . views_embed_view('payments', 'payment_log_client', $account->uid) . '</div>';
+	
+	return $output;
+}
+
+/**
+ * Menu callback: client remove credit card
+ */
+function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
+		
+	$profile_id = bxdev_payment_get_auth_token($uid);
+	
+	// if the user does not have an auth token, stop and return
+	if(!$profile_id){
+		drupal_set_message('User does not have a payment profile', 'error');
+		return;
+	}
+	
+	global $api_login_id;
+	global $transaction_key;
+	
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	
+	$cim->setParameter('customerProfileId', $profile_id);
+	$cim->setParameter('customerPaymentProfileId', $payment_profile_id);
+	$cim->deleteCustomerPaymentProfile();
+	
+	// removal was successful
+	if($cim->isSuccessful()){
+		
+		dpm($cim->getResponseSummary());				
+	
+	// transaction was not successful
+	}else{
+		drupal_set_message($cim->getResponseSummary(), 'error');
+	}
+	
+	drupal_set_message('Credit card has been successfully removed.');
+	drupal_goto('admin/client/' . $uid . '/payments');
+}
+
+
+/**
+ * CUSTOM
+ */
 
 /**
  * Return user auth token, if it exists

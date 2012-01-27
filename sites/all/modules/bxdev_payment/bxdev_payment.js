@@ -36,6 +36,19 @@
 				$('#bxdev-payment-project-payment-form').submit();
 				return false;
 			});
+			
+			// click "remove" credit card
+			$('.credit-card-wrap .payment-profile a').click(function(){
+				$('.remove-popup').fadeOut(200);
+				var payment_profile_id = $(this).attr('data-payment-profile');
+				$('.remove-popup[data-payment-profile="' + payment_profile_id + '"]').fadeIn(200);
+				return false;
+			});
+			
+			$('.credit-card-wrap .btn-cancel').click(function(){
+				$('.remove-popup').fadeOut(200);
+				return false;
+			});
 					
     }
   };

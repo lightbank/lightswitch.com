@@ -1,3 +1,9 @@
+#content {
+	position: relative;
+}
+
+/*project payments*/
+
 #content h1 {
 	font-size: 36px;
 	padding: 20px 0;
@@ -5,6 +11,12 @@
 
 #content h2 {
 	padding-bottom: 30px;
+}
+
+#content h3 {
+	padding-bottom: 10px;
+	font-size: 24px;
+	
 }
 
 #bxdev-payment-project-payment-form {
@@ -40,7 +52,7 @@
 }
 
 .payment-history .views-row {
-	padding: 15px 20px;
+	padding: 10px 20px;
 	overflow: auto;
 }
 
@@ -74,7 +86,58 @@
 	color: #f00;
 }
 
+/* client payments */
 
+.credit-card-wrap {
+	position: relative;
+	float: left;
+	margin-right: 100px;
+	width: 400px;
+}
 
+.remove-popup {
+	position: absolute;
+	background: #eee;
+	border: solid #666 5px;
+	padding: 20px 20px 40px 20px;
+	top: 20px;
+	left: 270px;
+	width: 380px;
+}
 
+.remove-popup .buttons {
+	padding-top: 20px;
+}
+
+.btn-remove {
+	background: green;
+	padding: 15px;
+	color: #fff;
+	font-size: 16px;
+	margin-right: 20px;
+}
+
+.client-payment-history {
+	float: left;
+	width: 350px;
+}
+
+.stored-cards {
+	border-bottom: solid #ccc 1px;
+	padding-bottom: 25px;
+	margin-bottom: 25px;
+}
+
+.client-info {
+	border-bottom: solid #ccc 1px;
+	margin-bottom: 25px;
+	padding-top: 10px;
+}
+
+.back {
+	font-style: bold;
+	position: absolute;
+	top: -40px;
+	left: 0;
+}
 

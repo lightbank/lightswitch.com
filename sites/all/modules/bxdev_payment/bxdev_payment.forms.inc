@@ -640,6 +640,139 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 	
 }
 
+/**
+ * Form builder: client add new card
+ */
+function bxdev_payment_client_new_credit_card_form($form, &$form_state){
+	
+	// credit card number
+	$form['cc']['cc_new']['cc_number'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Credit card number'),
+		'#maxlength' => 16,
+		'#size' => 25,
+		'#required' => TRUE,
+	);
+	
+	// credit card expiration month
+	$form['cc']['cc_new']['cc_expiry_month'] = array(
+		'#type' => 'select',
+		'#title' => t('Expiration month'),
+		'#options' => array(
+			'' => 'Month',
+			'01' => '01',
+			'02' => '02',
+			'03' => '03',
+			'04' => '04',
+			'05' => '05',
+			'06' => '06',
+			'07' => '07',
+			'08' => '08',
+			'09' => '09',
+			'10' => '10',
+			'11' => '11',
+			'12' => '12',
+		),
+		'#required' => TRUE,
+	);
+	
+	// credit card expiration year
+	$form['cc']['cc_new']['cc_expiry_year'] = array(
+		'#type' => 'select',
+		'#title' => t('Expiration year'),
+		'#options' => array(
+			'' => 'Year',
+			2011 => 2011,
+			2012 => 2012,
+			2013 => 2013,
+			2014 => 2014,
+			2015 => 2015,
+			2016 => 2016,
+			2017 => 2017,
+			2018 => 2018,
+			2019 => 2019,
+			2020 => 2020,
+			2021 => 2021,
+			2022 => 2022,
+		),
+		'#required' => TRUE,
+	);
+	
+	// credit card security code
+	$form['cc']['cc_new']['cc_code'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Security code'),
+		'#required' => TRUE,
+		'#maxlength' => 5,
+		'#size' => 10,
+	);
+	
+	$form['submit'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Add credit card'),
+	);	
+	
+	return $form;
+}
+
+/**
+ * Form validate: client add new card
+ */
+function bxdev_payment_client_new_credit_card_form_validate($form, &$form_state){
+	$values = $form_state['values'];
+	
+	// credit card number
+	if(strlen($values['cc_number']) < 13){
+		form_set_error('cc_number', 'Enter a credit card number between 13 and 16 digits');
+	}
+	
+}
+
+/**
+ * Form submit: client add new card
+ */
+function bxdev_payment_client_new_credit_card_form_submit($form, &$form_state){
+	
+	$values = $form_state['values'];
+	
+	$uid = arg(2);
+	$profile_id = bxdev_payment_get_auth_token($uid);
+	
+	// if the user does not have an auth token, stop and return
+	if(!$profile_id){
+		drupal_set_message('User does not have a payment profile', 'error');
+		return;
+	}
+	
+	global $api_login_id;
+	global $transaction_key;
+	
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	
+	$cc_number = $values['cc_number'];
+	$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];
+	$cc_code = $values['cc_code'];		
+
+	$cim->setParameter('customerProfileId', $profile_id);
+	$cim->setParameter('cardNumber', $cc_number);
+	$cim->setParameter('expirationDate', $cc_expiry);
+	$cim->setParameter('cardCode', $cc_code);
+	$cim->setParameter('billToAddress', '123 Main Street');
+	$cim->setParameter('billToZip', '12345');
+	$cim->createCustomerPaymentProfile();
+	
+	if($cim->isSuccessful()){
+	
+		$payment_id = $cim->getPaymentProfileId();
+		drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());
+					
+	// if adding the card failed				
+	}else{
+		$form_state['rebuild'] = TRUE;
+		drupal_set_message($cim->getResponse(), 'error');		
+	}	
+}
+
 
 
 /**
@@ -649,7 +782,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 /**
  * Return credit card form markup
  */
-function bxdev_payment_cc_form_markup($form_state){
+function bxdev_payment_cc_form_markup($form_state = NULL){
 	
 	// charge amount
 	$form['cc_amount'] = array(

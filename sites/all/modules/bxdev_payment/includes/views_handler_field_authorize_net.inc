@@ -14,10 +14,11 @@ class views_handler_field_authorize_net extends views_handler_field {
 				// if charged card id matches a value
 				if($payment_profile_id == $values->payment_log_payment_id){
 					$value = $payment_profile_value;
+					return $value;
 				}
 			}
 						
-    	return $value;
+    	return '(removed card)';
 		}
   }
 
