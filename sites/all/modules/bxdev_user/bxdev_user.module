@@ -113,7 +113,14 @@ function bxdev_user_user_login(&$edit, $account) {
 	bxdev_user_first_time_login_check($account);
 	
 	// if first time login does not redirect user, check for terms acceptance
-	bxdev_user_terms_accept_check($account);	
+	bxdev_user_terms_accept_check($account);
+	
+	if(isset($_GET['url']) && $_GET['url'] != ''){
+		$url = $_GET['url'];
+		drupal_goto($url);
+	}
+	
+	drupal_goto('user/' . $account->uid);
 }
 
 /**
@@ -326,6 +333,7 @@ function bxdev_user_mail($key, &$message, $params) {
  * Implementation of hook_menu_local_tasks_alter().
  */
 function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
+	// dpm($data);
 	// if user profile page
 	if(arg(0) == 'user' && is_numeric(arg(1))){
 		$user = user_load(arg(1));
@@ -545,7 +553,6 @@ function bxdev_user_terms_accept_check($account){
 			drupal_goto('user/accept-terms');
 		}
 	}
-	drupal_goto('user/' . $account->uid);
 }
 
 /**

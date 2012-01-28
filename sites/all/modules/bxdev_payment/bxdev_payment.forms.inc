@@ -110,7 +110,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 	global $api_login_id;
 	global $transaction_key;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
 	
 	$values = $form_state['values'];
 	$cc_number = $values['cc_number'];
@@ -159,7 +159,8 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 					))
 					->execute();					
 			}else{				
-				drupal_set_message($cim->getResponse(), 'error');				
+				drupal_set_message($cim->getResponse(), 'error');
+				return;		
 			}			
 			
 		// if user has token
@@ -239,7 +240,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 		$account->name = $values['new_client_email'];
 		$account->mail = $values['new_client_email'];
 		$account->field_name['und'][0]['value'] = $values['new_client_name'];
-		$account->field_phone['und'][0]['value'] = $values['new_client_name'];
+		$account->field_phone['und'][0]['value'] = $values['new_client_phone'];
 		$account->roles = array(2 => 'authenticated user', 7 => 'client');
 		
 		$account = user_save($account);
@@ -558,7 +559,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 	global $api_login_id;
 	global $transaction_key;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
 	$amount = $values['cc_amount'];
 	
 	switch($values['cc_select']){
@@ -747,7 +748,7 @@ function bxdev_payment_client_new_credit_card_form_submit($form, &$form_state){
 	global $api_login_id;
 	global $transaction_key;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
 	
 	$cc_number = $values['cc_number'];
 	$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];

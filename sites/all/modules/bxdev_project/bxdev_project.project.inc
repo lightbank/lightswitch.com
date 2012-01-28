@@ -15,6 +15,7 @@ class Project {
 	var $comments;
 	var $overridden;
 	var $approved;
+	var $hash;
 	
 	/**
 	 * Load a new Project and set all initial variables.
@@ -263,6 +264,52 @@ class Project {
 			// $emails = 'wandoledzep@gmail.com';
 			$params = array('project' => $this, 'project_link' => $project_link);		
 			// drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
+		}
+	}
+	
+	/**
+	 * For direct sales Projects, send email to Clients prompting the acceptance of terms
+	 */
+	function send_client_terms(){
+		// generate a random hash to associate with the client / project
+		$hash = md5(user_password());
+		// delete any existing hashes
+		db_delete('users_project_terms')
+			->condition('nid', $this->project->nid)
+			->execute();
+		// store the new value
+		db_insert('users_project_terms')
+			->fields(array(
+				'nid' => $this->project->nid,
+				'hash' => $hash,
+			))
+			->execute();
+		$this->hash = $hash;
+		$params = array('project' => $this);
+		drupal_mail('bxdev_project', 'client_terms', $this->client->mail, language_default(), $params);
+	}
+	
+	/**
+	 * Send confirm message and pdf Client Service Agreement after Client accepts terms
+	 */
+	function send_client_service_agreement($fid){
+		// generate the mail to string
+		$emails[] = $this->client->mail;
+		// $emails[] = $this->sales->mail;
+		
+		$params['project'] = $this;
+		
+		// attach the pdf file
+		$file = file_load($fid);
+		$params['attachments'] = array(
+			0 => array(
+				'filepath' => $file->uri,
+				'filename' => $file->filename,
+			),
+		);
+		
+		foreach($emails as $email){
+			drupal_mail('bxdev_project', 'client_service_agreement_accepted', $email, language_default(), $params);
 		}
 	}
 	

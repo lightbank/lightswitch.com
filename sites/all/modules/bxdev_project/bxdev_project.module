@@ -65,16 +65,16 @@ function bxdev_project_menu() {
 	  'type' => MENU_CALLBACK,
 	);
 	
-	// $items['project/add'] = array(
-	// 	'title' => t('Create a New Video Project'),
-	// 	'page callback' => 'drupal_get_form',
-	// 	'page arguments' => array('bxdev_project_add_project_form'),
-	// 	'access arguments' => array('add new project'),
-	// 	'file path' => drupal_get_path('module','node'),
-	// 	'file' => 'node.pages.inc',
-	// 	'type' => MENU_CALLBACK,
-	// );
-
+	$items['client/terms/%/%'] = array(
+		'title' => t('Review and accept the client service agreement'),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('bxdev_project_client_terms_form', 2, 3),
+		// 'access arguments' => array('access content'),
+		'access arguments' => array(2, 3),
+		'access callback' => 'bxdev_project_client_terms_access',
+		'type' => MENU_CALLBACK,
+	);
+	
   return $items;
 }
 
@@ -91,80 +91,6 @@ function bxdev_project_mail($key, &$message, $params) {
 	
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 	
-	// switch($key){
-	// 	case 'comment':
-	// 		$subject = t('A new comment has been posted in @title', array('@title' => $params['project_title']));
-	// 		$body = 'A new comment has been posted in ' . $params['project_title'] . '<br><br>';
-	// 		$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
-	// 		$body .= 'The comment was posted at: ' . $params['comment_date'] . '<br><br>';
-	// 		$body .= 'Posted by: ' . $params['comment_author'] . '<br><br>';
-	// 		$body .= 'Comment:<br>' . nl2br($params['comment']) . '<br><br>';			
-	// 		
-	// 		$message['subject'] = $subject;
-	// 		$message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'approved':
-	// 		$subject = t('Congratulations, your @title video has been approved!', array('@title' => $params['project_title']));
-	// 		$body = 'You will be receiving the final video formats of your lightswitch video within 2-3 business days.<br><br>';
-	// 		$body .= 'As always, let us know if you have any questions or concerns. Thank you for your business!.<br><br>';
-	// 		$body .= 'Sincerely,<br>';
-	// 		$body .= $params['pc']['full_name'] . '<br>';
-	// 		$body .= $params['pc']['email'] . '<br>';
-	// 		$body .= $params['pc']['phone'];
-	// 
-	// 		$message['subject'] = $subject;
-	// 		$message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'revision_declined':
-	// 		$subject = t('@title: DECLINED REVISION', array('@title' => $params['project_title']));
-	// 		$body = $params['client'] . ' has declined a revision list.<br><br>';
-	// 		$body .= 'Reason:<br>' . $params['declined_reason'] . '<br><br>';
-	// 		$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
-	// 
-	// 		$message['subject'] = $subject;
-	// 		$message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'revision_approved':
-	// 		$subject = t('@title: APPROVED REVISION', array('@title' => $params['project_title']));
-	// 		$body = $params['client'] . ' has approved a revision list.<br><br>';
-	// 		$body .= 'Revision list:<br>' . $params['comment'] . '<br><br>';
-	// 		$body .= 'Click here to view the project:<br>' . $params['project_link'] . '<br><br>';
-	// 
-	// 		$message['subject'] = $subject;
-	// 		$message['body'][] = $body;
-	// 		break;			
-	// 
-	// 	case 'claimed':
-	// 		$subject = t('@pc has claimed project @project_name', array('@pc' => $params['pc']['full_name'], '@project_name' => $params['project_title']));
-	// 		$body = 'View project here: ' . $params['project_link'];
-	// 
-	// 		$message['subject'] = $subject;
-	// 		$message['body'][] = $body;
-	// 		break;
-	// 	
-	// 	case 'sales_assigned':
-	// 		$subject = t('You have been assigned to @project_name', array('@project_name' => $params['project_title']));
-	// 		$body = 'View project here: ' . $params['project_link'];
-	// 
-	// 		$message['subject'] = $subject;
-	// 		$message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'project_added':
-	// 		$subject = t('Project @project_name has been added by @sales', array('@project_name' => $params['project_title'], '@sales' => $params['sales']));
-	// 		$body = 'View project here: ' . $params['project_link'];
-	// 
-	// 		$message['subject'] = $subject;
-	// 		$message['body'][] = $body;
-	// 		break;
-	// 	
-	// 
-	// }
-	// // make emails HTML-enabled
-	// $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 }
 
 /**
@@ -189,6 +115,11 @@ function bxdev_project_node_insert($node) {
 			if(empty($business->field_profile_video_ref)){
 				$business->field_profile_video_ref['und'][0]['nid'] = $node->nid;
 				node_save($business);
+			}
+			
+			// check if direct sale video, if so send client the terms email
+			if($node->field_video_type['und'][0]['value'] == 'direct_sale'){
+				$project->send_client_terms();
 			}
 			
 			break;
@@ -539,6 +470,21 @@ function bxdev_project_download_production_details($node){
 	$output .= '</html>';	
 	
 	print $output;	
+}
+
+/**
+ * Access callback: client terms
+ */
+function bxdev_project_client_terms_access($nid, $hash){
+	$result = db_select('users_project_terms', 'u')
+		->fields('u')
+		->condition('nid', $nid)
+		->condition('hash', $hash)
+		->execute();
+	if($result->rowCount() > 0){
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /**

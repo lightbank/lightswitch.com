@@ -3,8 +3,10 @@
 $GLOBALS['api_login_id'] = '2hQT4t8ua';
 $GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
 
-module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
+// $GLOBALS['api_login_id'] = '9X6zny5UY';
+// $GLOBALS['transaction_key'] = '39P2BtFs4n569VAc';
 
+module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
 
 /**
  * HOOKS
@@ -57,11 +59,21 @@ function bxdev_payment_menu() {
 		'type' => MENU_CALLBACK,
 	);
 	
-	$items['node/%node/edit/payment'] = array(
+	$items['node/%node/edit/payments'] = array(
+		'title' => t('Payments'),
 		'page callback' => 'bxdev_payment_project_payment_page',
 		'page arguments' => array(1),
-		'access arguments' => array('add new project'),
+		'access callback' => 'bxdev_payment_project_payment_access',
+		'access arguments' => array(1),
+		'weight' => 20,
 		'type' => MENU_LOCAL_TASK,
+	);
+	
+	$items['node/%node/edit/view'] = array(
+		'title' => t('Fields'),
+		'access callback' => 'bxdev_payment_project_payment_access',
+		'access arguments' => array(1),
+		'type' => MENU_DEFAULT_LOCAL_TASK,
 	);
 	
 	$items['admin/client/%user/payments'] = array(
@@ -118,8 +130,7 @@ function bxdev_payment_get_payment_profiles($uid){
 	global $api_login_id;
 	global $transaction_key;
 	
-	// require('AuthnetCIM.class.php');
-	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
 	
 	// get the user profile id
 	$profile_id = db_select('users_auth', 'u')
@@ -176,9 +187,14 @@ function bxdev_payment_project_payment_page($node){
 	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
 	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
 	
+	drupal_set_title($project->project->title . ' Payments');
+	
 	// header information
-	$output = '<h1>Payments</h1>';
-	$output .= '<h2>Client: <strong>' . $project->client->field_name['und'][0]['value'] . '</strong></h2>';
+	$output = '<div class="client-info">
+	<h3>' . $project->client->field_name['und'][0]['value'] . '</h3>
+	<p>Email: <a href="mailto:' . $project->client->mail . '">' . $project->client->mail . '</a></br>
+	Phone: ' . $project->client->field_phone['und'][0]['value'] . '</p>
+	</div>';
 	
 	// credit card form
 	$output .= render(drupal_get_form('bxdev_payment_project_payment_form', $node));
@@ -254,7 +270,7 @@ function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
 	global $api_login_id;
 	global $transaction_key;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key, TRUE);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
 	
 	$cim->setParameter('customerProfileId', $profile_id);
 	$cim->setParameter('customerPaymentProfileId', $payment_profile_id);
@@ -278,6 +294,13 @@ function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
 /**
  * CUSTOM
  */
+
+/**
+ * Access callback: project payment
+ */
+function bxdev_payment_project_payment_access($node){
+	return $node->type == 'project' && user_access('add new project');
+}
 
 /**
  * Return user auth token, if it exists

@@ -16,6 +16,21 @@ function bxdev_admin_menu_output_alter(&$content) {
 }
 
 /**
+ * Implements hook_menu().
+ */
+function bxdev_menu() {
+	
+  $items['get/body/%'] = array(
+    'page callback' => 'bxdev_get_node_body',
+		'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_node_access().
  */
 function bxdev_node_access($node, $op, $account) {
@@ -195,6 +210,11 @@ function bxdev_token_info() {
 		'description' => t('User tokens'),
 	);
 	
+	$types['client'] = array(
+		'name' => t('Client'),
+		'description' => t('Client tokens'),
+	);	
+	
   // project tokens.
   $project['project_url'] = array(
     'name' => t('Project URL'),
@@ -256,6 +276,10 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					
 				case 'project_link':
 					$replacements[$original] = $data['project_link'];
+					break;
+					
+				case 'project_terms_link':
+					$replacements[$original] = $base_url . '/client/terms/' . $data['project']->project->nid . '/' . $data['project']->hash;
 					break;
 					
 				case 'pc:full_name':
@@ -403,9 +427,31 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 			}
 		}					
 		
+	}else if($type == 'client'){
+		
+		foreach($tokens as $name => $original){
+			switch($name){				
+				case 'date':
+					$replacements[$original] = date('m-d-Y', time());
+					break;
+			}
+		}					
+		
 	}
 			
 	return $replacements;
+}
+
+/**
+ * Return the formatted body of a given node
+ */
+function bxdev_get_node_body($nid){
+	$node = node_load($nid);
+	$body = '<link href="/' . drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css" rel="stylesheet" type="text/css">';
+	// drupal_add_css(drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css', $option['type'] = 'inline');
+	$body .= $node->body['und'][0]['value'];
+	$body = token_replace($body);
+	print $body;
 }
 
 /**

@@ -21,6 +21,23 @@ function bxdev_payment_schema() {
     'primary key' => array('uid'),
   );
 
+	// $schema['users_project_terms'] = array(
+	//   'description' => 'Client project terms tokens',
+	//   'fields' => array(
+	//     'nid' => array(
+	//       'description' => 'The project nid',
+	//       'type' => 'int',
+	//       'unsigned' => TRUE,
+	//       'not null' => TRUE),
+	//     'hash' => array(
+	//       'description' => 'The client hash value used to accept terms',
+	//       'type' => 'varchar',
+	// 			'length' => 255,
+	//       'not null' => TRUE),
+	//     ),
+	//   'primary key' => array('nid'),
+	// );
+
 	// $schema['payment_log'] = array(
 	//   'description' => 'Payment log',
 	//   'fields' => array(

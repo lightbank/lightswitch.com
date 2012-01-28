@@ -1,0 +1,186 @@
+<?php
+
+/**
+ * Create database tables:
+ *
+ *   - users_documents
+ */
+
+require_once('dompdf/dompdf_config.inc.php');
+
+module_load_include('inc', 'bxdev_document', 'bxdev_document.forms');
+
+/**
+ * HOOKS
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function bxdev_document_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bxdev_document_permission() {
+  return array(
+    'administer document settings' =>  array(
+      'title' => t('Administer document settings'),
+      'description' => t('Administer document settings.'),
+    ),
+	  'access documents' =>  array(
+	    'title' => t('Access documents'),
+	    'description' => t('Access documents.'),
+	  ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bxdev_document_menu() {
+	
+	$items['admin/documents/settings'] = array(
+		'title' => t('Document settings'),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('bxdev_document_settings_form'),
+		'access arguments' => array('administer document settings'),
+		'weight' => 50,
+		'type' => MENU_NORMAL_ITEM,
+	);
+	
+	$items['node/%node/edit/documents'] = array(
+		'title' => t('Documents'),
+		'page callback' => 'bxdev_document_project_documents_page',
+		'page arguments' => array(1),
+		'access callback' => 'bxdev_document_project_documents_access',
+		'access arguments' => array(1),
+		'weight' => 21,
+		'type' => MENU_LOCAL_TASK,
+	);	
+	
+  return $items;
+}
+
+/**
+ * Implements hook_file_delete().
+ */
+function bxdev_document_file_delete($file) {
+  // Delete all information associated with the file.
+  db_delete('users_documents')->condition('fid', $file->fid)->execute();
+}
+
+
+
+
+/**
+ * CALLBACKS
+ */
+
+/**
+ * Page callback: project documents
+ */
+function bxdev_document_project_documents_page($node){
+	
+	$project = new Project($node->nid);
+	
+	$output = '<h2>Client Documents</h2>';
+	$output .= views_embed_view('documents', 'project_client', $project->project->nid, $project->client->uid);
+	
+	$output .= '<h2>Videographer Documents</h2>';
+	
+	return $output;
+}
+
+/**
+ * Access callback: project documents
+ */
+function bxdev_document_project_documents_access($node){
+	return $node->type == 'project' && user_access('access documents');
+}
+
+
+
+/**
+ * CUSTOM
+ */
+
+/**
+ * Create a pdf document
+ */
+function bxdev_document_create_pdf($html, $filename, $type, $description, $uid = NULL, $nid = NULL){
+	
+	$destination = '';
+	
+	// determine the file destination (user type)
+	switch($type){
+		case 'client':
+			$destination .= 'public://documents/client_docs/';
+			break;
+		
+		case 'videographer':
+			$destination .= 'public://documents/videographer_docs/';
+			break;
+	}
+	
+	$destination .= $filename;
+	
+	// add styling	
+	$css = '<head><style type="text/css">' . file_get_contents(drupal_get_path('module', 'bxdev_document') . '/css/bxdev_document_pdf.css') . '</style></head>';
+		
+	// add a header
+	$header = '<img src="' . drupal_get_path('module', 'bxdev_document') . '/css/images/logo.jpg' . '" />';
+	
+	// concatenate all parts
+	$string = $css . $header . $html;
+	
+	// create the pdf object
+	$dompdf = new DOMPDF();
+	$dompdf->load_html($string);
+	$dompdf->render();
+
+	// generate the pdf string
+	$pdf = $dompdf->output();
+	
+	// save the pdf to disk
+	$file = file_save_data($pdf, $destination);
+	
+	// if file was successfully created
+	if(!empty($file)){
+		
+		$fid = $file->fid;
+		
+		// if uid was supplied
+		if(!is_null($uid)){
+		
+			db_insert('users_documents')
+				->fields(array(
+					'uid' => $uid,
+					'fid' => $fid,
+					'type' => $type,
+					'nid' => !is_null($nid) ? $nid : NULL,
+					'description' => $description,
+				))
+				->execute();			
+		}
+		
+		// log the action
+		watchdog('document', 'Document created: fid: ' . $fid . ', type: ' . $type);
+		
+		return $fid;
+	}
+	
+	return FALSE;	
+}
+
+
+
+
+
+
+
+

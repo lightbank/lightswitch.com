@@ -418,6 +418,63 @@ function bxdev_project_videographer_documents_form_submit($form, &$form_state){
 }
 
 /**
+ * Form builder: client terms
+ */
+function bxdev_project_client_terms_form($form, &$form_state, $nid, $hash){
+	
+	$form['markup'] = array(
+		'#markup' => '<p>You made it!  Now, for the fun legal stuff.  The client service agreement specifies the terms and conditions of our work together.  Additionally, it includes a release to let us shoot video in your place.</p>
+		<p>Please click the link below to read the client service agreement.  Once you’ve reviewed, you can accept the agreement by clicking the check box and submitting.</p>
+		<p>We will send a copy of the accepted client service agreement to your email address.</p>
+		<p><a href="/get/body/1241" rel="shadowbox;height=800;width=800">Click here to view the terms</a></p>'
+	);
+	
+	$form['terms_accept'] = array(
+	  '#type' => 'checkbox',
+	  '#title' => t('I accept the Client Service Agreement'),
+	  '#default_value' => 0,
+	);
+	
+	$form['submit'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Submit'),
+	);
+	
+	$form['#submit'][] = 'bxdev_project_client_terms_form_submit';	
+	$form['#submit'][] = 'bxdev_document_client_terms_form_submit';	
+	
+	return $form;
+}
+
+/**
+ * Form validate: client terms
+ */
+function bxdev_project_client_terms_form_validate($form, &$form_state){
+	$values = $form_state['values'];
+	if($values['terms_accept'] != 1){
+		form_set_error('terms_accept', 'The Client Service Agreement must be accepted');
+	}
+}
+
+/**
+ * Form submit: client terms
+ */
+function bxdev_project_client_terms_form_submit($form, &$form_state){
+	$nid = arg(2);
+	$node = node_load($nid);
+	$node->field_client_terms_accepted['und'][0]['value'] = 1;
+	node_save($node);
+	
+	/**
+	 * TODO: remove the uid / hash from the db
+	 */
+	
+}
+
+
+
+
+/**
  * Implements hook_form_alter(). PC landing exposed filter alter.
  */
 function bxdev_project_form_alter(&$form, &$form_state, $form_id) {

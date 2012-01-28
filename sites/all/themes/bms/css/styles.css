@@ -1567,7 +1567,7 @@ input[type="submit"].approve-btn, .approve-yes {
 /** EDIT FORM
 ================================================**/
 
-.page-node-edit .node-project-form,
+/*.page-node-edit .node-project-form,
 .page-node-edit .node-business-form,
 .page-node-delete form,
 .page-node.page-node-edit-payment.logged-in #content {
@@ -1575,6 +1575,26 @@ input[type="submit"].approve-btn, .approve-yes {
 	padding: 20px;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+*/
+
+.page-node.logged-in .links {
+	display: none;
+}
+
+.page-node.page-node-edit.logged-in .links {
+	display: block;
+}
+
+.page-node.page-node-edit.logged-in #content {
+	margin-bottom: 20px;
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+
+.page-node.page-node-edit.logged-in #page li {
+	margin-left: 0;
 }
 
 .node-type-project.page-node-edit #page {
