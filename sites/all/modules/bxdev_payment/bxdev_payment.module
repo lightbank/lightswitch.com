@@ -331,7 +331,27 @@ function bxdev_payment_log_payment($nid, $uid, $payment_id, $transaction_id, $am
 		->execute();
 }
 
-
+/**
+ * Return last four digits of credit card using the given payment id
+ */
+function bxdev_payment_get_cc_last_four($payment_id, $uid){
+	
+	global $api_login_id;
+	global $transaction_key;
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	
+	// get the customer profile id
+	$profile_id = bxdev_payment_get_auth_token($uid);
+	
+	$cim->setParameter('customerProfileId', $profile_id);
+	$cim->setParameter('customerPaymentProfileId', $payment_id);
+	$cim->getCustomerPaymentProfile();
+	if($cim->isSuccessful()){
+		$xml = $cim->getXml();
+		return $xml->paymentProfile->payment->creditCard->cardNumber;
+	}
+	return FALSE;
+}
 
 
 

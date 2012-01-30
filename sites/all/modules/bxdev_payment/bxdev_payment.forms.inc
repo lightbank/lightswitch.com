@@ -580,8 +580,19 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 				bxdev_payment_log_payment($project->project->nid, $project->client->uid, $payment_id, $transaction_id, $amount);
 				
 				/**
-				 * TODO: email receipt to client and accounting
-				 */
+				 * Create and send the invoice receipt
+				 */				
+				
+				$line_items[] = array(
+					'qty' => 1,
+					'description' => bxdev_project_get_project_description($amount),
+					'unit_price' => $amount,
+					'line_total' => $amount,
+				);
+				
+				$line_items['total'] = $amount;
+				
+				$project->send_client_receipt($line_items, $payment_id);
 			
 			// transaction was not successful
 			}else{

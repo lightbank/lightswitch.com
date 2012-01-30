@@ -282,6 +282,10 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					$replacements[$original] = $base_url . '/client/terms/' . $data['project']->project->nid . '/' . $data['project']->hash;
 					break;
 					
+				case 'amount':
+					$replacements[$original] = bxdev_format_currency($data['amount']);
+					break;
+					
 				case 'pc:full_name':
 					$replacements[$original] = $data['project']->pc->field_name['und'][0]['value'];
 					break;
@@ -434,6 +438,10 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 				case 'date':
 					$replacements[$original] = date('m-d-Y', time());
 					break;
+					
+				case 'cc':
+					$replacements[$original] = $data['cc'];
+					break;
 			}
 		}					
 		
@@ -446,12 +454,31 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
  * Return the formatted body of a given node
  */
 function bxdev_get_node_body($nid){
-	$node = node_load($nid);
-	$body = '<link href="/' . drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css" rel="stylesheet" type="text/css">';
-	// drupal_add_css(drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css', $option['type'] = 'inline');
-	$body .= $node->body['und'][0]['value'];
-	$body = token_replace($body);
-	print $body;
+	
+	$project = new Project(1243);
+	$line_items[] = array(
+		'qty' => 1,
+		'description' => 'Standard Lightswitch Video',
+		'unit_price' => 299,
+		'line_total' => 299,
+	);
+	$line_items[] = array(
+		'qty' => 1,
+		'description' => 'Standard Lightswitch Video with Interview',
+		'unit_price' => 399,
+		'line_total' => 399,
+	);
+	$line_items['total'] = 600;
+	$invoice_num = 101;	
+	
+	print theme('invoice', array('project' => $project, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
+	
+	// $node = node_load($nid);
+	// $body = '<link href="/' . drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css" rel="stylesheet" type="text/css">';
+	// // drupal_add_css(drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css', $option['type'] = 'inline');
+	// $body .= $node->body['und'][0]['value'];
+	// $body = token_replace($body);
+	// print $body;
 }
 
 /**

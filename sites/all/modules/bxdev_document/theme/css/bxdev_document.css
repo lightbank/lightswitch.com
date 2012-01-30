@@ -1,0 +1,18 @@
+.documents-wrap h2 {
+	margin-bottom: 10px;
+}
+
+.documents-wrap .block {
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+}
+
+.documents-wrap .block.client-block {
+	border-bottom: solid #ccc 1px;
+}
+
+.documents-wrap .views-field-description {
+	font-weight: bold;
+}
+
+

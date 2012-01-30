@@ -505,3 +505,34 @@ function bxdev_project_get_production_log($nid){
 	return $output;
 }
 
+/**
+ * Return a project description (used for invoices) depending on the project type value
+ */
+function bxdev_project_get_project_description($value){
+	$descripiton = '';
+	switch($value){
+		case '299':
+			$descripiton = 'Standard Lightswitch Video';
+			break;
+		
+		case '399':
+			$descripiton = 'Standard Lightswitch Video with Interview';
+			break;
+			
+		case '449':
+			$descripiton = 'Standard Lightswitch Video with Voice Over';
+			break;
+			
+		default:
+			$description = 'Custom';
+			break;
+	}
+	
+	return $description;
+}
+
+
+
+
+
+

@@ -60,6 +60,12 @@
 	background: #eee;
 }
 
+#content .payment-history .view-content h3 {
+	font-size: 18px;
+	padding-top: 15px;
+	font-weight: bold;
+}
+
 .charge-popup {
 	position: absolute;
 	background: #eee;

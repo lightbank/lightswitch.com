@@ -314,6 +314,61 @@ class Project {
 	}
 	
 	/**
+	 * Generate a pdf receipt and send to client
+	 *
+	 * @param $line_items (array)
+	 *   $line_items['qty'] = Line quantity
+	 *   $line_items['description'] = Line description
+	 *   $line_items['unit_price'] = Line unit_price
+	 *   $line_items['line_total'] = Line total
+	 */
+	function send_client_receipt($line_items, $payment_id){
+		
+		// generate the invoice number
+		$invoice_num = variable_get('client_invoice_num', 101);
+		variable_set('client_invoice_num', ++$invoice_num);
+		
+		// get the invoice html
+		$html = theme('invoice', array('project' => $this, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
+		
+		// generate the filename
+		$filename = 'lightswitch_client_invoice_' . $invoice_num . '.pdf';
+		
+		// create the pdf and get the fid
+		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'Client invoice', $this->client->uid, $this->project->nid);
+		
+		if($fid){
+			
+			$emails[] = $this->client->mail;
+			// $emails[] = $this->sales->mail;
+			
+			$params = array(
+				'project' => $this,
+				'cc' => bxdev_payment_get_cc_last_four($payment_id, $this->client->uid),
+				'amount' => $line_items['total'],
+			);
+			
+			$file = file_load($fid);
+			$params['attachments'] = array(
+				0 => array(
+					'filepath' => $file->uri,
+					'filename' => $file->filename,
+				),
+			);
+			
+			// send the email to each recipient
+			foreach($emails as $email){
+				drupal_mail('bxdev_project', 'client_invoice_receipt', $email, language_default(), $params);
+			}
+			
+			// log the action
+			watchdog('document', 'Client invoice generated for: ' . $this->client->field_name['und'][0]['value']);
+			
+		}
+		
+	}
+	
+	/**
 	 * Get all approved photos associated with a Project.
 	 *
 	 * @return array

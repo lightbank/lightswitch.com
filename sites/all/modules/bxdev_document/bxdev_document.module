@@ -40,6 +40,19 @@ function bxdev_document_permission() {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function bxdev_document_theme($existing, $type, $theme, $path) {
+  return array(
+    'invoice' => array(
+      'variables' => array('project' => NULL, 'line_items' => NULL),
+      'template' => 'bxdev_document_invoice',
+			'path' => drupal_get_path('module', 'bxdev_document') . '/theme/templates',
+    ),
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function bxdev_document_menu() {
@@ -86,12 +99,22 @@ function bxdev_document_file_delete($file) {
  */
 function bxdev_document_project_documents_page($node){
 	
+	drupal_add_css(drupal_get_path('module', 'bxdev_document') . '/theme/css/bxdev_document.css');
+	
 	$project = new Project($node->nid);
 	
-	$output = '<h2>Client Documents</h2>';
-	$output .= views_embed_view('documents', 'project_client', $project->project->nid, $project->client->uid);
+	$output = '<div class="documents-wrap">';
 	
+	$output .= '<div class="block client-block">';
+	$output .= '<h2>Client Documents</h2>';
+	$output .= views_embed_view('documents', 'project_client', $project->project->nid, $project->client->uid);
+	$output .= '</div>';
+	
+	$output .= '<div class="block">';
 	$output .= '<h2>Videographer Documents</h2>';
+	$output .= '</div>';
+	
+	$output .= '</div>';
 	
 	return $output;
 }
@@ -130,10 +153,10 @@ function bxdev_document_create_pdf($html, $filename, $type, $description, $uid =
 	$destination .= $filename;
 	
 	// add styling	
-	$css = '<head><style type="text/css">' . file_get_contents(drupal_get_path('module', 'bxdev_document') . '/css/bxdev_document_pdf.css') . '</style></head>';
+	$css = '<head><style type="text/css">' . file_get_contents(drupal_get_path('module', 'bxdev_document') . '/theme/css/bxdev_document_pdf.css') . '</style></head>';
 		
 	// add a header
-	$header = '<img src="' . drupal_get_path('module', 'bxdev_document') . '/css/images/logo.jpg' . '" />';
+	$header = '<img src="' . drupal_get_path('module', 'bxdev_document') . '/theme/images/logo.jpg' . '" />';
 	
 	// concatenate all parts
 	$string = $css . $header . $html;
