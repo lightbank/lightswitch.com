@@ -75,6 +75,12 @@ function bxdev_project_menu() {
 		'type' => MENU_CALLBACK,
 	);
 	
+	$items['project/videographer/%/w9'] = array(
+		'page callback' => 'bxdev_project_send_videographer_w9_reminder',
+		'page arguments' => array(2),
+		'access arguments' => array('administer videographer payments'),
+	);
+	
   return $items;
 }
 
@@ -371,6 +377,16 @@ function bxdev_project_photo_approval_page($nid){
 	$output = '<a href="/' . $project_path . '">Back to project</a>';
 	$output .= render(drupal_get_form('bxdev_project_photo_approval_form'));
 	return $output;
+}
+
+/**
+ * Menu callback: videographer w9 reminder
+ */
+function bxdev_project_send_videographer_w9_reminder($nid){
+	$project = new Project($nid);
+	$project->send_videographer_w9_reminder();
+	drupal_set_message('A W9 form reminder has been sent to ' . $project->videographer->field_name['und'][0]['value']);
+	drupal_goto('node/' . $nid . '/edit/payments');
 }
 
 /**

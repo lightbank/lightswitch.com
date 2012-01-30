@@ -44,9 +44,9 @@ function bxdev_document_permission() {
  */
 function bxdev_document_theme($existing, $type, $theme, $path) {
   return array(
-    'invoice' => array(
+    'invoice_client' => array(
       'variables' => array('project' => NULL, 'line_items' => NULL),
-      'template' => 'bxdev_document_invoice',
+      'template' => 'bxdev_document_invoice_client',
 			'path' => drupal_get_path('module', 'bxdev_document') . '/theme/templates',
     ),
   );
@@ -153,7 +153,7 @@ function bxdev_document_project_documents_page($node){
 	
 	$output .= '<div class="block">';
 	$output .= '<h2>Videographer Documents</h2>';
-	$output .= bxdev_document_get_videographer_w9($project->videographer->uid);
+	$output .= bxdev_document_get_videographer_w9_link($project->videographer->uid);
 	$output .= views_embed_view('documents', 'videographer', $project->videographer->uid);
 	$output .= '</div>';
 	
@@ -196,7 +196,7 @@ function bxdev_document_videographer_documents_page($account){
 	drupal_set_title('Videographer Documents');
 	
 	$output .= '<div class="documents-wrap">';
-	$output .= bxdev_document_get_videographer_w9($account->uid);
+	$output .= bxdev_document_get_videographer_w9_link($account->uid);
 	$output .= views_embed_view('documents', 'videographer', $account->uid);
 	$output .= '</div>';
 	
@@ -304,9 +304,26 @@ function bxdev_document_get_document_html($name){
 }
 
 /**
+ * Returns a link to the videographer's w9 file
+ */
+function bxdev_document_get_videographer_w9_file($uid){
+	
+	$profile = profile2_load_by_user($uid, 'videographer');
+	
+	if(!empty($profile->field_videographer_w9)){
+		
+		$file = (object) $profile->field_videographer_w9['und'][0];
+		return $file;
+		
+	}
+	
+	return FALSE;
+}
+
+/**
  * Returns a link to the videographer's w9 form, if it exists
  */
-function bxdev_document_get_videographer_w9($uid){
+function bxdev_document_get_videographer_w9_link($uid){
 	
 	$profile = profile2_load_by_user($uid, 'videographer');
 	
@@ -319,6 +336,27 @@ function bxdev_document_get_videographer_w9($uid){
 	
 	return FALSE;
 }
+
+/**
+ * Returns the last date a w9 reminder was sent, if any
+ */
+function bxdev_document_get_videographer_w9_reminder($uid, $nid){
+	
+	$result = db_select('users_w9_reminders', 'u')
+		->fields('u')
+		->condition('uid', $uid, '=')
+		->condition('nid', $nid, '=')
+		->orderBy('date', 'DESC')
+		->execute()
+		->fetchObject();
+		
+	if(!empty($result)){
+		return $result;
+	}
+	
+	return FALSE;
+}
+
 
 
 

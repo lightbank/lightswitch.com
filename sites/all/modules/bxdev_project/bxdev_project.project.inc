@@ -329,7 +329,7 @@ class Project {
 		variable_set('client_invoice_num', ++$invoice_num);
 		
 		// get the invoice html
-		$html = theme('invoice', array('project' => $this, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
+		$html = theme('invoice_client', array('project' => $this, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
 		
 		// generate the filename
 		$filename = 'lightswitch_client_invoice_' . $invoice_num . '.pdf';
@@ -365,6 +365,74 @@ class Project {
 			watchdog('document', 'Client invoice generated for: ' . $this->client->field_name['und'][0]['value']);
 			
 		}
+		
+	}
+	
+	/**
+	 * Send reminder to videographer to upload a W9 form
+	 */
+	function send_videographer_w9_reminder($amount){
+		global $base_url;
+		$params = array(
+			'project' => $this,
+			'full_name' => $this->videographer->field_name['und'][0]['value'],
+			'login_link' => '<a href="' . $base_url . '/user">' . $base_url . '/user</a>',
+		);
+		drupal_mail('bxdev_project', 'videographer_missing_w9', $this->videographer->mail, language_default(), $params);
+		
+		// delete any existing reminders for the videographer and project
+		db_delete('users_w9_reminders')
+			->condition('uid', $this->videographer->uid)
+			->condition('nid', $this->project->nid)
+			->execute();
+		
+		db_insert('users_w9_reminders')
+			->fields(array(
+				'uid' => $this->videographer->uid,
+				'nid' => $this->project->nid,
+				'amount' => $amount,
+			))
+			->execute();
+	}
+	
+	/**
+	 * TODO: document this $w9 = file object
+	 */
+	function process_videographer_payments($w9, $amount = NULL){
+		
+		// generate invoice
+		// $html = theme('invoice_videographer', array('project' => $this))
+		
+		if(!is_null($amount)){
+			
+			$params = array(
+				'project' => $this,
+				'amount' => $amount,
+				'attachments' => array(
+					0 => array(
+						'filepath' => $w9->uri,
+						'filename' => $w9->filename,
+					),
+				),
+			);
+
+			drupal_mail('bxdev_project', 'accounting_invoice_videographer', 'wandoledzep@gmail.com', language_default(), $params);
+
+			watchdog('document', 'W9 and invoice sent to accounting for videographer: ' . $project->videographer->uid);
+			
+			db_delete('users_w9_reminders')
+				->condition('uid', $this->videographer->uid)
+				->condition('nid', $this->project->nid)
+				->execute();
+			
+		}
+		
+		$result = db_select('users_w9_reminders', 'u')
+			->fields('u', array('amount'))
+			->condition('uid', $this->videographer->uid)
+			->condition('nid', $this->project->nid)
+			->execute()
+			->fetchObject();	
 		
 	}
 	

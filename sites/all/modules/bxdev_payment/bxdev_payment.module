@@ -30,6 +30,10 @@ function bxdev_payment_permission() {
       'title' => t('Administer client payments'),
       'description' => t('Administer client payments'),
     ),
+	  'administer videographer payments' =>  array(
+	    'title' => t('Administer videographer payments'),
+	    'description' => t('Administer videographer payments'),
+	  ),
   );
 }
 
@@ -190,12 +194,15 @@ function bxdev_payment_project_payment_page($node){
 	
 	drupal_set_title($project->project->title . ' Payments');
 	
-	// header information
+	// client information
 	$output = '<div class="client-info">
+	<h1>Client</h1>
 	<h3>' . $project->client->field_name['und'][0]['value'] . '</h3>
 	<p>Email: <a href="mailto:' . $project->client->mail . '">' . $project->client->mail . '</a></br>
 	Phone: ' . $project->client->field_phone['und'][0]['value'] . '</p>
 	</div>';
+	
+	$output .= '<div class="client-payment-wrap clearfix">';
 	
 	// credit card form
 	$output .= render(drupal_get_form('bxdev_payment_project_payment_form', $node));
@@ -203,6 +210,26 @@ function bxdev_payment_project_payment_page($node){
 	// payment history
 	$output .= '<h2>Payment History</h2>';
 	$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log', $project->project->nid, $project->client->uid) . '</div>';
+	
+	$output .= '</div>';
+	
+	// client information
+	$output .= '<div class="client-info">
+	<h1>Videographer</h1>
+	<h3>' . $project->videographer->field_name['und'][0]['value'] . '</h3>
+	<p>Email: <a href="mailto:' . $project->videographer->mail . '">' . $project->videographer->mail . '</a></br>
+	Phone: ' . $project->videographer->field_phone['und'][0]['value'] . '</p>
+	</div>';
+	
+	$output .= render(drupal_get_form('bxdev_payment_videographer_payment_form'));
+	
+	$reminder = bxdev_document_get_videographer_w9_reminder($project->videographer->uid, $project->project->nid);
+	if($reminder){
+		$reminder_date = date('m-d-Y g:ia', strtotime($reminder->date . ' + 2 hours'));
+		$output .= '<p>* Payment is waiting for the Videographer to add a W9 form.<br/>';
+		$output .= '<strong>The last reminder was sent on ' . $reminder_date . ' for the amount of ' . bxdev_format_currency($reminder->amount) . '</strong><br/>';
+		$output .= 'To send another reminder, enter the amount and click "Pay".</p>';		
+	}
 	
 	return $output;
 }

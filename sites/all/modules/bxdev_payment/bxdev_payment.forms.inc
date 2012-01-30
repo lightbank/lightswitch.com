@@ -785,6 +785,51 @@ function bxdev_payment_client_new_credit_card_form_submit($form, &$form_state){
 	}	
 }
 
+/**
+ * Form builder: videographer payment
+ */
+function bxdev_payment_videographer_payment_form($form, &$form_state){
+	
+	$form['amount'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Amount'),
+		'#size' => 20,
+		'#maxlength' => 20,
+		'#required' => TRUE,
+	);
+	
+	$form['pay'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Pay'),
+	);	
+	
+	return $form;
+}
+
+/**
+ * Form submit: videographer payment
+ */
+function bxdev_payment_videographer_payment_form_submit($form, &$form_state){
+	
+	$values = $form_state['values'];
+	$amount = $values['amount'];
+	
+	$nid = arg(1);
+	$project = new Project($nid);
+	
+	$w9_file = bxdev_document_get_videographer_w9_file($project->videographer->uid);
+	
+	// videographer has uploaded a W9 form
+	if($w9_file){
+		
+		$project->process_videographer_payments($w9_file, $amount);
+				
+	// videographer has not uploaded a W9 form
+	}else{		
+		$project->send_videographer_w9_reminder($amount);		
+	}
+	 
+}
 
 
 /**

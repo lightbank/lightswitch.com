@@ -325,6 +325,18 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					$replacements[$original] = $account->password;
 					break;
 					
+				case 'videographer:full_name':
+					$replacements[$original] = $data['project']->videographer->field_name['und'][0]['value'];
+					break;
+					
+				case 'videographer:address':
+					$replacements[$original] = $data['project']->videographer->field_address['und'][0]['value'];
+					break;
+				
+				case 'videographer:amount':
+					$replacements[$original] = $data['amount'];
+					break;
+					
 				case 'business:title':
 					$replacements[$original] = $data['project']->business->title;
 					break;
