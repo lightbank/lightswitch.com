@@ -15,8 +15,7 @@
 
 #content h3 {
 	padding-bottom: 10px;
-	font-size: 24px;
-	
+	font-size: 24px;	
 }
 
 #bxdev-payment-project-payment-form {
@@ -143,7 +142,12 @@
 .back {
 	font-style: bold;
 	position: absolute;
-	top: -40px;
+	top: -80px;
 	left: 0;
 }
+
+#page .links li {
+	margin-left: 0;
+}
+
 

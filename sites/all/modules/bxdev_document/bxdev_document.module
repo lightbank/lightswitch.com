@@ -74,9 +74,52 @@ function bxdev_document_menu() {
 		'access arguments' => array(1),
 		'weight' => 21,
 		'type' => MENU_LOCAL_TASK,
-	);	
+	);
+	
+	$items['admin/client/%user/documents'] = array(
+		'title' => t('Client Documents'),
+		'page callback' => 'bxdev_document_client_documents_page',
+		'page arguments' => array(2),
+		'access arguments' => array('administer client payments'),
+		'weight' => 11,
+		'type' => MENU_LOCAL_TASK,
+	);
+	
+	$items['user/%user/documents'] = array(
+		'title' => t('Documents'),
+		'page callback' => 'bxdev_document_videographer_documents_page',
+		'page arguments' => array(1),
+		'access arguments' => array(1),
+		'access callback' => 'bxdev_document_videographer_documents_access',
+		'weight' => 11,
+		'type' => MENU_LOCAL_TASK,
+	);
+	
+	$items['get/document/%'] = array(
+		'page callback' => 'bxdev_document_get_document_html',
+		'page arguments' => array(2),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
 	
   return $items;
+}
+
+/**
+ * Implements hook_user_delete().
+ */
+function bxdev_document_user_delete($account) {
+  $results = db_select('users_documents', 'u')
+		->fields('u', array('fid'))
+		->condition('uid', $account->uid, '=')
+		->execute();
+		
+	if($results->rowCount() > 0){
+		foreach($results as $row){
+			$file = file_load($row->fid);
+			file_delete($file);
+		}
+	}
 }
 
 /**
@@ -86,8 +129,6 @@ function bxdev_document_file_delete($file) {
   // Delete all information associated with the file.
   db_delete('users_documents')->condition('fid', $file->fid)->execute();
 }
-
-
 
 
 /**
@@ -112,6 +153,8 @@ function bxdev_document_project_documents_page($node){
 	
 	$output .= '<div class="block">';
 	$output .= '<h2>Videographer Documents</h2>';
+	$output .= bxdev_document_get_videographer_w9($project->videographer->uid);
+	$output .= views_embed_view('documents', 'videographer', $project->videographer->uid);
 	$output .= '</div>';
 	
 	$output .= '</div>';
@@ -120,10 +163,60 @@ function bxdev_document_project_documents_page($node){
 }
 
 /**
+ * Page callback: client documents
+ */
+function bxdev_document_client_documents_page($account){
+	
+	drupal_add_css(drupal_get_path('module', 'bxdev_document') . '/theme/css/bxdev_document.css');
+	drupal_set_title('Client Documents');
+	
+	$output = '<a class="back" href="/admin/clients">&lt; Back to Clients</a>';
+	
+	$output .= '<div class="client-info">
+	<h3>' . $account->field_name['und'][0]['value'] . '</h3>
+	<p>Email: <a href="mailto:' . $account->mail . '">' . $account->mail . '</a></br>
+	Phone: ' . $account->field_phone['und'][0]['value'] . '</p>
+	</div>';
+	
+	$output .= '<div class="documents-wrap">';
+	
+	$output .= views_embed_view('documents', 'client_management', $account->uid);
+	
+	$output .= '</div>';
+	
+	return $output;	
+}
+
+/**
+ * Page callback: videographer documents
+ */
+function bxdev_document_videographer_documents_page($account){
+	
+	drupal_add_css(drupal_get_path('module', 'bxdev_document') . '/theme/css/bxdev_document.css');
+	drupal_set_title('Videographer Documents');
+	
+	$output .= '<div class="documents-wrap">';
+	$output .= bxdev_document_get_videographer_w9($account->uid);
+	$output .= views_embed_view('documents', 'videographer', $account->uid);
+	$output .= '</div>';
+	
+	return $output;	
+}
+
+
+/**
  * Access callback: project documents
  */
 function bxdev_document_project_documents_access($node){
 	return $node->type == 'project' && user_access('access documents');
+}
+
+/**
+ * Access callback: project documents
+ */
+function bxdev_document_videographer_documents_access($account){
+	global $user;
+	return user_access('pc') || $user->uid == $account->uid;
 }
 
 
@@ -200,10 +293,32 @@ function bxdev_document_create_pdf($html, $filename, $type, $description, $uid =
 	return FALSE;	
 }
 
+/**
+ * Return the html of a prepopulated document
+ */
+function bxdev_document_get_document_html($name){
+	$html = variable_get($name, '');
+	$body = '<link href="/' . drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css" rel="stylesheet" type="text/css">';
+	$body .= $html['value'];
+	print token_replace($body);
+}
 
-
-
-
+/**
+ * Returns a link to the videographer's w9 form, if it exists
+ */
+function bxdev_document_get_videographer_w9($uid){
+	
+	$profile = profile2_load_by_user($uid, 'videographer');
+	
+	if(!empty($profile->field_videographer_w9)){
+		
+		$file = $profile->field_videographer_w9['und'][0];
+		$url = file_create_url($file['uri']);
+		return '<div class="views-row"><div><strong>W9 form:</strong></div><div><a href="' . $url . '">' . $file['filename'] . '</a></div></div>';
+	}
+	
+	return FALSE;
+}
 
 
 

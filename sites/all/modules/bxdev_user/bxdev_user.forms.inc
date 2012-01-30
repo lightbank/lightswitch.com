@@ -114,7 +114,7 @@ function bxdev_user_accept_terms_form($form, $form_state){
 	$form['terms'] = array(
 		'#type' => 'checkbox',
 		'#title' => t('I accept the Independent Contractor Agreement'),
-		'#description' => t('<a href="/terms/get" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>'),
+		'#description' => t('<a href="/get/document/document_videographer_independent_contractor_agreement" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>'),
 	);
 	
 	$form['submit'] = array(

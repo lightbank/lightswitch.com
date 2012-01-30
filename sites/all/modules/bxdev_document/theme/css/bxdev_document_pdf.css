@@ -3,8 +3,8 @@ body {
 }
 
 .invoice-wrap * {
-	margin: 0;
 	padding: 0;
+	margin: 0;
 }
 
 .invoice-wrap img {
@@ -17,19 +17,28 @@ body {
 	font-size: 14px;
 }
 
-.invoice-wrap h1 {
-	padding-top: 20px;
-}
-
 .invoice-wrap td {
 	font-size: 14px;
 	vertical-align: top;
 	line-height: 20px;
 }
 
+.invoice-wrap td.qty,
+.invoice-wrap td.price {
+	text-align: center;
+}
+
+.invoice-wrap td.sub-header {
+	text-align: right;
+}
+
 .invoice-wrap table {
 	margin: 30px 0;
 	border-collapse: collapse;
+}
+
+.invoice-wrap .line-items {
+	width: 100%;
 }
 
 .invoice-wrap .billing-info .col-2 {

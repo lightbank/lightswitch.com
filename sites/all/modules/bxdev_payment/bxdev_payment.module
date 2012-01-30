@@ -81,7 +81,8 @@ function bxdev_payment_menu() {
 		'page callback' => 'bxdev_payment_client_payment_page',
 		'page arguments' => array(2),
 		'access arguments' => array('administer client payments'),
-		'type' => MENU_CALLBACK,
+		'weight' => 10,
+		'type' => MENU_LOCAL_TASK,
 	);
 	
 	$items['admin/payment/remove/%/%'] = array(
@@ -213,6 +214,8 @@ function bxdev_payment_client_payment_page($account){
 	
 	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
 	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	
+	drupal_set_title('Client Payments');
 	
 	$output = '<a class="back" href="/admin/clients">&lt; Back to Clients</a>';
 	

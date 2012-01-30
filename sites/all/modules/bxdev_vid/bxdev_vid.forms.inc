@@ -42,6 +42,7 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 		// modify validation / submit handlers
 		array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
 		$form['#submit'][0] = 'bxdev_vid_user_register_submit';
+		$form['#submit'][] = 'bxdev_document_videographer_user_register_submit';
 	
 		// left / right wrappers
 		$form['field_name']['#prefix'] = '<div class="left">';
@@ -72,8 +73,6 @@ function bxdev_vid_user_register_submit($form, &$form_state){
 	$user = $user->get_user();
 	// send along the user object
 	$form_state['user'] = $user;
-	// redirect
-	$form_state['redirect'] = 'node/31';
 }
 
 /**

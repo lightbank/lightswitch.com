@@ -1586,7 +1586,8 @@ input[type="submit"].approve-btn, .approve-yes {
 	display: block;
 }
 
-.page-node.page-node-edit.logged-in #content {
+.page-node.page-node-edit.logged-in #content,
+.page-client-terms #content {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;

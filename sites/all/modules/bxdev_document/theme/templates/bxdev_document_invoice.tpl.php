@@ -4,7 +4,7 @@
 <p>Date: <?php print date('F d, Y'); ?></p>
 <p>Invoice #: <?php print $invoice_num; ?></p>
 
-<table class="billing-info" border="0" cellspacing="0" cellpadding="0">
+<table class="billing-info">
 	<tr>
 		<td class="col-1">
 			Lightswitch<br/>
@@ -24,35 +24,39 @@
 	</tr>
 </table>
 
-<table class="line-items" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<th class="qty">QTY</th>
-		<th class="desc">DESCRIPTION</th>
-		<th class="price">UNIT PRICE</th>
-		<th class="price">LINE TOTAL</th>
-	</tr>
-	<?php foreach($line_items as $key => $line_item): ?>
-		<?php if(is_numeric($key)): ?>
-			<tr>
-				<td><?php print $line_item['qty']; ?></td>
-				<td><?php print $line_item['description']; ?></td>
-				<td><?php print bxdev_format_currency($line_item['unit_price']); ?></td>
-				<td><?php print bxdev_format_currency($line_item['line_total']); ?></td>
-			</tr>
-		<?php endif; ?>
-	<?php endforeach; ?>
-	<tr>
-		<td class="no-border"></td>
-		<td class="no-border"></td>
-		<td class="no-border"><strong>SUBTOTAL</strong></td>
-		<td><?php print bxdev_format_currency($line_items['total']); ?></td>
-	</tr>
-	<tr>
-		<td class="no-border"></td>
-		<td class="no-border"></td>
-		<td class="no-border"><strong>TOTAL</strong></td>
-		<td><?php print bxdev_format_currency($line_items['total']); ?></td>
-	</tr>			
+<table class="line-items">
+	<thead>
+		<tr>
+			<th class="qty">QTY</th>
+			<th class="desc">DESCRIPTION</th>
+			<th class="price">UNIT PRICE</th>
+			<th class="price">LINE TOTAL</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($line_items as $key => $line_item): ?>
+			<?php if(is_numeric($key)): ?>
+				<tr>
+					<td class="qty"><?php print $line_item['qty']; ?></td>
+					<td class="desc"><?php print $line_item['description']; ?></td>
+					<td class="price"><?php print bxdev_format_currency($line_item['unit_price']); ?></td>
+					<td class="price"><?php print bxdev_format_currency($line_item['line_total']); ?></td>
+				</tr>
+			<?php endif; ?>
+		<?php endforeach; ?>
+		<tr>
+			<td class="no-border"></td>
+			<td class="no-border"></td>
+			<td class="no-border sub-header"><strong>SUBTOTAL:</strong></td>
+			<td class="no-border price"><?php print bxdev_format_currency($line_items['total']); ?></td>
+		</tr>
+		<tr>
+			<td class="no-border"></td>
+			<td class="no-border"></td>
+			<td class="no-border sub-header"><strong>TOTAL:</strong></td>
+			<td class="no-border price"><?php print bxdev_format_currency($line_items['total']); ?></td>
+		</tr>
+	</tbody>	
 </table>
 
 <div class="footer">
