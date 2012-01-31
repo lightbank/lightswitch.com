@@ -335,7 +335,7 @@ class Project {
 		$filename = 'lightswitch_client_invoice_' . $invoice_num . '.pdf';
 		
 		// create the pdf and get the fid
-		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'Client invoice', $this->client->uid, $this->project->nid);
+		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'invoices', 'Client invoice', $this->client->uid, $this->project->nid);
 		
 		if($fid){
 			
@@ -396,14 +396,49 @@ class Project {
 	}
 	
 	/**
-	 * TODO: document this $w9 = file object
+	 * Initiate a videographer payment by sending the W9 and invoice to Lightswitch accounting
+	 *
+	 * @param $w9 (object)
+	 *   - Drupal file object
+	 *
+	 * @param $amount (int)
+	 *   - Amount to be charged
 	 */
-	function process_videographer_payments($w9, $amount = NULL){
+	function process_videographer_payment($w9, $amount){
 		
-		// generate invoice
-		// $html = theme('invoice_videographer', array('project' => $this))
+		/**
+		 * Generate the invoice
+		 */
+		$line_items = array();
+		$line_items[] = array(
+			'project' => $this,
+			'qty' => 1,
+			'description' => 'Lightswitch Video',
+			'unit_price' => $amount,
+			'line_total' => $amount,
+		);
+		$line_items['total'] = $amount;
 		
-		if(!is_null($amount)){
+		// get the next invoice number
+		$invoice_num = variable_get('client_invoice_num', 101);
+		variable_set('client_invoice_num', ++$invoice_num);
+		
+		// load the videographer profile
+		$profile = profile2_load_by_user($this->videographer, 'videographer');
+		
+		// get the invoice html
+		$html = theme('invoice_videographer', array('project' => $this, 'profile' => $profile, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
+		
+		// create the filename
+		$filename = 'lightswitch_videographer_invoice_' . $invoice_num . '.pdf';
+		
+		// create the pdf and get the fid
+		$fid = bxdev_document_create_pdf($html, $filename, 'videographer', 'invoices', 'Videographer invoice', $this->videographer->uid, $this->project->nid);
+		
+		// if $amount is supplied, charge for that specific payment
+		if($fid){
+			
+			$file = file_load($fid);
 			
 			$params = array(
 				'project' => $this,
@@ -413,27 +448,30 @@ class Project {
 						'filepath' => $w9->uri,
 						'filename' => $w9->filename,
 					),
+					1 => array(
+						'filepath' => $file->uri,
+						'filename' => $file->filename,
+					),
 				),
 			);
 
-			drupal_mail('bxdev_project', 'accounting_invoice_videographer', 'wandoledzep@gmail.com', language_default(), $params);
+			// send the email
+			$accounting_email = 'wandoledzep@gmail.com';
+			drupal_mail('bxdev_project', 'accounting_invoice_videographer', $accounting_email, language_default(), $params);
 
-			watchdog('document', 'W9 and invoice sent to accounting for videographer: ' . $project->videographer->uid);
+			// log the payment
+			bxdev_payment_log_payment($this->project->nid, $this->videographer->uid, NULL, $invoice_num, $amount);
+
+			// log the email
+			watchdog('document', 'W9 and invoice sent to accounting for videographer: ' . $this->videographer->uid);
 			
+			// remove any hanging reminders for the user
 			db_delete('users_w9_reminders')
 				->condition('uid', $this->videographer->uid)
 				->condition('nid', $this->project->nid)
-				->execute();
-			
+				->execute();		
 		}
-		
-		$result = db_select('users_w9_reminders', 'u')
-			->fields('u', array('amount'))
-			->condition('uid', $this->videographer->uid)
-			->condition('nid', $this->project->nid)
-			->execute()
-			->fetchObject();	
-		
+				
 	}
 	
 	/**

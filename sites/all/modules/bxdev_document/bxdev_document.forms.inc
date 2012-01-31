@@ -19,7 +19,7 @@ function bxdev_document_client_terms_form_submit($form, &$form_state){
 	$html = token_replace($content['value'], $data);
 	$filename = 'client_service_agreement_' . $project->project->nid . '.pdf';
 	
-	$fid = bxdev_document_create_pdf($html, $filename, 'client', 'Client Service Agreement', $project->client->uid, $project->project->nid);
+	$fid = bxdev_document_create_pdf($html, $filename, 'client', 'service_agreements', 'Client Service Agreement', $project->client->uid, $project->project->nid);
 	
 	if($fid){
 		$project->send_client_service_agreement($fid);
@@ -80,7 +80,7 @@ function bxdev_document_videographer_user_register_submit($form, &$form_state){
 	$html = token_replace($html, $data);
 	
 	$filename = 'videographer_independent_contractor_agreement_' . $account->uid . '.pdf';
-	$fid = bxdev_document_create_pdf($html, $filename, 'videographer', 'Independent Contractor Agreement', $account->uid);
+	$fid = bxdev_document_create_pdf($html, $filename, 'videographer', 'independent_contractor_agreements', 'Independent Contractor Agreement', $account->uid);
 	
 	// redirect
 	$form_state['redirect'] = 'node/31';

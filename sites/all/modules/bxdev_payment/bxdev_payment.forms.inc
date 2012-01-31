@@ -822,7 +822,7 @@ function bxdev_payment_videographer_payment_form_submit($form, &$form_state){
 	// videographer has uploaded a W9 form
 	if($w9_file){
 		
-		$project->process_videographer_payments($w9_file, $amount);
+		$project->process_videographer_payment($w9_file, $amount);
 				
 	// videographer has not uploaded a W9 form
 	}else{		

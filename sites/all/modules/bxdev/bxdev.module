@@ -330,7 +330,8 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					break;
 					
 				case 'videographer:address':
-					$replacements[$original] = $data['project']->videographer->field_address['und'][0]['value'];
+					$profile = profile2_load_by_user($data['project']->videographer, 'videographer');
+					$replacements[$original] = nl2br($profile->field_address['und'][0]['value']);
 					break;
 				
 				case 'videographer:amount':

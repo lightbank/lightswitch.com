@@ -65,7 +65,9 @@ function bxdev_user_menu() {
   $items['user/%user/new'] = array(
     'title' => 'Create new user',
     'page callback' => 'bxdev_user_create_user_page',
-    'access arguments' => array('administer users'),
+    // 'access arguments' => array('administer users'),
+		'access arguments' => array(1),
+		'access callback' => 'bxdev_user_create_user_access',
 		'weight' => 50,
     'type' => MENU_LOCAL_TASK,
   );
@@ -489,6 +491,14 @@ function bxdev_user_password_forgot($uid){
 	$user->send_password_reset();
 	drupal_set_message('A new password has been sent to your email. You must log out to use your new password. Click <a href="/user/logout">here</a> to logout');
 	drupal_goto('user/' . $uid . '/edit');
+}
+
+/**
+ * Access callback: create new user
+ */
+function bxdev_user_create_user_access($account){
+	global $user;
+	return user_access('administer users') && $account->uid == $user->uid;
 }
 
 /**

@@ -45,10 +45,15 @@ function bxdev_document_permission() {
 function bxdev_document_theme($existing, $type, $theme, $path) {
   return array(
     'invoice_client' => array(
-      'variables' => array('project' => NULL, 'line_items' => NULL),
+      'variables' => array('project' => NULL, 'line_items' => NULL, 'invoice_num' => NULL),
       'template' => 'bxdev_document_invoice_client',
 			'path' => drupal_get_path('module', 'bxdev_document') . '/theme/templates',
     ),
+	  'invoice_videographer' => array(
+	    'variables' => array('project' => NULL, 'profile' => NULL, 'line_items' => NULL, 'invoice_num' => NULL),
+	    'template' => 'bxdev_document_invoice_videographer',
+			'path' => drupal_get_path('module', 'bxdev_document') . '/theme/templates',
+	  ),
   );
 }
 
@@ -85,7 +90,7 @@ function bxdev_document_menu() {
 		'type' => MENU_LOCAL_TASK,
 	);
 	
-	$items['user/%user/documents'] = array(
+	$items['user/%user/edit/documents'] = array(
 		'title' => t('Documents'),
 		'page callback' => 'bxdev_document_videographer_documents_page',
 		'page arguments' => array(1),
@@ -203,7 +208,6 @@ function bxdev_document_videographer_documents_page($account){
 	return $output;	
 }
 
-
 /**
  * Access callback: project documents
  */
@@ -216,9 +220,9 @@ function bxdev_document_project_documents_access($node){
  */
 function bxdev_document_videographer_documents_access($account){
 	global $user;
-	return user_access('pc') || $user->uid == $account->uid;
+	$account_role = bxdev_user_get_role($account->uid);
+	return (user_access('pc') || $user->uid == $account->uid) && $account_role == 'videographer';
 }
-
 
 
 /**
@@ -228,7 +232,7 @@ function bxdev_document_videographer_documents_access($account){
 /**
  * Create a pdf document
  */
-function bxdev_document_create_pdf($html, $filename, $type, $description, $uid = NULL, $nid = NULL){
+function bxdev_document_create_pdf($html, $filename, $type, $path, $description, $uid = NULL, $nid = NULL){
 	
 	$destination = '';
 	
@@ -243,7 +247,7 @@ function bxdev_document_create_pdf($html, $filename, $type, $description, $uid =
 			break;
 	}
 	
-	$destination .= $filename;
+	$destination = $destination . $path . '/' . $filename;
 	
 	// add styling	
 	$css = '<head><style type="text/css">' . file_get_contents(drupal_get_path('module', 'bxdev_document') . '/theme/css/bxdev_document_pdf.css') . '</style></head>';
@@ -310,7 +314,7 @@ function bxdev_document_get_videographer_w9_file($uid){
 	
 	$profile = profile2_load_by_user($uid, 'videographer');
 	
-	if(!empty($profile->field_videographer_w9)){
+	if(!empty($profile->field_videographer_w9['und'][0]['fid'])){
 		
 		$file = (object) $profile->field_videographer_w9['und'][0];
 		return $file;

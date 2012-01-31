@@ -221,6 +221,8 @@ function bxdev_payment_project_payment_page($node){
 	Phone: ' . $project->videographer->field_phone['und'][0]['value'] . '</p>
 	</div>';
 	
+	$output .= '<div class="videographer-payment-wrap clearfix">';
+	
 	$output .= render(drupal_get_form('bxdev_payment_videographer_payment_form'));
 	
 	$reminder = bxdev_document_get_videographer_w9_reminder($project->videographer->uid, $project->project->nid);
@@ -230,6 +232,12 @@ function bxdev_payment_project_payment_page($node){
 		$output .= '<strong>The last reminder was sent on ' . $reminder_date . ' for the amount of ' . bxdev_format_currency($reminder->amount) . '</strong><br/>';
 		$output .= 'To send another reminder, enter the amount and click "Pay".</p>';		
 	}
+	
+	// payment history
+	$output .= '<h2>Payment History</h2>';
+	$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log', $project->project->nid, $project->videographer->uid) . '</div>';
+	
+	$output .= '</div>';
 	
 	return $output;
 }
