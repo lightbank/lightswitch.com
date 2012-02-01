@@ -340,7 +340,7 @@ class Project {
 		if($fid){
 			
 			$emails[] = $this->client->mail;
-			// $emails[] = $this->sales->mail;
+			$emails[] = 'accounting@bxcreative.com';
 			
 			$params = array(
 				'project' => $this,
@@ -456,7 +456,7 @@ class Project {
 			);
 
 			// send the email
-			$accounting_email = 'wandoledzep@gmail.com';
+			$accounting_email = 'accounting@bxcreative.com';
 			drupal_mail('bxdev_project', 'accounting_invoice_videographer', $accounting_email, language_default(), $params);
 
 			// log the payment

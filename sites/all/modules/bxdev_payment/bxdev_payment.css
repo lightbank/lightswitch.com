@@ -175,9 +175,10 @@
 	background: #eee;
 	border: solid #666 5px;
 	padding: 20px 20px 40px 20px;
-	bottom: 20px;
-	left: 470px;
+	top: 20px;
+	left: 200px;
 	width: 380px;
+	margin-top: -80px;
 }
 
 .videographer-charge-popup .buttons {

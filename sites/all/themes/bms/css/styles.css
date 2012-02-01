@@ -968,6 +968,16 @@ input[type="submit"].approve-btn, .approve-yes {
   -webkit-transition: none;
 }
 
+.client-terms-not-accepted {
+	padding: 20px 0;
+}
+
+.client-terms-not-accepted h2 {
+	color: #f00;
+	font-size: 20px;
+	font-weight: bold;
+}
+
 
 /** BUSINESS PROFILE / PROJECT PROFILE / CLIENTS DIRECTORY SHARED STYLES
 ================================================**/

@@ -159,7 +159,7 @@ function bxdev_document_project_documents_page($node){
 	$output .= '<div class="block">';
 	$output .= '<h2>Videographer Documents</h2>';
 	$output .= bxdev_document_get_videographer_w9_link($project->videographer->uid);
-	$output .= views_embed_view('documents', 'videographer', $project->videographer->uid);
+	$output .= views_embed_view('documents', 'project_videographer', $project->videographer->uid);
 	$output .= '</div>';
 	
 	$output .= '</div>';

@@ -27,6 +27,13 @@ function bxdev_menu() {
     'type' => MENU_CALLBACK,
   );
 
+	$items['get/video/%node'] = array(
+		'page callback' => 'bxdev_get_video',
+		'page arguments' => array(2),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
+
   return $items;
 }
 
@@ -509,3 +516,50 @@ function bxdev_format_currency($value, $sign = TRUE){
 	}
 	return $currency_formatted;
 }
+
+/**
+ * Menu callback: get video (front end)
+ */
+function bxdev_get_video($node){
+	
+	// dpm($node);
+	
+	$file = file_load($node->field_gallery_video['und'][0]['fid']);
+	$file = (array) $file;
+	// dpm(file_create_url($file->uri));
+	
+	$path = file_create_url($file->uri);
+	
+	$output = '<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0;
+		background: #fff;
+	}
+	
+	.btn {
+	  background-image: -moz-linear-gradient(center top , #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
+	  border: 1px solid #9C3D00;
+	  border-radius: 5px 5px 5px 5px;
+	  box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset, 0 1px 3px #333333;
+	  color: #FFFFFF;
+	  font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+	  padding: 10px 15px;
+	  text-align: center;
+	  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+	  text-transform: none;
+		text-decoration: none;
+	}
+	
+	</style>';
+	
+	$output .= theme('media_vimeo_video', $file);
+	
+	$output .= '<a href="" class="btn">View Pricing</a>';
+	
+	print $output;
+}
+
+
+
+

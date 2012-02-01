@@ -106,6 +106,7 @@
 		// Why Tabs
 		$('.why-tabs li:first a').addClass('active');
 		$('.why-tabs li a').click(function(){
+			var panel = $(this).attr('href');
 			$('.why-tabs li a').removeClass('active');
 			$(this).addClass('active');
 			

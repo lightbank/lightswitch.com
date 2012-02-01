@@ -69,7 +69,6 @@ function bxdev_project_menu() {
 		'title' => t('Review and accept the client service agreement'),
 		'page callback' => 'drupal_get_form',
 		'page arguments' => array('bxdev_project_client_terms_form', 2, 3),
-		// 'access arguments' => array('access content'),
 		'access arguments' => array(2, 3),
 		'access callback' => 'bxdev_project_client_terms_access',
 		'type' => MENU_CALLBACK,
@@ -79,6 +78,13 @@ function bxdev_project_menu() {
 		'page callback' => 'bxdev_project_send_videographer_w9_reminder',
 		'page arguments' => array(2),
 		'access arguments' => array('administer videographer payments'),
+	);
+	
+	$items['project/terms/resend/%'] = array(
+		'page callback' => 'bxdev_project_terms_client_resend',
+		'page arguments' => array(3),
+		'access arguments' => array('add new project'),
+		'type' => MENU_CALLBACK,
 	);
 	
   return $items;
@@ -227,7 +233,7 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
  * Implements hook_preprocess_node().
  */
 function bxdev_project_preprocess_node(&$vars){
-		
+	
 	if($vars['type'] == 'project'){
 		
 		// load up some variables
@@ -344,8 +350,15 @@ function bxdev_project_preprocess_node(&$vars){
 		
 		// check if client has accepted the project terms
 		if(empty($project->project->field_client_terms_accepted['und'][0]['value']) || $project->project->field_client_terms_accepted['und'][0]['value'] == 0){
-			$vars['client_terms_not_accepted'] = '<div class="client-terms-not-accepted" style="color: red; font-size: 20px; font-weight: bold; padding: 10px 0 30px;">Client has not accepted Project terms!</div>';
+			// $vars['client_terms_not_accepted'] = '<div class="client-terms-not-accepted" style="color: red; font-size: 20px; font-weight: bold; padding: 10px 0 30px;">Client has not accepted Project terms!</div><div class="client-terms-reminder"><a href="">Click here to send another reminder</a></div>';
+			$vars['client_terms_not_accepted'] = '<div class="client-terms-not-accepted">
+				<h2>Client has not accepted Project terms!</h2>
+				<a href="/project/terms/resend/' . $project->project->nid . '">Click here to send another reminder</a>
+			</div>';
 		}
+		
+		// check if spec video
+		$vars['video_class'] = $project->project->field_video_type['und'][0]['value'];
 		
 	}
 }
@@ -486,6 +499,16 @@ function bxdev_project_download_production_details($node){
 }
 
 /**
+ * Menu callback: project terms client resend
+ */
+function bxdev_project_terms_client_resend($nid){
+	$project = new Project($nid);
+	$project->send_client_terms();
+	drupal_set_message('Terms email has been sent to the Client');
+	drupal_goto('node/' . $nid);
+}
+
+/**
  * Access callback: client terms
  */
 function bxdev_project_client_terms_access($nid, $hash){
@@ -522,18 +545,18 @@ function bxdev_project_get_production_log($nid){
  * Return a project description (used for invoices) depending on the project type value
  */
 function bxdev_project_get_project_description($value){
-	$descripiton = '';
+	$description = '';
 	switch($value){
 		case '299':
-			$descripiton = 'Standard Lightswitch Video';
+			$description = 'Standard Lightswitch Video';
 			break;
 		
 		case '399':
-			$descripiton = 'Standard Lightswitch Video with Interview';
+			$description = 'Standard Lightswitch Video with Interview';
 			break;
 			
 		case '449':
-			$descripiton = 'Standard Lightswitch Video with Voice Over';
+			$description = 'Standard Lightswitch Video with Voice Over';
 			break;
 			
 		default:

@@ -63,7 +63,7 @@
 	
 </div><!-- end .left -->
 
-<div class="main">
+<div class="main <?php print $video_class; ?>">
 	
 	<div class="block">
 		<div class="video">
