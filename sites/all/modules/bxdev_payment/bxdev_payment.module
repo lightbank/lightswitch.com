@@ -95,6 +95,16 @@ function bxdev_payment_menu() {
 		'access arguments' => array('administer client payments'),
 		'type' => MENU_CALLBACK,
 	);
+	
+	$items['user/%user/payments'] = array(
+		'title' => t('Payments'),
+		'page callback' => 'bxdev_payment_videographer_payments_page',
+		'page arguments' => array(1),
+		'access arguments' => array(1),
+		'access callback' => 'bxdev_payment_videographer_payments_access',
+		'weight' => 10,
+		'type' => MENU_LOCAL_TASK,
+	);
 
   return $items;
 }
@@ -214,28 +224,38 @@ function bxdev_payment_project_payment_page($node){
 	$output .= '</div>';
 	
 	// client information
-	$output .= '<div class="client-info">
-	<h1>Videographer</h1>
-	<h3>' . $project->videographer->field_name['und'][0]['value'] . '</h3>
-	<p>Email: <a href="mailto:' . $project->videographer->mail . '">' . $project->videographer->mail . '</a></br>
-	Phone: ' . $project->videographer->field_phone['und'][0]['value'] . '</p>
-	</div>';
+	$output .= '<div class="client-info"><h1>Videographer</h1>';
 	
-	$output .= '<div class="videographer-payment-wrap clearfix">';
+	if(!empty($project->videographer)){
 	
-	$output .= render(drupal_get_form('bxdev_payment_videographer_payment_form'));
+		$output .= '<h3>' . $project->videographer->field_name['und'][0]['value'] . '</h3>
+		<p>Email: <a href="mailto:' . $project->videographer->mail . '">' . $project->videographer->mail . '</a></br>
+		Phone: ' . $project->videographer->field_phone['und'][0]['value'] . '</p>
+		</div>';
 	
-	$reminder = bxdev_document_get_videographer_w9_reminder($project->videographer->uid, $project->project->nid);
-	if($reminder){
-		$reminder_date = date('m-d-Y g:ia', strtotime($reminder->date . ' + 2 hours'));
-		$output .= '<p>* Payment is waiting for the Videographer to add a W9 form.<br/>';
-		$output .= '<strong>The last reminder was sent on ' . $reminder_date . ' for the amount of ' . bxdev_format_currency($reminder->amount) . '</strong><br/>';
-		$output .= 'To send another reminder, enter the amount and click "Pay".</p>';		
+		$output .= '<div class="videographer-payment-wrap clearfix">';
+		
+		$output .= '<div class="videographer-payment-form">';
+		
+		$output .= render(drupal_get_form('bxdev_payment_videographer_payment_form'));
+	
+		$reminder = bxdev_document_get_videographer_w9_reminder($project->videographer->uid, $project->project->nid);
+		if($reminder){
+			$reminder_date = date('m-d-Y g:ia', strtotime($reminder->date . ' + 2 hours'));
+			$output .= '<p class="reminder"><strong>* Payment is waiting for the Videographer to add a W9 form.</strong><br/>';
+			$output .= 'The last reminder was sent on:<br><strong>' . $reminder_date . '</strong> for the amount of <strong>' . bxdev_format_currency($reminder->amount) . '</strong><br/>';
+			$output .= '<em>To send another reminder, enter the amount and click "Pay".</em></p>';
+		}
+		
+		$output .= '</div>';
+	
+		// payment history
+		$output .= '<h2>Payment History</h2>';
+		$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log', $project->project->nid, $project->videographer->uid) . '</div>';
+	
+	}else{
+		$output .= '<p>No videographer assigned.</p>';
 	}
-	
-	// payment history
-	$output .= '<h2>Payment History</h2>';
-	$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log', $project->project->nid, $project->videographer->uid) . '</div>';
 	
 	$output .= '</div>';
 	
@@ -293,6 +313,19 @@ function bxdev_payment_client_payment_page($account){
 }
 
 /**
+ * Page callback: videographer documents
+ */
+function bxdev_payment_videographer_payments_page($account){
+	
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
+	drupal_set_title('Videographer Payments');
+
+	$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log_videographer', $account->uid) . '</div>';
+	
+	return $output;	
+}
+
+/**
  * Menu callback: client remove credit card
  */
 function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
@@ -328,10 +361,14 @@ function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
 	drupal_goto('admin/client/' . $uid . '/payments');
 }
 
-
 /**
- * CUSTOM
+ * Access callback: project documents
  */
+function bxdev_payment_videographer_payments_access($account){
+	global $user;
+	$account_role = bxdev_user_get_role($account->uid);
+	return (user_access('pc') || $user->uid == $account->uid) && $account_role == 'videographer';
+}
 
 /**
  * Access callback: project payment
@@ -339,6 +376,11 @@ function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
 function bxdev_payment_project_payment_access($node){
 	return $node->type == 'project' && user_access('add new project');
 }
+
+
+/**
+ * CUSTOM
+ */
 
 /**
  * Return user auth token, if it exists

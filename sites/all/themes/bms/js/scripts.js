@@ -103,6 +103,17 @@
 			return false;
 		});
 		
+		// Why Tabs
+		$('.why-tabs li:first a').addClass('active');
+		$('.why-tabs li a').click(function(){
+			$('.why-tabs li a').removeClass('active');
+			$(this).addClass('active');
+			
+			$('.why-tabs .tab-block').fadeOut();
+			$('.why-tabs').find("#"+panel).fadeIn();
+			return false;
+		});
+		
 	});
 
 

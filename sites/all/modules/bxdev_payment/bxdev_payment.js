@@ -37,6 +37,24 @@
 				return false;
 			});
 			
+			// click the "Pay" button - launch confirm
+			$('#bxdev-payment-videographer-payment-form .form-submit').click(function(){
+				$('.videographer-charge-popup').fadeIn(200);
+				return false;
+			});
+			
+			// click the "Cancel" button - close confirm
+			$('#bxdev-payment-videographer-payment-form .btn-cancel').click(function(){
+				$('.videographer-charge-popup').fadeOut(200);
+				return false;
+			});
+			
+			// click "Send payment" - submit form
+			$('#bxdev-payment-videographer-payment-form .btn-approve').click(function(){
+				$('#bxdev-payment-videographer-payment-form').submit();
+				return false;
+			});
+			
 			// click "remove" credit card
 			$('.credit-card-wrap .payment-profile a').click(function(){
 				$('.remove-popup').fadeOut(200);

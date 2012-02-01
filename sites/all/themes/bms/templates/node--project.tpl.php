@@ -4,6 +4,8 @@
 <?php //dpm($pc); ?>
 <?php //dpm($videographer); ?>
 
+<?php if(!empty($client_terms_not_accepted)){ print $client_terms_not_accepted; }?>
+
 <div class="left">
 	<div class="block">
 		<h1><?php print $business->title ?></h1>

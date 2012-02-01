@@ -335,7 +335,7 @@ class Project {
 		$filename = 'lightswitch_client_invoice_' . $invoice_num . '.pdf';
 		
 		// create the pdf and get the fid
-		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'invoices', 'Client invoice', $this->client->uid, $this->project->nid);
+		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'invoices', 'Client Invoice', $this->client->uid, $this->project->nid);
 		
 		if($fid){
 			

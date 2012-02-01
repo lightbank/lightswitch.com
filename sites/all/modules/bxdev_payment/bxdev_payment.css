@@ -18,8 +18,7 @@
 	font-size: 24px;	
 }
 
-#bxdev-payment-project-payment-form,
-#bxdev-payment-videographer-payment-form {
+#bxdev-payment-project-payment-form {
 	width: 450px;
 	float: left;
 	margin-right: 100px;
@@ -150,5 +149,41 @@
 #page .links li {
 	margin-left: 0;
 }
+
+.reminder {
+	clear: left;
+	padding-top: 15px;
+}
+
+.videographer-payment-form {
+	width: 520px;
+	float: left;
+	margin-right: 100px;
+}
+
+.videographer-payment-form input.form-text {
+	width: auto;
+}
+
+.videographer-payment-wrap {
+	padding-bottom: 30px;
+	position: relative;
+}
+
+.videographer-charge-popup {
+	position: absolute;
+	background: #eee;
+	border: solid #666 5px;
+	padding: 20px 20px 40px 20px;
+	bottom: 20px;
+	left: 470px;
+	width: 380px;
+}
+
+.videographer-charge-popup .buttons {
+	padding-top: 20px;
+}
+
+
 
 

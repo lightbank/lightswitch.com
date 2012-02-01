@@ -104,8 +104,8 @@ function bxdev_vid_profile2_update($profile){
 	// if the profile is a videographer and a w9 file exists
 	if($profile->type == 'videographer' && !empty($profile->field_videographer_w9['und'][0]['fid'])){
 		
-		$w9 = (object) $profile->field_videographer_w9['und'][0];
-		
+		$w9 = file_load($profile->field_videographer_w9['und'][0]['fid']);
+				
 		// check if videographer has any pending payments
 		$results = db_select('users_w9_reminders', 'u')
 			->fields('u')

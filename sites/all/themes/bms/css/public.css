@@ -132,6 +132,10 @@ header .limiter {
 	position: relative;
 }
 
+.nav .active {
+	color: #CE5014;
+}
+
 .badge-cta {
 	position: absolute;
 	top: 20px;
@@ -284,6 +288,139 @@ header .limiter {
 	top: 170px;
 	right: -60px;
 	z-index: 99;
+}
+
+
+
+
+/** WHY
+================================================**/
+
+.why-tabs {
+	margin-bottom: 40px;
+}
+
+#page .why-tabs ul li {
+	float: left;
+	list-style: none;
+	margin: 0;
+}
+
+#page .why-tabs ul li.active {
+	background: #fff;
+}
+
+#page .why-tabs li a {
+	display: block;
+	width: 200px;
+	margin: 0;
+	background: #ebebeb;
+	font-size: 16px;
+	line-height: 40px;
+	font-weight: bold;
+	text-transform: lowercase;
+	text-align: center;
+}
+
+#page .why-tabs li a.active {
+	background: #fff;
+}
+
+.tab-area {
+	padding: 40px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.23);
+}
+
+.why-tabs #block-2 {
+	display: none;
+}
+
+.why-tabs h3 {
+	margin-bottom: 20px;
+}
+
+.why-tabs .col {
+	float: left;
+	width: 220px;
+}
+
+.why-tabs .col span {
+	display: block;
+	width: 154px;
+	height: 129px;
+	background: url(../images/sprite_public.png) no-repeat 0 -808px;
+}
+
+
+.why-bottom {
+	padding: 30px 40px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.23);
+}
+
+.why-bottom .left,
+.why-bottom .right {
+	width: 420px;
+}
+
+.why-bottom .left {
+	padding-right: 50px;
+	border-right: 1px solid #ccc;
+}
+
+.why-bottom .left .row {
+	position: relative;
+	padding: 0 0 20px 120px;
+}
+
+.why-bottom .right .row {
+	position: relative;
+	padding: 0 0 20px 60px;
+}
+
+.why-bottom .left span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 90px;
+	height: 89px;
+	background: url(../images/pics_testimonials.jpg) no-repeat;
+}
+
+.why-bottom .left .r2 span { background-position: 0 -89px; }
+.why-bottom .left .r3 span { background-position: 0 -178px; }
+
+.why-bottom .right span {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: block;
+	width: 43px;
+	height: 41px;
+	background: url(../images/sprite_public.png) no-repeat -775px -129px;
+}
+
+.why-bottom h3 {
+	margin-bottom: 40px;
+	font-size: 24px;
+}
+
+.why-bottom h4 {
+	font-size: 16px;
+}
+
+.why-bottom .right h4 {
+	margin-bottom: 5px;
+}
+
+.why-bottom h5 {
+	margin-bottom: 5px;
+	color: #CD591D;
+	font-size: 16px;
+	font-family: Mate, Georgia, serif;
+	font-weight: 400;
 }
 
 

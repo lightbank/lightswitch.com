@@ -90,7 +90,7 @@ function bxdev_document_menu() {
 		'type' => MENU_LOCAL_TASK,
 	);
 	
-	$items['user/%user/edit/documents'] = array(
+	$items['user/%user/documents'] = array(
 		'title' => t('Documents'),
 		'page callback' => 'bxdev_document_videographer_documents_page',
 		'page arguments' => array(1),

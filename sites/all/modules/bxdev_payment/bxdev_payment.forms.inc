@@ -357,7 +357,7 @@ function bxdev_payment_project_payment_form($form, &$form_state, $node){
 			'449' => 'Video with voice over - $449',
 			'custom' => 'Custom',
 		),
-		'#default_value' => '299',
+		'#default_value' => !empty($project->project->field_project_type['und'][0]['value']) ? $project->project->field_project_type['und'][0]['value'] : '299',
 	);
 		
 	// credit card outer wrapper
@@ -632,8 +632,19 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 					bxdev_payment_log_payment($project->project->nid, $project->client->uid, $payment_id, $transaction_id, $amount);
 					
 					/**
-					 * TODO: email receipt to client and accounting
-					 */
+					 * Create and send the invoice receipt
+					 */				
+
+					$line_items[] = array(
+						'qty' => 1,
+						'description' => bxdev_project_get_project_description($amount),
+						'unit_price' => $amount,
+						'line_total' => $amount,
+					);
+
+					$line_items['total'] = $amount;
+
+					$project->send_client_receipt($line_items, $payment_id);
 
 				// transaction was not successful
 				}else{
@@ -801,7 +812,15 @@ function bxdev_payment_videographer_payment_form($form, &$form_state){
 	$form['pay'] = array(
 	  '#type' => 'submit',
 	  '#value' => t('Pay'),
-	);	
+	);
+	
+	$form['popup'] = array(
+		'#markup' => '<div style="display:none;" class="popup videographer-charge-popup">
+			<h3>Are you sure you wish to initiate this Videographer payment?</h3><p>This action cannot be undone.</p>
+			<div class="buttons"><a class="btn-approve" href="">Send payment</a>
+			<a class="btn-cancel" href="">Cancel</a></div>
+		</div>'
+	);
 	
 	return $form;
 }
