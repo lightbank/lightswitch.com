@@ -110,7 +110,7 @@ function bxdev_user_change_password_form_submit($form, &$form_state){
  * Form builder: accept terms
  */
 function bxdev_user_accept_terms_form($form, $form_state){
-	drupal_set_title('You must accept the Independent Contractory Agreement terms before proceeding.');
+	drupal_set_title('You must accept the Independent Contractor Agreement terms before proceeding.');
 	$form['terms'] = array(
 		'#type' => 'checkbox',
 		'#title' => t('I accept the Independent Contractor Agreement'),

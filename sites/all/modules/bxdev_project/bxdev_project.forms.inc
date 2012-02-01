@@ -465,10 +465,10 @@ function bxdev_project_client_terms_form_submit($form, &$form_state){
 	$node->field_client_terms_accepted['und'][0]['value'] = 1;
 	node_save($node);
 	
-	/**
-	 * TODO: remove the uid / hash from the db
-	 */
-	
+	// expire the page by removing the hash entry from the db
+	db_delete('users_project_terms')
+		->condition('nid', $nid)
+		->execute();	
 }
 
 

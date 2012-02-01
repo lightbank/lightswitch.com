@@ -651,6 +651,12 @@ footer {
 	float: left;
 	margin-right: 2px;
 	list-style: none;
+	margin-left: 0;
+}
+
+#page #autocomplete li {
+	list-style: none;
+	margin-left: 0;
 }
 
 .view-filters {
@@ -995,7 +1001,8 @@ input[type="submit"].approve-btn, .approve-yes {
 .page-clients .main .block,
 .page-videographers .left,
 .page-videographers .main .block,
-.page-user-info .right {
+.page-user-info .right,
+.page-node-1244 #content {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;

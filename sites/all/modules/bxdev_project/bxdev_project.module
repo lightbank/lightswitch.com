@@ -359,7 +359,8 @@ function bxdev_project_preprocess_node(&$vars){
  * Page callback: create project
  */
 function bxdev_project_create_project_page($user){
-	$output = '<h2><strong>Project Info</strong> (step 2 of 2)</h2>';
+	
+	$output = !empty($_SESSION['payment']) ? '<h2><strong>Project Info</strong> (step 3 of 3)</h2>' : '<h2><strong>Project Info</strong> (step 2 of 2)</h2>';
 	$output .= drupal_render(node_add('project'));
 
 	return $output;

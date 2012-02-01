@@ -388,8 +388,10 @@ function bxdev_user_preprocess_user_profile(&$vars){
 	if(isset($vars['user']->roles[4])){
 		$output .= '<div class="">';
 		$output .= '<a href="/projects/master" class="add-project">Master project list</a> ';
-		$output .= '<a href="/sales/add/business" class="add-project">+ Add project</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+		$output .= '<a href="/sales/add/business" class="add-project">+ Add project</a> ';
+		$output .= '<a href="/sales/add/cc" class="add-project">+ Add project (cc)</a>&nbsp;&nbsp;&nbsp;&nbsp;';
 		$output .= '<a class="add-project" href="/videographers">Videographers directory</a> ';
+		$output .= '<a class="add-project" href="/admin/clients">Clients</a> ';
 		$output .= '<a href="/admin/structure/types" class="add-project">Admin settings</a> ';
 		$output .= '</div><br />';
 		$output .= views_embed_view('projects', 'pc_landing', $vars['user']->uid);
