@@ -25,8 +25,8 @@
   
 	$(function(){
 		
-		Shadowbox.init();		
-		
+		Shadowbox.init();
+				
 		/**
 		 * Business profile
 		 */
@@ -114,6 +114,14 @@
 			$('.why-tabs').find("#"+panel).fadeIn();
 			return false;
 		});
+		
+		/**
+		 * Video gallery
+		 */
+		$('.view-display-id-gallery_slideshow ul').roundabout({
+			minOpacity: 1
+		});
+		
 		
 	});
 

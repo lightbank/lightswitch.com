@@ -532,7 +532,7 @@ function bxdev_get_video($node){
 	
 	$output = '<style type="text/css">
 	body {
-		padding: 0;
+		padding: 20px;
 		margin: 0;
 		background: #fff;
 	}
@@ -551,11 +551,16 @@ function bxdev_get_video($node){
 		text-decoration: none;
 	}
 	
+	.btn-wrap {
+		padding-top: 30px;
+		text-align: right;
+	}
+	
 	</style>';
 	
 	$output .= theme('media_vimeo_video', $file);
 	
-	$output .= '<a href="" class="btn">View Pricing</a>';
+	$output .= '<div class="btn-wrap"><a href="/video-production-services" class="btn">View Pricing</a></div>';
 	
 	print $output;
 }

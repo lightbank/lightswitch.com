@@ -1624,3 +1624,39 @@ input[type="submit"].approve-btn, .approve-yes {
 }
 
 
+
+/** VIDEO GALLERY
+================================================**/
+
+.view-display-id-gallery_slideshow ul {
+	width: 800px;
+	height: 270px;
+}
+
+.view-display-id-gallery_slideshow li {
+	width: 480px;
+	height: 270px;
+	list-style: none;
+	cursor: pointer;
+}
+
+.view-display-id-gallery_slideshow img {
+	width: 100%;
+	height: 100%;
+	border: solid #fff 15px;
+}
+
+.view-display-id-gallery_slideshow .views-field-nothing {
+	position: absolute;
+	top: 45%;
+	left: 45%;
+}
+
+.roundabout-holder {
+	margin-left: 120px;
+}
+
+
+
+
+
