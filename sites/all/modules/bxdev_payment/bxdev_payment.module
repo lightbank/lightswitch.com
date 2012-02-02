@@ -3,6 +3,8 @@
 $GLOBALS['api_login_id'] = '2hQT4t8ua';
 $GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
 
+$foo = 'bar';
+
 // $GLOBALS['api_login_id'] = '9X6zny5UY';
 // $GLOBALS['transaction_key'] = '39P2BtFs4n569VAc';
 
@@ -184,6 +186,7 @@ function bxdev_payment_get_payment_profiles($uid){
 function bxdev_payment_client_payment_step_one_page(){
 	
 	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
 	
 	$output = '<h2><strong>Client Payment Info</strong> (step 1 of 3)</h2>';
 	
@@ -199,6 +202,8 @@ function bxdev_payment_project_payment_page($node){
 		
 	$project = new Project($node->nid);
 	
+	$GLOBALS['payment_profiles'] = bxdev_payment_get_payment_profiles($project->client->uid);
+	
 	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
 	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
 	
@@ -213,6 +218,11 @@ function bxdev_payment_project_payment_page($node){
 	</div>';
 	
 	$output .= '<div class="client-payment-wrap clearfix">';
+	
+	// display payment notes if they exist
+	if(!empty($project->project->field_payment_notes['und'][0]['value'])){
+		$output .= '<label><strong>Payment notes:</strong></label><p>' . $project->project->field_payment_notes['und'][0]['value'] . '</p>';
+	}
 	
 	// credit card form
 	$output .= render(drupal_get_form('bxdev_payment_project_payment_form', $node));
@@ -230,8 +240,10 @@ function bxdev_payment_project_payment_page($node){
 	
 		$output .= '<h3>' . $project->videographer->field_name['und'][0]['value'] . '</h3>
 		<p>Email: <a href="mailto:' . $project->videographer->mail . '">' . $project->videographer->mail . '</a></br>
-		Phone: ' . $project->videographer->field_phone['und'][0]['value'] . '</p>
-		</div>';
+		Phone: ' . $project->videographer->field_phone['und'][0]['value'];
+		
+		$output .= !empty($project->project->field_vid_agreed_payment['und'][0]['value']) ? '<br>Agreed payment: <strong>' . bxdev_format_currency($project->project->field_vid_agreed_payment['und'][0]['value']) . '</strong>' : '';		
+		$output .= '</p></div>';
 	
 		$output .= '<div class="videographer-payment-wrap clearfix">';
 		
@@ -258,6 +270,9 @@ function bxdev_payment_project_payment_page($node){
 	}
 	
 	$output .= '</div>';
+	
+	// unset the global
+	unset($GLOBALS['payment_profiles']);
 	
 	return $output;
 }

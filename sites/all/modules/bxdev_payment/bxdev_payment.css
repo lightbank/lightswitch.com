@@ -2,6 +2,13 @@
 	position: relative;
 }
 
+/*step one - client payment info*/
+
+#client-wrap,
+#cc-selection-wrap {
+	width: 332px;
+}
+
 /*project payments*/
 
 #content h1 {

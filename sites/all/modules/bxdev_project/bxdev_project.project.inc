@@ -331,8 +331,11 @@ class Project {
 		// get the invoice html
 		$html = theme('invoice_client', array('project' => $this, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
 		
+		// generate a clean client name used in the file name
+		$client_name = bxdev_get_filename_string($this->client->field_name['und'][0]['value']);
+		
 		// generate the filename
-		$filename = 'lightswitch_client_invoice_' . $invoice_num . '.pdf';
+		$filename = 'lightswitch_invoice_' . $client_name . '_' . $invoice_num . '.pdf';
 		
 		// create the pdf and get the fid
 		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'invoices', 'Client Invoice', $this->client->uid, $this->project->nid);
@@ -404,7 +407,7 @@ class Project {
 	 * @param $amount (int)
 	 *   - Amount to be charged
 	 */
-	function process_videographer_payment($w9, $amount){
+	function process_videographer_payment($w9, $amount, $description){
 		
 		/**
 		 * Generate the invoice
@@ -413,7 +416,7 @@ class Project {
 		$line_items[] = array(
 			'project' => $this,
 			'qty' => 1,
-			'description' => 'Lightswitch Video',
+			'description' => $description,
 			'unit_price' => $amount,
 			'line_total' => $amount,
 		);

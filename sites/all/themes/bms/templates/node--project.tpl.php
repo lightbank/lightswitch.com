@@ -65,7 +65,8 @@
 
 <div class="main <?php print $video_class; ?>">
 	
-	<div class="block">
+	<div class="block top-block">
+		<?php if(!empty($spec_intro)) print $spec_intro; ?>
 		<div class="video">
 			<div class="video-wrap-outer">
 				<?php if(!empty($content['field_project_video']['#items'])): ?>
@@ -82,6 +83,8 @@
 			<?php endif; ?>
 		</div><!-- end .video -->
 		
+		<?php if(!empty($spec_markup1)) print $spec_markup1; ?>
+		
 		<div class="comments-wrap clearfix">
 			<?php if(!empty($comment_switch)) print $comment_switch; ?>
 			<?php if(!empty($client_comments)) print $client_comments; ?>
@@ -91,6 +94,8 @@
 		</div>
 		
 	</div><!-- end .block -->
+	
+	<?php if(!empty($spec_markup2)) print $spec_markup2; ?>
 	
 	<?php if(isset($production_details)): ?>
 		<?php print $production_details; ?>

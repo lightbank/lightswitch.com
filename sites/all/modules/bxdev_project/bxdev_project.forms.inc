@@ -13,6 +13,11 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	global $user;
 	// set the author value, if sales/add/project
 	if(arg(0) == 'sales'){
+		// hide the payment notes field
+		unset($form['field_payment_notes']);
+		// hide the videographer agreed payment field
+		unset($form['field_vid_agreed_payment']);
+		
 		$form['field_author']['und']['#type'] = 'hidden';
 		// only pre-populate if sales user
 		if(bxdev_user_get_role($user->uid) == 'sales'){
@@ -56,7 +61,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	// create a fieldset
 	$form['bxdev_shoot_date_fieldset'] = array(
 		'#type' => 'fieldset',
-		'#weight' => 10,
+		'#weight' => 11,
 		'#attributes' => array(
 			'class' => array('clearfix'),
 		),

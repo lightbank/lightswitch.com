@@ -19,17 +19,24 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 	// client selection
 	$form += bxdev_payment_client_selection_form_markup($form_state);
 	
+	// payment notes
+	$form['payment_notes'] = array(
+		'#type' => 'textarea',
+		'#title' => t('Payment notes'),
+		'#default_value' => !empty($form_state['values']['payment_notes']) ? $form_state['values']['payment_notes'] : '',
+	);
+	
 	// project type
 	$form['project_type'] = array(
 		'#type' => 'select',
 		'#title' => t('Project type'),
 		'#options' => array(
-			'299' => 'Standard video - $299',
-			'399' => 'Video with interview - $399',
-			'449' => 'Video with voice over - $449',
+			'449' => 'Standard video - $449',
+			'549' => 'Video with interview - $549',
+			'599' => 'Video with voice over - $599',
 			'custom' => 'Custom',
 		),
-		'#default_value' => '299',
+		'#default_value' => '449',
 	);
 	
 	// credit card input
@@ -120,6 +127,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 	$shoot_date_start = strtotime($values['bxdev_shoot_date'] . ' ' . $values['bxdev_shoot_time1']);
 	$shoot_date_end = !empty($values['bxdev_shoot_time2']) ? strtotime($values['bxdev_shoot_date'] . ' ' . $values['bxdev_shoot_time2']) : '';
 	$project_type = $values['project_type'];
+	$payment_notes = $values['payment_notes'];
 		
 	// check if existing user
 	if(!empty($values['existing_client'])){
@@ -199,6 +207,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				// if authorization was successful
 				if($cim->isSuccessful()){
 					drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
+					$_SESSION['payment']['payment_notes'] = $payment_notes;
 					$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
 					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 					$_SESSION['payment']['payment_id'] = $payment_id;
@@ -218,7 +227,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 		
 		// if existing credit card
 		}else if($values['cc_select'] == 'existing'){
-			
+			$_SESSION['payment']['payment_notes'] = $payment_notes;
 			$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
 			$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 			$_SESSION['payment']['payment_id'] = $values['payment_id'];
@@ -299,6 +308,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				// if authorization was successful
 				if($cim->isSuccessful()){
 					drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
+					$_SESSION['payment']['payment_notes'] = $payment_notes;
 					$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
 					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 					$_SESSION['payment']['payment_id'] = $payment_id;
@@ -373,6 +383,13 @@ function bxdev_payment_project_payment_form($form, &$form_state, $node){
 		'#type' => 'textfield',
 		'#title' => t('Charge amount'),
 		'#maxlength' => 16,
+		'#required' => TRUE,
+	);
+	
+	// charge amount
+	$form['cc']['cc_description'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Line item description'),
 		'#required' => TRUE,
 	);
 	
@@ -561,6 +578,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 	
 	$cim = new AuthnetCIM($api_login_id, $transaction_key);
 	$amount = $values['cc_amount'];
+	$line_item_description = $values['cc_description'];
 	
 	switch($values['cc_select']){
 		case 'existing':
@@ -585,7 +603,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 				
 				$line_items[] = array(
 					'qty' => 1,
-					'description' => bxdev_project_get_project_description($amount),
+					'description' => $line_item_description,
 					'unit_price' => $amount,
 					'line_total' => $amount,
 				);
@@ -637,7 +655,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 
 					$line_items[] = array(
 						'qty' => 1,
-						'description' => bxdev_project_get_project_description($amount),
+						'description' => $line_item_description,
 						'unit_price' => $amount,
 						'line_total' => $amount,
 					);
@@ -809,6 +827,12 @@ function bxdev_payment_videographer_payment_form($form, &$form_state){
 		'#required' => TRUE,
 	);
 	
+	$form['description'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Line item description'),
+		'#required' => TRUE,
+	);
+	
 	$form['pay'] = array(
 	  '#type' => 'submit',
 	  '#value' => t('Pay'),
@@ -832,6 +856,7 @@ function bxdev_payment_videographer_payment_form_submit($form, &$form_state){
 	
 	$values = $form_state['values'];
 	$amount = $values['amount'];
+	$description = $values['description'];
 	
 	$nid = arg(1);
 	$project = new Project($nid);
@@ -841,7 +866,7 @@ function bxdev_payment_videographer_payment_form_submit($form, &$form_state){
 	// videographer has uploaded a W9 form
 	if($w9_file){
 		
-		$project->process_videographer_payment($w9_file, $amount);
+		$project->process_videographer_payment($w9_file, $amount, $description);
 				
 	// videographer has not uploaded a W9 form
 	}else{		

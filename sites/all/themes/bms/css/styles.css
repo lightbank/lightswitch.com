@@ -978,6 +978,56 @@ input[type="submit"].approve-btn, .approve-yes {
 	font-weight: bold;
 }
 
+/*spec video*/
+.spec .why-tabs .col {
+	width: 140px;
+}
+
+.spec .why-tabs .c1 {
+	padding-left: 0;
+}
+
+.spec h2 {
+	padding-bottom: 10px;
+}
+
+.spec .why-tabs h4 {
+	min-height: 60px;
+	margin-bottom: 0;
+}
+
+.spec .why-tabs img {
+	display:inline;
+}
+
+.spec .why-tabs .img-wrap {
+	height: 98px;
+	margin-bottom: 20px;
+}
+
+.spec .why-tabs p {
+	font-size: 13px;
+	line-height: 18px;
+}
+
+.spec .btn-contact {
+	background: #fe8f00;
+	font-size: 20px;
+	color: #fff;
+	font-weight: bold;
+	padding: 14px;
+	border-radius: 7px;
+}
+
+.spec .btn-wrap {
+	padding-top: 15px;
+}
+
+.prod-history-wrap .trigger,
+.prod-details-wrap .trigger {
+	padding-right: 80px;
+}
+
 
 /** BUSINESS PROFILE / PROJECT PROFILE / CLIENTS DIRECTORY SHARED STYLES
 ================================================**/

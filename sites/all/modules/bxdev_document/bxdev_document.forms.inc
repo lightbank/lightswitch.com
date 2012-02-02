@@ -17,7 +17,10 @@ function bxdev_document_client_terms_form_submit($form, &$form_state){
 	$content = variable_get('document_client_service_agreement', array());
 	
 	$html = token_replace($content['value'], $data);
-	$filename = 'client_service_agreement_' . $project->project->nid . '.pdf';
+	
+	$client_name = bxdev_get_filename_string($project->client->field_name['und'][0]['value']);
+	
+	$filename = 'lightswitch_client_service_agreement_' . $client_name . '_' . $project->project->nid . '.pdf';
 	
 	$fid = bxdev_document_create_pdf($html, $filename, 'client', 'service_agreements', 'Client Service Agreement', $project->client->uid, $project->project->nid);
 	
@@ -79,7 +82,9 @@ function bxdev_document_videographer_user_register_submit($form, &$form_state){
 	$html = $html['value'];
 	$html = token_replace($html, $data);
 	
-	$filename = 'videographer_independent_contractor_agreement_' . $account->uid . '.pdf';
+	$videographer_name = bxdev_get_filename_string($account->field_name['und'][0]['value']);
+	
+	$filename = 'lightswitch_contractor_agreement_' . $videographer_name . '_' . $account->uid . '.pdf';
 	$fid = bxdev_document_create_pdf($html, $filename, 'videographer', 'independent_contractor_agreements', 'Independent Contractor Agreement', $account->uid);
 	
 	// redirect

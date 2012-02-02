@@ -80,6 +80,25 @@
 	function populate_cc_amount(){
 		var value = $('select[name="project_type"]').val();
 		$('input[name="cc_amount"]').val(value == 'custom' ? '' : value);
+		// if line item description exists
+		if($('input[name="cc_description"]').length > 0){
+			// determine the line item description
+			var description = '';
+			if(value == 299){
+				description = 'Standard video';
+			}else if(value == 399){
+				description = 'Standard video with interview';
+			}else if(value == 449){
+				description = 'Standard video with voice over';
+			}
+			$('input[name="cc_description"]').val(description);
+		}
+	}
+	
+	// populate the charge amount field based on project type drop-down
+	function populate_cc_description(){
+		var value = $('select[name="project_type"]').val();
+		$('input[name="cc_amount"]').val(value == 'custom' ? '' : value);
 	}
 
 }(jQuery));

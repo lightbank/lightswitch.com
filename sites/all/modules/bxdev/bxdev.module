@@ -557,14 +557,20 @@ function bxdev_get_video($node){
 	}
 	
 	</style>';
-	
+		
 	$output .= theme('media_vimeo_video', $file);
 	
-	$output .= '<div class="btn-wrap"><a href="/video-production-services" class="btn">View Pricing</a></div>';
+	$output .= '<div class="btn-wrap"><a href="#" class="btn" onclick="parent.window.location = \'/video-production-services\'">View Pricing</a></div>';
 	
 	print $output;
 }
 
-
+/**
+ * Return a filename friendly string
+ */
+function bxdev_get_filename_string($string){
+	// generate a clean client name used in the file name
+	return preg_replace('/[^\w\.-]/', '_', strtolower($string));
+}
 
 

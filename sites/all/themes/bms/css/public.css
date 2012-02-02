@@ -651,6 +651,21 @@ header .limiter {
 
 
 
+
+/** GALLERY
+=========================================**/
+
+.page-node-2 #content-top {
+	height: 400px;
+	padding-top: 40px;
+	background: url(../images/bg_gallery.jpg) no-repeat top center;
+}
+
+.page-node-2 #page {
+	background: none;
+}
+
+
 /** WE NEED VIDEOGRAPHERS
 =========================================**/
 

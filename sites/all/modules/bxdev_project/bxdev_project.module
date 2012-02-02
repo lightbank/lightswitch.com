@@ -222,6 +222,7 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 			if(isset($_SESSION['payment']['payment_id']) && arg(0) == 'sales' && arg(1) == 'add' && arg(2) == 'project'){
 				$node->field_payment_id['und'][0]['value'] = $_SESSION['payment']['payment_id'];
 				$node->field_project_type['und'][0]['value'] = $_SESSION['payment']['project_type'];
+				$node->field_payment_notes['und'][0]['value'] = $_SESSION['payment']['payment_notes'];
 				unset($_SESSION['payment']);
 			}
 			
@@ -243,8 +244,6 @@ function bxdev_project_preprocess_node(&$vars){
 		$nid = $vars['nid'];
 		$project = new Project($nid);
 		$content = node_view($project->project);
-		
-		// $comment_permission = TRUE;
 		
 		// if videographer role, get the profile
 		if($role == 'videographer'){
@@ -307,57 +306,55 @@ function bxdev_project_preprocess_node(&$vars){
 						
 		// photos
 		
-		// get renderable arrays
-		$project_full = node_view($project->project, 'full');
-		$project_teaser = node_view($project->project, 'teaser');
+		if($project->project->field_video_type['und'][0]['value'] != 'spec'){
 		
-		// get approved photos
-		$results = db_query("SELECT fid FROM {project_photos_approval} WHERE nid = :nid", array(':nid' => $nid));
-		$approved_photos = array();
-		if($results->rowCount() > 0){
-			foreach($results as $row){
-				$approved_photos[] = $row->fid;
-			}
-		}
+			// get renderable arrays
+			$project_full = node_view($project->project, 'full');
+			$project_teaser = node_view($project->project, 'teaser');
 		
-		// if approved photos exist
-		$approved_photos = $project->get_approved_photos();
-		$photos_teaser = '<div class="clearfix">';
-		$photos = array();
-		// cycle through each project photo
-		foreach($project_full['field_project_photos'] as $key => $value){
-			// if photo
-			if(is_numeric($key)){
-				// if approved
-				if(in_array($value['#item']['fid'], $approved_photos)){
-					// get the teaser photo
-					$photos_teaser .= '<div class="project-thumb"><a rel="shadowbox[images]" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</a></div>';
+			// get approved photos
+			$results = db_query("SELECT fid FROM {project_photos_approval} WHERE nid = :nid", array(':nid' => $nid));
+			$approved_photos = array();
+			if($results->rowCount() > 0){
+				foreach($results as $row){
+					$approved_photos[] = $row->fid;
 				}
 			}
+		
+			// if approved photos exist
+			$approved_photos = $project->get_approved_photos();
+			$photos_teaser = '<div class="clearfix">';
+			$photos = array();
+			// cycle through each project photo
+			foreach($project_full['field_project_photos'] as $key => $value){
+				// if photo
+				if(is_numeric($key)){
+					// if approved
+					if(in_array($value['#item']['fid'], $approved_photos)){
+						// get the teaser photo
+						$photos_teaser .= '<div class="project-thumb"><a rel="shadowbox[images]" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</a></div>';
+					}
+				}
+			}
+			$photos_teaser .= '</div>';
+			$vars['photos_teaser'] = $photos_teaser;
+		
 		}
-		$photos_teaser .= '</div>';
-		$vars['photos_teaser'] = $photos_teaser;
 		
 		// business logo upload
 		if(user_access('upload business logo')){
 			$vars['business_logo_upload'] = render(drupal_get_form('bxdev_project_logo_upload_form'));
 		}
 		
-		// videographer documents
-		// if(user_access('upload videographer documents')){
-		// 	$vars['videographer_documents'] = render(drupal_get_form('bxdev_project_videographer_documents_form'));
-		// }
-		
 		// check if client has accepted the project terms
-		if(empty($project->project->field_client_terms_accepted['und'][0]['value']) || $project->project->field_client_terms_accepted['und'][0]['value'] == 0){
-			// $vars['client_terms_not_accepted'] = '<div class="client-terms-not-accepted" style="color: red; font-size: 20px; font-weight: bold; padding: 10px 0 30px;">Client has not accepted Project terms!</div><div class="client-terms-reminder"><a href="">Click here to send another reminder</a></div>';
+		if($project->project->field_video_type['und'][0]['value'] == 'direct_sale' && !empty($project->project->field_client_terms_accepted) && $project->project->field_client_terms_accepted['und'][0]['value'] == 0){
 			$vars['client_terms_not_accepted'] = '<div class="client-terms-not-accepted">
 				<h2>Client has not accepted Project terms!</h2>
 				<a href="/project/terms/resend/' . $project->project->nid . '">Click here to send another reminder</a>
 			</div>';
 		}
 		
-		// check if spec video
+		// check the video type
 		$vars['video_class'] = $project->project->field_video_type['und'][0]['value'];
 		
 	}
