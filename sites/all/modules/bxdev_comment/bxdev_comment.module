@@ -107,7 +107,7 @@ function bxdev_comment_preprocess_node(&$vars){
 						- We deliver a final video in a convenient file format<br>
 						- You own full rights to the video and can use it on any of your online marketing pages"</p>
 						<p><strong>If you are interested, click the "Contact Me" button and one of our team members will get in touch within the next two days.</strong></p>
-						<p class="btn-wrap"><a href="" class="btn-contact">Contact Me</a></p>
+						<p class="btn-wrap"><a href="/project/spec/contact/' . $project->project->nid . '" class="btn-contact">Contact Me</a></p>
 					</div>';
 				
 			// if not a spec video, enable commenting

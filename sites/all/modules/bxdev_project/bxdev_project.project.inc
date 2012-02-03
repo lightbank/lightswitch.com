@@ -399,6 +399,14 @@ class Project {
 	}
 	
 	/**
+	 * Send a notification to the Sales user after a Client has clicked the "Contact Me" button on a spec video
+	 */
+	function send_spec_contact(){
+		$params['project'] = $this;
+		drupal_mail('bxdev_project', 'spec_contact_button', $this->sales->mail, language_default(), $params);
+	}
+	
+	/**
 	 * Initiate a videographer payment by sending the W9 and invoice to Lightswitch accounting
 	 *
 	 * @param $w9 (object)

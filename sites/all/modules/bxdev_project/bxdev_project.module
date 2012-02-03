@@ -87,6 +87,13 @@ function bxdev_project_menu() {
 		'type' => MENU_CALLBACK,
 	);
 	
+	$items['project/spec/contact/%'] = array(
+		'page callback' => 'bxdev_project_spec_contact',
+		'page arguments' => array(3),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
+	
   return $items;
 }
 
@@ -502,6 +509,16 @@ function bxdev_project_terms_client_resend($nid){
 	$project = new Project($nid);
 	$project->send_client_terms();
 	drupal_set_message('Terms email has been sent to the Client');
+	drupal_goto('node/' . $nid);
+}
+
+/**
+ * Menu callback: spec contact
+ */
+function bxdev_project_spec_contact($nid){
+	$project = new Project($nid);
+	$project->send_spec_contact();
+	drupal_set_message('Thank you! A sales representative will contact you shortly!');
 	drupal_goto('node/' . $nid);
 }
 

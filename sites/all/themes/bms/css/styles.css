@@ -1023,6 +1023,34 @@ input[type="submit"].approve-btn, .approve-yes {
 	padding-top: 15px;
 }
 
+.spec .spec-intro {
+	color: #fff;
+	margin-bottom: 25px;
+}
+
+.spec .spec-intro h1 {
+	padding-bottom: 15px;
+	font-size: 32px;
+}
+
+.spec .spec-intro p {
+	font-size: 16px;
+}
+
+.spec.main .video-wrap-outer {
+	background: none;
+	padding: 0;
+	margin: 0 0 70px 0;
+	border: solid 10px #fff;
+	height: auto;
+	width: auto;
+}
+
+.node-type-project .main.spec .block.top-block {
+	background: url(../images/spec_bg.jpg) no-repeat #fff;
+}
+
+
 .prod-history-wrap .trigger,
 .prod-details-wrap .trigger {
 	padding-right: 80px;
