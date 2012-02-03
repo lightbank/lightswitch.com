@@ -665,6 +665,139 @@ header .limiter {
 	background: none;
 }
 
+.page-node-2 #left {
+	float: left;
+	width: 220px;
+	padding-top: 44px;
+}
+
+.page-node-2 #main {
+	float: right;
+	width: 740px;
+	padding-top: 10px;
+}
+
+.page-node-2 .page-title {
+	display: none;
+}
+
+.page-node-2 #content-top .view a {
+	display: block;
+	width: 57px;
+	height: 57px;
+	background: url(../images/sprite_public.png) no-repeat -343px -424px;
+	text-indent: -9999em;
+}
+
+.view-gallery-videos h3 {
+	clear: both;
+	padding: 30px 0 20px;
+	font-size: 18px;
+	text-transform: uppercase;
+}
+
+#main .view-gallery-videos .views-row {
+	float: left;
+	margin: 0 30px 20px 0;
+}
+
+#main .views-field-field-gallery-video {
+	margin-bottom: 10px;
+	padding: 8px;
+	box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.page-node-2 #left .btn {
+	display: block;
+}
+
+#block-views-categories-block {
+	margin-bottom: 20px;
+}
+
+
+#block-views-categories-block .block-title,
+.great-for .block-title {
+	margin-bottom: 10px;
+}
+
+#block-views-categories-block .block-content,
+.great-for .block-content {
+	padding: 20px;
+	background: #f3f3f3;
+	font-size: 16px;
+	line-height: 30px;
+}
+
+#page .great-for ul li {
+	list-style: none;
+	margin: 0;
+}
+
+
+
+/** PRICING
+=========================================**/
+
+.page-node-1254 .page-title {
+	display: none;
+}
+
+.price-block {
+	float: left;
+	width: 257px;
+	min-height: 580px;
+	margin: 20px 13px 40px;
+	padding: 30px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+	text-align: center;
+}
+
+.price-block:last-child {
+	margin-right: 0;
+}
+
+.price-block h1 {
+	margin-bottom: 30px;
+}
+
+.price-block .vid-thumb {
+	margin-bottom: 30px;
+	padding: 8px;
+	box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.price-block .the-price {
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+	font-size: 44px;
+	line-height: 1em;
+	border-bottom: 1px solid #ccc;
+}
+
+.price-block .btn {
+	padding: 10px 40px;
+}
+
+.price-block .cc,
+.price-block .edits {
+	color: #095C9B;
+	font-size: 12px;
+}
+
+#page .price-block ul {
+	margin-bottom: 10px;
+}
+
+#page .price-block ul li {
+	list-style: none;
+	margin: 0;
+}
+
+
+
+
 
 /** WE NEED VIDEOGRAPHERS
 =========================================**/
