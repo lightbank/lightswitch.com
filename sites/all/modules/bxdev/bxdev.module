@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * HOOKS
+ */
+
+/**
  * Alter content in Administration menu bar before it is rendered.
  */
 function bxdev_admin_menu_output_alter(&$content) {
@@ -475,6 +479,113 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 }
 
 /**
+ * Implements hook_block_info().
+ */
+function bxdev_block_info() {
+  $blocks['contact_form']['info'] = t('Contact form');
+	return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function bxdev_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'contact_form':
+			// get the contact form
+			$form = render(module_invoke('webform', 'block_view', 'client-block-5'));
+			$output = '<a href="" class="close">X</a><h2>Get started with Lightswitch</h2>';
+			$output .= $form;
+      $block['content'] = $output;
+      break;
+  }
+  return $block;
+}
+
+
+/**
+ * FORMS
+ */
+
+function bxdev_form_webform_client_form_5_alter(&$form, &$form_state){
+	$form['actions']['submit']['#ajax'] = array(
+		'callback' => 'bxdev_pricing_contact_callback',
+		'wrapper' => 'webform-client-form-5',
+	);
+}
+
+/**
+ * Form AJAX callback: pricing contact
+ */
+function bxdev_pricing_contact_callback($form, $form_state){
+	if(form_get_errors()){
+		return $form;
+	}
+	return '<h3>Thank you!</h3><p>We will be in contact soon.</p>';
+}
+
+
+/**
+ * CALLBACKS
+ */
+
+/**
+ * Menu callback: get video (front end)
+ */
+function bxdev_get_video($node){
+	
+	// dpm($node);
+	
+	$file = file_load($node->field_gallery_video['und'][0]['fid']);
+	$file = (array) $file;
+	// dpm(file_create_url($file->uri));
+	
+	$path = file_create_url($file->uri);
+	
+	$output = '<style type="text/css">
+	body {
+		padding: 20px;
+		margin: 0;
+		background: #fff;
+	}
+	
+	.btn {
+		background-color: #D8611F;
+	  background-image: -moz-linear-gradient(center top , #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
+	  border: 1px solid #9C3D00;
+	  border-radius: 5px 5px 5px 5px;
+	  box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset, 0 1px 3px #333333;
+	  color: #FFFFFF;
+	  font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+	  padding: 10px 15px;
+	  text-align: center;
+	  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+	  text-transform: none;
+		text-decoration: none;
+	}
+	
+	.btn-wrap {
+		padding-top: 30px;
+		text-align: right;
+	}
+	
+	</style>';
+		
+	$output .= theme('media_vimeo_video', $file);
+	
+	$output .= '<div class="btn-wrap"><a href="#" class="btn" onclick="parent.window.location = \'/video-production-services\'">View Pricing</a></div>';
+	
+	print $output;
+}
+
+
+/**
+ * CUSTOM
+ */
+
+/**
  * Return the formatted body of a given node
  */
 function bxdev_get_node_body($nid){
@@ -517,53 +628,6 @@ function bxdev_format_currency($value, $sign = TRUE){
 	return $currency_formatted;
 }
 
-/**
- * Menu callback: get video (front end)
- */
-function bxdev_get_video($node){
-	
-	// dpm($node);
-	
-	$file = file_load($node->field_gallery_video['und'][0]['fid']);
-	$file = (array) $file;
-	// dpm(file_create_url($file->uri));
-	
-	$path = file_create_url($file->uri);
-	
-	$output = '<style type="text/css">
-	body {
-		padding: 20px;
-		margin: 0;
-		background: #fff;
-	}
-	
-	.btn {
-	  background-image: -moz-linear-gradient(center top , #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
-	  border: 1px solid #9C3D00;
-	  border-radius: 5px 5px 5px 5px;
-	  box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset, 0 1px 3px #333333;
-	  color: #FFFFFF;
-	  font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
-	  padding: 10px 15px;
-	  text-align: center;
-	  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
-	  text-transform: none;
-		text-decoration: none;
-	}
-	
-	.btn-wrap {
-		padding-top: 30px;
-		text-align: right;
-	}
-	
-	</style>';
-		
-	$output .= theme('media_vimeo_video', $file);
-	
-	$output .= '<div class="btn-wrap"><a href="#" class="btn" onclick="parent.window.location = \'/video-production-services\'">View Pricing</a></div>';
-	
-	print $output;
-}
 
 /**
  * Return a filename friendly string

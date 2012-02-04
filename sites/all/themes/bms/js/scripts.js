@@ -122,6 +122,18 @@
 			minOpacity: 1
 		});
 		
+		/**	
+		 * Pricing
+		 */
+		$('#block-bxdev-contact-form .close').click(function(){
+			$('#block-bxdev-contact-form').fadeOut(200);
+			return false;
+		});
+		
+		$('.price-block .btn').click(function(){
+			$('#block-bxdev-contact-form').fadeIn(200);
+			return false;
+		});
 		
 	});
 
