@@ -80,8 +80,6 @@ function bxdev_vid_block_view($delta = '') {
  */
 function bxdev_vid_preprocess_page(&$variables) {
 	
-	ini_set('display_errors', '1');
-	
 	// check if page is displaying videographer full node
 	if(isset($variables['node'])){
 		$variables['videographer'] = ($variables['node']->type == 'videographer') ? TRUE : FALSE;
@@ -93,6 +91,24 @@ function bxdev_vid_preprocess_page(&$variables) {
 	if(arg(0) == 'videographers'){
 		$_SESSION['vid_filters'] = $_SERVER['REQUEST_URI'];
 	}
+	
+	
+	/**
+	 * START VIDEOGRAPHER EMAIL BLAST TESTING
+	 */
+	
+	// $results = db_select('users_roles', 'u')
+	// 	->fields('u', array('uid'))
+	// 	// ->limit(50)
+	// 	->condition('rid', 5, '=')
+	// 	->execute();
+	// 	
+	// dpm($results->rowCount());
+	
+	/**
+	 * END VIDEOGRPAPHER EMAIL BLAST TESTING
+	 */
+	
 	
 }
 

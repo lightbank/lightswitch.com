@@ -353,7 +353,8 @@ footer {
 	background-position: 165px -120px;
 }
 
-.page-node-31 #content {
+.page-node-31 #content,
+.page-node.page-node-1281 #page #content {
 	padding: 20px;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);

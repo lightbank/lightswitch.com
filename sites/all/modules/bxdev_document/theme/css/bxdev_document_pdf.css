@@ -1,5 +1,16 @@
 body {
-	font-family: Helvetica;	
+	font-family: Helvetica;
+	font-size: 12px;
+}
+
+.csa-table th {
+	text-align: left;
+	padding: 0;
+}
+
+.csa-table td {
+	border-bottom: solid #666 1px;
+	padding: 0;
 }
 
 .invoice-wrap * {

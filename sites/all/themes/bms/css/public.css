@@ -75,7 +75,7 @@ a:hover {
 }
 
 .btn {
-		background-color: #D8611F;
+	background-color: #D8611F;
     padding: 10px 15px;
     background-image: -moz-linear-gradient(top, #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
     background-image: -webkit-linear-gradient(top, #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
@@ -230,6 +230,52 @@ header .limiter {
 
 .home-cta h3 span {
 	color: #ff6101;
+}
+
+.page-node-1 #page .home-vids ul li {
+	float: left;
+	width: 198px;
+	margin: 0 30px;
+	list-style: none;
+}
+
+.home-vids {
+	padding: 40px 0;
+	background: url(../images/bg_home_vids.jpg) no-repeat top center;
+}
+
+.home-vids .vid-thumb {
+	margin-bottom: 10px;
+	padding: 8px;
+	box-shadow: 0 0 5px rgba(0,0,0,0.3);
+	border: solid #ddd 1px;
+}
+
+.home-vids .quote {
+	min-height: 110px;
+	font-family: 'Mate',serif;
+	font-size:;
+}
+
+.home-vids .more-vids {
+	text-align: center;
+}
+
+.home-vids .btn-blue {
+    width: 120px;
+    padding: 7px 10px;
+    background-color: #8C9CBF;
+    background-image: -moz-linear-gradient(center top , #8C9CBF 0%, #546A9E 50%, #36518F 50%, #3D5691 100%);
+    background-image: -webkit-linear-gradient(center top , #8C9CBF 0%, #546A9E 50%, #36518F 50%, #3D5691 100%);
+    border-color: #172D6E #172D6E #0E1D45;
+    border-radius: 5px 5px 5px 5px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 0 #B1B9CB inset;
+    color: #fff;
+    font: bold 16px "helvetica neue",helvetica,arial,sans-serif;
+    text-align: center;
+    text-shadow: 0 -1px 1px #000F4D;
 }
 
 
@@ -707,7 +753,7 @@ header .limiter {
 	margin-bottom: 10px;
 	padding: 8px;
 	box-shadow: 0 0 5px rgba(0,0,0,0.3);
-	border: solid #ddd 1px\9;
+	border: solid #ddd 1px;
 }
 
 .page-node-2 #left .btn {

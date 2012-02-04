@@ -431,7 +431,7 @@ function bxdev_project_client_terms_form($form, &$form_state, $nid, $hash){
 		'#markup' => '<p>You made it!  Now, for the fun legal stuff.  The client service agreement specifies the terms and conditions of our work together.  Additionally, it includes a release to let us shoot video in your place.</p>
 		<p>Please click the link below to read the client service agreement.  Once you’ve reviewed, you can accept the agreement by clicking the check box and submitting.</p>
 		<p>We will send a copy of the accepted client service agreement to your email address.</p>
-		<p><a href="/get/document/document_client_service_agreement" rel="shadowbox;height=800;width=800">Click here to view the terms</a></p>'
+		<p><a href="/get/document/document_client_service_agreement/' . $nid . '" rel="shadowbox;height=800;width=800">Click here to view the terms</a></p>'
 	);
 	
 	$form['terms_accept'] = array(

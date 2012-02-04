@@ -293,6 +293,16 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					$replacements[$original] = $base_url . '/client/terms/' . $data['project']->project->nid . '/' . $data['project']->hash;
 					break;
 					
+				case 'project_type_description':
+					$project_type = $data['project']->project->field_project_type['und'][0]['value'];
+					$replacements[$original] = bxdev_project_get_project_description($project_type);
+					break;
+					
+				case 'project_type':
+					$project_type = $data['project']->project->field_project_type['und'][0]['value'];
+					$replacements[$original] = bxdev_project_get_project_description($project_type) . ' - ' . bxdev_format_currency($project_type);
+					break;
+					
 				case 'amount':
 					$replacements[$original] = bxdev_format_currency($data['amount']);
 					break;
@@ -324,6 +334,14 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 				case 'client:full_name':
 					$replacements[$original] = $data['project']->client->field_name['und'][0]['value'];
 					break;
+				
+				case 'client:phone':
+					$replacements[$original] = $data['project']->client->field_phone['und'][0]['value'];
+					break;
+					
+				case 'client:email':
+					$replacements[$original] = $data['project']->client->mail;
+					break;
 					
 				case 'client:username':
 					$replacements[$original] = $data['project']->client->name;
@@ -351,6 +369,10 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					
 				case 'business:title':
 					$replacements[$original] = $data['project']->business->title;
+					break;
+					
+				case 'business:address':
+					$replacements[$original] = nl2br($data['project']->business->field_address['und'][0]['value']);
 					break;
 					
 				case 'comment:comment':

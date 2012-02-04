@@ -561,15 +561,15 @@ function bxdev_project_get_production_log($nid){
 function bxdev_project_get_project_description($value){
 	$description = '';
 	switch($value){
-		case '299':
+		case '449':
 			$description = 'Standard Lightswitch Video';
 			break;
 		
-		case '399':
+		case '549':
 			$description = 'Standard Lightswitch Video with Interview';
 			break;
 			
-		case '449':
+		case '599':
 			$description = 'Standard Lightswitch Video with Voice Over';
 			break;
 			

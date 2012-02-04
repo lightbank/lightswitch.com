@@ -102,7 +102,7 @@ function bxdev_document_menu() {
 	
 	$items['get/document/%'] = array(
 		'page callback' => 'bxdev_document_get_document_html',
-		'page arguments' => array(2),
+		'page arguments' => array(2, 3),
 		'access arguments' => array('access content'),
 		'type' => MENU_CALLBACK,
 	);
@@ -300,11 +300,16 @@ function bxdev_document_create_pdf($html, $filename, $type, $path, $description,
 /**
  * Return the html of a prepopulated document
  */
-function bxdev_document_get_document_html($name){
+function bxdev_document_get_document_html($name, $nid = NULL){
+	$data = array();
+	if(!is_null($nid)){
+		$project = new Project($nid);
+		$data['project'] = $project;
+	}
 	$html = variable_get($name, '');
 	$body = '<link href="/' . drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css" rel="stylesheet" type="text/css">';
 	$body .= $html['value'];
-	print token_replace($body);
+	print token_replace($body, $data);
 }
 
 /**
