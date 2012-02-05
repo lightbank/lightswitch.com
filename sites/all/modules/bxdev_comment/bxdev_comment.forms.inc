@@ -5,9 +5,11 @@
  */
 function bxdev_comment_client_form($form, &$form_state){
 	
+	global $user;
 	$nid = arg(1);
 	$project = new Project($nid);
-	$zero_comments = 'Lightswitch has completed a cut of your video, and it\'s ready for you to view.  As a valued Lightswitch client, you receive one free round of video edits.  If you have changes you\'d like to make to the video, please comment below with your revision requests.  Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it!  Referencing the minutes and seconds can be helpful to pinpoint sections you\'d like revised.  If you are happy with the video in its current form, please click “approve” and we’ll send you the final video in convenient file formats. You have 5 days to submit revision requests, after which the video will be considered approved as is.';
+	$role = bxdev_user_get_role($user->uid);
+	$zero_comments = $role == 'pc' ? 'Lightswitch has completed a cut of your video, and it\'s ready for you to view.  As a valued Lightswitch client, you receive one free round of video edits.  If you have changes you\'d like to make to the video, please comment below with your revision requests.  Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it!  Referencing the minutes and seconds can be helpful to pinpoint sections you\'d like revised.  If you are happy with the video in its current form, please click “approve” and we’ll send you the final video in convenient file formats. You have 5 days to submit revision requests, after which the video will be considered approved as is.' : '';
 	
 	$form['comment'] = array(
 	  '#type' => 'textarea',
