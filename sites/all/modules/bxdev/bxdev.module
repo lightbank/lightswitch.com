@@ -518,8 +518,11 @@ function bxdev_block_view($delta = '') {
     case 'contact_form':
 			// get the contact form
 			$form = render(module_invoke('webform', 'block_view', 'client-block-5'));
-			$output = '<a href="" class="close">X</a><h2>Get started with Lightswitch</h2>';
+			$output = '<div class="contact-form-wrapper-fixed"></div>';
+			$output .= '<div class="contact-form-wrapper">';
+			$output .= '<a href="" class="close">X</a><h2>Get started with Lightswitch</h2>';
 			$output .= $form;
+			$output .= '</div>';
       $block['content'] = $output;
       break;
   }
@@ -558,11 +561,8 @@ function bxdev_pricing_contact_callback($form, $form_state){
  */
 function bxdev_get_video($node){
 	
-	// dpm($node);
-	
 	$file = file_load($node->field_gallery_video['und'][0]['fid']);
 	$file = (array) $file;
-	// dpm(file_create_url($file->uri));
 	
 	$path = file_create_url($file->uri);
 	
@@ -591,6 +591,10 @@ function bxdev_get_video($node){
 	.btn-wrap {
 		padding-top: 30px;
 		text-align: right;
+	}
+	
+	.media-vimeo-preview-wrapper {
+		background: #000;
 	}
 	
 	</style>';
@@ -649,7 +653,6 @@ function bxdev_format_currency($value, $sign = TRUE){
 	}
 	return $currency_formatted;
 }
-
 
 /**
  * Return a filename friendly string

@@ -12,7 +12,7 @@ function feature_views_views_default_views() {
 
   $view = new view;
   $view->name = 'clients';
-  $view->description = '';
+  $view->description = 'Public client directory';
   $view->tag = 'default';
   $view->base_table = 'node';
   $view->human_name = 'Clients';
@@ -2357,7 +2357,7 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<a href="/sales/add/business" class="add-project btn">+ Add new project</a>';
+  $handler->display->display_options['header']['area']['content'] = '<a href="/sales/add/cc" class="add-project">+ Add new project</a> <a href="/clients" class="add-project">Clients</a>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['relationships'] = FALSE;

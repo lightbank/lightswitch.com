@@ -125,6 +125,9 @@
 		/**	
 		 * Pricing
 		 */
+		// load the 1x1 bg pixel first
+		var pricing_bg = new Image();
+		pricing_bg.src = 'sites/all/themes/bms/images/bg_trans.png';
 		$('#block-bxdev-contact-form .close').click(function(){
 			$('#block-bxdev-contact-form').fadeOut(200);
 			return false;
