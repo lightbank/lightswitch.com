@@ -15,6 +15,7 @@ class Project {
 	var $comments;
 	var $overridden;
 	var $approved;
+	var $hash;
 	
 	/**
 	 * Load a new Project and set all initial variables.
@@ -262,8 +263,226 @@ class Project {
 			$emails = implode(',', $emails);
 			// $emails = 'wandoledzep@gmail.com';
 			$params = array('project' => $this, 'project_link' => $project_link);		
-			drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
+			// drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
 		}
+	}
+	
+	/**
+	 * For direct sales Projects, send email to Clients prompting the acceptance of terms
+	 */
+	function send_client_terms(){
+		// generate a random hash to associate with the client / project
+		$hash = md5(user_password());
+		// delete any existing hashes
+		db_delete('users_project_terms')
+			->condition('nid', $this->project->nid)
+			->execute();
+		// store the new value
+		db_insert('users_project_terms')
+			->fields(array(
+				'nid' => $this->project->nid,
+				'hash' => $hash,
+			))
+			->execute();
+		$this->hash = $hash;
+		$params = array('project' => $this);
+		drupal_mail('bxdev_project', 'client_terms', $this->client->mail, language_default(), $params);
+	}
+	
+	/**
+	 * Send confirm message and pdf Client Service Agreement after Client accepts terms
+	 */
+	function send_client_service_agreement($fid){
+		// generate the mail to string
+		$emails[] = $this->client->mail;
+		// $emails[] = $this->sales->mail;
+		
+		$params['project'] = $this;
+		
+		// attach the pdf file
+		$file = file_load($fid);
+		$params['attachments'] = array(
+			0 => array(
+				'filepath' => $file->uri,
+				'filename' => $file->filename,
+			),
+		);
+		
+		foreach($emails as $email){
+			drupal_mail('bxdev_project', 'client_service_agreement_accepted', $email, language_default(), $params);
+		}
+	}
+	
+	/**
+	 * Generate a pdf receipt and send to client
+	 *
+	 * @param $line_items (array)
+	 *   $line_items['qty'] = Line quantity
+	 *   $line_items['description'] = Line description
+	 *   $line_items['unit_price'] = Line unit_price
+	 *   $line_items['line_total'] = Line total
+	 */
+	function send_client_receipt($line_items, $payment_id){
+		
+		// generate the invoice number
+		$invoice_num = variable_get('client_invoice_num', 101);
+		variable_set('client_invoice_num', ++$invoice_num);
+		
+		// get the invoice html
+		$html = theme('invoice_client', array('project' => $this, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
+		
+		// generate a clean client name used in the file name
+		$client_name = bxdev_get_filename_string($this->client->field_name['und'][0]['value']);
+		
+		// generate the filename
+		$filename = 'lightswitch_invoice_' . $client_name . '_' . $invoice_num . '.pdf';
+		
+		// create the pdf and get the fid
+		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'invoices', 'Client Invoice', $this->client->uid, $this->project->nid);
+		
+		if($fid){
+			
+			$emails[] = $this->client->mail;
+			$emails[] = 'accounting@bxcreative.com';
+			
+			$params = array(
+				'project' => $this,
+				'cc' => bxdev_payment_get_cc_last_four($payment_id, $this->client->uid),
+				'amount' => $line_items['total'],
+			);
+			
+			$file = file_load($fid);
+			$params['attachments'] = array(
+				0 => array(
+					'filepath' => $file->uri,
+					'filename' => $file->filename,
+				),
+			);
+			
+			// send the email to each recipient
+			foreach($emails as $email){
+				drupal_mail('bxdev_project', 'client_invoice_receipt', $email, language_default(), $params);
+			}
+			
+			// log the action
+			watchdog('document', 'Client invoice generated for: ' . $this->client->field_name['und'][0]['value']);
+			
+		}
+		
+	}
+	
+	/**
+	 * Send reminder to videographer to upload a W9 form
+	 */
+	function send_videographer_w9_reminder($amount){
+		global $base_url;
+		$params = array(
+			'project' => $this,
+			'full_name' => $this->videographer->field_name['und'][0]['value'],
+			'login_link' => '<a href="' . $base_url . '/user">' . $base_url . '/user</a>',
+		);
+		drupal_mail('bxdev_project', 'videographer_missing_w9', $this->videographer->mail, language_default(), $params);
+		
+		// delete any existing reminders for the videographer and project
+		db_delete('users_w9_reminders')
+			->condition('uid', $this->videographer->uid)
+			->condition('nid', $this->project->nid)
+			->execute();
+		
+		db_insert('users_w9_reminders')
+			->fields(array(
+				'uid' => $this->videographer->uid,
+				'nid' => $this->project->nid,
+				'amount' => $amount,
+			))
+			->execute();
+	}
+	
+	/**
+	 * Send a notification to the Sales user after a Client has clicked the "Contact Me" button on a spec video
+	 */
+	function send_spec_contact(){
+		$params['project'] = $this;
+		drupal_mail('bxdev_project', 'spec_contact_button', $this->sales->mail, language_default(), $params);
+	}
+	
+	/**
+	 * Initiate a videographer payment by sending the W9 and invoice to Lightswitch accounting
+	 *
+	 * @param $w9 (object)
+	 *   - Drupal file object
+	 *
+	 * @param $amount (int)
+	 *   - Amount to be charged
+	 */
+	function process_videographer_payment($w9, $amount, $description){
+		
+		/**
+		 * Generate the invoice
+		 */
+		$line_items = array();
+		$line_items[] = array(
+			'project' => $this,
+			'qty' => 1,
+			'description' => $description,
+			'unit_price' => $amount,
+			'line_total' => $amount,
+		);
+		$line_items['total'] = $amount;
+		
+		// get the next invoice number
+		$invoice_num = variable_get('client_invoice_num', 101);
+		variable_set('client_invoice_num', ++$invoice_num);
+		
+		// load the videographer profile
+		$profile = profile2_load_by_user($this->videographer, 'videographer');
+		
+		// get the invoice html
+		$html = theme('invoice_videographer', array('project' => $this, 'profile' => $profile, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
+		
+		// create the filename
+		$filename = 'lightswitch_videographer_invoice_' . $invoice_num . '.pdf';
+		
+		// create the pdf and get the fid
+		$fid = bxdev_document_create_pdf($html, $filename, 'videographer', 'invoices', 'Videographer invoice', $this->videographer->uid, $this->project->nid);
+		
+		// if $amount is supplied, charge for that specific payment
+		if($fid){
+			
+			$file = file_load($fid);
+			
+			$params = array(
+				'project' => $this,
+				'amount' => $amount,
+				'attachments' => array(
+					0 => array(
+						'filepath' => $w9->uri,
+						'filename' => $w9->filename,
+					),
+					1 => array(
+						'filepath' => $file->uri,
+						'filename' => $file->filename,
+					),
+				),
+			);
+
+			// send the email
+			$accounting_email = 'accounting@bxcreative.com';
+			drupal_mail('bxdev_project', 'accounting_invoice_videographer', $accounting_email, language_default(), $params);
+
+			// log the payment
+			bxdev_payment_log_payment($this->project->nid, $this->videographer->uid, NULL, $invoice_num, $amount);
+
+			// log the email
+			watchdog('document', 'W9 and invoice sent to accounting for videographer: ' . $this->videographer->uid);
+			
+			// remove any hanging reminders for the user
+			db_delete('users_w9_reminders')
+				->condition('uid', $this->videographer->uid)
+				->condition('nid', $this->project->nid)
+				->execute();		
+		}
+				
 	}
 	
 	/**
@@ -281,5 +500,5 @@ class Project {
 		}
 		return $approved_photos;
 	}
-
+	
 }

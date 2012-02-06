@@ -29,28 +29,47 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 	$form['field_social_url3']['und'][0]['value']['#title'] =  '';
 	$form['field_social_url4']['und'][0]['value']['#title'] =  '';
 	
-	$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
+	// if arg 3 is set, that means we have added a new client / credit card in a previous step
+	$arg3 = arg(3);
+	
+	if(!empty($arg3)){
+		
+		$account = user_load($arg3);
+		
+		$form['field_client_ref']['und']['#type'] = 'hidden';
+		$form['field_client_ref']['und']['#value'] = $arg3;
+		$form['field_client_ref']['und']['#prefix'] = t('<h3><strong>Client: @name</strong></h2>', array('@name' => $account->field_name['und'][0]['value']));
+	
+	// if arg 3 is not set, that means we have not added a new client / credit card in a previous step
+	}else{
+	
+		$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
+		$form['field_client_ref']['#attributes']['style'][] = 'display:none;';
 
-	$form['new_client_email'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Client email'),
-		'#weight' => -50,
-		'#prefix' => '<div class="new-client-wrapper">',
-	);
+		$form['new_client_email'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Client email'),
+			'#weight' => -50,
+			'#prefix' => '<div class="new-client-wrapper">',
+		);
 
-	$form['new_client_name'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Client full name'),
-		'#weight' => -49,
-	);
+		$form['new_client_name'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Client full name'),
+			'#weight' => -49,
+		);
 
-	$form['new_client_phone'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Client phone'),
-		'#weight' => -48,
-		'#suffix' => '</div>',
-		'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
-	);
+		$form['new_client_phone'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Client phone'),
+			'#weight' => -48,
+			'#suffix' => '</div>',
+			'#description' => t('<a href="" class="new-client-btn">Existing Client</a>'),
+		);
+	
+	}
+	
+	// dpm($form_state);
 	
 }
 
@@ -126,15 +145,24 @@ function bxdev_business_form_business_node_form_validate($form, &$form_state){
  * Form builder: existing client
  */
 function bxdev_business_existing_business_form($form, $form_state){
+	
+	// check if a client uid exists
+	$arg3 = arg(3);
+	$uri = $_SERVER['REQUEST_URI'];
+	
+	$form['#action'] = $uri . '#existing';
+	
 	$form['existing_business'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Existing business'),
-		'#autocomplete_path' => 'sales/autocomplete/businesses',
+		'#autocomplete_path' => !empty($arg3) ? 'sales/autocomplete/businesses/' . $arg3 : 'sales/autocomplete/businesses',
 		'#required' => TRUE,
 	);
 	
 	$form['existing_business_nid'] = array(
 	  '#type' => 'hidden',
+		'#title' => t('A vaild existing business'),
+		'#required' => TRUE,
 	  '#default_value' => '',
 	);	
 	
@@ -144,14 +172,6 @@ function bxdev_business_existing_business_form($form, $form_state){
 	);
 	
 	return $form;	
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- * Form: bxdev sales existing client form
- */
-function bxdev_business_form_bxdev_business_existing_business_form_alter(&$form, $form_state){
-	$form['#action'] = '/sales/add/business#existing';
 }
 
 /**

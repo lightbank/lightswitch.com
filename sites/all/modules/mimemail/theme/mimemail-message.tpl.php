@@ -29,7 +29,7 @@
     </style>
     <?php endif; ?>
   </head>
-  <body id="mimemail-body" <?php if ($key): print 'class="'. $key .'"'; endif; ?>>
+  <body id="mimemail-body" <?php if ($key): print 'class="'. $key .'"'; endif; ?> style="padding: 20px;">
     <div id="center">
       <div id="main">
         <?php print $body ?>

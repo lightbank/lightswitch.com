@@ -1,0 +1,79 @@
+body {
+	font-family: Helvetica;
+	font-size: 12px;
+}
+
+.csa-table th {
+	text-align: left;
+	padding: 0;
+}
+
+.csa-table td {
+	border-bottom: solid #666 1px;
+	padding: 0;
+}
+
+.invoice-wrap * {
+	padding: 0;
+	margin: 0;
+}
+
+.invoice-wrap img {
+	margin-left: -20px;
+}
+
+.invoice-wrap {
+	padding: 50px;
+	font-family: Helvetica;
+	font-size: 14px;
+}
+
+.invoice-wrap td {
+	font-size: 14px;
+	vertical-align: top;
+	line-height: 20px;
+}
+
+.invoice-wrap td.qty,
+.invoice-wrap td.price {
+	text-align: center;
+}
+
+.invoice-wrap td.sub-header {
+	text-align: right;
+}
+
+.invoice-wrap table {
+	margin: 30px 0;
+	border-collapse: collapse;
+}
+
+.invoice-wrap .line-items {
+	width: 100%;
+}
+
+.invoice-wrap .billing-info .col-2 {
+	padding: 0 40px;
+}
+
+.invoice-wrap .line-items td,
+.invoice-wrap .line-items th {
+	border: solid #ccc 1px;
+	padding: 5px 15px;
+}
+
+.invoice-wrap .line-items th {
+	background: #f5f5f5;
+}
+
+.invoice-wrap .line-items .no-border {
+	border: 0;
+}
+
+.invoice-wrap .footer {
+	padding-top: 40px;
+}
+
+.invoice-wrap .footer p {
+	padding-bottom: 10px;
+}

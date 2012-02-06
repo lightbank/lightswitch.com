@@ -1,0 +1,455 @@
+<?php
+
+$GLOBALS['api_login_id'] = '2hQT4t8ua';
+$GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
+
+$foo = 'bar';
+
+// $GLOBALS['api_login_id'] = '9X6zny5UY';
+// $GLOBALS['transaction_key'] = '39P2BtFs4n569VAc';
+
+module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
+
+/**
+ * HOOKS
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function bxdev_payment_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bxdev_payment_permission() {
+  return array(
+    'administer client payments' =>  array(
+      'title' => t('Administer client payments'),
+      'description' => t('Administer client payments'),
+    ),
+	  'administer videographer payments' =>  array(
+	    'title' => t('Administer videographer payments'),
+	    'description' => t('Administer videographer payments'),
+	  ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bxdev_payment_menu() {
+	
+  $items['sales/add/cc'] = array(
+    'title' => t('Create a New Video Project'),
+		'page callback' => 'bxdev_payment_client_payment_step_one_page',
+    'access arguments' => array('add new project'),
+    'type' => MENU_CALLBACK,
+  );
+
+	$items['sales/add/cc-test'] = array(
+	  'title' => t('Create a New Video Project'),
+	  'page callback' => 'credit_card_test',
+	  'access arguments' => array('add new project'),
+	  'type' => MENU_CALLBACK,
+	);
+	
+	$items['payment/get/profile/%'] = array(
+		'page callback' => 'bxdev_payment_get_profile_page',
+		'page arguments' => array(3),
+		'access arguments' => array('add new project'),
+		'type' => MENU_CALLBACK,
+	);
+	
+	$items['node/%node/edit/payments'] = array(
+		'title' => t('Payments'),
+		'page callback' => 'bxdev_payment_project_payment_page',
+		'page arguments' => array(1),
+		'access callback' => 'bxdev_payment_project_payment_access',
+		'access arguments' => array(1),
+		'weight' => 20,
+		'type' => MENU_LOCAL_TASK,
+	);
+	
+	$items['node/%node/edit/view'] = array(
+		'title' => t('Fields'),
+		'access callback' => 'bxdev_payment_project_payment_access',
+		'access arguments' => array(1),
+		'type' => MENU_DEFAULT_LOCAL_TASK,
+	);
+	
+	$items['admin/client/%user/payments'] = array(
+		'title' => t('Client Payments'),
+		'page callback' => 'bxdev_payment_client_payment_page',
+		'page arguments' => array(2),
+		'access arguments' => array('administer client payments'),
+		'weight' => 10,
+		'type' => MENU_LOCAL_TASK,
+	);
+	
+	$items['admin/payment/remove/%/%'] = array(
+		'page callback' => 'bxdev_payment_client_payment_remove',
+		'page arguments' => array(3, 4),
+		'access arguments' => array('administer client payments'),
+		'type' => MENU_CALLBACK,
+	);
+	
+	$items['user/%user/payments'] = array(
+		'title' => t('Payments'),
+		'page callback' => 'bxdev_payment_videographer_payments_page',
+		'page arguments' => array(1),
+		'access arguments' => array(1),
+		'access callback' => 'bxdev_payment_videographer_payments_access',
+		'weight' => 10,
+		'type' => MENU_LOCAL_TASK,
+	);
+
+  return $items;
+}
+
+/**
+ * Implements hook_user_delete().
+ */
+function bxdev_payment_user_delete($account) {
+  db_delete('users_auth')
+    ->condition('uid', $account->uid)
+    ->execute();
+}
+
+
+/**
+ * CALLBACKS
+ */
+
+/**
+ * AJAX callback: new / existing client switch
+ */
+function bxdev_payment_switch_client_state($form, $form_state){
+	return $form;
+}
+
+/**
+ * AJAX callback: get existing credit cards
+ */
+function bxdev_payment_get_existing_cc($form, $form_state){
+	return $form['cc'];
+}
+
+/**
+ * Page callback: get user profile
+ */
+function bxdev_payment_get_payment_profiles($uid){
+	
+	global $api_login_id;
+	global $transaction_key;
+	
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	
+	// get the user profile id
+	$profile_id = db_select('users_auth', 'u')
+		->fields('u', array('auth_token'))
+		->condition('uid', $uid, '=')
+		->execute()
+		->fetchField();
+	
+	// if the profile exists
+	if(!empty($profile_id)){
+		
+		$cim->setParameter('customerProfileId', $profile_id);
+		$cim->getCustomerProfile();
+		
+		// get the raw xml response
+		$xml = $cim->getXml();
+		
+		// get the payment profiles
+		$payment_profiles = $xml->profile->paymentProfiles;
+		
+		if(!empty($payment_profiles)){		
+			$items = array();
+			foreach($payment_profiles as $payment_profile){
+				$payment_id = (int) $payment_profile->customerPaymentProfileId;
+				$items[$payment_id] = (string) $payment_profile->payment->creditCard->cardNumber;
+			}		
+			return $items;
+		}		
+	}
+	return FALSE;
+}
+
+/**
+ * Page callback: client payment step one
+ */
+function bxdev_payment_client_payment_step_one_page(){
+	
+	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
+	
+	$output = '<h2><strong>Client Payment Info</strong> (step 1 of 3)</h2>';
+	
+	$output .= render(drupal_get_form('bxdev_payment_project_client_credit_card_form'));
+	
+	return $output;	
+}
+
+/**
+ * Page callback: project payment
+ */
+function bxdev_payment_project_payment_page($node){
+		
+	$project = new Project($node->nid);
+	
+	$GLOBALS['payment_profiles'] = bxdev_payment_get_payment_profiles($project->client->uid);
+	
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
+	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	
+	drupal_set_title($project->project->title . ' Payments');
+	
+	// client information
+	$output = '<div class="client-info">
+	<h1>Client</h1>
+	<h3>' . $project->client->field_name['und'][0]['value'] . '</h3>
+	<p>Email: <a href="mailto:' . $project->client->mail . '">' . $project->client->mail . '</a></br>
+	Phone: ' . $project->client->field_phone['und'][0]['value'] . '</p>
+	</div>';
+	
+	$output .= '<div class="client-payment-wrap clearfix">';
+	
+	// display payment notes if they exist
+	if(!empty($project->project->field_payment_notes['und'][0]['value'])){
+		$output .= '<label><strong>Payment notes:</strong></label><p>' . $project->project->field_payment_notes['und'][0]['value'] . '</p>';
+	}
+	
+	// credit card form
+	$output .= render(drupal_get_form('bxdev_payment_project_payment_form', $node));
+	
+	// payment history
+	$output .= '<h2>Payment History</h2>';
+	$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log', $project->project->nid, $project->client->uid) . '</div>';
+	
+	$output .= '</div>';
+	
+	// client information
+	$output .= '<div class="client-info"><h1>Videographer</h1>';
+	
+	if(!empty($project->videographer)){
+	
+		$output .= '<h3>' . $project->videographer->field_name['und'][0]['value'] . '</h3>
+		<p>Email: <a href="mailto:' . $project->videographer->mail . '">' . $project->videographer->mail . '</a></br>
+		Phone: ' . $project->videographer->field_phone['und'][0]['value'];
+		
+		$output .= !empty($project->project->field_vid_agreed_payment['und'][0]['value']) ? '<br>Agreed payment: <strong>' . bxdev_format_currency($project->project->field_vid_agreed_payment['und'][0]['value']) . '</strong>' : '';		
+		$output .= '</p></div>';
+	
+		$output .= '<div class="videographer-payment-wrap clearfix">';
+		
+		$output .= '<div class="videographer-payment-form">';
+		
+		$output .= render(drupal_get_form('bxdev_payment_videographer_payment_form'));
+	
+		$reminder = bxdev_document_get_videographer_w9_reminder($project->videographer->uid, $project->project->nid);
+		if($reminder){
+			$reminder_date = date('m-d-Y g:ia', strtotime($reminder->date . ' + 2 hours'));
+			$output .= '<p class="reminder"><strong>* Payment is waiting for the Videographer to add a W9 form.</strong><br/>';
+			$output .= 'The last reminder was sent on:<br><strong>' . $reminder_date . '</strong> for the amount of <strong>' . bxdev_format_currency($reminder->amount) . '</strong><br/>';
+			$output .= '<em>To send another reminder, enter the amount and click "Pay".</em></p>';
+		}
+		
+		$output .= '</div>';
+	
+		// payment history
+		$output .= '<h2>Payment History</h2>';
+		$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log', $project->project->nid, $project->videographer->uid) . '</div>';
+	
+	}else{
+		$output .= '<p>No videographer assigned.</p>';
+	}
+	
+	$output .= '</div>';
+	
+	// unset the global
+	unset($GLOBALS['payment_profiles']);
+	
+	return $output;
+}
+
+/**
+ * Page callback: client payment
+ */
+function bxdev_payment_client_payment_page($account){
+	
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
+	drupal_add_js(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.js');
+	
+	drupal_set_title('Client Payments');
+	
+	$output = '<a class="back" href="/admin/clients">&lt; Back to Clients</a>';
+	
+	$output .= '<div class="client-info">
+	<h3>' . $account->field_name['und'][0]['value'] . '</h3>
+	<p>Email: <a href="mailto:' . $account->mail . '">' . $account->mail . '</a></br>
+	Phone: ' . $account->field_phone['und'][0]['value'] . '</p>
+	</div>';
+	
+	$output .= '<div class="credit-card-wrap">';
+	
+	$payment_profiles = bxdev_payment_get_payment_profiles($account->uid);
+	
+	if($payment_profiles){
+		$output .= '<div class="stored-cards"><h3>Stored credit cards</h3>';
+		foreach($payment_profiles as $payment_profile_id => $card){
+			$output .= '<div class="payment-profile" ><strong>' . $card . '</strong> <a href="" data-payment-profile="' . $payment_profile_id . '">remove</a></div>';
+			$output .= '<div class="remove-popup" data-payment-profile="' . $payment_profile_id . '" style="display:none;">
+			<h3>Are you sure you want to remove the credit card: <strong>' . $card . '</strong>?</h3>
+			<p>This action cannot be undone.</p>
+			<div class="buttons"><a class="btn-remove" href="/admin/payment/remove/' . $account->uid . '/' . $payment_profile_id . '">Remove credit card</a>
+			<a class="btn-cancel" href="">Cancel</a></div>
+			</div>';
+		}
+	}else{
+		$output .= '<p>No stored credit cards.</p>';
+	}
+	
+	$output .= '</div>';
+	
+	$output .= '<h3>Add new credit card</h3>';
+	
+	$output .= render(drupal_get_form('bxdev_payment_client_new_credit_card_form'));
+	
+	$output .= '</div>';
+	
+	$output .= '<div class="client-payment-history payment-history"><h3>Payment History</h3>' . views_embed_view('payments', 'payment_log_client', $account->uid) . '</div>';
+	
+	return $output;
+}
+
+/**
+ * Page callback: videographer documents
+ */
+function bxdev_payment_videographer_payments_page($account){
+	
+	drupal_add_css(drupal_get_path('module', 'bxdev_payment') . '/bxdev_payment.css');
+	drupal_set_title('Videographer Payments');
+
+	$output .= '<div class="project-payment-history payment-history">' . views_embed_view('payments', 'payment_log_videographer', $account->uid) . '</div>';
+	
+	return $output;	
+}
+
+/**
+ * Menu callback: client remove credit card
+ */
+function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
+		
+	$profile_id = bxdev_payment_get_auth_token($uid);
+	
+	// if the user does not have an auth token, stop and return
+	if(!$profile_id){
+		drupal_set_message('User does not have a payment profile', 'error');
+		return;
+	}
+	
+	global $api_login_id;
+	global $transaction_key;
+	
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	
+	$cim->setParameter('customerProfileId', $profile_id);
+	$cim->setParameter('customerPaymentProfileId', $payment_profile_id);
+	$cim->deleteCustomerPaymentProfile();
+	
+	// removal was successful
+	if($cim->isSuccessful()){
+		
+		dpm($cim->getResponseSummary());				
+	
+	// transaction was not successful
+	}else{
+		drupal_set_message($cim->getResponseSummary(), 'error');
+	}
+	
+	drupal_set_message('Credit card has been successfully removed.');
+	drupal_goto('admin/client/' . $uid . '/payments');
+}
+
+/**
+ * Access callback: project documents
+ */
+function bxdev_payment_videographer_payments_access($account){
+	global $user;
+	$account_role = bxdev_user_get_role($account->uid);
+	return (user_access('pc') || $user->uid == $account->uid) && $account_role == 'videographer';
+}
+
+/**
+ * Access callback: project payment
+ */
+function bxdev_payment_project_payment_access($node){
+	return $node->type == 'project' && user_access('add new project');
+}
+
+
+/**
+ * CUSTOM
+ */
+
+/**
+ * Return user auth token, if it exists
+ */
+function bxdev_payment_get_auth_token($uid){
+	// get the user profile id
+	$profile_id = db_select('users_auth', 'u')
+		->fields('u', array('auth_token'))
+		->condition('uid', $uid, '=')
+		->execute()
+		->fetchField();
+		
+	return !empty($profile_id) ? $profile_id : FALSE;	
+}
+
+/**
+ * Log a payment action
+ */
+function bxdev_payment_log_payment($nid, $uid, $payment_id, $transaction_id, $amount){
+	db_insert('payment_log')
+		->fields(array(
+			'nid' => $nid,
+			'uid' => $uid,
+			'payment_id' => $payment_id,
+			'transaction_id' => $transaction_id,
+			'amount' => $amount,
+		))
+		->execute();
+}
+
+/**
+ * Return last four digits of credit card using the given payment id
+ */
+function bxdev_payment_get_cc_last_four($payment_id, $uid){
+	
+	global $api_login_id;
+	global $transaction_key;
+	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	
+	// get the customer profile id
+	$profile_id = bxdev_payment_get_auth_token($uid);
+	
+	$cim->setParameter('customerProfileId', $profile_id);
+	$cim->setParameter('customerPaymentProfileId', $payment_id);
+	$cim->getCustomerPaymentProfile();
+	if($cim->isSuccessful()){
+		$xml = $cim->getXml();
+		return $xml->paymentProfile->payment->creditCard->cardNumber;
+	}
+	return FALSE;
+}
+
+
+
+
+
+

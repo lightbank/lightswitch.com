@@ -25,8 +25,8 @@
   
 	$(function(){
 		
-		Shadowbox.init();		
-		
+		Shadowbox.init();
+				
 		/**
 		 * Business profile
 		 */
@@ -97,9 +97,44 @@
 		// visibility toggle for new / existing client
 		$('.new-client-btn').click(function(){
 			$('.new-client-wrapper').toggle();
-			$('#edit-field-client-ref').toggle();
-			$('#edit-field-client-ref-und').val('_none');
+			$('#edit-field-client-ref, .existing-client-wrapper').toggle();
+			$('#edit-field-client-ref-und, #edit-existing-client').val('_none');
 			$('#edit-new-client-email, #edit-new-client-name, #edit-new-client-phone').val('');
+			return false;
+		});
+		
+		// Why Tabs
+		$('.why-tabs li:first a').addClass('active');
+		$('.why-tabs li a').click(function(){
+			var panel = $(this).attr('href');
+			$('.why-tabs li a').removeClass('active');
+			$(this).addClass('active');
+			
+			$('.why-tabs .tab-block').fadeOut();
+			$('.why-tabs').find("#"+panel).fadeIn();
+			return false;
+		});
+		
+		/**
+		 * Video gallery
+		 */
+		$('.view-display-id-gallery_slideshow ul').roundabout({
+			minOpacity: 1
+		});
+		
+		/**	
+		 * Pricing
+		 */
+		// load the 1x1 bg pixel first
+		var pricing_bg = new Image();
+		pricing_bg.src = 'sites/all/themes/bms/images/bg_trans.png';
+		$('#block-bxdev-contact-form .close').click(function(){
+			$('#block-bxdev-contact-form').fadeOut(200);
+			return false;
+		});
+		
+		$('.price-block .btn').click(function(){
+			$('#block-bxdev-contact-form').fadeIn(200);
 			return false;
 		});
 		

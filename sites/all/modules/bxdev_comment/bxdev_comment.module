@@ -59,55 +59,111 @@ function bxdev_comment_preprocess_node(&$vars){
 
 			$project = new Project($node->nid);
 			
-			if(user_access('pc')){
-				$vars['comment_switch'] = '<div class="comment-switch"><a href="" class="client-switch active">Client</a><a href="" class="videographer-switch">Videographer</a></div>';
-			}
+			// if a spec video, disable commenting
+			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
+				
+				$vars['spec_intro'] = '
+					<div class="spec-intro">
+						<h1>Welcome to Lightswitch!</h1>
+						<p>We\'ve created a video showcasing your business for our local directory and thought you\'d like to see it.  Click on the play button to view.  After you\'ve watched, scroll down below your video to see some beautiful high resolution photos of your business that were captured during the shoot.</p>
+					</div>
+				';
+				
+				$vars['spec_markup1'] = '
+					<div class="why-tabs">
+						<h2>Why your business needs video:</h2>
+						<p>Video is one of the most cost effective ways to take your online marketing to the next level. Check out the reasons why our clients choose us to produce videos that increase their online presence and bring in new customers.</p>
+						<div id="block-1">
+							<div class="col c1">
+								<h4>Search for Local Business Starts Online</h4>
+								<div class="img-wrap"><img src="/sites/all/themes/bms/images/spec_google.jpg"/></div>
+								<p><strong>74%</strong> of internet users perform local searches</p>
+								<p><strong>61%</strong> of those searches result in a store purchase</p>
+							</div>  
+							<div class="col c2">
+								<h4>Improve Rankings</h4>
+								<div class="img-wrap"><img src="/sites/all/themes/bms/images/spec_engines.jpg"/></div>
+								<p>Sites containing video are <strong>53x</strong> more likely to appear on the first page of Google results</p>
+							</div>
+							<div class="col c3">
+								<h4>Engage Users</h4>
+								<div class="img-wrap"><img src="/sites/all/themes/bms/images/spec_share.jpg"/></div>
+								<p>Video landing pages generate <strong>5x</strong> higher engagement and response rates</p>
+							</div>
+							<div class="col c4">
+								<h4>Convert Customers</h4>
+								<div class="img-wrap"><img src="/sites/all/themes/bms/images/spec_money.jpg"/></div>
+								<p><strong>41%</strong> of people take action after watching a video</p>
+							</div>
+						</div>
+					</div>';
+					
+					$vars['spec_markup2'] = '<div class="block">
+						<h2>Do you love your video?</h2>
+						<p>Many local directory participants decide to purchase their video after watching the preview for a one-time fee of $499.</p>
+						<h2>Here\'s how it works:</h2>
+						<p>- You provide feedback and we\'ll make one round of edits for free<br>
+						- We remove all Lightswitch branding from the video<br>
+						- We deliver a final video in a convenient file format<br>
+						- You own full rights to the video and can use it on any of your online marketing pages"</p>
+						<p><strong>If you are interested, click the "Contact Me" button and one of our team members will get in touch within the next two days.</strong></p>
+						<p class="btn-wrap"><a href="/project/spec/contact/' . $project->project->nid . '" class="btn-contact">Contact Me</a></p>
+					</div>';
+				
+			// if not a spec video, enable commenting
+			}else{
 			
-			// if client or pc
-			if(user_access('client') || user_access('pc')){
-				// get the client comments view
-				$vars['client_comments'] = '<div class="client-comments-wrap">' . views_embed_view('comments', 'client');
-			}
+				if(user_access('pc')){
+					$vars['comment_switch'] = '<div class="comment-switch"><a href="" class="client-switch active">Client</a><a href="" class="videographer-switch">Videographer</a></div>';
+				}
 			
-			// if videographer or pc
-			if(user_access('videographer') || user_access('pc')){
-				$pc = user_access('pc') ? 'pc' : '';
-				$vars['videographer_comments'] = '<div class="videographer-comments-wrap ' . $pc . '">' . views_embed_view('comments', 'videographer');
-			}
-			
-			// if project has not been approved
-			if(!$project->approved){
 				// if client or pc
 				if(user_access('client') || user_access('pc')){
-					// get the comment form
-					$client_comment_form = render(drupal_get_form('bxdev_comment_client_form'));
-					// if comments exist
-					if(!empty($project->comments)){
-						// get the last comment
-						$last_comment = end($project->comments);
-						// if the last comment is a revision list and its not approved or declined
-						if($last_comment->field_revision_list['und'][0]['value'] == 1 && $last_comment->field_revision_approved['und'][0]['value'] == 0 && empty($last_comment->field_declined_reason)){
-							// show the comment form
-							$client_comment_form = '<div class="revision-decline-client-form">' . render(drupal_get_form('bxdev_comment_client_decline_form', $last_comment->nid)) . '</div>';
-						}				
-					}
-					$vars['client_comment_form'] = $client_comment_form . '</div>';
+					// get the client comments view
+					$vars['client_comments'] = '<div class="client-comments-wrap">' . views_embed_view('comments', 'client');
 				}
 			
 				// if videographer or pc
-				if(user_access('videographer') || user_access('pc')){				
-					$vars['videographer_comment_form'] = render(drupal_get_form('bxdev_comment_videographer_form')) . '</div>';
+				if(user_access('videographer') || user_access('pc')){
+					$pc = user_access('pc') ? 'pc' : '';
+					$vars['videographer_comments'] = '<div class="videographer-comments-wrap ' . $pc . '">' . views_embed_view('comments', 'videographer');
 				}
 			
-			// project has been approved
-			}else{
-				$approved_html = '<div class="project-approved">This project has been approved.</div></div>';
-				if(user_access('client') || user_access('pc')){
-					$vars['client_comment_form'] = $approved_html;
+				// if project has not been approved
+				if(!$project->approved){
+					// if client or pc
+					if(user_access('client') || user_access('pc')){
+						// get the comment form
+						$client_comment_form = render(drupal_get_form('bxdev_comment_client_form'));
+						// if comments exist
+						if(!empty($project->comments)){
+							// get the last comment
+							$last_comment = end($project->comments);
+							// if the last comment is a revision list and its not approved or declined
+							if($last_comment->field_revision_list['und'][0]['value'] == 1 && $last_comment->field_revision_approved['und'][0]['value'] == 0 && empty($last_comment->field_declined_reason)){
+								// show the comment form
+								$client_comment_form = '<div class="revision-decline-client-form">' . render(drupal_get_form('bxdev_comment_client_decline_form', $last_comment->nid)) . '</div>';
+							}				
+						}
+						$vars['client_comment_form'] = $client_comment_form . '</div>';
+					}
+			
+					// if videographer or pc
+					if(user_access('videographer') || user_access('pc')){				
+						$vars['videographer_comment_form'] = render(drupal_get_form('bxdev_comment_videographer_form')) . '</div>';
+					}
+			
+				// project has been approved
+				}else{
+					$approved_html = '<div class="project-approved">This project has been approved.</div></div>';
+					if(user_access('client') || user_access('pc')){
+						$vars['client_comment_form'] = $approved_html;
+					}
+					if(user_access('videographer') || user_access('pc')){
+						$vars['videographer_comment_form'] = $approved_html;
+					}
 				}
-				if(user_access('videographer') || user_access('pc')){
-					$vars['videographer_comment_form'] = $approved_html;
-				}
+			
 			}
   		
   		break;

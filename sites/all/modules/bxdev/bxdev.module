@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * HOOKS
+ */
+
+/**
  * Alter content in Administration menu bar before it is rendered.
  */
 function bxdev_admin_menu_output_alter(&$content) {
@@ -13,6 +17,28 @@ function bxdev_admin_menu_output_alter(&$content) {
     if (in_array($menu_tree['#title'], $admin_menu_exclusions))
       unset($content['menu'][$menu_key]);
   }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bxdev_menu() {
+	
+  $items['get/body/%'] = array(
+    'page callback' => 'bxdev_get_node_body',
+		'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+	$items['get/video/%node'] = array(
+		'page callback' => 'bxdev_get_video',
+		'page arguments' => array(2),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
+
+  return $items;
 }
 
 /**
@@ -195,6 +221,11 @@ function bxdev_token_info() {
 		'description' => t('User tokens'),
 	);
 	
+	$types['client'] = array(
+		'name' => t('Client'),
+		'description' => t('Client tokens'),
+	);	
+	
   // project tokens.
   $project['project_url'] = array(
     'name' => t('Project URL'),
@@ -258,6 +289,24 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					$replacements[$original] = $data['project_link'];
 					break;
 					
+				case 'project_terms_link':
+					$replacements[$original] = $base_url . '/client/terms/' . $data['project']->project->nid . '/' . $data['project']->hash;
+					break;
+					
+				case 'project_type_description':
+					$project_type = $data['project']->project->field_project_type['und'][0]['value'];
+					$replacements[$original] = bxdev_project_get_project_description($project_type);
+					break;
+					
+				case 'project_type':
+					$project_type = $data['project']->project->field_project_type['und'][0]['value'];
+					$replacements[$original] = bxdev_project_get_project_description($project_type) . ' - ' . bxdev_format_currency($project_type);
+					break;
+					
+				case 'amount':
+					$replacements[$original] = bxdev_format_currency($data['amount']);
+					break;
+					
 				case 'pc:full_name':
 					$replacements[$original] = $data['project']->pc->field_name['und'][0]['value'];
 					break;
@@ -285,6 +334,14 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 				case 'client:full_name':
 					$replacements[$original] = $data['project']->client->field_name['und'][0]['value'];
 					break;
+				
+				case 'client:phone':
+					$replacements[$original] = $data['project']->client->field_phone['und'][0]['value'];
+					break;
+					
+				case 'client:email':
+					$replacements[$original] = $data['project']->client->mail;
+					break;
 					
 				case 'client:username':
 					$replacements[$original] = $data['project']->client->name;
@@ -297,8 +354,25 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					$replacements[$original] = $account->password;
 					break;
 					
+				case 'videographer:full_name':
+					$replacements[$original] = $data['project']->videographer->field_name['und'][0]['value'];
+					break;
+					
+				case 'videographer:address':
+					$profile = profile2_load_by_user($data['project']->videographer, 'videographer');
+					$replacements[$original] = nl2br($profile->field_address['und'][0]['value']);
+					break;
+				
+				case 'videographer:amount':
+					$replacements[$original] = $data['amount'];
+					break;
+					
 				case 'business:title':
 					$replacements[$original] = $data['project']->business->title;
+					break;
+					
+				case 'business:address':
+					$replacements[$original] = nl2br($data['project']->business->field_address['und'][0]['value']);
 					break;
 					
 				case 'comment:comment':
@@ -324,7 +398,7 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 		foreach($tokens as $name => $original){
 			switch($name){				
 				case 'full_name':
-					$replacements[$original] = $data['full_name'];
+					$replacements[$original] = !empty($data['full_name']) ? $data['full_name'] : '________';
 					break;
 					
 				case 'username':
@@ -337,7 +411,11 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					
 				case 'login_link':
 					$replacements[$original] = $data['login_link'];
-					break;				
+					break;
+					
+				case 'address':
+					$replacements[$original] = !empty($data['address']) ? $data['address'] : '________';
+					break;					
 			}
 		}
 						
@@ -403,9 +481,185 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 			}
 		}					
 		
+	}else if($type == 'client'){
+		
+		foreach($tokens as $name => $original){
+			switch($name){				
+				case 'date':
+					$replacements[$original] = date('m-d-Y', time());
+					break;
+					
+				case 'cc':
+					$replacements[$original] = $data['cc'];
+					break;
+			}
+		}					
+		
 	}
 			
 	return $replacements;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function bxdev_block_info() {
+  $blocks['contact_form']['info'] = t('Contact form');
+	return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function bxdev_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'contact_form':
+			// get the contact form
+			$form = render(module_invoke('webform', 'block_view', 'client-block-5'));
+			$output = '<div class="contact-form-wrapper-fixed"></div>';
+			$output .= '<div class="contact-form-wrapper">';
+			$output .= '<a href="" class="close">X</a><h2>Get started with Lightswitch</h2>';
+			$output .= $form;
+			$output .= '</div>';
+      $block['content'] = $output;
+      break;
+  }
+  return $block;
+}
+
+
+/**
+ * FORMS
+ */
+
+function bxdev_form_webform_client_form_5_alter(&$form, &$form_state){
+	$form['actions']['submit']['#ajax'] = array(
+		'callback' => 'bxdev_pricing_contact_callback',
+		'wrapper' => 'webform-client-form-5',
+	);
+}
+
+/**
+ * Form AJAX callback: pricing contact
+ */
+function bxdev_pricing_contact_callback($form, $form_state){
+	if(form_get_errors()){
+		return $form;
+	}
+	return '<h3>Thank you!</h3><p>We will be in contact soon.</p>';
+}
+
+
+/**
+ * CALLBACKS
+ */
+
+/**
+ * Menu callback: get video (front end)
+ */
+function bxdev_get_video($node){
+	
+	$file = file_load($node->field_gallery_video['und'][0]['fid']);
+	$file = (array) $file;
+	
+	$path = file_create_url($file->uri);
+	
+	$output = '<style type="text/css">
+	body {
+		padding: 20px;
+		margin: 0;
+		background: #fff;
+	}
+	
+	.btn {
+		background-color: #D8611F;
+	  background-image: -moz-linear-gradient(center top , #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
+	  border: 1px solid #9C3D00;
+	  border-radius: 5px 5px 5px 5px;
+	  box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset, 0 1px 3px #333333;
+	  color: #FFFFFF;
+	  font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+	  padding: 10px 15px;
+	  text-align: center;
+	  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+	  text-transform: none;
+		text-decoration: none;
+	}
+	
+	.btn-wrap {
+		padding-top: 30px;
+		text-align: right;
+	}
+	
+	.media-vimeo-preview-wrapper {
+		background: #000;
+	}
+	
+	</style>';
+		
+	$output .= theme('media_vimeo_video', $file);
+	
+	$output .= '<div class="btn-wrap"><a href="#" class="btn" onclick="parent.window.location = \'/video-production-services\'">View Pricing</a></div>';
+	
+	print $output;
+}
+
+
+/**
+ * CUSTOM
+ */
+
+/**
+ * Return the formatted body of a given node
+ */
+function bxdev_get_node_body($nid){
+	
+	$project = new Project(1243);
+	$line_items[] = array(
+		'qty' => 1,
+		'description' => 'Standard Lightswitch Video',
+		'unit_price' => 299,
+		'line_total' => 299,
+	);
+	$line_items[] = array(
+		'qty' => 1,
+		'description' => 'Standard Lightswitch Video with Interview',
+		'unit_price' => 399,
+		'line_total' => 399,
+	);
+	$line_items['total'] = 600;
+	$invoice_num = 101;	
+	
+	print theme('invoice', array('project' => $project, 'line_items' => $line_items, 'invoice_num' => $invoice_num));
+	
+	// $node = node_load($nid);
+	// $body = '<link href="/' . drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css" rel="stylesheet" type="text/css">';
+	// // drupal_add_css(drupal_get_path('theme', 'bms') . '/css/bms_shadowbox.css', $option['type'] = 'inline');
+	// $body .= $node->body['und'][0]['value'];
+	// $body = token_replace($body);
+	// print $body;
+}
+
+/**
+ * Format currency
+ */
+function bxdev_format_currency($value, $sign = TRUE){
+	if(!$sign){
+		$currency_formatted = money_format('%i', $value);
+	}else{
+		$currency_formatted = '$' . money_format('%i', $value);
+	}
+	return $currency_formatted;
+}
+
+/**
+ * Return a filename friendly string
+ */
+function bxdev_get_filename_string($string){
+	// generate a clean client name used in the file name
+	return preg_replace('/[^\w\.-]/', '_', strtolower($string));
 }
 
 

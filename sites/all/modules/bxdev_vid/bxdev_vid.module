@@ -80,8 +80,6 @@ function bxdev_vid_block_view($delta = '') {
  */
 function bxdev_vid_preprocess_page(&$variables) {
 	
-	ini_set('display_errors', '1');
-	
 	// check if page is displaying videographer full node
 	if(isset($variables['node'])){
 		$variables['videographer'] = ($variables['node']->type == 'videographer') ? TRUE : FALSE;
@@ -94,6 +92,56 @@ function bxdev_vid_preprocess_page(&$variables) {
 		$_SESSION['vid_filters'] = $_SERVER['REQUEST_URI'];
 	}
 	
+	
+	/**
+	 * START VIDEOGRAPHER EMAIL BLAST TESTING
+	 */
+	
+	// $results = db_select('users_roles', 'u')
+	// 	->fields('u', array('uid'))
+	// 	// ->limit(50)
+	// 	->condition('rid', 5, '=')
+	// 	->execute();
+	// 	
+	// dpm($results->rowCount());
+	
+	/**
+	 * END VIDEOGRPAPHER EMAIL BLAST TESTING
+	 */
+	
+	
+}
+
+/**
+ * Implements hook_profile2_update().
+ */
+function bxdev_vid_profile2_update($profile){
+	
+	// if the profile is a videographer and a w9 file exists
+	if($profile->type == 'videographer' && !empty($profile->field_videographer_w9['und'][0]['fid'])){
+		
+		$w9 = file_load($profile->field_videographer_w9['und'][0]['fid']);
+				
+		// check if videographer has any pending payments
+		$results = db_select('users_w9_reminders', 'u')
+			->fields('u')
+			->condition('uid', $profile->uid)
+			->execute()
+			->fetchAll();
+		
+		if(!empty($results)){
+			// cycle through each pending payment and execute payment
+			foreach($results as $row){
+				$project = new Project($row->nid);
+				$project->process_videographer_payment($w9, $row->amount);
+			}
+		}
+		
+		// remove all w9 reminders associated with videographer
+		db_delete('users_w9_reminders')
+			->condition('uid', $profile->uid)
+			->execute();		
+	}
 }
 
 
@@ -172,7 +220,8 @@ function bxdev_vid_user_view_page($account){
  */
 function bxdev_vid_terms_get_page(){
 	// load the terms page node
-	$node = node_load(1031);
+	// $node = node_load(1031);
+	$node = node_load(1005);
 	print $node->body['und'][0]['value'];
 }
 
@@ -181,15 +230,18 @@ function bxdev_vid_terms_get_page(){
  */
 function bxdev_vid_profile_access_callback($account){
 	global $user;
-	// if logged in user is videographer
-	if(bxdev_user_get_role($user->uid) == 'videographer'){
-		// if videographer is viewing own profile
-		if($user->uid == $account->uid){
+	$account_role = bxdev_user_get_role($account->uid);
+	if($account_role == 'videographer'){
+		// if logged in user is videographer
+		if(bxdev_user_get_role($user->uid) == 'videographer'){
+			// if videographer is viewing own profile
+			if($user->uid == $account->uid){
+				return TRUE;
+			}
+		// if logged in user is pc
+		}else if(bxdev_user_get_role($user->uid) == 'pc'){
 			return TRUE;
 		}
-	// if logged in user is pc
-	}else if(bxdev_user_get_role($user->uid) == 'pc'){
-		return TRUE;
 	}
 	return FALSE;
 }

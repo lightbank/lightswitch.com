@@ -27,6 +27,7 @@ function bxdev_business_menu() {
 	$items['sales/add/business'] = array(
     'title' => t('Create a New Video Project'),
 		'page callback' => 'bxdev_business_create_business_page',
+		'page arguments' => array(3),
 		'file path' => drupal_get_path('module','node'),
     'file' => 'node.pages.inc',
     'access arguments' => array('add new project'),
@@ -157,7 +158,10 @@ function bxdev_business_block_view($delta = '') {
 function bxdev_business_create_business_page(){	
 	drupal_add_js(drupal_get_path('module', 'bxdev_business') . '/bxdev_business.js');
 	
-	$output = '<h2><strong>Business Profile Info</strong> (step 1 of 2)</h2>';
+	// check if client uid is present
+	$arg3 = arg(3);
+	
+	$output = !empty($arg3) ? '<h2><strong>Business Profile Info</strong> (step 2 of 3)</h2>' : '<h2><strong>Business Profile Info</strong> (step 1 of 2)</h2>';
 	$output .= '<div class="client-select">';
 	$output .= '<a href="#new" class="show-client-add-form">New business</a>';
 	$output .= '<a href="#existing" class="show-client-existing-form">Existing business</a>';
@@ -194,8 +198,14 @@ function bxdev_business_video_callback($business, $project_nid){
 /**
  * Menu callback: clients autocomplete
  */
-function bxdev_business_autocomplete_businesses($string){
-	$results = db_query("SELECT nid, title FROM {node} WHERE type = 'business' AND title LIKE :string", array(':string' => $string . '%'));
+function bxdev_business_autocomplete_businesses(){
+	$arg1 = arg(3);
+	$arg2 = arg(4);
+	if(!empty($arg2)){
+		$results = db_query("SELECT n.nid, n.title FROM {node} n INNER JOIN {field_data_field_client_ref} c ON n.nid = c.entity_id WHERE c.field_client_ref_uid = :uid AND n.type = 'business' AND n.title LIKE :string", array(':string' => $arg2 . '%', ':uid' => $arg1));
+	}else{		
+		$results = db_query("SELECT nid, title FROM {node} WHERE type = 'business' AND title LIKE :string", array(':string' => $arg1 . '%'));
+	}
 	if($results->rowCount() > 0){
 		$items = array();
 		foreach($results as $business){

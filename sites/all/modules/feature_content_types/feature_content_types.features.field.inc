@@ -2504,7 +2504,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -2589,7 +2589,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '27',
+        'weight' => '26',
       ),
     ),
   );
@@ -2668,7 +2668,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -2747,7 +2747,79 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '8',
+        'weight' => '9',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_client_terms_accepted'
+  $fields['node-project-field_client_terms_accepted'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_client_terms_accepted',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 34,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_client_terms_accepted',
+      'label' => 'Client terms accepted',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '30',
       ),
     ),
   );
@@ -2825,7 +2897,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '21',
+        'weight' => '20',
       ),
     ),
   );
@@ -2903,7 +2975,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '20',
+        'weight' => '19',
       ),
     ),
   );
@@ -3021,7 +3093,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '18',
+        'weight' => '17',
       ),
     ),
   );
@@ -3094,7 +3166,150 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '16',
+        'weight' => '15',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_payment_id'
+  $fields['node-project-field_payment_id'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_payment_id',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 32,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_payment_id',
+      'label' => 'Default payment ID',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '27',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_payment_notes'
+  $fields['node-project-field_payment_notes'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_payment_notes',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 35,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_payment_notes',
+      'label' => 'Payment notes',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '29',
       ),
     ),
   );
@@ -3165,7 +3380,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '24',
+        'weight' => '23',
       ),
     ),
   );
@@ -3450,7 +3665,75 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_mupload',
-        'weight' => '19',
+        'weight' => '18',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_project_type'
+  $fields['node-project-field_project_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_project_type',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          449 => 'Standard video - $449',
+          549 => 'Video with interview - $549',
+          599 => 'Video with voice over - $599',
+          'custom' => 'Custom',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 33,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_project_type',
+      'label' => 'Project type',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '28',
       ),
     ),
   );
@@ -3544,7 +3827,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -3622,7 +3905,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '17',
+        'weight' => '16',
       ),
     ),
   );
@@ -3710,7 +3993,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '13',
+        'weight' => '12',
       ),
     ),
   );
@@ -3821,7 +4104,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '25',
+        'weight' => '24',
       ),
     ),
   );
@@ -3903,7 +4186,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -4005,7 +4288,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -4084,7 +4367,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -4162,7 +4445,79 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '22',
+        'weight' => '21',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_vid_agreed_payment'
+  $fields['node-project-field_vid_agreed_payment'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_vid_agreed_payment',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 36,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_vid_agreed_payment',
+      'label' => 'Videographer agreed payment',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '3',
       ),
     ),
   );
@@ -4229,7 +4584,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '23',
+        'weight' => '22',
       ),
     ),
   );
@@ -4432,7 +4787,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '26',
+        'weight' => '25',
       ),
     ),
   );
@@ -4505,7 +4860,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '14',
+        'weight' => '13',
       ),
     ),
   );
@@ -4579,7 +4934,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '15',
+        'weight' => '14',
       ),
     ),
   );
@@ -5691,7 +6046,7 @@ function feature_content_types_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => '<a href="/terms/get" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>',
+      'description' => '<a href="/get/document/document_videographer_independent_contractor_agreement" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -5749,7 +6104,7 @@ function feature_content_types_field_default_fields() {
         'display_default' => 0,
         'display_field' => 0,
         'profile2_private' => 0,
-        'uri_scheme' => 'private',
+        'uri_scheme' => 'public',
       ),
       'translatable' => '0',
       'type' => 'file',
@@ -5757,40 +6112,24 @@ function feature_content_types_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'videographer',
       'deleted' => '0',
-      'description' => 'Click <a href="/sites/default/files/lightswitch_w9.pdf">here</a> to download the W9 form. Then upload a signed copy.',
+      'description' => '<a href="/sites/default/files/lightswitch_w9.pdf">Click here to download a new W9 form</a>',
       'display' => array(
         'default' => array(
           'label' => 'above',
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => '12',
+          'weight' => 16,
         ),
       ),
       'entity_type' => 'profile2',
-      'ffp_field_videographer_w9' => array(
-        'active_updating' => 0,
-        'file_name' => '[current-user:field_name]_w9.[file:ffp-extension-original]',
-        'file_name_cleanup' => array(
-          'file_name_pathauto' => 0,
-          'file_name_tolower' => 0,
-          'file_name_transliterate' => 0,
-        ),
-        'file_path' => 'videographer_w9',
-        'file_path_cleanup' => array(
-          'file_path_pathauto' => 0,
-          'file_path_tolower' => 0,
-          'file_path_transliterate' => 0,
-        ),
-        'retroactive_update' => 0,
-      ),
       'field_name' => 'field_videographer_w9',
       'label' => 'W9 form',
       'required' => 0,
       'settings' => array(
         'description_field' => 0,
-        'file_directory' => '',
-        'file_extensions' => 'jpg jpeg gif png pdf doc docx',
+        'file_directory' => 'documents/videographer_docs/w9_forms',
+        'file_extensions' => 'pdf doc docx txt',
         'max_filesize' => '',
         'user_register_form' => FALSE,
       ),
@@ -5827,7 +6166,8 @@ function feature_content_types_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('<a href="/terms/get" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
+  t('<a href="/get/document/document_videographer_independent_contractor_agreement" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
+  t('<a href="/sites/default/files/lightswitch_w9.pdf">Click here to download a new W9 form</a>');
   t('Address');
   t('Approved');
   t('Audio');
@@ -5844,13 +6184,14 @@ function feature_content_types_field_default_fields() {
   t('Camera type');
   t('Category');
   t('City');
-  t('Click <a href="/sites/default/files/lightswitch_w9.pdf">here</a> to download the W9 form. Then upload a signed copy.');
   t('Client');
   t('Client responded');
+  t('Client terms accepted');
   t('Comment');
   t('Comment type');
   t('Declined date');
   t('Declined reason');
+  t('Default payment ID');
   t('Equipment');
   t('Features & areas to avoid?');
   t('Features & areas to include?');
@@ -5860,6 +6201,7 @@ function feature_content_types_field_default_fields() {
   t('Links to examples of work');
   t('Notes');
   t('PC notes');
+  t('Payment notes');
   t('Phone');
   t('Post comments');
   t('Price');
@@ -5867,6 +6209,7 @@ function feature_content_types_field_default_fields() {
   t('Profile video');
   t('Project');
   t('Project photos');
+  t('Project type');
   t('Public access');
   t('Public email');
   t('Rating');
@@ -5895,6 +6238,7 @@ function feature_content_types_field_default_fields() {
   t('Video');
   t('Video type');
   t('Videographer');
+  t('Videographer agreed payment');
   t('Videographer invoice');
   t('Voice over');
   t('Voice over gender');

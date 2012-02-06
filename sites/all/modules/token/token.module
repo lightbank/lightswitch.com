@@ -768,6 +768,11 @@ function token_build_tree($token_type, array $options = array()) {
     $token_type = $entity_token_type;
   }
 
+	// avoid massive memory consumption, as described in d.o. issues 1005364 / 1058912
+	if ($token_type == 'user' || $token_type == 'node') {
+	  $options['depth'] = min($options['depth'], 2);
+	}
+
   $tree_cid = "tree:{$token_type}:{$language->language}:{$options['depth']}";
 
   // If we do not have this base tree in the static cache, check {cache_token}

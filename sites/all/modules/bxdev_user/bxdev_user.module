@@ -65,7 +65,9 @@ function bxdev_user_menu() {
   $items['user/%user/new'] = array(
     'title' => 'Create new user',
     'page callback' => 'bxdev_user_create_user_page',
-    'access arguments' => array('administer users'),
+    // 'access arguments' => array('administer users'),
+		'access arguments' => array(1),
+		'access callback' => 'bxdev_user_create_user_access',
 		'weight' => 50,
     'type' => MENU_LOCAL_TASK,
   );
@@ -113,7 +115,14 @@ function bxdev_user_user_login(&$edit, $account) {
 	bxdev_user_first_time_login_check($account);
 	
 	// if first time login does not redirect user, check for terms acceptance
-	bxdev_user_terms_accept_check($account);	
+	bxdev_user_terms_accept_check($account);
+	
+	if(isset($_GET['url']) && $_GET['url'] != ''){
+		$url = $_GET['url'];
+		drupal_goto($url);
+	}
+	
+	drupal_goto('user/' . $account->uid);
 }
 
 /**
@@ -326,6 +335,7 @@ function bxdev_user_mail($key, &$message, $params) {
  * Implementation of hook_menu_local_tasks_alter().
  */
 function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
+	// dpm($data);
 	// if user profile page
 	if(arg(0) == 'user' && is_numeric(arg(1))){
 		$user = user_load(arg(1));
@@ -355,8 +365,8 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';			
 		}
-	}else if(arg(0) !== 'admin'){
-		unset($data['tabs']);
+	}else if(arg(0) != 'admin'){
+		// unset($data['tabs']);
 	}
 	
 	// get the logged in user
@@ -377,10 +387,12 @@ function bxdev_user_preprocess_user_profile(&$vars){
 	// pc
 	if(isset($vars['user']->roles[4])){
 		$output .= '<div class="">';
-		$output .= '<a href="/projects/master" class="add-project btn">Master project list</a> ';
-		$output .= '<a href="/sales/add/business" class="add-project btn">+ Add project</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-		$output .= '<a class="add-project btn" href="/videographers">Videographers directory</a> ';
-		$output .= '<a href="/admin/structure/types" class="add-project btn">Admin settings</a> ';
+		$output .= '<a href="/projects/master" class="add-project">Master project list</a> ';
+		$output .= '<a href="/sales/add/business" class="add-project">+ Add project</a> ';
+		$output .= '<a href="/sales/add/cc" class="add-project">+ Add project (cc)</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+		$output .= '<a class="add-project" href="/videographers">Videographers directory</a> ';
+		$output .= '<a class="add-project" href="/admin/clients">Clients</a> ';
+		$output .= '<a href="/admin/structure/types" class="add-project">Admin settings</a> ';
 		$output .= '</div><br />';
 		$output .= views_embed_view('projects', 'pc_landing', $vars['user']->uid);
 	// videographer
@@ -484,6 +496,14 @@ function bxdev_user_password_forgot($uid){
 }
 
 /**
+ * Access callback: create new user
+ */
+function bxdev_user_create_user_access($account){
+	global $user;
+	return user_access('administer users') && $account->uid == $user->uid;
+}
+
+/**
  * Return user role
  */
 function bxdev_user_get_role($uid){
@@ -545,7 +565,6 @@ function bxdev_user_terms_accept_check($account){
 			drupal_goto('user/accept-terms');
 		}
 	}
-	drupal_goto('user/' . $account->uid);
 }
 
 /**

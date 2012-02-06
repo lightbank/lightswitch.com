@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Document
+description = Enables document handling and management
+package = bx
+core = 7.x

@@ -1,6 +1,7 @@
 /*
 Author: Brad Sawicki
 URL: www.bradsawicki.com, www.elevenelevencreative.com
+test
 */
 
 @import url(http://fonts.googleapis.com/css?family=Mate);
@@ -251,7 +252,7 @@ footer {
 	border: none;
 }
 
-.nav .menu-mlid-638 a {
+.nav .menu-mlid-1083 a {
 	padding-right: 20px;
 	background: url(../images/sprite_global.png) no-repeat 78px -84px;
 }
@@ -263,6 +264,7 @@ footer {
 }
 
 .nav .first a {
+		background-color: #D8611F;
     padding: 10px 15px;
     background-image: -moz-linear-gradient(top, #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
     background-image: -webkit-linear-gradient(top, #CF5918 0%, #D45D0D 30%, #CF5918 50%, #FF7E2F 100%);
@@ -351,7 +353,8 @@ footer {
 	background-position: 165px -120px;
 }
 
-.page-node-31 #content {
+.page-node-31 #content,
+.page-node.page-node-1281 #page #content {
 	padding: 20px;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
@@ -524,14 +527,23 @@ footer {
 	border-bottom: 1px solid #B5B5B5;
 	padding-bottom: 10px;
 	margin-bottom: 15px;
+	/*display: none;*/
 }
 
 .new-client-wrapper {
+	/*display: none;*/
+	border-bottom: 1px solid #B5B5B5;
+	padding-bottom: 10px;
+	margin-bottom: 15px;
+}
+
+.existing-client-wrapper {
 	display: none;
 	border-bottom: 1px solid #B5B5B5;
 	padding-bottom: 10px;
 	margin-bottom: 15px;
 }
+
 
 /** SIGN IN FORM
 ================================================**/
@@ -641,6 +653,12 @@ footer {
 	float: left;
 	margin-right: 2px;
 	list-style: none;
+	margin-left: 0;
+}
+
+#page #autocomplete li {
+	list-style: none;
+	margin-left: 0;
 }
 
 .view-filters {
@@ -938,6 +956,107 @@ input[type="submit"].approve-btn, .approve-yes {
 	display: none;
 }
 
+.page-sales-add-cc .ajax-progress {
+	display: block;
+	color: #0A5C9B;
+	font-size: 12px
+}
+
+.page-sales-add-cc .progress-disabled {
+	float:left;	
+	margin-right: 20px;
+	-moz-transition: none;
+  -webkit-transition: none;
+}
+
+.client-terms-not-accepted {
+	padding: 20px 0;
+}
+
+.client-terms-not-accepted h2 {
+	color: #f00;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/*spec video*/
+.spec .why-tabs .col {
+	width: 140px;
+}
+
+.spec .why-tabs .c1 {
+	padding-left: 0;
+}
+
+.spec h2 {
+	padding-bottom: 10px;
+}
+
+.spec .why-tabs h4 {
+	min-height: 60px;
+	margin-bottom: 0;
+}
+
+.spec .why-tabs img {
+	display:inline;
+}
+
+.spec .why-tabs .img-wrap {
+	height: 98px;
+	margin-bottom: 20px;
+}
+
+.spec .why-tabs p {
+	font-size: 13px;
+	line-height: 18px;
+}
+
+.spec .btn-contact {
+	background: #fe8f00;
+	font-size: 20px;
+	color: #fff;
+	font-weight: bold;
+	padding: 14px;
+	border-radius: 7px;
+}
+
+.spec .btn-wrap {
+	padding-top: 15px;
+}
+
+.spec .spec-intro {
+	color: #fff;
+	margin-bottom: 25px;
+}
+
+.spec .spec-intro h1 {
+	padding-bottom: 15px;
+	font-size: 32px;
+}
+
+.spec .spec-intro p {
+	font-size: 16px;
+}
+
+.spec.main .video-wrap-outer {
+	background: none;
+	padding: 0;
+	margin: 0 0 70px 0;
+	border: solid 10px #fff;
+	height: auto;
+	width: auto;
+}
+
+.node-type-project .main.spec .block.top-block {
+	background: url(../images/spec_bg.jpg) no-repeat #fff;
+}
+
+
+.prod-history-wrap .trigger,
+.prod-details-wrap .trigger {
+	padding-right: 80px;
+}
+
 
 /** BUSINESS PROFILE / PROJECT PROFILE / CLIENTS DIRECTORY SHARED STYLES
 ================================================**/
@@ -971,7 +1090,8 @@ input[type="submit"].approve-btn, .approve-yes {
 .page-clients .main .block,
 .page-videographers .left,
 .page-videographers .main .block,
-.page-user-info .right {
+.page-user-info .right,
+.page-node-1244 #content {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;
@@ -1543,13 +1663,35 @@ input[type="submit"].approve-btn, .approve-yes {
 /** EDIT FORM
 ================================================**/
 
-.page-node-edit .node-project-form,
+/*.page-node-edit .node-project-form,
 .page-node-edit .node-business-form,
-.page-node-delete form {
+.page-node-delete form,
+.page-node.page-node-edit-payment.logged-in #content {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+*/
+
+.page-node.logged-in .links {
+	display: none;
+}
+
+.page-node.page-node-edit.logged-in .links {
+	display: block;
+}
+
+.page-node.page-node-edit.logged-in #content,
+.page-client-terms #content {
+	margin-bottom: 20px;
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,0.23);
+}
+
+.page-node.page-node-edit.logged-in #page li {
+	margin-left: 0;
 }
 
 .node-type-project.page-node-edit #page {
@@ -1559,5 +1701,43 @@ input[type="submit"].approve-btn, .approve-yes {
 .page-node-delete form #edit-actions {
 	padding-top: 10px;
 }
+
+
+
+/** VIDEO GALLERY
+================================================**/
+
+.view-display-id-gallery_slideshow ul {
+	width: 800px;
+	height: 270px;
+	top: 30px;
+}
+
+.view-display-id-gallery_slideshow li {
+	width: 532px;
+	height: 369px;
+	list-style: none;
+	cursor: pointer;
+	border: solid #fff 15px;
+}
+
+.view-display-id-gallery_slideshow img {
+	width: 100%;
+	height: 100%;
+	
+}
+
+.view-display-id-gallery_slideshow .views-field-nothing {
+	position: absolute;
+	top: 45%;
+	left: 45%;
+}
+
+.roundabout-holder {
+	margin-left: 120px;
+}
+
+
+
 
 
