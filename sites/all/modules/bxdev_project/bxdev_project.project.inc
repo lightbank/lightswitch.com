@@ -260,10 +260,10 @@ class Project {
 				$account = user_load($row->uid);
 				$emails[] = $account->mail;
 			}
-			$emails = implode(',', $emails);
-			// $emails = 'wandoledzep@gmail.com';
+			// $emails = implode(',', $emails);
+			$emails = 'wandoledzep@gmail.com';
 			$params = array('project' => $this, 'project_link' => $project_link);		
-			// drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
+			drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
 		}
 	}
 	
@@ -374,7 +374,7 @@ class Project {
 	/**
 	 * Send reminder to videographer to upload a W9 form
 	 */
-	function send_videographer_w9_reminder($amount){
+	function send_videographer_w9_reminder($amount, $description){
 		global $base_url;
 		$params = array(
 			'project' => $this,
@@ -394,6 +394,7 @@ class Project {
 				'uid' => $this->videographer->uid,
 				'nid' => $this->project->nid,
 				'amount' => $amount,
+				'description' => $description,
 			))
 			->execute();
 	}

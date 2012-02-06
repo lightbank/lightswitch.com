@@ -353,7 +353,7 @@ footer {
 	background-position: 165px -120px;
 }
 
-.page-node-31 #content,
+.page-node-1421 #content,
 .page-node.page-node-1281 #page #content {
 	padding: 20px;
 	background: #fff;
@@ -971,6 +971,7 @@ input[type="submit"].approve-btn, .approve-yes {
 
 .client-terms-not-accepted {
 	padding: 20px 0;
+	clear: left;
 }
 
 .client-terms-not-accepted h2 {
@@ -1088,10 +1089,10 @@ input[type="submit"].approve-btn, .approve-yes {
 .node-type-project .main .block,
 .page-clients .left,
 .page-clients .main .block,
-.page-videographers .left,
+.page-videographers #content .left,
 .page-videographers .main .block,
 .page-user-info .right,
-.page-node-1244 #content {
+.page-node-1419 #content {
 	margin-bottom: 20px;
 	padding: 20px;
 	background: #fff;
@@ -1108,9 +1109,9 @@ input[type="submit"].approve-btn, .approve-yes {
 
 .node-type-business #content .left,
 .node-type-project #content .left,
-.page-clients .left,
+.page-clients #content .left,
 .page-videographers .left,
-.page-user-info .left {
+.page-user-info #content .left {
 	clear: left;
 	width: 300px;
 	font-family: Georgia, serif;

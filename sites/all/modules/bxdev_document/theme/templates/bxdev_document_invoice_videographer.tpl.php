@@ -59,7 +59,6 @@
 </table>
 
 <div class="footer">
-	<p>Make your check payable to <u><strong>Lightswitch Holdings, Inc</strong></u></p>
 	<h2>Thank you for your business!</h2>
 </div>
 

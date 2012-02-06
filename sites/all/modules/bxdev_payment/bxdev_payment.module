@@ -287,6 +287,8 @@ function bxdev_payment_client_payment_page($account){
 	
 	drupal_set_title('Client Payments');
 	
+	$GLOBALS['payment_profiles'] = bxdev_payment_get_payment_profiles($account->uid);
+	
 	$output = '<a class="back" href="/admin/clients">&lt; Back to Clients</a>';
 	
 	$output .= '<div class="client-info">
@@ -323,6 +325,9 @@ function bxdev_payment_client_payment_page($account){
 	$output .= '</div>';
 	
 	$output .= '<div class="client-payment-history payment-history"><h3>Payment History</h3>' . views_embed_view('payments', 'payment_log_client', $account->uid) . '</div>';
+	
+	// unset the global
+	unset($GLOBALS['payment_profiles']);
 	
 	return $output;
 }

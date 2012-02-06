@@ -133,7 +133,7 @@ function bxdev_vid_profile2_update($profile){
 			// cycle through each pending payment and execute payment
 			foreach($results as $row){
 				$project = new Project($row->nid);
-				$project->process_videographer_payment($w9, $row->amount);
+				$project->process_videographer_payment($w9, $row->amount, $row->description);
 			}
 		}
 		

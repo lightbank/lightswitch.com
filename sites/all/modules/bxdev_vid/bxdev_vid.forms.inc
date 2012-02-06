@@ -42,6 +42,8 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 		// modify validation / submit handlers
 		array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
 		$form['#submit'][0] = 'bxdev_vid_user_register_submit';
+		// remove the standard user_register_submit drupal handler
+		unset($form['#submit'][1]);
 		$form['#submit'][] = 'bxdev_document_videographer_user_register_submit';
 	
 		// left / right wrappers
@@ -54,6 +56,8 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 	if(arg(0) == 'join-our-team'){
 		unset($form['profile_videographer']['field_videographer_w9']);
 	}
+	
+	// dpm($form);
 	
 }
 

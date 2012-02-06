@@ -517,7 +517,7 @@ function bxdev_block_view($delta = '') {
   switch ($delta) {
     case 'contact_form':
 			// get the contact form
-			$form = render(module_invoke('webform', 'block_view', 'client-block-5'));
+			$form = render(module_invoke('webform', 'block_view', 'client-block-1442'));
 			$output = '<div class="contact-form-wrapper-fixed"></div>';
 			$output .= '<div class="contact-form-wrapper">';
 			$output .= '<a href="" class="close">X</a><h2>Get started with Lightswitch</h2>';
@@ -534,10 +534,10 @@ function bxdev_block_view($delta = '') {
  * FORMS
  */
 
-function bxdev_form_webform_client_form_5_alter(&$form, &$form_state){
+function bxdev_form_webform_client_form_1442_alter(&$form, &$form_state){
 	$form['actions']['submit']['#ajax'] = array(
 		'callback' => 'bxdev_pricing_contact_callback',
-		'wrapper' => 'webform-client-form-5',
+		'wrapper' => 'webform-client-form-1442',
 	);
 }
 

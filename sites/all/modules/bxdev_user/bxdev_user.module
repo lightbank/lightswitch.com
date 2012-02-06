@@ -122,7 +122,7 @@ function bxdev_user_user_login(&$edit, $account) {
 		drupal_goto($url);
 	}
 	
-	drupal_goto('user/' . $account->uid);
+	// drupal_goto('user/' . $account->uid);
 }
 
 /**

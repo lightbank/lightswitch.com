@@ -26,7 +26,7 @@ function bxdev_document_client_terms_form_submit($form, &$form_state){
 	
 	if($fid){
 		$project->send_client_service_agreement($fid);
-		drupal_goto('node/1244');
+		drupal_goto('node/1419');
 	}
 	
 }
@@ -88,6 +88,6 @@ function bxdev_document_videographer_user_register_submit($form, &$form_state){
 	$fid = bxdev_document_create_pdf($html, $filename, 'videographer', 'independent_contractor_agreements', 'Independent Contractor Agreement', $account->uid);
 	
 	// redirect
-	$form_state['redirect'] = 'node/31';
+	$form_state['redirect'] = 'node/1421';
 	
 }

@@ -870,7 +870,7 @@ function bxdev_payment_videographer_payment_form_submit($form, &$form_state){
 				
 	// videographer has not uploaded a W9 form
 	}else{		
-		$project->send_videographer_w9_reminder($amount);		
+		$project->send_videographer_w9_reminder($amount, $description);		
 	}
 	 
 }
