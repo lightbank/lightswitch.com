@@ -354,6 +354,8 @@ footer {
 }
 
 .page-node-1421 #content,
+.page-node.page-node-1412 #content,
+.page-node.page-node-1412.logged-in #content,
 .page-node.page-node-1281 #page #content {
 	padding: 20px;
 	background: #fff;
@@ -1523,6 +1525,10 @@ input[type="submit"].approve-btn, .approve-yes {
 .page-clients .left,
 .page-videographers .left {
 	margin-top: 30px;
+}
+
+.page-clients #content .left {
+	width: auto;
 }
 
 .page-clients .main .controls,

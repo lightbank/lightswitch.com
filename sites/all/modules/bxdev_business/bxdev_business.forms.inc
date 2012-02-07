@@ -24,6 +24,8 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 	$form['field_social_name2']['und'][0]['value']['#title'] = '';
 	$form['field_social_name3']['und'][0]['value']['#title'] = '';
 	$form['field_social_name4']['und'][0]['value']['#title'] = '';
+	$form['field_social_name1']['und'][0]['value']['#value'] = t('Facebook');
+	$form['field_social_name2']['und'][0]['value']['#value'] = t('Twitter');
 	$form['field_social_url1']['und'][0]['value']['#title'] =  t('Social URL');
 	$form['field_social_url2']['und'][0]['value']['#title'] =  '';
 	$form['field_social_url3']['und'][0]['value']['#title'] =  '';
