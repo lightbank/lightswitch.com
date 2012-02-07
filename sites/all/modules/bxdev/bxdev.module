@@ -529,6 +529,31 @@ function bxdev_block_view($delta = '') {
   return $block;
 }
 
+/**
+* Implements hook_entity_info_alter().
+*/
+function bxdev_entity_info_alter(&$entity_info) {
+	
+	// business video thumbnail
+  $entity_info['file']['view modes']['business_thumb'] = array(
+    'label' => t('Business thumb'),
+    'custom settings' => TRUE,
+  );
+
+	// gallery slideshow video image
+	$entity_info['file']['view modes']['video_gallery_slideshow'] = array(
+	  'label' => t('Video gallery slideshow'),
+	  'custom settings' => TRUE,
+	);
+	
+	// gallery slideshow video image
+	$entity_info['file']['view modes']['video_gallery_thumbs'] = array(
+	  'label' => t('Video gallery thumbs'),
+	  'custom settings' => TRUE,
+	);
+
+}
+
 
 /**
  * FORMS

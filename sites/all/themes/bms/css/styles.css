@@ -1224,7 +1224,7 @@ input[type="submit"].approve-btn, .approve-yes {
 .left .email { background-position: -234px -140px; }
 .left .address { background-position: -234px -171px; margin-bottom: 12px; }
 
-.left iframe {
+.node-type-business.page-node .left iframe {
 	width: 100%;
 	margin-bottom: 20px;
 	padding-bottom: 20px;
