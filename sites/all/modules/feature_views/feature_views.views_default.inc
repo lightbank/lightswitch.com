@@ -1519,7 +1519,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_gallery_video']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_gallery_video']['type'] = 'media';
   $handler->display->display_options['fields']['field_gallery_video']['settings'] = array(
-    'file_view_mode' => 'media_preview',
+    'file_view_mode' => 'video_gallery_thumbs',
   );
   $handler->display->display_options['fields']['field_gallery_video']['field_api_classes'] = 0;
   /* Field: Content: Title */
@@ -1672,7 +1672,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_gallery_video']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_gallery_video']['type'] = 'media';
   $handler->display->display_options['fields']['field_gallery_video']['settings'] = array(
-    'file_view_mode' => 'media_large',
+    'file_view_mode' => 'video_gallery_slideshow',
   );
   $handler->display->display_options['fields']['field_gallery_video']['field_api_classes'] = 0;
   /* Field: Global: Custom text */
