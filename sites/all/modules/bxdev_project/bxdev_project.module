@@ -328,41 +328,37 @@ function bxdev_project_preprocess_node(&$vars){
 		}
 						
 		// photos
-		
-		if($project->project->field_video_type['und'][0]['value'] != 'spec'){
-		
-			// get renderable arrays
-			$project_full = node_view($project->project, 'full');
-			$project_teaser = node_view($project->project, 'teaser');
-		
-			// get approved photos
-			$results = db_query("SELECT fid FROM {project_photos_approval} WHERE nid = :nid", array(':nid' => $nid));
-			$approved_photos = array();
-			if($results->rowCount() > 0){
-				foreach($results as $row){
-					$approved_photos[] = $row->fid;
-				}
+				
+		// get renderable arrays
+		$project_full = node_view($project->project, 'full');
+		$project_teaser = node_view($project->project, 'teaser');
+	
+		// get approved photos
+		$results = db_query("SELECT fid FROM {project_photos_approval} WHERE nid = :nid", array(':nid' => $nid));
+		$approved_photos = array();
+		if($results->rowCount() > 0){
+			foreach($results as $row){
+				$approved_photos[] = $row->fid;
 			}
-		
-			// if approved photos exist
-			$approved_photos = $project->get_approved_photos();
-			$photos_teaser = '<div class="clearfix">';
-			$photos = array();
-			// cycle through each project photo
-			foreach($project_full['field_project_photos'] as $key => $value){
-				// if photo
-				if(is_numeric($key)){
-					// if approved
-					if(in_array($value['#item']['fid'], $approved_photos)){
-						// get the teaser photo
-						$photos_teaser .= '<div class="project-thumb"><a rel="shadowbox[images]" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</a></div>';
-					}
-				}
-			}
-			$photos_teaser .= '</div>';
-			$vars['photos_teaser'] = $photos_teaser;
-		
 		}
+	
+		// if approved photos exist
+		$approved_photos = $project->get_approved_photos();
+		$photos_teaser = '<div class="clearfix">';
+		$photos = array();
+		// cycle through each project photo
+		foreach($project_full['field_project_photos'] as $key => $value){
+			// if photo
+			if(is_numeric($key)){
+				// if approved
+				if(in_array($value['#item']['fid'], $approved_photos)){
+					// get the teaser photo
+					$photos_teaser .= '<div class="project-thumb"><a rel="shadowbox[images]" href="' . image_style_url('approval', $value['#item']['uri']) . '">' . theme('image_style', array('path' => $value['#item']['uri'], 'style_name' => 'project_thumb')) . '</a></div>';
+				}
+			}
+		}
+		$photos_teaser .= '</div>';
+		$vars['photos_teaser'] = $photos_teaser;
 		
 		// business logo upload
 		if(user_access('upload business logo')){
