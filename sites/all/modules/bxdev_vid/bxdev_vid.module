@@ -99,11 +99,14 @@ function bxdev_vid_preprocess_page(&$variables) {
 	
 	// $results = db_select('users_roles', 'u')
 	// 	->fields('u', array('uid'))
-	// 	// ->limit(50)
+	// 	->range(0, 300)
 	// 	->condition('rid', 5, '=')
 	// 	->execute();
 	// 	
-	// dpm($results->rowCount());
+	// foreach($results as $row){
+	// 	$account = user_load($row->uid);
+	// 	dpm($account->mail);
+	// }
 	
 	/**
 	 * END VIDEOGRPAPHER EMAIL BLAST TESTING
