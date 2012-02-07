@@ -408,6 +408,14 @@ class Project {
 	}
 	
 	/**
+	 * Send a notification to the Client informing of the spec video
+	 */
+	function send_spec_client(){
+		$params['project'] = $this;
+		drupal_mail('bxdev_project', 'spec_client', $this->client->mail, language_default(), $params);
+	}
+	
+	/**
 	 * Initiate a videographer payment by sending the W9 and invoice to Lightswitch accounting
 	 *
 	 * @param $w9 (object)

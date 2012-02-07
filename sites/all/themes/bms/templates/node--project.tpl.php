@@ -39,6 +39,7 @@
 				<div class="name"><?php print $client->field_name['und'][0]['value']; ?></div>
 				<div class="email"><a href="mailto:<?php print $client->mail; ?>"><?php print $client->mail; ?></a></div>
 				<div class="phone"><?php print $client->field_phone['und'][0]['value']; ?></div>
+				<?php if(!empty($spec_send)) print $spec_send; ?>
 			</div><!-- end .contact -->			
 		<?php endif; ?>
 		

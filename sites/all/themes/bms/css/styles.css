@@ -981,6 +981,10 @@ input[type="submit"].approve-btn, .approve-yes {
 }
 
 /*spec video*/
+.spec iframe {
+	width: 640px!important;
+}
+
 .spec .why-tabs .col {
 	width: 140px;
 }

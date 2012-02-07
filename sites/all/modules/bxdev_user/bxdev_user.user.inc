@@ -163,8 +163,8 @@ class User {
 	/**
 	 * Send an email to the Client user containing login / project info.
 	 *
-	 * @param $nid (int)
-	 *   Project nid.
+	 * @param $project (object)
+	 *   Full Project object.
 	 */
 	function send_client_project_login($project){
 		
