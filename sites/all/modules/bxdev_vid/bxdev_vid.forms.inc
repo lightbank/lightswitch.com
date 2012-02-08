@@ -26,6 +26,7 @@ function bxdev_vid_form_alter(&$form, &$form_state, $form_id) {
  * Implements hook_form_FORM_ID_alter().
  */
 function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
+	dpm($form);
 	if(arg(0) != 'admin'){
 		// hide / reposition user fields
 		$form['account']['name']['#type'] = 'hidden';
@@ -56,8 +57,6 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 	if(arg(0) == 'join-our-team'){
 		unset($form['profile_videographer']['field_videographer_w9']);
 	}
-	
-	// dpm($form);
 	
 }
 

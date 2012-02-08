@@ -130,12 +130,26 @@ function bxdev_user_accept_terms_form($form, $form_state){
  */
 function bxdev_user_accept_terms_form_submit($form, &$form_state){
 	global $user;
+	$account = user_load($user->uid);
 	// load the user's profile
-	$profile = profile2_load_by_user($user, 'videographer');
+	$profile = profile2_load_by_user($account, 'videographer');
 	// set the terms accepted value
 	$profile->field_videographer_terms['und'][0]['value'] = 1;
 	// save the profile
 	profile2_save($profile);
+	
+	$data['full_name'] = $account->field_name['und'][0]['value'];
+	$data['address'] = $profile->field_address['und'][0]['value'];
+	
+	$html = variable_get('document_videographer_independent_contractor_agreement', '');
+	$html = $html['value'];
+	$html = token_replace($html, $data);
+	
+	$videographer_name = bxdev_get_filename_string($account->field_name['und'][0]['value']);
+	
+	$filename = 'lightswitch_contractor_agreement_' . $videographer_name . '_' . $account->uid . '.pdf';
+	$fid = bxdev_document_create_pdf($html, $filename, 'videographer', 'independent_contractor_agreements', 'Independent Contractor Agreement', $account->uid);	
+	
 	// redirect to user's landing
 	drupal_goto('user');
 }

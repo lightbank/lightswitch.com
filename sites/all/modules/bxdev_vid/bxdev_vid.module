@@ -108,6 +108,23 @@ function bxdev_vid_preprocess_page(&$variables) {
 	// 	dpm($account->mail);
 	// }
 	
+	// global $base_url;
+	// 
+	// // $user = user_load(3828);
+	// $user = new User();
+	// $user->load(3828);
+	// $user->reset_password();
+	// $account = $user->get_user();
+	// 
+	// $params = array(
+	// 	'full_name' => $account->field_name['und'][0]['value'],
+	// 	'login_link' => $base_url . '/user',
+	// 	'username' => $account->mail,
+	// 	'password' => $user->password,
+	// );
+	// 
+	// drupal_mail('bxdev_project', 'videographer_existing', $account->mail, language_default(), $params);
+	
 	/**
 	 * END VIDEOGRPAPHER EMAIL BLAST TESTING
 	 */
