@@ -4868,7 +4868,14 @@ function drupal_get_private_key() {
  *   An additional value to base the token on.
  */
 function drupal_get_token($value = '') {
-  return drupal_hmac_base64($value, session_id() . drupal_get_private_key() . drupal_get_hash_salt());
+  // For mixed HTTP(S) sessions, use a constant identifier so that tokens can be shared between protocols.
+  if (variable_get('https', FALSE) && isset($_COOKIE[str_replace('SSESS', 'SESS', session_name())])) {
+    $session_id = $_COOKIE[str_replace('SSESS', 'SESS', session_name())];
+  }
+  else {
+    $session_id = session_id();
+  }
+  return drupal_hmac_base64($value, $session_id . drupal_get_private_key() . drupal_get_hash_salt());
 }
 
 /**
