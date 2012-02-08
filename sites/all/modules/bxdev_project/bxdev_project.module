@@ -278,6 +278,7 @@ function bxdev_project_preprocess_node(&$vars){
 		$vars['client'] = $project->client;
 		$vars['pc'] = $project->pc;
 		$vars['videographer'] = $project->videographer;
+		$vars['sales'] = $project->sales;
 		
 		// check if project has been approved
 		$vars['approved'] = $vars['field_approved'][0]['value'];

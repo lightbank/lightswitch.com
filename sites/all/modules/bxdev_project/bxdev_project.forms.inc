@@ -89,6 +89,11 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		'#default_value' => $shoot_time_end_default,
 	);
 	
+	// if project type has been set, pre populate on project page
+	if(isset($_SESSION['payment']['project_type'])){
+		$form['field_project_type']['und']['#default_value'] = $_SESSION['payment']['project_type'];
+	}
+	
 	// do not modify on admin side
 	if(arg(0) != 'node' && !is_numeric(arg(1))){
 		

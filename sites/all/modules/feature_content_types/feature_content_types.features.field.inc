@@ -2745,7 +2745,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '26',
+        'weight' => '28',
       ),
     ),
   );
@@ -2824,7 +2824,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -2975,7 +2975,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '30',
+        'weight' => '32',
       ),
     ),
   );
@@ -3053,7 +3053,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '20',
+        'weight' => '21',
       ),
     ),
   );
@@ -3131,7 +3131,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '19',
+        'weight' => '20',
       ),
     ),
   );
@@ -3249,7 +3249,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '17',
+        'weight' => '18',
       ),
     ),
   );
@@ -3322,7 +3322,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '15',
+        'weight' => '16',
       ),
     ),
   );
@@ -3394,7 +3394,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '27',
+        'weight' => '29',
       ),
     ),
   );
@@ -3465,7 +3465,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '29',
+        'weight' => '31',
       ),
     ),
   );
@@ -3536,7 +3536,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '23',
+        'weight' => '24',
       ),
     ),
   );
@@ -3821,7 +3821,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_mupload',
-        'weight' => '18',
+        'weight' => '19',
       ),
     ),
   );
@@ -3880,7 +3880,7 @@ function feature_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_project_type',
       'label' => 'Project type',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -3889,7 +3889,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '28',
+        'weight' => '11',
       ),
     ),
   );
@@ -4061,7 +4061,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '16',
+        'weight' => '17',
       ),
     ),
   );
@@ -4149,7 +4149,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -4260,7 +4260,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '24',
+        'weight' => '25',
       ),
     ),
   );
@@ -4601,7 +4601,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '21',
+        'weight' => '22',
       ),
     ),
   );
@@ -4740,7 +4740,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '22',
+        'weight' => '23',
       ),
     ),
   );
@@ -4943,7 +4943,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '25',
+        'weight' => '27',
       ),
     ),
   );
@@ -5016,7 +5016,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );
@@ -5090,7 +5090,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '14',
+        'weight' => '15',
       ),
     ),
   );

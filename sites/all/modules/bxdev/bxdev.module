@@ -303,6 +303,10 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					$replacements[$original] = bxdev_project_get_project_description($project_type) . ' - ' . bxdev_format_currency($project_type);
 					break;
 					
+				case 'shoot_date':
+					$replacements[$original] = date('m-d-Y g:ia', $data['project']->project->field_shoot_date['und'][0]['value']);
+					break;
+					
 				case 'amount':
 					$replacements[$original] = bxdev_format_currency($data['amount']);
 					break;

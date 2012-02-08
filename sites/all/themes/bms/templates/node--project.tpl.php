@@ -15,13 +15,22 @@
 	
 	<div class="block contacts">
 		
-		<?php if($pc): ?>
-			<div class="contact">
-				<h3>Production Coordinator:</h3>
-				<div class="name"><?php print $pc->field_name['und'][0]['value']; ?></div>
-				<div class="email"><a href="mailto:<?php print $pc->mail; ?>"><?php print $pc->mail; ?></a></div>
-				<div class="phone"><?php print $pc->field_phone['und'][0]['value']; ?></div>
-			</div><!-- end .contact -->
+		<?php if($video_class == 'spec'): ?>
+				<div class="contact">
+					<h3>Sales person:</h3>
+					<div class="name"><?php print $sales->field_name['und'][0]['value']; ?></div>
+					<div class="email"><a href="mailto:<?php print $sales->mail; ?>"><?php print $sales->mail; ?></a></div>
+					<div class="phone"><?php print $sales->field_phone['und'][0]['value']; ?></div>
+				</div><!-- end .contact -->
+		<?php else: ?>
+			<?php if($pc): ?>
+				<div class="contact">
+					<h3>Production Coordinator:</h3>
+					<div class="name"><?php print $pc->field_name['und'][0]['value']; ?></div>
+					<div class="email"><a href="mailto:<?php print $pc->mail; ?>"><?php print $pc->mail; ?></a></div>
+					<div class="phone"><?php print $pc->field_phone['und'][0]['value']; ?></div>
+				</div><!-- end .contact -->
+			<?php endif; ?>
 		<?php endif; ?>
 		
 		<?php if($videographer): ?>
