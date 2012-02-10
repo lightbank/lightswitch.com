@@ -144,7 +144,7 @@ function bxdev_project_node_insert($node) {
 			}
 			
 			// check if direct sale video, if so send client the terms email
-			if($node->field_video_type['und'][0]['value'] == 'direct_sale'){
+			if($node->field_video_type['und'][0]['value'] == 'direct_sale' && $node->field_client_send_terms['und'][0]['value'] == 0){
 				$project->send_client_terms();
 			}
 			
