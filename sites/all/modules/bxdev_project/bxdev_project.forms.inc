@@ -61,7 +61,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	// create a fieldset
 	$form['bxdev_shoot_date_fieldset'] = array(
 		'#type' => 'fieldset',
-		'#weight' => 13,
+		'#weight' => 14,
 		'#attributes' => array(
 			'class' => array('clearfix'),
 		),
