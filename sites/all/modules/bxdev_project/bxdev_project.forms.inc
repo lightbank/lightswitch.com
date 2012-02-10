@@ -296,7 +296,7 @@ function bxdev_project_logo_upload_form($form, &$form_state){
 		'#size' => 30,
 		'#upload_location' => 'public://business_logos',
 		'#upload_validators' => array(
-			'file_validate_extensions' => array('jpg jpeg gif png pdf'),
+			'file_validate_extensions' => array('jpg jpeg gif png pdf eps'),
 		),
 	);
 	

@@ -34,6 +34,7 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 			'449' => 'Standard video - $449',
 			'549' => 'Video with interview - $549',
 			'599' => 'Video with voice over - $599',
+			'50' => 'Monthly Subscription - $50 a month',
 			'custom' => 'Custom',
 		),
 		'#default_value' => '449',

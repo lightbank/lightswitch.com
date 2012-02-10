@@ -2747,7 +2747,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '28',
+        'weight' => '29',
       ),
     ),
   );
@@ -2826,7 +2826,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -2977,7 +2977,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '32',
+        'weight' => '33',
       ),
     ),
   );
@@ -3055,7 +3055,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '21',
+        'weight' => '22',
       ),
     ),
   );
@@ -3133,7 +3133,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '20',
+        'weight' => '21',
       ),
     ),
   );
@@ -3221,7 +3221,7 @@ function feature_content_types_field_default_fields() {
       'settings' => array(
         'description_field' => 0,
         'file_directory' => '',
-        'file_extensions' => 'png gif jpg jpeg pdf',
+        'file_extensions' => 'png gif jpg jpeg pdf eps',
         'max_filesize' => '',
         'user_register_form' => FALSE,
       ),
@@ -3238,6 +3238,8 @@ function feature_content_types_field_default_fields() {
             'image_approval' => 0,
             'image_business_large' => 0,
             'image_business_thumb' => 0,
+            'image_gallery_slideshow' => 0,
+            'image_gallery_thumb' => 0,
             'image_large' => 0,
             'image_medium' => 0,
             'image_project_thumb' => 0,
@@ -3251,7 +3253,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '18',
+        'weight' => '19',
       ),
     ),
   );
@@ -3324,7 +3326,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '16',
+        'weight' => '17',
       ),
     ),
   );
@@ -3396,7 +3398,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '29',
+        'weight' => '30',
       ),
     ),
   );
@@ -3467,7 +3469,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '31',
+        'weight' => '32',
       ),
     ),
   );
@@ -3538,7 +3540,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '24',
+        'weight' => '25',
       ),
     ),
   );
@@ -3823,7 +3825,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_mupload',
-        'weight' => '19',
+        'weight' => '20',
       ),
     ),
   );
@@ -3851,6 +3853,7 @@ function feature_content_types_field_default_fields() {
           449 => 'Standard video - $449',
           549 => 'Video with interview - $549',
           599 => 'Video with voice over - $599',
+          50 => 'Monthly Subscription - $50 a month',
           'custom' => 'Custom',
         ),
         'allowed_values_function' => '',
@@ -4063,7 +4066,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '17',
+        'weight' => '18',
       ),
     ),
   );
@@ -4151,7 +4154,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );
@@ -4262,7 +4265,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '25',
+        'weight' => '26',
       ),
     ),
   );
@@ -4603,7 +4606,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '22',
+        'weight' => '23',
       ),
     ),
   );
@@ -4742,7 +4745,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '23',
+        'weight' => '24',
       ),
     ),
   );
@@ -4945,7 +4948,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '27',
+        'weight' => '28',
       ),
     ),
   );
@@ -5018,7 +5021,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '14',
+        'weight' => '15',
       ),
     ),
   );
@@ -5092,7 +5095,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '15',
+        'weight' => '16',
       ),
     ),
   );

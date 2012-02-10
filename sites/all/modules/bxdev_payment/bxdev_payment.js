@@ -79,7 +79,7 @@
 	// populate the charge amount field based on project type drop-down
 	function populate_cc_amount(){
 		var value = $('select[name="project_type"]').val();
-		$('input[name="cc_amount"]').val(value == 'custom' ? '' : value);
+		$('input[name="cc_amount"], input[name="field_charge_amount[und][0][value]"]').val(value == 'custom' ? '' : value);
 		// if line item description exists
 		if($('input[name="cc_description"]').length > 0){
 			// determine the line item description

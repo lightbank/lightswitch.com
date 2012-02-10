@@ -3191,6 +3191,8 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
 
   /* Display: PC landing */
   $handler = $view->new_display('page', 'PC landing', 'pc_landing');
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -3744,6 +3746,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_pc_ref_uid']['id'] = 'field_pc_ref_uid';
   $handler->display->display_options['filters']['field_pc_ref_uid']['table'] = 'field_data_field_pc_ref';
   $handler->display->display_options['filters']['field_pc_ref_uid']['field'] = 'field_pc_ref_uid';
+  $handler->display->display_options['filters']['field_pc_ref_uid']['group'] = 0;
   $handler->display->display_options['filters']['field_pc_ref_uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_pc_ref_uid']['expose']['operator_id'] = 'field_pc_ref_uid_op';
   $handler->display->display_options['filters']['field_pc_ref_uid']['expose']['label'] = 'Production coordinator';
@@ -3754,6 +3757,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_status_value']['id'] = 'field_status_value';
   $handler->display->display_options['filters']['field_status_value']['table'] = 'field_data_field_status';
   $handler->display->display_options['filters']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['group'] = 0;
   $handler->display->display_options['filters']['field_status_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_status_value']['expose']['operator_id'] = 'field_status_value_op';
   $handler->display->display_options['filters']['field_status_value']['expose']['label'] = 'Status';
@@ -3764,12 +3768,35 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_project_business_ref_nid']['id'] = 'field_project_business_ref_nid';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['table'] = 'field_data_field_project_business_ref';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['field'] = 'field_project_business_ref_nid';
+  $handler->display->display_options['filters']['field_project_business_ref_nid']['group'] = 0;
   $handler->display->display_options['filters']['field_project_business_ref_nid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_project_business_ref_nid']['expose']['operator_id'] = 'field_project_business_ref_nid_op';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['expose']['label'] = 'Business';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['expose']['operator'] = 'field_project_business_ref_nid_op';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['expose']['identifier'] = 'field_project_business_ref_nid';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Video type (field_video_type) */
+  $handler->display->display_options['filters']['field_video_type_value']['id'] = 'field_video_type_value';
+  $handler->display->display_options['filters']['field_video_type_value']['table'] = 'field_data_field_video_type';
+  $handler->display->display_options['filters']['field_video_type_value']['field'] = 'field_video_type_value';
+  $handler->display->display_options['filters']['field_video_type_value']['group'] = 0;
+  $handler->display->display_options['filters']['field_video_type_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_video_type_value']['expose']['operator_id'] = 'field_video_type_value_op';
+  $handler->display->display_options['filters']['field_video_type_value']['expose']['label'] = 'Video type';
+  $handler->display->display_options['filters']['field_video_type_value']['expose']['operator'] = 'field_video_type_value_op';
+  $handler->display->display_options['filters']['field_video_type_value']['expose']['identifier'] = 'field_video_type_value';
+  $handler->display->display_options['filters']['field_video_type_value']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: City (field_business_city) */
+  $handler->display->display_options['filters']['field_business_city_value']['id'] = 'field_business_city_value';
+  $handler->display->display_options['filters']['field_business_city_value']['table'] = 'field_data_field_business_city';
+  $handler->display->display_options['filters']['field_business_city_value']['field'] = 'field_business_city_value';
+  $handler->display->display_options['filters']['field_business_city_value']['group'] = 0;
+  $handler->display->display_options['filters']['field_business_city_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['operator_id'] = 'field_business_city_value_op';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['label'] = 'City';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['operator'] = 'field_business_city_value_op';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['identifier'] = 'field_business_city_value';
+  $handler->display->display_options['filters']['field_business_city_value']['expose']['reduce'] = 0;
   $handler->display->display_options['path'] = 'not-used';
 
   /* Display: Business project list */
@@ -4240,6 +4267,7 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
+    4 => '4',
     5 => '5',
   );
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -4329,19 +4357,19 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['created']['date_format'] = 'no_time';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: User: Uid */
-  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['table'] = 'users';
-  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['relationship'] = 'field_videog_ref_uid';
-  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'current_user';
-  $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['uid']['not'] = 0;
+  /* Contextual filter: Content: Videographer (field_videog_ref) */
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['id'] = 'field_videog_ref_uid';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['table'] = 'field_data_field_videog_ref';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['field'] = 'field_videog_ref_uid';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['default_argument_type'] = 'user';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['default_argument_options']['user'] = FALSE;
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_videog_ref_uid']['not'] = 0;
 
   /* Display: References */
   $handler = $view->new_display('references', 'References', 'references_1');

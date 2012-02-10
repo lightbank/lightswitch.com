@@ -383,9 +383,11 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
  * Implementation of hook_preprocess_user_profile(). 
  */
 function bxdev_user_preprocess_user_profile(&$vars){
+	$uid = arg(1);
+	$user = user_load($uid);
 	$output = '';
 	// pc
-	if(isset($vars['user']->roles[4])){
+	if(isset($user->roles[4])){
 		$output .= '<div class="">';
 		$output .= '<a href="/projects/master" class="add-project">Master project list</a> ';
 		$output .= '<a href="/sales/add/business" class="add-project">+ Add project</a> ';
@@ -396,13 +398,13 @@ function bxdev_user_preprocess_user_profile(&$vars){
 		$output .= '</div><br />';
 		$output .= views_embed_view('projects', 'pc_landing', $vars['user']->uid);
 	// videographer
-	}else if(isset($vars['user']->roles[5])){
+	}else if(isset($user->roles[5])){
 		$output .= views_embed_view('projects', 'block_2');
 	// sales
-	}else if(isset($vars['user']->roles[6])){
+	}else if(isset($user->roles[6])){
 		$output .= views_embed_view('projects', 'block');
 	// client
-	}else if(isset($vars['user']->roles[7])){
+	}else if(isset($user->roles[7])){
 		$output .= views_embed_view('projects', 'block_1');
 	}
 	$vars['user_profile'] = $output;
