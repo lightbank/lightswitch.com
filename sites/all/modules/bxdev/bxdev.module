@@ -294,15 +294,25 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					break;
 					
 				case 'project_type_description':
-					$project_type = $data['project']->project->field_project_type['und'][0]['value'];
-					$replacements[$original] = bxdev_project_get_project_description($project_type);
+					if(!empty($data['project']->project->field_line_item_desc['und'][0]['value'])){
+						$replacements[$original] = $data['project']->project->field_line_item_desc['und'][0]['value'];
+					}else{
+						$project_type = $data['project']->project->field_project_type['und'][0]['value'];
+						$replacements[$original] = bxdev_project_get_project_description($project_type);
+					}
 					break;
 					
-				case 'project_type':
-					$project_type = $data['project']->project->field_project_type['und'][0]['value'];
+				case 'project_charge':
 					$per_month = $data['project']->project->field_project_type['und'][0]['value'] == '50' ? ' per month' : '';
-					$replacements[$original] = bxdev_project_get_project_description($project_type) . ' - ' . bxdev_format_currency($project_type) . $per_month;
+					$project_charge = $data['project']->project->field_charge_amount['und'][0]['value'] . $per_month;
+					$replacements[$original] = bxdev_format_currency($project_charge);
 					break;
+					
+				// case 'project_type':
+				// 	$project_type = $data['project']->project->field_project_type['und'][0]['value'];
+				// 	$per_month = $data['project']->project->field_project_type['und'][0]['value'] == '50' ? ' per month' : '';
+				// 	$replacements[$original] = bxdev_project_get_project_description($project_type) . ' - ' . bxdev_format_currency($project_type) . $per_month;
+				// 	break;
 					
 				case 'shoot_date':
 					$replacements[$original] = date('m-d-Y g:ia', $data['project']->project->field_shoot_date['und'][0]['value']);

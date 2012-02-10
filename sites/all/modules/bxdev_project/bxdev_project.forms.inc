@@ -61,7 +61,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	// create a fieldset
 	$form['bxdev_shoot_date_fieldset'] = array(
 		'#type' => 'fieldset',
-		'#weight' => 11,
+		'#weight' => 13,
 		'#attributes' => array(
 			'class' => array('clearfix'),
 		),
@@ -92,6 +92,16 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	// if project type has been set, pre populate on project page
 	if(isset($_SESSION['payment']['project_type'])){
 		$form['field_project_type']['und']['#default_value'] = $_SESSION['payment']['project_type'];
+	}
+	
+	// if project type has been set, pre populate on project page
+	if(isset($_SESSION['payment']['cc_amount'])){
+		$form['field_charge_amount']['und'][0]['value']['#default_value'] = $_SESSION['payment']['cc_amount'];
+	}
+	
+	// if project type has been set, pre populate on project page
+	if(isset($_SESSION['payment']['line_item_description'])){
+		$form['field_line_item_desc']['und'][0]['value']['#default_value'] = $_SESSION['payment']['line_item_description'];
 	}
 	
 	// do not modify on admin side

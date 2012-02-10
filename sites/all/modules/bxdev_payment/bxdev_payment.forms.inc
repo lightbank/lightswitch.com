@@ -129,6 +129,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 	$shoot_date_end = !empty($values['bxdev_shoot_time2']) ? strtotime($values['bxdev_shoot_date'] . ' ' . $values['bxdev_shoot_time2']) : '';
 	$project_type = $values['project_type'];
 	$payment_notes = $values['payment_notes'];
+	$line_item_description = $values['cc_description'];
 		
 	// check if existing user
 	if(!empty($values['existing_client'])){
@@ -213,6 +214,8 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 					$_SESSION['payment']['payment_id'] = $payment_id;
 					$_SESSION['payment']['project_type'] = $project_type;
+					$_SESSION['payment']['line_item_description'] = $line_item_description;
+					$_SESSION['payment']['cc_amount'] = $cc_amount;
 					drupal_goto('sales/add/business/' . $values['existing_client']);
 					
 			
@@ -233,6 +236,8 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 			$_SESSION['payment']['payment_id'] = $values['payment_id'];
 			$_SESSION['payment']['project_type'] = $project_type;
+			$_SESSION['payment']['line_item_description'] = $line_item_description;
+			$_SESSION['payment']['cc_amount'] = $cc_amount;
 			drupal_goto('sales/add/business/' . $values['existing_client']);
 			
 		}
@@ -314,6 +319,8 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
 					$_SESSION['payment']['payment_id'] = $payment_id;
 					$_SESSION['payment']['project_type'] = $project_type;
+					$_SESSION['payment']['line_item_description'] = $line_item_description;
+					$_SESSION['payment']['cc_amount'] = $cc_amount;
 					drupal_goto('sales/add/business/' . $account->uid);
 				
 				// if authorization failed
@@ -363,9 +370,10 @@ function bxdev_payment_project_payment_form($form, &$form_state, $node){
 		'#type' => 'select',
 		'#title' => t('Project type'),
 		'#options' => array(
-			'299' => 'Standard video - $299',
-			'399' => 'Video with interview - $399',
-			'449' => 'Video with voice over - $449',
+			'449' => 'Standard video - $449',
+			'549' => 'Video with interview - $549',
+			'599' => 'Video with voice over - $599',
+			'50' => 'Monthly subscription - $50 per month',
 			'custom' => 'Custom',
 		),
 		'#default_value' => !empty($project->project->field_project_type['und'][0]['value']) ? $project->project->field_project_type['und'][0]['value'] : '299',
@@ -891,6 +899,13 @@ function bxdev_payment_cc_form_markup($form_state = NULL){
 		'#type' => 'textfield',
 		'#title' => t('Charge amount'),
 		'#maxlength' => 16,
+		'#required' => TRUE,
+	);
+	
+	// charge amount
+	$form['cc_description'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Line item description'),
 		'#required' => TRUE,
 	);
 	

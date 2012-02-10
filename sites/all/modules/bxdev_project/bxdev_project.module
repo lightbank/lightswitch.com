@@ -237,6 +237,8 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 				$node->field_payment_id['und'][0]['value'] = $_SESSION['payment']['payment_id'];
 				$node->field_project_type['und'][0]['value'] = $_SESSION['payment']['project_type'];
 				$node->field_payment_notes['und'][0]['value'] = $_SESSION['payment']['payment_notes'];
+				$node->field_line_item_desc['und'][0]['value'] = $_SESSION['payment']['line_item_description'];
+				$node->field_charge_amount['und'][0]['value'] = $_SESSION['payment']['cc_amount'];
 				unset($_SESSION['payment']);
 			}
 			
@@ -390,6 +392,11 @@ function bxdev_project_preprocess_node(&$vars){
 				$vars['spec_send'] .= '<div>Client was sent login details on ' . date('m/d/Y', $timestamp) . '</div>';
 			}
 			$vars['spec_send'] .= '<a href="/project/spec/client/' . $nid . '">Send Client login email</a>';				
+		}
+		
+		// check if charge amount
+		if(!empty($project->project->field_charge_amount['und'][0]['value']) && $video_type != 'spec'){
+			$vars['charge_amount'] = bxdev_format_currency($project->project->field_charge_amount['und'][0]['value']);
 		}
 		
 	}
