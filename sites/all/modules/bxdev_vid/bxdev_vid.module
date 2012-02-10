@@ -110,7 +110,6 @@ function bxdev_vid_preprocess_page(&$variables) {
 	
 	// global $base_url;
 	// 
-	// // $user = user_load(3828);
 	// $user = new User();
 	// $user->load(3828);
 	// $user->reset_password();

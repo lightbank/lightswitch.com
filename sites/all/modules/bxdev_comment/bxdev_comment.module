@@ -100,7 +100,7 @@ function bxdev_comment_preprocess_node(&$vars){
 					
 					$vars['spec_markup2'] = '<div class="block">
 						<h2>Do you love your video?</h2>
-						<p>Many local directory participants decide to purchase their video after watching the preview for a one-time fee of $499.</p>
+						<p>Many local directory participants decide to purchase their video after watching the preview for a one-time fee of $449.</p>
 						<h2>Here\'s how it works:</h2>
 						<p>- You provide feedback and we\'ll make one round of edits for free<br>
 						- We remove all Lightswitch branding from the video<br>

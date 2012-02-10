@@ -124,6 +124,8 @@ function feature_content_types_field_default_fields() {
           'seattle' => 'Seattle',
           'phoenix' => 'Phoenix',
           'toronto' => 'Toronto',
+          'san_jose' => 'San Jose',
+          'las_vegas' => 'Las Vegas',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
