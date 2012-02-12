@@ -3106,15 +3106,11 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_status_date_value']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_status_date_value']['date_format'] = 'bxdev_project_status_days_ago';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Sort criterion: Broken/missing handler */
-  $handler->display->display_options['sorts']['field_status_date_value']['id'] = 'field_status_date_value';
-  $handler->display->display_options['sorts']['field_status_date_value']['table'] = 'field_data_field_status_date';
-  $handler->display->display_options['sorts']['field_status_date_value']['field'] = 'field_status_date_value';
+  /* Sort criterion: Content: Shoot date -  start date (field_shoot_date) */
+  $handler->display->display_options['sorts']['field_shoot_date_value']['id'] = 'field_shoot_date_value';
+  $handler->display->display_options['sorts']['field_shoot_date_value']['table'] = 'field_data_field_shoot_date';
+  $handler->display->display_options['sorts']['field_shoot_date_value']['field'] = 'field_shoot_date_value';
+  $handler->display->display_options['sorts']['field_shoot_date_value']['order'] = 'DESC';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Production coordinator (field_pc_ref) */
   $handler->display->display_options['arguments']['field_pc_ref_uid']['id'] = 'field_pc_ref_uid';
@@ -3712,15 +3708,11 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_status_date_value']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_status_date_value']['date_format'] = 'bxdev_project_status_days_ago';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Sort criterion: Broken/missing handler */
-  $handler->display->display_options['sorts']['field_status_date_value']['id'] = 'field_status_date_value';
-  $handler->display->display_options['sorts']['field_status_date_value']['table'] = 'field_data_field_status_date';
-  $handler->display->display_options['sorts']['field_status_date_value']['field'] = 'field_status_date_value';
+  /* Sort criterion: Content: Shoot date -  start date (field_shoot_date) */
+  $handler->display->display_options['sorts']['field_shoot_date_value']['id'] = 'field_shoot_date_value';
+  $handler->display->display_options['sorts']['field_shoot_date_value']['table'] = 'field_data_field_shoot_date';
+  $handler->display->display_options['sorts']['field_shoot_date_value']['field'] = 'field_shoot_date_value';
+  $handler->display->display_options['sorts']['field_shoot_date_value']['order'] = 'DESC';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Production coordinator (field_pc_ref) */
   $handler->display->display_options['arguments']['field_pc_ref_uid']['id'] = 'field_pc_ref_uid';
