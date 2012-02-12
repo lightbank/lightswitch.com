@@ -26,6 +26,9 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 			$form['field_author']['und']['#default_value'] = '_none';
 		}
 	}
+	
+	// add a dollar sign before the charge amount field
+	$form['field_charge_amount']['und'][0]['value']['#field_prefix'] = t('$');
 
 	// remove the N/A options from video type, voice over, voice over gender, and owner interview
 	unset($form['field_video_type']['und']['#options']['_none']);

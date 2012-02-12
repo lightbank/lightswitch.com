@@ -3,13 +3,18 @@
 	// gets called after all AJAX commands
 	Drupal.behaviors.bxdev_payment = {
     attach: function(context, settings) {
-			// populate the charge amount field
-			populate_cc_amount();
-			
-			// populate the charge amount field on drop-down change
-			$('select[name="project_type"]').change(function() {
+	
+			if($('.page-sales-add-cc').length > 0){
+	
+				// populate the charge amount field
 				populate_cc_amount();
-			});
+			
+				// populate the charge amount field on drop-down change
+				$('select[name="project_type"]').change(function() {
+					populate_cc_amount();
+				});
+			
+			}
 			
 			// apply phone mask
 			$('input[name="new_client_phone"]').mask('999-999-9999? x99999');
@@ -79,7 +84,7 @@
 	// populate the charge amount field based on project type drop-down
 	function populate_cc_amount(){
 		var value = $('select[name="project_type"]').val();
-		$('input[name="cc_amount"]').val(value == 'custom' ? '' : value);
+		$('input[name="cc_amount"]').val(value == 'custom' || value == '50' ? '' : value);
 		// if line item description exists
 		if($('input[name="cc_description"]').length > 0){
 			// determine the line item description

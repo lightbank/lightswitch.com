@@ -4069,7 +4069,7 @@ function feature_content_types_field_default_fields() {
           449 => 'Standard video - $449',
           549 => 'Video with interview - $549',
           599 => 'Video with voice over - $599',
-          50 => 'Monthly Subscription - $50 a month',
+          50 => 'Monthly Subscription',
           'custom' => 'Custom',
         ),
         'allowed_values_function' => '',

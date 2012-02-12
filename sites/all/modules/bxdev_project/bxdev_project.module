@@ -113,9 +113,12 @@ function bxdev_project_mail($key, &$message, $params) {
 	$email = bxdev_email_get_email_by_name($key);
 	
 	$message['subject'] = token_replace($email->subject, $params);
-	$message['body'][] = token_replace($email->body, $params);
-	
+	$message['body'][] = token_replace($email->body, $params);	
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+	
+	if(!empty($params['headers']['cc'])){
+		$message['headers']['cc'] = $params['headers']['cc'];
+	}
 	
 }
 

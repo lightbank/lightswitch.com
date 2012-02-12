@@ -34,7 +34,7 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 			'449' => 'Standard video - $449',
 			'549' => 'Video with interview - $549',
 			'599' => 'Video with voice over - $599',
-			'50' => 'Monthly Subscription - $50 a month',
+			'50' => 'Monthly Subscription',
 			'custom' => 'Custom',
 		),
 		'#default_value' => '449',
@@ -373,7 +373,7 @@ function bxdev_payment_project_payment_form($form, &$form_state, $node){
 			'449' => 'Standard video - $449',
 			'549' => 'Video with interview - $549',
 			'599' => 'Video with voice over - $599',
-			'50' => 'Monthly subscription - $50 per month',
+			'50' => 'Monthly subscription',
 			'custom' => 'Custom',
 		),
 		'#default_value' => !empty($project->project->field_project_type['und'][0]['value']) ? $project->project->field_project_type['und'][0]['value'] : '299',
@@ -393,13 +393,15 @@ function bxdev_payment_project_payment_form($form, &$form_state, $node){
 		'#title' => t('Charge amount'),
 		'#maxlength' => 16,
 		'#required' => TRUE,
+		'#default_value' => !empty($project->project->field_charge_amount['und'][0]['value']) ? $project->project->field_charge_amount['und'][0]['value'] : '',
 	);
 	
-	// charge amount
+	// line item desc
 	$form['cc']['cc_description'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Line item description'),
 		'#required' => TRUE,
+		'#default_value' => !empty($project->project->field_line_item_desc['und'][0]['value']) ? $project->project->field_line_item_desc['und'][0]['value'] : '',
 	);
 	
 	// credit new / existing selection
@@ -898,6 +900,7 @@ function bxdev_payment_cc_form_markup($form_state = NULL){
 	$form['cc_amount'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Charge amount'),
+		'#field_prefix' => t('$'),
 		'#maxlength' => 16,
 		'#required' => TRUE,
 	);
