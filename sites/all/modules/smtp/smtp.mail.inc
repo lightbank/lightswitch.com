@@ -91,7 +91,7 @@ class SmtpMailSystem implements MailSystemInterface {
       // If from e-mail address is blank, use smtp_from config option.
       if (($from = variable_get('smtp_from', '')) == '') {
         // If smtp_from config option is blank, use site_email.
-        if (($from = variable_get('site_email', '')) == '') {
+        if (($from = variable_get('site_mail', '')) == '') {
           drupal_set_message(t('There is no submitted from address.'), 'error');
           watchdog('smtp', 'There is no submitted from address.', array(), WATCHDOG_ERROR);
           return FALSE;
@@ -131,7 +131,6 @@ class SmtpMailSystem implements MailSystemInterface {
       $mailer->AddAddress($toaddr, $toname);
     }
 
-
     // Parse the headers of the message and set the PHPMailer object's settings
     // accordingly.
     foreach ($headers as $key => $value) {
@@ -161,10 +160,9 @@ class SmtpMailSystem implements MailSystemInterface {
               $vars[$new_key] = $new_var;
             }
           }
-          // Set the charset based on the provided value, if there is one.
-          if (!empty($vars['charset'])) {
-            $mailer->CharSet = $vars['charset'];
-          }
+          // Set the charset based on the provided value, otherwise set it to UTF-8 (which is Drupals internal default).
+          $mailer->CharSet = isset($vars['charset']) ? $vars['charset'] : 'UTF-8';
+
           switch ($vars[0]) {
             case 'text/plain':
               // The message includes only a plain text part.
@@ -297,7 +295,6 @@ class SmtpMailSystem implements MailSystemInterface {
     // Add the message's subject.
     $mailer->Subject = $subject;
 
-
     // Processes the message's body.
     switch ($content_type) {
       case 'multipart/related':
@@ -332,6 +329,7 @@ class SmtpMailSystem implements MailSystemInterface {
         break;
 
       case 'multipart/mixed':
+				// dpm($body);
         // Split the body based on the boundary ID.
         $body_parts = $this->_boundary_split($body, $boundary);
 
@@ -417,8 +415,11 @@ class SmtpMailSystem implements MailSystemInterface {
             }
             else {
               // Clean up the text.
-              $body_part = trim($this->_remove_headers(trim($body_part)));
+              // $body_part = trim($this->_remove_headers(trim($body_part)));
 
+							$pos = strrpos($body_part, 'base64');
+							$body_part = trim(substr($body_part, $pos + 6));
+							
               if (drupal_strtolower($file_encoding) == 'base64') {
                 $attachment = base64_decode($body_part);
               }
@@ -428,9 +429,9 @@ class SmtpMailSystem implements MailSystemInterface {
               else {
                 $attachment = $body_part;
               }
-
+							
               $attachment_new_filename = tempnam(realpath(file_directory_temp()), 'smtp');
-              $file_path               = file_save_data($attachment, $attachment_new_filename, FILE_EXISTS_RENAME);
+              $file_path               = file_unmanaged_save_data($attachment, $attachment_new_filename, FILE_EXISTS_RENAME);
 
               if (!$mailer->AddAttachment($file_path, $file_name)) { // , $file_encoding, $filetype);
                 drupal_set_message(t('Attachment could not be found or accessed.'));
