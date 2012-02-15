@@ -599,6 +599,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 			$cim->setParameter('customerProfileId', $profile_id);
 			$cim->setParameter('cardCode', '000');
 			$cim->setParameter('amount', $amount);
+			$cim->setParameter('refId', date('m/d/y-G:i:s'));
 			$cim->createCustomerProfileTransaction();
 			
 			// transaction was successful

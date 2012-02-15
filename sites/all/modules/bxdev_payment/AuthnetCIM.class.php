@@ -33,7 +33,7 @@ class AuthnetCIMException extends Exception {}
 
 class AuthnetCIM
 {
-    const USE_PRODUCTION_SERVER  = 1;
+    const USE_PRODUCTION_SERVER  = 0;
     const USE_DEVELOPMENT_SERVER = 1;
 
     const EXCEPTION_CURL = 10;
@@ -633,6 +633,8 @@ class AuthnetCIM
     {
         $response = str_replace('xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"', '', $this->response);
         $xml = new SimpleXMLElement($response);
+
+				dpm($xml);
 
 				$this->responseXml = $xml;
 
