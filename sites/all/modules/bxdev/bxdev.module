@@ -316,6 +316,16 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 					$replacements[$original] = bxdev_format_currency($data['amount']);
 					break;
 					
+				case 'cc_type':
+					$cc_type = '';
+					$replacements[$original] = $cc_type;
+					break;
+					
+				case 'cc_four':
+					$cc_four = bxdev_payment_get_cc_last_four($data['project']->project->field_payment_id['und'][0]['value'], $data['project']->client->uid);
+					$replacements[$original] = $cc_four;
+					break;
+					
 				case 'pc:full_name':
 					$replacements[$original] = $data['project']->pc->field_name['und'][0]['value'];
 					break;

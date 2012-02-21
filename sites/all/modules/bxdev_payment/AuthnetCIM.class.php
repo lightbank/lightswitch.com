@@ -634,8 +634,6 @@ class AuthnetCIM
         $response = str_replace('xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"', '', $this->response);
         $xml = new SimpleXMLElement($response);
 
-				dpm($xml);
-
 				$this->responseXml = $xml;
 
         $this->resultCode       = (string) $xml->messages->resultCode;
