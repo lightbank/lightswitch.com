@@ -1,10 +1,16 @@
 <?php
 
-// $GLOBALS['api_login_id'] = '2hQT4t8ua';
-// $GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
-
+/**
+ * Live Authorize.net credentials
+ */
 $GLOBALS['api_login_id'] = '9X6zny5UY';
 $GLOBALS['transaction_key'] = '39P2BtFs4n569VAc';
+
+/**
+ * Test Authorize.net credentials
+ */
+// $GLOBALS['api_login_id'] = '2hQT4t8ua';
+// $GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
 
 module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
 
