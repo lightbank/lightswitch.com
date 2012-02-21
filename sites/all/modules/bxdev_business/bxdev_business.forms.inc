@@ -43,7 +43,7 @@ function bxdev_business_form_business_node_form_alter(&$form, $form_state){
 		$form['field_client_ref']['und']['#prefix'] = t('<h3><strong>Client: @name</strong></h2>', array('@name' => $account->field_name['und'][0]['value']));
 	
 	// if arg 3 is not set, that means we have not added a new client / credit card in a previous step
-	}else{
+	}else if(arg(2) != 'edit'){
 	
 		$form['field_client_ref']['und']['#description'] = t('<a href="" class="new-client-btn">+ Add new Client</a>');
 		$form['field_client_ref']['#attributes']['style'][] = 'display:none;';

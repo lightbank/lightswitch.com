@@ -253,7 +253,7 @@ function bxdev_document_create_pdf($html, $filename, $type, $path, $description,
 	$css = '<head><style type="text/css">' . file_get_contents(drupal_get_path('module', 'bxdev_document') . '/theme/css/bxdev_document_pdf.css') . '</style></head>';
 		
 	// add a header
-	$header = '<img src="' . drupal_get_path('module', 'bxdev_document') . '/theme/images/logo.jpg' . '" />';
+	$header = '<img src="sites/default/files/mail_logo.jpg" />';
 	
 	// concatenate all parts
 	$string = $css . $header . $html;

@@ -1,12 +1,16 @@
 <?php
 
-$GLOBALS['api_login_id'] = '2hQT4t8ua';
-$GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
+/**
+ * Live Authorize.net credentials
+ */
+$GLOBALS['api_login_id'] = '9X6zny5UY';
+$GLOBALS['transaction_key'] = '39P2BtFs4n569VAc';
 
-$foo = 'bar';
-
-// $GLOBALS['api_login_id'] = '9X6zny5UY';
-// $GLOBALS['transaction_key'] = '39P2BtFs4n569VAc';
+/**
+ * Test Authorize.net credentials
+ */
+// $GLOBALS['api_login_id'] = '2hQT4t8ua';
+// $GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
 
 module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
 
@@ -310,14 +314,12 @@ function bxdev_payment_client_payment_page($account){
 			<p>This action cannot be undone.</p>
 			<div class="buttons"><a class="btn-remove" href="/admin/payment/remove/' . $account->uid . '/' . $payment_profile_id . '">Remove credit card</a>
 			<a class="btn-cancel" href="">Cancel</a></div>
-			</div>';
+			</div></div>';
 		}
 	}else{
 		$output .= '<p>No stored credit cards.</p>';
 	}
-	
-	$output .= '</div>';
-	
+		
 	$output .= '<h3>Add new credit card</h3>';
 	
 	$output .= render(drupal_get_form('bxdev_payment_client_new_credit_card_form'));

@@ -343,8 +343,8 @@ class Project {
 		if($fid){
 			
 			$emails[] = $this->client->mail;
-			$emails[] = 'accounting@bxcreative.com';
-			// $emails[] = 'Tom@lightswitch.com';
+			// $emails[] = 'accounting@bxcreative.com';
+			$emails[] = 'Tom@lightswitch.com';
 			$emails[] = $this->pc->mail;
 			
 			$params = array(
@@ -478,8 +478,8 @@ class Project {
 			);
 
 			// send the email
-			$accounting_email = 'accounting@bxcreative.com';
-			// $accounting_email = 'Tom@lightswitch.com';
+			// $accounting_email = 'accounting@bxcreative.com';
+			$accounting_email = 'Tom@lightswitch.com';
 			$params['headers']['cc'] = $this->pc->mail;
 			drupal_mail('bxdev_project', 'accounting_invoice_videographer', $accounting_email, language_default(), $params);
 
