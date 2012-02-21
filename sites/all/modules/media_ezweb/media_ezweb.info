@@ -1,0 +1,11 @@
+; $Id
+name = Media: EZWebPlayer
+description = Provides EZWebPlayer support to the Media module.
+package = "Media"
+core = 7.x
+
+files[] = media_ezweb.module
+files[] = includes/MediaInternetEzwebHandler.inc
+files[] = includes/MediaEzwebStreamWrapper.inc
+files[] = includes/media_ezweb.formatters.inc
+dependencies[] = media_internet

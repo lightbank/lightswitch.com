@@ -1,0 +1,59 @@
+<?php
+
+include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_ezweb') . '/includes/media_ezweb.formatters.inc';
+
+/**
+ * Implements hook_media_internet_providers().
+ */
+function media_ezweb_media_internet_providers() {
+  $path = drupal_get_path('module', 'media_ezweb');
+  return array(
+    'MediaInternetEzwebHandler' => array(
+      'title' => 'ezweb',
+      'image' => $path . '/images/EZWebPlayer.jpg'
+    ),
+  );
+}
+
+/**
+ * Implements hook_stream_wrappers().
+ */
+function media_ezweb_stream_wrappers() {
+  return array(
+    'ezweb' => array(
+      'name' => t('EZWebPlayer videos'),
+      'class' => 'MediaEzwebStreamWrapper',
+      'description' => t('EZWebPlayer videos.'),
+      'type' => STREAM_WRAPPERS_READ_VISIBLE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function media_ezweb_ctools_plugin_api($owner, $api) {
+  static $api_versions = array(
+    'file_entity' => array(
+      'file_default_displays' => 1,
+    ),
+  );
+  if (isset($api_versions[$owner][$api])) {
+    return array('version' => $api_versions[$owner][$api]);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function media_ezweb_theme($existing, $type, $theme, $path) {
+  return array(
+    'media_ezweb_video' => array(
+      'variables' => array('uri' => NULL, 'width' => NULL, 'height' => NULL, 'autoplay' => NULL, 'fullscreen' => NULL),
+			'file' => 'media_ezweb.theme.inc',
+			'path' => drupal_get_path('module', 'media_ezweb') . '/theme',
+      'template' => 'media-ezweb-video',
+    ),
+  );
+}
+
