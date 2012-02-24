@@ -358,13 +358,13 @@ class AuthnetCIM
         $this->xml .= '
                                   <customerProfileId>'.$this->params['customerProfileId'].'</customerProfileId>
                                   <customerPaymentProfileId>'.$this->params['customerPaymentProfileId'].'</customerPaymentProfileId>';
-        if (isset($this->params['orderInvoiceNumber']))
+        if (isset($this->params['invoiceNumber']))
         {
             $this->xml .= '
                                   <order>
-                                       <invoiceNumber>'.$this->params['invoiceNumber'].'</orderInvoiceNumber>
-                                       <description>'.$this->params['description'].'</orderDescription>
-                                       <purchaseOrderNumber>'.$this->params['purchaseOrderNumber'].'</orderPurchaseOrderNumber>
+                                       <invoiceNumber>'.$this->params['invoiceNumber'].'</invoiceNumber>
+                                       <description>'.$this->params['description'].'</description>
+                                       <purchaseOrderNumber>'.$this->params['purchaseOrderNumber'].'</purchaseOrderNumber>
                                   </order>';
         }
         $this->xml .= '
