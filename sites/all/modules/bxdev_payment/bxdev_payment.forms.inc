@@ -578,12 +578,6 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 	$project = new Project($nid);
 	$profile_id = bxdev_payment_get_auth_token($project->client->uid);
 	
-	// if the user does not have an auth token, stop and return
-	if(!$profile_id){
-		drupal_set_message('User does not have a payment profile', 'error');
-		return;
-	}
-	
 	global $api_login_id;
 	global $transaction_key;
 	
@@ -636,7 +630,27 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 		
 			$cc_number = $values['cc_number'];
 			$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];
-			$cc_code = $values['cc_code'];		
+			$cc_code = $values['cc_code'];
+			
+			// if user does not have a token
+			if(!$profile_id){
+				$cim->setParameter('email', $project->client->mail);
+				$cim->setParameter('merchantCustomerId', $project->client->uid);			
+				$cim->createCustomerProfile();
+
+				if($cim->isSuccessful()){				
+					$profile_id = $cim->getProfileID();
+					db_insert('users_auth')
+						->fields(array(
+							'uid' => $project->client->uid,
+							'auth_token' => $profile_id,
+						))
+						->execute();					
+				}else{				
+					drupal_set_message($cim->getResponse(), 'error');
+					return;		
+				}			
+			}						
 		
 			$cim->setParameter('customerProfileId', $profile_id);
 			$cim->setParameter('cardNumber', $cc_number);
@@ -654,6 +668,9 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 				$cim->setParameter('customerPaymentProfileId', $payment_id);
 				$cim->setParameter('cardCode', $cc_code);
 				$cim->setParameter('amount', $amount);
+				$cim->setParameter('invoiceNumber', bxdev_get_filename_string($project->client->field_name['und'][0]['value']) . '_' . variable_get('client_invoice_num', 101));
+				$cim->setParameter('description', 'Client: ' . $project->client->field_name['und'][0]['value'] . ', Project: ' . $project->project->title);
+				$cim->setParameter('refId', date('m/d/y-G:i:s'));
 				$cim->createCustomerProfileTransaction();
 				
 				// transaction was successful
