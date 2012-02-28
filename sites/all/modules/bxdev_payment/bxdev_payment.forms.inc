@@ -204,6 +204,9 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			
 				$cim->setParameter('customerPaymentProfileId', $payment_id);
 				$cim->setParameter('amount', $cc_amount);
+				$cim->setParameter('invoiceNumber', 'authorization');
+				$cim->setParameter('description', 'Client: ' . $account->field_name['und'][0]['value']);
+				$cim->setParameter('refId', date('m/d/y-G:i:s'));
 				$cim->createCustomerProfileTransaction('profileTransAuthOnly');
 			
 				// if authorization was successful
@@ -309,6 +312,9 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				
 				$cim->setParameter('customerPaymentProfileId', $payment_id);
 				$cim->setParameter('amount', $cc_amount);
+				$cim->setParameter('invoiceNumber', 'authorization');
+				$cim->setParameter('description', 'Client: ' . $account->field_name['und'][0]['value']);
+				$cim->setParameter('refId', date('m/d/y-G:i:s'));
 				$cim->createCustomerProfileTransaction('profileTransAuthOnly');
 				
 				// if authorization was successful
