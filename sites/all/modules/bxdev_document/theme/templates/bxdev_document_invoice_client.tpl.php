@@ -1,8 +1,8 @@
 <div class="invoice-wrap">
 
-<h1>Invoice</h1>
+<h1>Receipt</h1>
 <p>Date: <?php print date('F d, Y'); ?></p>
-<p>Invoice #: <?php print $invoice_num; ?></p>
+<p>Receipt #: <?php print $invoice_num; ?></p>
 
 <table class="billing-info">
 	<tr>

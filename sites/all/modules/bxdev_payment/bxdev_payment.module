@@ -1,17 +1,5 @@
 <?php
 
-/**
- * Live Authorize.net credentials
- */
-$GLOBALS['api_login_id'] = '9X6zny5UY';
-$GLOBALS['transaction_key'] = '39P2BtFs4n569VAc';
-
-/**
- * Test Authorize.net credentials
- */
-// $GLOBALS['api_login_id'] = '2hQT4t8ua';
-// $GLOBALS['transaction_key'] = '3bNDCu4r334K9327';
-
 module_load_include('inc', 'bxdev_payment', 'bxdev_payment.forms');
 
 /**
@@ -150,8 +138,9 @@ function bxdev_payment_get_payment_profiles($uid){
 	
 	global $api_login_id;
 	global $transaction_key;
+	global $auth_test_mode;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, $auth_test_mode);
 	
 	// get the user profile id
 	$profile_id = db_select('users_auth', 'u')
@@ -362,8 +351,9 @@ function bxdev_payment_client_payment_remove($uid, $payment_profile_id){
 	
 	global $api_login_id;
 	global $transaction_key;
+	global $auth_test_mode;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, $auth_test_mode);
 	
 	$cim->setParameter('customerProfileId', $profile_id);
 	$cim->setParameter('customerPaymentProfileId', $payment_profile_id);
@@ -440,7 +430,9 @@ function bxdev_payment_get_cc_last_four($payment_id, $uid){
 	
 	global $api_login_id;
 	global $transaction_key;
-	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	global $auth_test_mode;
+	
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, $auth_test_mode);
 	
 	// get the customer profile id
 	$profile_id = bxdev_payment_get_auth_token($uid);

@@ -117,8 +117,9 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 	
 	global $api_login_id;
 	global $transaction_key;
+	global $auth_test_mode;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, $auth_test_mode);
 	
 	$values = $form_state['values'];
 	$cc_number = $values['cc_number'];
@@ -191,38 +192,44 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			$cim->setParameter('cardCode', $cc_code);
 			$cim->setParameter('billToAddress', '123 Main Street');
 			$cim->setParameter('billToZip', '12345');
+			$cim->setParameter('validationMode', 'testMode');
 			$cim->createCustomerPaymentProfile();
 		
 			if($cim->isSuccessful()){
 			
 				$payment_id = $cim->getPaymentProfileId();
 				drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());
+				
+				drupal_goto('sales/add/business/' . $values['existing_client']);
 			
-				/**
-				 * STEP 3: Authorize the credit card
-				 */
-			
-				$cim->setParameter('customerPaymentProfileId', $payment_id);
-				$cim->setParameter('amount', $cc_amount);
-				$cim->createCustomerProfileTransaction('profileTransAuthOnly');
-			
-				// if authorization was successful
-				if($cim->isSuccessful()){
-					drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
-					$_SESSION['payment']['payment_notes'] = $payment_notes;
-					$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
-					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
-					$_SESSION['payment']['payment_id'] = $payment_id;
-					$_SESSION['payment']['project_type'] = $project_type;
-					$_SESSION['payment']['line_item_description'] = $line_item_description;
-					$_SESSION['payment']['cc_amount'] = $cc_amount;
-					drupal_goto('sales/add/business/' . $values['existing_client']);
-					
-			
-				// if authorization failed
-				}else{
-					drupal_set_message($cim->getResponse(), 'error');
-				}
+				// /**
+				//  * STEP 3: Authorize the credit card
+				//  */
+				// 			
+				// $cim->setParameter('customerPaymentProfileId', $payment_id);
+				// $cim->setParameter('amount', $cc_amount);
+				// $cim->setParameter('invoiceNumber', 'authorization');
+				// $cim->setParameter('description', 'Client: ' . $account->field_name['und'][0]['value']);
+				// $cim->setParameter('refId', date('m/d/y-G:i:s'));
+				// $cim->createCustomerProfileTransaction('profileTransAuthOnly');
+				// 			
+				// // if authorization was successful
+				// if($cim->isSuccessful()){
+				// 	drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
+				// 	$_SESSION['payment']['payment_notes'] = $payment_notes;
+				// 	$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
+				// 	$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
+				// 	$_SESSION['payment']['payment_id'] = $payment_id;
+				// 	$_SESSION['payment']['project_type'] = $project_type;
+				// 	$_SESSION['payment']['line_item_description'] = $line_item_description;
+				// 	$_SESSION['payment']['cc_amount'] = $cc_amount;
+				// 	drupal_goto('sales/add/business/' . $values['existing_client']);
+				// 	
+				// 			
+				// // if authorization failed
+				// }else{
+				// 	drupal_set_message($cim->getResponse(), 'error');
+				// }
 		
 			// if adding the card failed				
 			}else{
@@ -295,6 +302,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			$cim->setParameter('cardCode', $cc_code);
 			$cim->setParameter('billToAddress', '123 Main Street');
 			$cim->setParameter('billToZip', '12345');
+			$cim->setParameter('validationMode', 'testMode');
 			$cim->createCustomerPaymentProfile();
 			
 			// if the credit was successfully added, get the Payment ID used to authorize funds
@@ -303,30 +311,35 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				$payment_id = $cim->getPaymentProfileId();
 				drupal_set_message('Payment ID: ' . $payment_id);
 				
-				/**
-				 * Step 4: Authorize the credit card
-				 */
+				drupal_goto('sales/add/business/' . $account->uid);
 				
-				$cim->setParameter('customerPaymentProfileId', $payment_id);
-				$cim->setParameter('amount', $cc_amount);
-				$cim->createCustomerProfileTransaction('profileTransAuthOnly');
-				
-				// if authorization was successful
-				if($cim->isSuccessful()){
-					drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
-					$_SESSION['payment']['payment_notes'] = $payment_notes;
-					$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
-					$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
-					$_SESSION['payment']['payment_id'] = $payment_id;
-					$_SESSION['payment']['project_type'] = $project_type;
-					$_SESSION['payment']['line_item_description'] = $line_item_description;
-					$_SESSION['payment']['cc_amount'] = $cc_amount;
-					drupal_goto('sales/add/business/' . $account->uid);
-				
-				// if authorization failed
-				}else{
-					drupal_set_message($cim->getResponse(), 'error');				
-				}
+				// /**
+				//  * Step 4: Authorize the credit card
+				//  */
+				// 
+				// $cim->setParameter('customerPaymentProfileId', $payment_id);
+				// $cim->setParameter('amount', $cc_amount);
+				// $cim->setParameter('invoiceNumber', 'authorization');
+				// $cim->setParameter('description', 'Client: ' . $account->field_name['und'][0]['value']);
+				// $cim->setParameter('refId', date('m/d/y-G:i:s'));
+				// $cim->createCustomerProfileTransaction('profileTransAuthOnly');
+				// 
+				// // if authorization was successful
+				// if($cim->isSuccessful()){
+				// 	drupal_set_message('Card is good! Auth code: ' . $cim->getAuthCode());
+				// 	$_SESSION['payment']['payment_notes'] = $payment_notes;
+				// 	$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
+				// 	$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
+				// 	$_SESSION['payment']['payment_id'] = $payment_id;
+				// 	$_SESSION['payment']['project_type'] = $project_type;
+				// 	$_SESSION['payment']['line_item_description'] = $line_item_description;
+				// 	$_SESSION['payment']['cc_amount'] = $cc_amount;
+				// 	drupal_goto('sales/add/business/' . $account->uid);
+				// 
+				// // if authorization failed
+				// }else{
+				// 	drupal_set_message($cim->getResponse(), 'error');				
+				// }
 				
 			// if the credit card could not be added, display the error and return to the form, prepopulating
 			// the Drupal user created in step 1			
@@ -578,16 +591,11 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 	$project = new Project($nid);
 	$profile_id = bxdev_payment_get_auth_token($project->client->uid);
 	
-	// if the user does not have an auth token, stop and return
-	if(!$profile_id){
-		drupal_set_message('User does not have a payment profile', 'error');
-		return;
-	}
-	
 	global $api_login_id;
 	global $transaction_key;
+	global $auth_test_mode;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, $auth_test_mode);
 	$amount = $values['cc_amount'];
 	$line_item_description = $values['cc_description'];
 	
@@ -636,7 +644,27 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 		
 			$cc_number = $values['cc_number'];
 			$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];
-			$cc_code = $values['cc_code'];		
+			$cc_code = $values['cc_code'];
+			
+			// if user does not have a token
+			if(!$profile_id){
+				$cim->setParameter('email', $project->client->mail);
+				$cim->setParameter('merchantCustomerId', $project->client->uid);			
+				$cim->createCustomerProfile();
+
+				if($cim->isSuccessful()){				
+					$profile_id = $cim->getProfileID();
+					db_insert('users_auth')
+						->fields(array(
+							'uid' => $project->client->uid,
+							'auth_token' => $profile_id,
+						))
+						->execute();					
+				}else{				
+					drupal_set_message($cim->getResponse(), 'error');
+					return;		
+				}			
+			}					
 		
 			$cim->setParameter('customerProfileId', $profile_id);
 			$cim->setParameter('cardNumber', $cc_number);
@@ -801,8 +829,9 @@ function bxdev_payment_client_new_credit_card_form_submit($form, &$form_state){
 	
 	global $api_login_id;
 	global $transaction_key;
+	global $auth_test_mode;
 	
-	$cim = new AuthnetCIM($api_login_id, $transaction_key);
+	$cim = new AuthnetCIM($api_login_id, $transaction_key, $auth_test_mode);
 	
 	$cc_number = $values['cc_number'];
 	$cc_expiry = $values['cc_expiry_year'] . '-' . $values['cc_expiry_month'];
@@ -814,6 +843,7 @@ function bxdev_payment_client_new_credit_card_form_submit($form, &$form_state){
 	$cim->setParameter('cardCode', $cc_code);
 	$cim->setParameter('billToAddress', '123 Main Street');
 	$cim->setParameter('billToZip', '12345');
+	$cim->setParameter('validationMode', 'testMode');
 	$cim->createCustomerPaymentProfile();
 	
 	if($cim->isSuccessful()){

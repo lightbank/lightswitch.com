@@ -335,7 +335,7 @@ class Project {
 		$client_name = bxdev_get_filename_string($this->client->field_name['und'][0]['value']);
 		
 		// generate the filename
-		$filename = 'lightswitch_invoice_' . $client_name . '_' . $invoice_num . '.pdf';
+		$filename = 'lightswitch_receipt_' . $client_name . '_' . $invoice_num . '.pdf';
 		
 		// create the pdf and get the fid
 		$fid = bxdev_document_create_pdf($html, $filename, 'client', 'invoices', 'Client Invoice', $this->client->uid, $this->project->nid);
@@ -344,7 +344,7 @@ class Project {
 			
 			$emails[] = $this->client->mail;
 			// $emails[] = 'accounting@bxcreative.com';
-			$emails[] = 'tom@lightbank.com';
+			// $emails[] = 'tom@lightbank.com';
 			$emails[] = $this->pc->mail;
 			
 			$params = array(
@@ -479,7 +479,7 @@ class Project {
 
 			// send the email
 			// $accounting_email = 'accounting@bxcreative.com';
-			$accounting_email = 'tom@lightbank.com';
+			// $accounting_email = 'tom@lightbank.com';
 			$params['headers']['cc'] = $this->pc->mail;
 			drupal_mail('bxdev_project', 'accounting_invoice_videographer', $accounting_email, language_default(), $params);
 
