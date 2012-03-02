@@ -664,7 +664,9 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 				}else{				
 					drupal_set_message($cim->getResponse(), 'error');
 					return;		
-				}			
+				}
+				
+			}	
 		
 			$cim->setParameter('customerProfileId', $profile_id);
 			$cim->setParameter('cardNumber', $cc_number);
