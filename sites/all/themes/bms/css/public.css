@@ -480,6 +480,10 @@ header .limiter {
 	text-align: center;
 }
 
+.why-tabs #block-2 .col {
+	width: 290px;
+}
+
 .why-tabs .col span {
 	display: block;
 	width: 154px;
@@ -817,7 +821,8 @@ header .limiter {
 }
 
 .price-block .vid-thumb {
-	margin-bottom: 30px;
+	/*margin-bottom: 30px;*/
+	margin-bottom: 0;
 	padding: 8px;
 	box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }

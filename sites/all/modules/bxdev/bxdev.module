@@ -645,7 +645,7 @@ function bxdev_get_video($node){
 		
 	$output .= theme('media_vimeo_video', $file);
 	
-	$output .= '<div class="btn-wrap"><a href="#" class="btn" onclick="parent.window.location = \'/video-production-services\'">View Pricing</a></div>';
+	$output .= '<div class="btn-wrap"><a href="#" class="btn" onclick="parent.window.location = \'/video-production-services\'">Learn More</a></div>';
 	
 	print $output;
 }

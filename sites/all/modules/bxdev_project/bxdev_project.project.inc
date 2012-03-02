@@ -344,8 +344,8 @@ class Project {
 			
 			$emails[] = $this->client->mail;
 			// $emails[] = 'accounting@bxcreative.com';
-			// $emails[] = 'tom@lightbank.com';
-			$emails[] = $this->pc->mail;
+			$emails[] = 'tom@lightbank.com';
+			$emails[] = 'jason@lightswitch.com';
 			
 			$params = array(
 				'project' => $this,
