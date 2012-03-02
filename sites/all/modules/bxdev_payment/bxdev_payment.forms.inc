@@ -205,7 +205,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				$cim->setParameter('customerPaymentProfileId', $payment_id);
 				$cim->setParameter('amount', $cc_amount);
 				$cim->setParameter('invoiceNumber', 'authorization');
-				$cim->setParameter('description', 'Client: ' . $account->field_name['und'][0]['value']);
+				$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', $account->field_name['und'][0]['value']));
 				$cim->setParameter('refId', date('m/d/y-G:i:s'));
 				$cim->createCustomerProfileTransaction('profileTransAuthOnly');
 			
@@ -313,7 +313,7 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				$cim->setParameter('customerPaymentProfileId', $payment_id);
 				$cim->setParameter('amount', $cc_amount);
 				$cim->setParameter('invoiceNumber', 'authorization');
-				$cim->setParameter('description', 'Client: ' . $account->field_name['und'][0]['value']);
+				$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', $account->field_name['und'][0]['value']));
 				$cim->setParameter('refId', date('m/d/y-G:i:s'));
 				$cim->createCustomerProfileTransaction('profileTransAuthOnly');
 				
@@ -600,7 +600,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 			$cim->setParameter('cardCode', '000');
 			$cim->setParameter('amount', $amount);
 			$cim->setParameter('invoiceNumber', date('m_d_Y', mktime()) . '_' . variable_get('client_invoice_num', 101));
-			$cim->setParameter('description', 'Client: ' . $project->client->field_name['und'][0]['value'] . ', Project: ' . $project->project->title);
+			$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->client->field_name['und'][0]['value']) . ', Project: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->project->title));
 			$cim->setParameter('refId', date('m/d/y-G:i:s'));
 			$cim->createCustomerProfileTransaction();
 			
@@ -675,7 +675,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 				$cim->setParameter('cardCode', $cc_code);
 				$cim->setParameter('amount', $amount);
 				$cim->setParameter('invoiceNumber', date('m_d_Y', mktime()) . '_' . variable_get('client_invoice_num', 101));
-				$cim->setParameter('description', 'Client: ' . $project->client->field_name['und'][0]['value'] . ', Project: ' . $project->project->title);
+				$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->client->field_name['und'][0]['value']) . ', Project: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->project->title));
 				$cim->setParameter('refId', date('m/d/y-G:i:s'));
 				$cim->createCustomerProfileTransaction();
 				
