@@ -200,6 +200,14 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				$payment_id = $cim->getPaymentProfileId();
 				drupal_set_message('Payment ID: ' . $cim->getPaymentProfileId());
 				
+				$_SESSION['payment']['payment_notes'] = $payment_notes;
+				$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
+				$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
+				$_SESSION['payment']['payment_id'] = $payment_id;
+				$_SESSION['payment']['project_type'] = $project_type;
+				$_SESSION['payment']['line_item_description'] = $line_item_description;
+				$_SESSION['payment']['cc_amount'] = $cc_amount;
+				
 				drupal_goto('sales/add/business/' . $values['existing_client']);
 
 				// /**
@@ -311,6 +319,13 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 				$payment_id = $cim->getPaymentProfileId();
 				drupal_set_message('Payment ID: ' . $payment_id);
 				
+				$_SESSION['payment']['payment_notes'] = $payment_notes;
+				$_SESSION['payment']['shoot_date']['start'] = $shoot_date_start;
+				$_SESSION['payment']['shoot_date']['end'] = $shoot_date_end;
+				$_SESSION['payment']['payment_id'] = $payment_id;
+				$_SESSION['payment']['project_type'] = $project_type;
+				$_SESSION['payment']['line_item_description'] = $line_item_description;
+				$_SESSION['payment']['cc_amount'] = $cc_amount;				
 
 				drupal_goto('sales/add/business/' . $account->uid);
 
