@@ -31,11 +31,11 @@ function bxdev_payment_project_client_credit_card_form($form, &$form_state){
 		'#type' => 'select',
 		'#title' => t('Project type'),
 		'#options' => array(
-			'449' => 'Standard video - $449',
-			'549' => 'Video with interview - $549',
-			'599' => 'Video with voice over - $599',
+			'449' => 'Standard video',
+			'549' => 'Video with interview',
+			'599' => 'Video with voice over',
 			'50' => 'Monthly Subscription',
-			'custom' => 'Custom',
+			'custom' => 'Custom Services',
 		),
 		'#default_value' => '449',
 	);
