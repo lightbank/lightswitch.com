@@ -4073,11 +4073,11 @@ function feature_content_types_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          449 => 'Standard video - $449',
-          549 => 'Video with interview - $549',
-          599 => 'Video with voice over - $599',
+          449 => 'Standard video',
+          549 => 'Video with interview',
+          599 => 'Video with voice over',
           50 => 'Monthly Subscription',
-          'custom' => 'Custom',
+          'custom' => 'Custom Services',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
