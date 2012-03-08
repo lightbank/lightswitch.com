@@ -103,10 +103,12 @@ function feature_content_types_field_default_fields() {
         'allowed_values' => array(
           'atlanta' => 'Atlanta GA',
           'austin' => 'Austin TX',
+          'boise' => 'Boise ID',
           'boston' => 'Boston MA',
           'buffalo' => 'Buffalo NY',
           'charlotte' => 'Charlotte NC',
           'chicago' => 'Chicago IL',
+          'cincinnati' => 'Cincinnati OH',
           'dallas' => 'Dallas TX',
           'denver' => 'Denver CO',
           'detroit' => 'Detroit MI',

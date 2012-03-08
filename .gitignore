@@ -10,3 +10,5 @@ sites/all/modules/mupload
 
 # Ignore SEO XML files
 *.xml
+
+bs_dev
