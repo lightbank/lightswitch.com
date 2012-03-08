@@ -1063,6 +1063,14 @@ input[type="submit"].approve-btn, .approve-yes {
 	padding-right: 80px;
 }
 
+.video-file-download {
+	padding-top: 20px;
+}
+
+.video-file-download span {
+	font-size: 12px;
+}
+
 
 /** BUSINESS PROFILE / PROJECT PROFILE / CLIENTS DIRECTORY SHARED STYLES
 ================================================**/

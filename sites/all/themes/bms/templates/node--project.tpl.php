@@ -103,6 +103,7 @@
 			<?php if(!empty($client_comment_form)) print $client_comment_form; ?>
 			<?php if(!empty($videographer_comments)) print $videographer_comments; ?>
 			<?php if(!empty($videographer_comment_form)) print $videographer_comment_form; ?>
+			<?php if(!empty($video_file_download)) print $video_file_download; ?>
 		</div>
 		
 	</div><!-- end .block -->

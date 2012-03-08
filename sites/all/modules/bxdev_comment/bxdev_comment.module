@@ -162,6 +162,11 @@ function bxdev_comment_preprocess_node(&$vars){
 					if(user_access('videographer') || user_access('pc')){
 						$vars['videographer_comment_form'] = $approved_html;
 					}
+					
+					// show the video file download link
+					if(!empty($project->project->field_project_video_file['und'][0]['uri'])){
+						$vars['video_file_download'] = '<div class="video-file-download"><a target="_blank" href="' . file_create_url($project->project->field_project_video_file['und'][0]['uri']) . '">Download Video File - ' . $project->project->field_project_video_file['und'][0]['filename'] . '</a><br /><span>(Some browsers require: Right click > Save as)</span></div>';
+					}
 				}
 			
 			}

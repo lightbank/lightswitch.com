@@ -17,6 +17,8 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		unset($form['field_payment_notes']);
 		// hide the videographer agreed payment field
 		unset($form['field_vid_agreed_payment']);
+		// hide the video file upload field
+		unset($form['field_project_video_file']);		
 		
 		$form['field_author']['und']['#type'] = 'hidden';
 		// only pre-populate if sales user
