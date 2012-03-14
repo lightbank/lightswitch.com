@@ -11,4 +11,6 @@ sites/all/modules/mupload
 # Ignore SEO XML files
 *.xml
 
+# Third-party (non bxCreative) directories
 bs_dev
+landing

@@ -479,7 +479,7 @@ class Project {
 
 			// send the email
 			// $accounting_email = 'accounting@bxcreative.com';
-			$accounting_email = 'jason@lightswitch.com';
+			$accounting_email = 'jason@lightswitch.com, tom@lightbank.com';
 			$params['headers']['cc'] = $this->pc->mail;
 			drupal_mail('bxdev_project', 'accounting_invoice_videographer', $accounting_email, language_default(), $params);
 
