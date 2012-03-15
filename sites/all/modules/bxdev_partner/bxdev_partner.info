@@ -1,0 +1,5 @@
+; $Id
+name = bxdev Partner
+description = "Enables custom Partner Portal functionality."
+package = bx
+core = 7.x

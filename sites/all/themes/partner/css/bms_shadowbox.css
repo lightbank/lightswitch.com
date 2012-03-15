@@ -1,0 +1,21 @@
+body {
+	background: #fff;
+	font-family: arial;
+	font-size: 12px;
+	padding: 20px;
+}
+
+td, th {
+	font-size: 12px;
+	padding: 15px;
+}
+
+.csa-table th {
+	text-align: left;
+	padding: 0;
+}
+
+.csa-table td {
+	border-bottom: solid #666 1px;
+	padding: 0;
+}
