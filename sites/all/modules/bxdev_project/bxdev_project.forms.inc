@@ -58,7 +58,7 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	
 	// calculate default shoot time end value
 	if($form['field_shoot_date']['und'][0]['#default_value']['value2'] != $form['field_shoot_date']['und'][0]['#default_value']['value']){
-		$shoot_time_end_default = date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value2']);
+		$shoot_time_end_default = !is_null($form['field_shoot_date']['und'][0]['#default_value']['value2']) ? date('G:i', $form['field_shoot_date']['und'][0]['#default_value']['value2']) : '';
 	}else if(isset($_SESSION['payment']['shoot_date']['end'])){
 		$shoot_time_end_default = date('G:i', $_SESSION['payment']['shoot_date']['end']);
 	}	

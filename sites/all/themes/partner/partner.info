@@ -16,4 +16,5 @@ stylesheets[screen][] = css/styles.css
 
 ; Scripts =================================================================
 
+scripts[] = ../bms/js/jquery.maskedinput-1.3.min.js
 scripts[] = js/scripts.js

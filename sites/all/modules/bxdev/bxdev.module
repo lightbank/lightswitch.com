@@ -514,6 +514,24 @@ function bxdev_tokens($type, $tokens, array $data = array(), array $options = ar
 			}
 		}					
 		
+	}else if($type == 'partner'){
+		
+		foreach($tokens as $name => $original){
+			switch($name){
+				case 'title':
+					$replacements[$original] = $data['partner']->title;
+					break;
+				
+				case 'manual_city':
+					$manual_city = '';
+					if(!empty($data['city_manual'])){
+						$manual_city = 'Partner has entered a manual city: ' . $data['city_manual'];
+					}
+					$replacements[$original] = $manual_city;
+					break;
+			}
+		}
+		
 	}
 			
 	return $replacements;

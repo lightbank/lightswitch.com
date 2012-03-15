@@ -41,6 +41,14 @@ function feature_content_types_node_info() {
       'title_label' => t('Title'),
       'help' => '',
     ),
+    'partner_portal' => array(
+      'name' => t('Partner portal'),
+      'base' => 'node_content',
+      'description' => t('Add a new Partner Portal.'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
     'project' => array(
       'name' => t('Project'),
       'base' => 'node_content',
