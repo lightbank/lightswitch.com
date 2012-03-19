@@ -227,15 +227,15 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	
 	// send the notification email
 	global $base_url;
-	// $emails = 'jason@lightswitch.com';
-	$emails = 'wandoledzep@gmail.com';
+	$emails = 'jason@lightswitch.com';
+	// $emails = 'wandoledzep@gmail.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
 	$params['partner'] = node_load(arg(1));
 	$params['city_manual'] = $city_manual;
 	drupal_mail('bxdev_project', 'partner_order_submit', $emails, language_default(), $params);
 	
 	// log the action
-	
+	watchdog('partner', $params['partner']->title . ' has added a new order');
 }
 
 
