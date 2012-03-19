@@ -164,6 +164,7 @@ function bxdev_partner_order_form_validate($form, &$form_state){
  */
 function bxdev_partner_order_form_submit($form, &$form_state){
 	
+	$partner = node_load(arg(1));
 	$values = $form_state['values'];
 	$email = $values['email'];
 	$contact_name = $values['contact_name'];
@@ -199,14 +200,32 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	/**
 	 * Create the business
 	 */
-	$business = new stdClass();
-	$business->language = LANGUAGE_NONE;
-	$business->type = 'business';	
-	$business->title = $business_name;
-	$business->field_business_city['und'][0]['value'] = $city;
-	$business->field_client_ref['und'][0]['uid'] = $account->uid;
 	
-	node_save($business);
+	// check if partner business already exists for client
+	$query = new EntityFieldQuery;
+	$result = $query
+	  ->entityCondition('entity_type', 'node')
+		->entityCondition('bundle', 'business')
+		->propertyCondition('title', $partner->title)
+	  ->fieldCondition('field_client_ref', 'uid', $account->uid, '=')
+	  ->execute();
+	
+	$business = '';
+	
+	// if partner business already exists for client, use existing business
+	if(!empty($result)){
+		$business_node = reset($result['node']);
+		$business = node_load($business_node->nid);
+	// if partner business does not exist for client, create a new business
+	}else{	
+		$business = new stdClass();
+		$business->language = LANGUAGE_NONE;
+		$business->type = 'business';	
+		$business->title = $partner->title;
+		$business->field_business_city['und'][0]['value'] = $city;
+		$business->field_client_ref['und'][0]['uid'] = $account->uid;	
+		node_save($business);
+	}
 	
 	/**
 	 * Create the project
@@ -214,7 +233,7 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$project = new stdClass();
 	$project->language = LANGUAGE_NONE;
 	$project->type = 'project';
-	$project->title = $business->title . ' Video';
+	$project->title = $business_name;
 	$project->field_project_business_ref['und'][0]['nid'] = $business->nid;
 	$project->field_shoot_date['und'][0]['value'] = $shoot_timestamp;
 	$project->field_project_type['und'][0]['value'] = '449';
@@ -230,12 +249,12 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	// $emails = 'jason@lightswitch.com';
 	$emails = 'wandoledzep@gmail.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
-	$params['partner'] = node_load(arg(1));
+	$params['partner'] = $partner;
 	$params['city_manual'] = $city_manual;
 	drupal_mail('bxdev_project', 'partner_order_submit', $emails, language_default(), $params);
 	
 	// log the action
-	
+	watchdog('partner', $partner->title . ' has added a new order');
 }
 
 
