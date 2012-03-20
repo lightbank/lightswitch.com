@@ -20,7 +20,11 @@ class MediaEzwebStreamWrapper extends MediaReadOnlyStreamWrapper {
   }
 
   function getOriginalThumbnailPath() {
-		return 'http://lightswitch.com/sites/default/files/mail_logo.jpg';		
+		$parts = $this->get_parameters();
+		$v_id = check_plain($parts['ez']);
+		$response = drupal_http_request('http://www.ezwebplayer.com/webservices/v5/videoservice.asmx/GetVideo?format=json&videoID="' . $v_id . '"&userID="a150be4a-c40e-480a-97e9-9aab0ce47de9"');
+		$json = drupal_json_decode(preg_replace('/[\(\)]/', '', $response->data));
+		return $json['d']['ScreenShoturl'];
   }
   
   function getLocalThumbnailPath() {

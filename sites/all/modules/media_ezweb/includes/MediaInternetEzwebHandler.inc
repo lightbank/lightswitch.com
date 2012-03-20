@@ -7,12 +7,18 @@
  */
 class MediaInternetEzwebHandler extends MediaInternetBaseHandler {
   public function parse($embedCode) {
-		if(strpos($embedCode, 'cloud.ezwebplayer') !== FALSE || strpos($embedCode, 'cloud.lightswitch') !== FALSE){
-			$v_start = strpos($embedCode, '?v=') + 3;
-			$v_end = strpos($embedCode, '&');
-			$v_id = substr($embedCode, $v_start, $v_end - $v_start);
-		}		
-		return file_stream_wrapper_uri_normalize('ezweb://ez/' . $v_id);		
+		// if(strpos($embedCode, 'cloud.ezwebplayer') !== FALSE || strpos($embedCode, 'cloud.lightswitch') !== FALSE){
+		// 	$v_start = strpos($embedCode, '?v=') + 3;
+		// 	$v_end = strpos($embedCode, '&');
+		// 	$v_id = substr($embedCode, $v_start, $v_end - $v_start);
+		// }
+		
+		if(strpos($embedCode, 'lsvids.tv') !== FALSE){
+			$v_id = substr($embedCode, -6);
+			return file_stream_wrapper_uri_normalize('ezweb://ez/' . $v_id);		
+		}
+			
+		return FALSE;		
   }
 
   public function claim($embedCode) {

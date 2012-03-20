@@ -83,7 +83,8 @@ function bxdev_business_preprocess_node(&$variables) {
 			$video_output .= '<div class="video-wrap-outer"><div class="video-wrap-inner">';
 			// add the video
 			if(!empty($project['field_project_video'][0]['file'])){
-				$video_output .= theme('media_vimeo_video', $project['field_project_video'][0]['file']);
+				// $video_output .= theme('media_vimeo_video', $project['field_project_video'][0]['file']);
+				$video_output .= render($project['field_project_video']);
 			}
 			
 			$video_output .= '</div></div>';

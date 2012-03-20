@@ -33,9 +33,12 @@ function media_ezweb_file_formatter_video_view($file, $display, $langcode) {
   $scheme = file_uri_scheme($file->uri);
   // WYSIWYG does not yet support video inside a running editor instance.
   if ($scheme == 'ezweb') {
+		$response = drupal_http_request('http://www.ezwebplayer.com/webservices/v5/videoservice.asmx/GetVideo?format=json&videoID="' . $file->filename . '"&userID="a150be4a-c40e-480a-97e9-9aab0ce47de9"');
+		$json = drupal_json_decode(preg_replace('/[\(\)]/', '', $response->data));
     $element = array(
       '#theme' => 'media_ezweb_video',
       '#uri' => $file->uri,
+			'#file_download' => $json['d']['VideoFileUrl'],
     );
     foreach (array('width', 'height', 'autoplay') as $setting) {
       $element['#' . $setting] = isset($file->override[$setting]) ? $file->override[$setting] : $display['settings'][$setting];

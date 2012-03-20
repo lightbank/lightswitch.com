@@ -63,6 +63,7 @@ function feature_blocks_default_fe_block_boxes() {
 		<li><a href="/local-business-videos">How it Works</a></li>
 		<li><a href="/video-traffic-for-local-business">Why Lightswitch</a></li>
 		<li><a href="/custom-business-videos">Gallery</a></li>
+                <li><a href="/clients">Local Directory</a></li>
 	</ul>
 </div>
 
@@ -78,10 +79,14 @@ function feature_blocks_default_fe_block_boxes() {
 
 <div class="left contact">
 	<h5>Get in Touch</h5>
-	<p><a href="mailto:info@lightswitch.com?cc=erik@lightswitch.com&subject=Website%20Inquiry">info@lightswitch.com</a><br />
+	<p><a href="mailto:info@lightswitch.com?subject=Website%20Inquiry">info@lightswitch.com</a><br />
 	1-800-273-2849</p>
 	<p class="small">600 W Chicago Ave,<br />
 	Chicago IL, 60654</p>
+</div>
+
+<div class="left verisign">
+<script type="text/javascript" src="https://seal.verisign.com/getseal?host_name=lightswitch.com&amp;size=L&amp;use_flash=YES&amp;use_transparent=YES&amp;lang=en"></script>
 </div>';
 
   $export['footer_blocks'] = $fe_block_boxes;
@@ -100,6 +105,7 @@ function feature_blocks_default_fe_block_boxes() {
   $fe_block_boxes->machine_name = 'front_top_video';
   $fe_block_boxes->body = '<div class="left">
 	<iframe src="http://player.vimeo.com/video/33848169?title=0&amp;byline=0&amp;portrait=0" width="600" height="338" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
 </div>
 
 <div class="right">
@@ -279,59 +285,25 @@ function feature_blocks_default_fe_block_boxes() {
   $export['how_steps'] = $fe_block_boxes;
 
   $fe_block_boxes = new stdClass;
-  $fe_block_boxes->info = 'Need Videographer';
-  $fe_block_boxes->format = 'php_code';
   $fe_block_boxes->machine_name = 'need_videographer';
-  $fe_block_boxes->body = '<div class="need-top">
-	<div class="bubble">
-		<p>I love the flexibility and variety! Can’t wait for the next shoot.</p>
-		<p class="name">Patrick B., Chicago</p>
-	</div>
-	<a href="/join-our-team" class="btn">Start Working now!</a>
-</div>
-
-<div class="ribbon-block what-you-need">
-	<h3>Here\'s what you need!</h3>
-	<ul>
-		<li class="need-1">
-			<span class="icon"></span>
-			<h4>Creativity</h4>
-			<p>A creative eye, steady hand & a storyteller\'s sensibility.</h4>
-		</li>
-		<li class="need-2">
-			<span class="icon"></span>
-			<h4>Equipment</h4>
-			<p>Access to an HD camera, tripod & audio recording equipment.</h4>
-		</li>
-		<li class="need-3">
-			<span class="icon"></span>
-			<h4>Skills</h4>
-			<p>Produce, direct & edit the video from start to finish.</h4>
-		</li>
-	</ul>
-</div>
-
-<div class="ribbon-block what-you-get">
-	<h3>Here\'s what you get!</h3>
-	<ul>
-		<li class="get-1">
-			<span class="icon"></span>
-			<h4>Variety</h4>
-			<p>Access to a variety of projects & clients from around the country.</h4>
-		</li>
-		<li class="get-2">
-			<span class="icon"></span>
-			<h4>Payment</h4>
-			<p>We handle selling & billing so you get paid quickly & reliably.</h4>
-		</li>
-		<li class="get-3">
-			<span class="icon"></span>
-			<h4>Flexibility</h4>
-			<p>You get to work with clients & set your own schedule.</h4>
-		</li>
-	</ul>
-</div>
-';
+  $fe_block_boxes->body = '<ul>
+	<li class="s1">
+		<span class="number"></span>
+		<h3>Experienced videographer spends an hour on location shooting</h3>
+		<span class="icon"></span>
+	</li>
+	<li class="s2">
+		<span class="number"></span>
+		<h3>Lightswitch edits video into customized, high quality video</h3>
+		<span class="icon"></span>
+	</li>
+	<li class="s3">
+		<span class="number"></span>
+		<h3>Video is delivered in a convenient file format for all your marketing needs</h3>
+		<span class="icon"></span>
+	</li>
+</ul>
+<p><a href="/video-production-services" class="btn">View Pricing</a></p>';
 
   $export['need_videographer'] = $fe_block_boxes;
 
@@ -345,7 +317,7 @@ function feature_blocks_default_fe_block_boxes() {
 	<div class="vid-thumb">
 		<a href="http://vimeo.com/moogaloop.swf?clip_id=34032033" rel="shadowbox;height=450;width=605"><img alt="" src="/sites/default/files/pricing-video-1.jpg" style="width: 241px; height: 133px;" /></a></div>
 	<p class="the-price">$449.00</p>
-	<p><a class="btn" href="#block-webform-client-block-5" rel="shadowbox;width=400;height=650;">Get Started</a></p>
+	<p><a class="btn" href="">Get Started</a></p>
 	<p class="cc">no credit card required</p>
 	<ul>
 		<li>
