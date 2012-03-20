@@ -162,7 +162,7 @@ class Project {
 		foreach($users as $uid => $user){
 			drupal_mail('bxdev_project', 'comment', $user->mail, language_default(), $params);
 		}
-		drupal_mail('bxdev_project', 'comment', 'accounting@bxcreative.com', language_default(), $params);
+		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);
 		
 	}
 

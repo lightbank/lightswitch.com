@@ -200,7 +200,7 @@ class User {
 		$params['comment_author'] = $project->pc->field_name['und'][0]['value'];
 		$params['comment_date'] = date('m-d-Y', mktime());
 		$params['comment'] = 'First comment sent to Client';
-		drupal_mail('bxdev_project', 'comment', 'accounting@bxcreative.com', language_default(), $params);
+		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);
 		
 		$project->log('admin', 'Login information reset and sent to Client');
 	}
