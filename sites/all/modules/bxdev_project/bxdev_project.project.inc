@@ -162,8 +162,9 @@ class Project {
 		foreach($users as $uid => $user){
 			drupal_mail('bxdev_project', 'comment', $user->mail, language_default(), $params);
 		}
+
 		if($comment->uid == $this->client->uid){
-			drupal_mail('bxdev_project', 'comment', 'accounting@bxcreative.com', language_default(), $params);
+			drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);
 		}
 		
 	}
@@ -206,7 +207,7 @@ class Project {
 		$emails[] = $this->pc->mail;
 		$emails[] = $this->sales->mail;
 		$emails[] = $this->client->mail;
-		$emails[] = 'accounting@bxcreative.com';
+		$emails[] = 'editors@lightswitch.com';
 		foreach($emails as $email){
 			if($email != ''){
 				drupal_mail('bxdev_project', 'approved', $email, language_default(), $params);
