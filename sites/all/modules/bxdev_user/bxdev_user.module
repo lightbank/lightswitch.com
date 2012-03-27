@@ -138,6 +138,14 @@ function bxdev_user_mail($key, &$message, $params) {
 	
 	$message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 	
+	if(!empty($params['headers']['cc'])){
+		$message['headers']['cc'] = $params['headers']['cc'];
+	}
+	
+	if(!empty($params['headers']['bcc'])){
+		$message['headers']['bcc'] = $params['headers']['bcc'];
+	}
+	
 	// switch($key){
 	// 	case 'videographer':
 	// 		$subject = t('Thank you for your interest in becoming a Lightswitch videographer!');
