@@ -216,6 +216,23 @@ class Project {
 	}
 	
 	/**
+	 * Notify all appropriate users when a Project has been manually approved.
+	 */
+	function send_approved_manual(){
+		global $base_url;
+		$params['project'] = $this;
+		// build a list of email addresses (pc, sales, and client)
+		$emails[] = $this->pc->mail;
+		$emails[] = $this->client->mail;
+		// $emails[] = 'editors@lightswitch.com';
+		foreach($emails as $email){
+			if($email != ''){
+				drupal_mail('bxdev_project', 'project_approved_pc_', $email, language_default(), $params);
+			}
+		}
+	}
+	
+	/**
 	 * Send email to pc notifying of a declined revision list
 	 */
 	function send_revision_declined($cid){
