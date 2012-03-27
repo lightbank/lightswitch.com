@@ -1,7 +1,7 @@
 <div id="headerContainer">
 	<div id="innerHeaderContainer">
 		
-		<div id="headerLogoContainer"><?php print $partner_logo; ?></div>
+		<div id="headerLogoContainer"><h1><?php print $title; ?></h1></div>
 		<div id="headerContactInfo">
 			<strong class="boldBlueText">Need Help</strong><br />
 			Call us at 1 312-999-3093<br />

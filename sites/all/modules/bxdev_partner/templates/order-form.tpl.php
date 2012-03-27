@@ -43,6 +43,14 @@
 				</div>
 			</div><!--closes greenarrowbox -->
 			
+			<?php if(isset($form['project_type'])): ?>
+				<div class="greenArrowHead">
+					<div class="formFieldContainer">
+						<?php print render($form['project_type']); ?>
+					</div>
+				</div><!--closes greenarrowbox -->
+			<?php endif; ?>
+			
 			<div class="greenArrowHead">
 				<div class="formFieldContainer">
 					<?php print render($form['city']); ?>
@@ -50,14 +58,6 @@
 					<?php print render($form['city_manual']); ?>
 				</div>
 			</div><!--closes greenarrowbox -->
-
-			<?php /* ?>
-			<div class="greenArrowHead input-state">
-				<div class="formFieldContainer">
-					<?php print render($form['state']); ?>
-				</div>
-			</div><!--closes greenarrowbox -->
-			<?php */?>
 
 		</div><!--closes right column form Container -->
 		

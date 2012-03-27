@@ -36,7 +36,7 @@ a {text-decoration:none;}
 a:hover{text-decoration:underline;}
 
 h1 {
-color:#FDB913;
+color:#F98E26;
 font-size:42px;
 letter-spacing:-3px;
 margin:0;
@@ -85,6 +85,11 @@ p {
 	margin-left: auto;
 }
 
+#headerContainer h1 {
+	font-family: Arial;
+	letter-spacing: 0;
+}
+
 #innerHeaderContainer
 {
 	width:915px;
@@ -97,7 +102,7 @@ p {
 
 #headerLogoContainer
 {
-	width:179px;
+	width:600px;
 	height:72px;
 	position: absolute;
 	top: 13px;
