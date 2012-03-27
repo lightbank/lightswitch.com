@@ -414,6 +414,18 @@ class Project {
 	}
 	
 	/**
+	 * Send a notification to the Videographer when assigned to a project
+	 */
+	function send_videographer_project_assign($email){
+		global $base_url;
+		$params = array(
+			'project' => $this,
+			// 'full_name' => $this->videographer->field_name['und'][0]['value'],
+		);
+		drupal_mail('bxdev_project', 'videographer_project_assign', $email, language_default(), $params);
+	}
+	
+	/**
 	 * Send a notification to the Sales user after a Client has clicked the "Contact Me" button on a spec video
 	 */
 	function send_spec_contact(){

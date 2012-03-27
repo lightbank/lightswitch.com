@@ -217,6 +217,11 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 				if($project->get_status() == 2 && !empty($node->field_videog_ref['und']) && $node->field_status_override['und'][0]['value'] !== 1){
 					// set status to 3 (assigned)
 					$node->field_status['und'][0]['value'] = 3;
+					// send the videographer notification
+					dpm($node);
+					$account = user_load($node->field_videog_ref['und'][0]['uid']);
+					$project->send_videographer_project_assign($account->mail);
+					// log the action
 					$project->log('admin', 'Project auto updated to 3 - Assigned');
 				}
 				
@@ -250,6 +255,14 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 				$node->field_line_item_desc['und'][0]['value'] = $_SESSION['payment']['line_item_description'];
 				$node->field_charge_amount['und'][0]['value'] = $_SESSION['payment']['cc_amount'];
 				unset($_SESSION['payment']);
+			}
+			
+			// check if pc is manually approving the project
+			$old_approved = $project->project->field_approved['und'][0]['value'];
+			$new_approved = $node->field_approved['und'][0]['value'];
+			
+			if($old_approved == 0 && $new_approved == 1){
+				dpm('Manual approval!');
 			}
 			
 			break;
