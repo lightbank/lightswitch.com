@@ -252,7 +252,7 @@ class Project {
 	function send_revision_approved($cid){
 		global $base_url;
 		$comment = node_load($cid);
-		$emails = $this->pc->mail . ',' . $this->videographer->mail;
+		$emails = $this->pc->mail;
 		// build params to pass to the email message
 		$params = array(
 			'project' => $this,
