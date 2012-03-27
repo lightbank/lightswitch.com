@@ -7,7 +7,7 @@
 /**
  * Form builder: partner order form
  */
-function bxdev_partner_order_form($form, &$form_state){
+function bxdev_partner_order_form($form, &$form_state, $node){
 	
 	$fields = field_info_fields('node', 'business');
 	$time_options = bxdev_get_times_array();
@@ -61,70 +61,40 @@ function bxdev_partner_order_form($form, &$form_state){
 		'#required' => TRUE,
 	);
 	
-	// $form['state'] = array(
-	// 	'#type' => 'select',
-	// 	'#options' => array(
-	// 		'AL'=>'Alabama',  
-	// 		'AK'=>'Alaska',  
-	// 		'AZ'=>'Arizona',  
-	// 		'AR'=>'Arkansas',  
-	// 		'CA'=>'California',  
-	// 		'CO'=>'Colorado',  
-	// 		'CT'=>'Connecticut',  
-	// 		'DE'=>'Delaware',  
-	// 		'DC'=>'District Of Columbia',  
-	// 		'FL'=>'Florida',  
-	// 		'GA'=>'Georgia',  
-	// 		'HI'=>'Hawaii',  
-	// 		'ID'=>'Idaho',  
-	// 		'IL'=>'Illinois',  
-	// 		'IN'=>'Indiana',  
-	// 		'IA'=>'Iowa',  
-	// 		'KS'=>'Kansas',  
-	// 		'KY'=>'Kentucky',  
-	// 		'LA'=>'Louisiana',  
-	// 		'ME'=>'Maine',  
-	// 		'MD'=>'Maryland',  
-	// 		'MA'=>'Massachusetts',  
-	// 		'MI'=>'Michigan',  
-	// 		'MN'=>'Minnesota',  
-	// 		'MS'=>'Mississippi',  
-	// 		'MO'=>'Missouri',  
-	// 		'MT'=>'Montana',
-	// 		'NE'=>'Nebraska',
-	// 		'NV'=>'Nevada',
-	// 		'NH'=>'New Hampshire',
-	// 		'NJ'=>'New Jersey',
-	// 		'NM'=>'New Mexico',
-	// 		'NY'=>'New York',
-	// 		'NC'=>'North Carolina',
-	// 		'ND'=>'North Dakota',
-	// 		'OH'=>'Ohio',  
-	// 		'OK'=>'Oklahoma',  
-	// 		'OR'=>'Oregon',  
-	// 		'PA'=>'Pennsylvania',  
-	// 		'RI'=>'Rhode Island',  
-	// 		'SC'=>'South Carolina',  
-	// 		'SD'=>'South Dakota',
-	// 		'TN'=>'Tennessee',  
-	// 		'TX'=>'Texas',  
-	// 		'UT'=>'Utah',  
-	// 		'VT'=>'Vermont',  
-	// 		'VA'=>'Virginia',  
-	// 		'WA'=>'Washington',  
-	// 		'WV'=>'West Virginia',  
-	// 		'WI'=>'Wisconsin',  
-	// 		'WY'=>'Wyoming'),
-	// 	'#title' => t('State'),
-	// 	'#required' => TRUE,
-	// );
-	
 	$form['shoot_time'] = array(
 		'#type' => 'select',
 		'#options' => $time_options,
 		'#title' => t('Shoot Time'),
 		'#required' => TRUE,
 	);
+	
+	// if partner is allowed to select video type
+	if($node->field_partner_select_type['und'][0]['value']){
+		
+		// create the options based on video types specified in the node
+		$options = array();
+		foreach($node->field_partner_dynamic_type['und'] as $value){
+			switch($value['value']){
+				case '0':
+					$options[449] = 'Standard video';
+					break;
+				
+				case '1':
+					$options[549] = 'Video with interview';
+					break;
+					
+				case '2':
+					$options[599] = 'Video with voice over';
+					break;
+			}
+		}
+		
+		$form['project_type'] = array(
+			'#type' => 'select',
+			'#title' => 'Video type',
+			'#options' => $options,
+		);
+	}
 	
 	$form['submit'] = array(
 		'#type' => 'submit',
@@ -175,6 +145,16 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$shoot_date = $values['shoot_date'];
 	$shoot_time = $values['shoot_time'];
 	$shoot_timestamp = strtotime($shoot_date . ' ' . $shoot_time);
+	
+	// determine video type
+	$project_type = '';
+	// if partner has selected video type
+	if($partner->field_partner_select_type['und'][0]['value']){
+		$project_type = $values['project_type'];
+	// if admin has assigned a static video type
+	}else{
+		$project_type = $partner->field_partner_static_type['und'][0]['value'];
+	}
 	
 	/**
 	 * Generate the client
@@ -236,9 +216,9 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$project->title = $business_name;
 	$project->field_project_business_ref['und'][0]['nid'] = $business->nid;
 	$project->field_shoot_date['und'][0]['value'] = $shoot_timestamp;
-	$project->field_project_type['und'][0]['value'] = '449';
-	$project->field_charge_amount['und'][0]['value'] = '500';
-	$project->field_video_type['und'][0]['value'] = 'bd';
+	$project->field_project_type['und'][0]['value'] = $project_type;
+	$project->field_charge_amount['und'][0]['value'] = $project_type;
+	$project->field_video_type['und'][0]['value'] = 'bd';	
 	
 	node_save($project);
 		

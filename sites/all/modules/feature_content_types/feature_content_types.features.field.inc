@@ -2715,53 +2715,52 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-partner_portal-field_partner_logo'
-  $fields['node-partner_portal-field_partner_logo'] = array(
+  // Exported field: 'node-partner_portal-field_partner_dynamic_type'
+  $fields['node-partner_portal-field_partner_dynamic_type'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_partner_logo',
+      'field_name' => 'field_partner_dynamic_type',
       'field_permissions' => array(
         'type' => '0',
       ),
-      'foreign keys' => array(
-        'fid' => array(
-          'columns' => array(
-            'fid' => 'fid',
-          ),
-          'table' => 'file_managed',
-        ),
-      ),
+      'foreign keys' => array(),
       'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
+        'value' => array(
+          0 => 'value',
         ),
       ),
-      'module' => 'image',
+      'module' => 'list',
       'settings' => array(
-        'default_image' => 0,
+        'allowed_values' => array(
+          0 => 'Standard video',
+          1 => 'Video with interview',
+          2 => 'Video with voice over',
+        ),
+        'allowed_values_function' => '',
         'profile2_private' => FALSE,
-        'uri_scheme' => 'public',
       ),
       'translatable' => '0',
-      'type' => 'image',
+      'type' => 'list_text',
     ),
     'field_instance' => array(
       'bundle' => 'partner_portal',
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
-          'module' => 'image',
-          'settings' => array(
-            'image_link' => '',
-            'image_style' => '',
-          ),
-          'type' => 'image',
-          'weight' => '0',
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 2,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2771,65 +2770,159 @@ function feature_content_types_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'ffp_field_partner_logo' => array(
-        'active_updating' => 0,
-        'file_name' => '[file:ffp-name-only-original].[file:ffp-extension-original]',
-        'file_name_cleanup' => array(
-          'file_name_pathauto' => 0,
-          'file_name_tolower' => 0,
-          'file_name_transliterate' => 0,
-        ),
-        'file_path' => 'partner_logos',
-        'file_path_cleanup' => array(
-          'file_path_pathauto' => 0,
-          'file_path_tolower' => 0,
-          'file_path_transliterate' => 0,
-        ),
-        'retroactive_update' => 0,
-      ),
-      'field_name' => 'field_partner_logo',
-      'label' => 'Logo',
-      'required' => 0,
+      'field_name' => 'field_partner_dynamic_type',
+      'label' => 'Dynamic video type',
+      'required' => 1,
       'settings' => array(
-        'alt_field' => 0,
-        'file_directory' => '',
-        'file_extensions' => 'png gif jpg jpeg',
-        'max_filesize' => '',
-        'max_resolution' => '',
-        'min_resolution' => '',
-        'title_field' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'image',
-        'settings' => array(
-          'insert' => 0,
-          'insert_class' => '',
-          'insert_default' => 'auto',
-          'insert_styles' => array(
-            'auto' => 'auto',
-            'image' => 0,
-            'image_approval' => 0,
-            'image_business_large' => 0,
-            'image_business_thumb' => 0,
-            'image_gallery_slideshow' => 0,
-            'image_gallery_thumb' => 0,
-            'image_large' => 0,
-            'image_medium' => 0,
-            'image_project_thumb' => 0,
-            'image_square_thumbnail' => 0,
-            'image_thumbnail' => 0,
-            'image_video_thumb_home_border' => 0,
-            'image_video_thumb_home_bw' => 0,
-            'link' => 0,
-          ),
-          'insert_width' => '',
-          'preview_image_style' => 'thumbnail',
-          'progress_indicator' => 'throbber',
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-partner_portal-field_partner_select_type'
+  $fields['node-partner_portal-field_partner_select_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_select_type',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
         ),
-        'type' => 'image_image',
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'No',
+          1 => 'Yes',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_portal',
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_partner_select_type',
+      'label' => 'Allow partner to select video type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
         'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-partner_portal-field_partner_static_type'
+  $fields['node-partner_portal-field_partner_static_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_static_type',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          449 => 'Standard video',
+          549 => 'Video with interview',
+          599 => 'Video with voice over',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_portal',
+      'default_value' => array(
+        0 => array(
+          'value' => '449',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 1,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_partner_static_type',
+      'label' => 'Static video type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '2',
       ),
     ),
   );
@@ -7082,6 +7175,7 @@ function feature_content_types_field_default_fields() {
   t('<a href="/get/document/document_videographer_independent_contractor_agreement" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
   t('<a href="/sites/default/files/lightswitch_w9.pdf">Click here to download a new W9 form</a>');
   t('Address');
+  t('Allow partner to select video type');
   t('Approved');
   t('Audio');
   t('Availablity');
@@ -7107,6 +7201,7 @@ function feature_content_types_field_default_fields() {
   t('Declined reason');
   t('Default payment ID');
   t('Do not send email to client');
+  t('Dynamic video type');
   t('Equipment');
   t('Features & areas to avoid?');
   t('Features & areas to include?');
@@ -7115,7 +7210,6 @@ function feature_content_types_field_default_fields() {
   t('Lighting');
   t('Line item description');
   t('Links to examples of work');
-  t('Logo');
   t('Notes');
   t('PC notes');
   t('Payment notes');
@@ -7148,6 +7242,7 @@ function feature_content_types_field_default_fields() {
   t('Social name 2');
   t('Social name 3');
   t('Social name 4');
+  t('Static video type');
   t('Status');
   t('Status date');
   t('Status override');
