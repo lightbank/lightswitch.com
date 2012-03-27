@@ -87,6 +87,7 @@
 					<div class="no-vid"><img src="/sites/all/themes/bms/images/pic_coming_soon.jpg" /></div>
 				<?php endif; ?>
 			</div><!-- end .video-wrap-outer -->
+			<?php if(isset($ezweb_short_link)) print '<div class="ezweb-download-file">' . $ezweb_short_link . '</div>'; ?>
 			<?php if(isset($ezweb_download_link)) print '<div class="ezweb-download-file">' . $ezweb_download_link . '</div>'; ?>
 			<?php if(isset($photos_teaser)): ?>
 				<div class="project-thumb-wrapper clearfix">
