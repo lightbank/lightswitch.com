@@ -190,8 +190,6 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			$cim->setParameter('cardNumber', $cc_number);
 			$cim->setParameter('expirationDate', $cc_expiry);
 			$cim->setParameter('cardCode', $cc_code);
-			$cim->setParameter('billToAddress', '123 Main Street');
-			$cim->setParameter('billToZip', '12345');
 			$cim->setParameter('validationMode', 'testMode');
 			$cim->createCustomerPaymentProfile();
 		
@@ -308,8 +306,6 @@ function bxdev_payment_project_client_credit_card_form_submit($form, &$form_stat
 			$cim->setParameter('cardNumber', $cc_number);
 			$cim->setParameter('expirationDate', $cc_expiry);
 			$cim->setParameter('cardCode', $cc_code);
-			$cim->setParameter('billToAddress', '123 Main Street');
-			$cim->setParameter('billToZip', '12345');
 			$cim->setParameter('validationMode', 'testMode');
 			$cim->createCustomerPaymentProfile();
 			
@@ -687,8 +683,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 			$cim->setParameter('cardNumber', $cc_number);
 			$cim->setParameter('expirationDate', $cc_expiry);
 			$cim->setParameter('cardCode', $cc_code);
-			$cim->setParameter('billToAddress', '123 Main Street');
-			$cim->setParameter('billToZip', '12345');
+			$cim->setParameter('validationMode', 'testMode');
 			$cim->createCustomerPaymentProfile();
 			
 			if($cim->isSuccessful()){
