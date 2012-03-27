@@ -169,12 +169,9 @@ class User {
 	function send_client_project_login($project){
 		
 		$params['project'] = $project;
+		$params['headers']['bcc'] = $this->pc->mail ', editors@lightswitch.com';
 		
 		$system_email = '';
-		$emails = array();
-		$emails[] = $this->user->mail;
-		$emails[] = $this->pc->mail;
-		$emails[] = 'editors@lightswitch.com';
 		
 		// if client has never logged in (is new)
 		if($this->user->data['first_time_login'] == 1){
@@ -208,12 +205,7 @@ class User {
 			}	
 		}
 		
-		// send all emails
-		foreach($emails as $email){
-			if($email != ''){
-				drupal_mail('bxdev_user', $system_email, $email, language_default(), $params);
-			}
-		}
+		drupal_mail('bxdev_user', $system_email, $this->user->mail, language_default(), $params);
 		
 		$project->log('admin', 'Login information reset and sent to Client');
 	}
