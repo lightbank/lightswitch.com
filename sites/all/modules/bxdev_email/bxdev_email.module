@@ -204,6 +204,7 @@ function bxdev_email_overview_page(){
 	// get all emails from db
 	$results = db_select('emails', 'e')
 		->fields('e', array('eid', 'label'))
+		->orderBy('label')
 		->execute();
 		
 	// if no emails exist

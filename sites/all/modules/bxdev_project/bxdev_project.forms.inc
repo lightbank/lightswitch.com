@@ -20,8 +20,8 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		// hide the video file upload field
 		unset($form['field_project_video_file']);
 		// hide the approved field
-		unset($form['field_approved']);	
-		
+		unset($form['field_approved']);
+
 		$form['field_author']['und']['#type'] = 'hidden';
 		// only pre-populate if sales user
 		if(bxdev_user_get_role($user->uid) == 'sales'){
