@@ -170,30 +170,49 @@ class User {
 		
 		$params['project'] = $project;
 		
+		$system_email = '';
+		$emails = array();
+		$emails[] = $this->user->mail;
+		$emails[] = $this->pc->mail;
+		$emails[] = 'editors@lightswitch.com';
+		
 		// if client has never logged in (is new)
 		if($this->user->data['first_time_login'] == 1){
 			// reset the password
 			$this->reset_password();
 			// if project is spec
 			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
-				drupal_mail('bxdev_user', 'first_comment_spec_new', $this->user->mail, language_default(), $params);
+				// drupal_mail('bxdev_user', 'first_comment_spec_new', $this->user->mail, language_default(), $params);
+				$system_email = 'first_comment_spec_new';
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
-				drupal_mail('bxdev_user', 'first_comment_direct_sale_new', $this->user->mail, language_default(), $params);
+				// drupal_mail('bxdev_user', 'first_comment_direct_sale_new', $this->user->mail, language_default(), $params);
+				$system_email = 'first_comment_direct_sale_new';
 			}else{
-				drupal_mail('bxdev_user', 'first_comment_business_dev_new', $this->user->mail, language_default(), $params);
+				// drupal_mail('bxdev_user', 'first_comment_business_dev_new', $this->user->mail, language_default(), $params);
+				$system_email = 'first_comment_business_dev_new';
 			}
 		// if client has logged in before (existing)
 		}else{
 			// if project is spec
 			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
-				drupal_mail('bxdev_user', 'first_comment_spec_existing', $this->user->mail, language_default(), $params);
+				// drupal_mail('bxdev_user', 'first_comment_spec_existing', $this->user->mail, language_default(), $params);
+				$system_email = 'first_comment_spec_existing';
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
-				drupal_mail('bxdev_user', 'first_comment_direct_sale_existing', $this->user->mail, language_default(), $params);
+				// drupal_mail('bxdev_user', 'first_comment_direct_sale_existing', $this->user->mail, language_default(), $params);
+				$system_email = 'first_comment_direct_sale_existing';
 			}else{
-				drupal_mail('bxdev_user', 'first_comment_business_dev_existing', $this->user->mail, language_default(), $params);
+				// drupal_mail('bxdev_user', 'first_comment_business_dev_existing', $this->user->mail, language_default(), $params);
+				$system_email = 'first_comment_business_dev_existing';
 			}	
+		}
+		
+		// send all emails
+		foreach($emails as $email){
+			if($email != ''){
+				drupal_mail('bxdev_user', $system_email, $email, language_default(), $params);
+			}
 		}
 		
 		$project->log('admin', 'Login information reset and sent to Client');
