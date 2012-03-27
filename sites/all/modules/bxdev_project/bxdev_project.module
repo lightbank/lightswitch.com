@@ -411,7 +411,7 @@ function bxdev_project_preprocess_node(&$vars){
 		
 		// check for EZWebPlayer download link
 		if(!empty($content['field_project_video'][0]['file']['#file_download'])){
-			$vars['ezweb_download_link'] = '<a href="' . $content['field_project_video'][0]['file']['#file_download'] . '?response-content-disposition=attachment">Download video file</a>';
+			$vars['ezweb_download_link'] = '<a href="' . $content['field_project_video'][0]['file']['#file_download'] . '">Download video file</a>';
 			// $vars['ezweb_download_link'] = '<a href="/ezweb/download/' . $project->project->nid . '">Download video file</a>';
 		}
 		
