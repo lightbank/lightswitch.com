@@ -620,7 +620,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 			$cim->setParameter('cardCode', '000');
 			$cim->setParameter('amount', $amount);
 			$cim->setParameter('invoiceNumber', date('m_d_Y', mktime()) . '_' . variable_get('client_invoice_num', 101));
-			$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->client->field_name['und'][0]['value']) . ', Project: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->project->title));
+			$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', '', $project->client->field_name['und'][0]['value']) . ', Project: ' . preg_replace('/[^0-9a-zA-Z\s]/', '', $project->project->title));
 			$cim->setParameter('refId', date('m/d/y-G:i:s'));
 			$cim->createCustomerProfileTransaction();
 			
@@ -695,7 +695,7 @@ function bxdev_payment_project_payment_form_submit($form, &$form_state){
 				$cim->setParameter('cardCode', $cc_code);
 				$cim->setParameter('amount', $amount);
 				$cim->setParameter('invoiceNumber', date('m_d_Y', mktime()) . '_' . variable_get('client_invoice_num', 101));
-				$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->client->field_name['und'][0]['value']) . ', Project: ' . preg_replace('/[^0-9a-zA-Z\s]/', $project->project->title));
+				$cim->setParameter('description', 'Client: ' . preg_replace('/[^0-9a-zA-Z\s]/', '', $project->client->field_name['und'][0]['value']) . ', Project: ' . preg_replace('/[^0-9a-zA-Z\s]/', '', $project->project->title));
 				$cim->setParameter('refId', date('m/d/y-G:i:s'));
 				$cim->createCustomerProfileTransaction();
 				
