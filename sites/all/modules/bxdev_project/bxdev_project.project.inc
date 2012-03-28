@@ -222,7 +222,8 @@ class Project {
 		global $base_url;
 		$system_email;
 		$params['project'] = $this;
-		$params['headers']['bcc'] = 'wandoledzep@gmail.com';
+		$bcc = !empty($this->pc->mail) ? $this->pc->mail . ', editors@lightswitch' : 'editors@lightswitch';
+		$params['headers']['bcc'] = $bcc;
 		
 		$user = user_load($this->client->uid);
 		
