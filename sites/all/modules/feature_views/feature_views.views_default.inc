@@ -682,7 +682,6 @@ function feature_views_views_default_views() {
   $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-dpm($data);
 global $user;
 $role = bxdev_user_get_role($user->uid);
 if($role == \'client\' && $user->uid != $data->users_node_uid){

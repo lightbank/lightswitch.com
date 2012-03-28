@@ -220,9 +220,19 @@ class Project {
 	 */
 	function send_approved_manual(){
 		global $base_url;
+		$system_email;
 		$params['project'] = $this;
 		$params['headers']['bcc'] = 'wandoledzep@gmail.com';
-		drupal_mail('bxdev_project', 'project_approved_pc_', $this->client->mail, language_default(), $params);
+		
+		$user = user_load($this->client->uid);
+		
+		if($user->data['first_time_login'] == 1){
+			$system_email = 'project_approved_pc_new';
+		}else{
+			$system_email = 'project_approved_pc_existing';
+		}
+		
+		drupal_mail('bxdev_project', $system_email, $this->client->mail, language_default(), $params);
 	}
 	
 	/**
