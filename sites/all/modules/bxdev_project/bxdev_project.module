@@ -127,6 +127,11 @@ function bxdev_project_mail($key, &$message, $params) {
 		$message['headers']['cc'] = $params['headers']['cc'];
 	}
 	
+	if(!empty($params['headers']['bcc'])){
+		$message['headers']['bcc'] = $params['headers']['bcc'];
+	}
+	
+	
 }
 
 /**
@@ -264,7 +269,7 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 				// set status to 6 (approved)
 				$node->field_status['und'][0]['value'] = 6;
 				// send the email
-				// $project->send_approved_manual();
+				$project->send_approved_manual();
 				
 			}
 			

@@ -221,15 +221,8 @@ class Project {
 	function send_approved_manual(){
 		global $base_url;
 		$params['project'] = $this;
-		// build a list of email addresses (pc, sales, and client)
-		$emails[] = $this->pc->mail;
-		$emails[] = $this->client->mail;
-		// $emails[] = 'editors@lightswitch.com';
-		foreach($emails as $email){
-			if($email != ''){
-				drupal_mail('bxdev_project', 'project_approved_pc_', $email, language_default(), $params);
-			}
-		}
+		$params['headers']['bcc'] = 'wandoledzep@gmail.com';
+		drupal_mail('bxdev_project', 'project_approved_pc_', $this->client->mail, language_default(), $params);
 	}
 	
 	/**
