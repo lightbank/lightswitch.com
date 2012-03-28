@@ -863,7 +863,8 @@ input[type="submit"].approve-btn, .approve-yes {
 	font-family: Georgia, serif;
 }
 
-.view-comments .views-field-field-name {
+.view-comments .views-field-field-name,
+.view-comments .views-field-php {
 	font-size: 20px;
 	font-weight: bold;
 }
