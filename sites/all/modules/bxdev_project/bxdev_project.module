@@ -264,7 +264,8 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 				// set status to 6 (approved)
 				$node->field_status['und'][0]['value'] = 6;
 				// send the email
-				$project->send_approved_manual();
+				// $project->send_approved_manual();
+				
 			}
 			
 			break;
@@ -445,7 +446,7 @@ function bxdev_project_preprocess_node(&$vars){
 		if(!empty($content['field_project_video']['#items'][0]['file'])){
 			$scheme = file_uri_scheme($content['field_project_video']['#items'][0]['file']->uri);
 			if($scheme == 'ezweb'){
-				$short_link = '<a href="http://lsvids.tv/V' . $content['field_project_video']['#items'][0]['file']->filename . '" target="_blank">http://lsvids.tv/V' . $content['field_project_video']['#items'][0]['file']->filename . '</a>';
+				$short_link = 'Quick Link - Use this link to show your video without sharing your log in info:<br/> <a href="http://lsvids.tv/V' . $content['field_project_video']['#items'][0]['file']->filename . '" target="_blank">http://lsvids.tv/V' . $content['field_project_video']['#items'][0]['file']->filename . '</a>';
 				$vars['ezweb_short_link'] = $short_link;
 			}
 		}
