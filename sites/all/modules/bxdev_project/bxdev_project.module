@@ -276,7 +276,7 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
  */
 function bxdev_project_preprocess_node(&$vars){
 	
-	if($vars['type'] == 'project'){
+	if($vars['type'] == 'project'){		
 		
 		// navigation controls
 		if(user_access('pc')){
@@ -395,6 +395,19 @@ function bxdev_project_preprocess_node(&$vars){
 		
 		// check if client has accepted the project terms
 		if($project->project->field_video_type['und'][0]['value'] == 'direct_sale' && !empty($project->project->field_client_terms_accepted) && $project->project->field_client_terms_accepted['und'][0]['value'] == 0){
+			
+			// if user is Client, redirect to terms page
+			if($role == 'client'){
+				$hash = db_select('users_project_terms', 'upt')
+					->fields('upt', array('hash'))
+					->condition('nid', $nid)
+					->execute()
+					->fetchField();
+				if(!empty($hash)){
+					drupal_goto('client/terms/' . $nid . '/' . $hash . '/redirect');
+				}
+			}
+			
 			$vars['client_terms_not_accepted'] = '<div class="client-terms-not-accepted">
 				<h2>Client has not accepted Project terms!</h2>
 				<a href="/project/terms/resend/' . $project->project->nid . '">Click here to send another reminder</a>

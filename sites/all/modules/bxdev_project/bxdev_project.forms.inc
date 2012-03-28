@@ -495,7 +495,13 @@ function bxdev_project_client_terms_form_submit($form, &$form_state){
 	// expire the page by removing the hash entry from the db
 	db_delete('users_project_terms')
 		->condition('nid', $nid)
-		->execute();	
+		->execute();
+		
+	// check for redirect
+	$redirect = arg(4);
+	if(!empty($redirect)){
+		drupal_goto('node/' . $nid);
+	}
 }
 
 
