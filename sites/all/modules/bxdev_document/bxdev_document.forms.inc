@@ -26,6 +26,13 @@ function bxdev_document_client_terms_form_submit($form, &$form_state){
 	
 	if($fid){
 		$project->send_client_service_agreement($fid);
+		
+		// check for redirect
+		$redirect = arg(4);
+		if(!empty($redirect)){
+			drupal_goto('node/' . $nid);
+		}
+		
 		drupal_goto('node/1419');
 	}
 	
