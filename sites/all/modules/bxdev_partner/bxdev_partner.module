@@ -34,8 +34,10 @@ function bxdev_partner_theme($existing, $type, $theme, $path) {
  */
 function bxdev_partner_preprocess_page(&$vars) {
 	$node = $vars['node'];
-	$vars['partner_logo'] = theme('image_style', array('path' => $node->field_partner_logo['und'][0]['uri'], 'style_name' => 'partner_logo'));
-	$vars['partner_form'] = render(drupal_get_form('bxdev_partner_order_form', $node));
+	if($node->type == 'partner_portal'){
+		$vars['partner_logo'] = theme('image_style', array('path' => $node->field_partner_logo['und'][0]['uri'], 'style_name' => 'partner_logo'));
+		$vars['partner_form'] = render(drupal_get_form('bxdev_partner_order_form', $node));
+	}
 }
 
 
