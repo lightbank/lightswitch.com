@@ -61,11 +61,21 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		'#required' => TRUE,
 	);
 	
+	$form['street'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Street address'),
+	);
+	
 	$form['shoot_time'] = array(
 		'#type' => 'select',
 		'#options' => $time_options,
 		'#title' => t('Shoot Time'),
 		'#required' => TRUE,
+	);
+	
+	$form['notes'] = array(
+		'#type' => 'textarea',
+		'#title' => t('Notes for video shoot'),
 	);
 	
 	// if partner is allowed to select video type
@@ -140,11 +150,13 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$contact_name = $values['contact_name'];
 	$phone = $values['phone'];
 	$business_name = $values['business_name'];
+	$street = $values['street'];
 	$city = $values['city'];
 	$city_manual = $values['city_manual'];
 	$shoot_date = $values['shoot_date'];
 	$shoot_time = $values['shoot_time'];
 	$shoot_timestamp = strtotime($shoot_date . ' ' . $shoot_time);
+	$notes = $values['notes'];
 	
 	// determine video type
 	$project_type = '';
@@ -201,9 +213,10 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 		$business = new stdClass();
 		$business->language = LANGUAGE_NONE;
 		$business->type = 'business';	
-		$business->title = $partner->title;
+		$business->title = $partner->title . ' - ' . $business_name;
 		$business->field_business_city['und'][0]['value'] = $city;
-		$business->field_client_ref['und'][0]['uid'] = $account->uid;	
+		$business->field_client_ref['und'][0]['uid'] = $account->uid;
+		$business->field_address['und'][0]['value'] = !empty($street) ? $street : '';
 		node_save($business);
 	}
 	
@@ -218,7 +231,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$project->field_shoot_date['und'][0]['value'] = $shoot_timestamp;
 	$project->field_project_type['und'][0]['value'] = $project_type;
 	$project->field_charge_amount['und'][0]['value'] = $project_type;
-	$project->field_video_type['und'][0]['value'] = 'bd';	
+	$project->field_video_type['und'][0]['value'] = 'bd';
+	$project->field_pc_notes['und'][0]['value'] = !empty($notes) ? $notes : '';
 	
 	node_save($project);
 		
@@ -226,8 +240,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	
 	// send the notification email
 	global $base_url;
-	$emails = 'jason@lightswitch.com, brittany@lightswitch.com';
-	// $emails = 'wandoledzep@gmail.com';
+	// $emails = 'jason@lightswitch.com, brittany@lightswitch.com';
+	$emails = 'wandoledzep@gmail.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
 	$params['partner'] = $partner;
 	$params['city_manual'] = $city_manual;

@@ -26,6 +26,12 @@
 					<?php print render($form['shoot_time']); ?>
 				</div>
 			</div><!--closes greenarrowbox -->
+			
+			<div class="greenArrowHead">
+				<div class="formFieldContainer">
+					<?php print render($form['notes']); ?>
+				</div>
+			</div><!--closes greenarrowbox -->
 
 		</div><!--closes left column form Container -->
 
@@ -34,6 +40,12 @@
 			<div class="greenArrowHead">
 				<div class="formFieldContainer">
 					<?php print render($form['business_name']); ?>
+				</div>
+			</div><!--closes greenarrowbox -->
+			
+			<div class="greenArrowHead">
+				<div class="formFieldContainer">
+					<?php print render($form['street']); ?>
 				</div>
 			</div><!--closes greenarrowbox -->
 

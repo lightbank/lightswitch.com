@@ -245,6 +245,17 @@ label {
 	padding: 2px;
 }
 
+textarea {
+	border: 1px solid #0066cc;
+	width: 320px;
+	height: 100px;
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #333333;
+	padding: 2px;
+	
+}
+
 select {
 	border: 1px solid #0066cc;
 	padding-top: 9px;
