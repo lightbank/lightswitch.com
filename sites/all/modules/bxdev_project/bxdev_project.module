@@ -159,8 +159,13 @@ function bxdev_project_node_insert($node) {
 			}
 			
 			// check if direct sale video, if so send client the terms email
-			if($node->field_video_type['und'][0]['value'] == 'direct_sale' && $node->field_client_send_terms['und'][0]['value'] == 0){
-				$project->send_client_terms();
+			if($node->field_video_type['und'][0]['value'] == 'direct_sale'){
+				// create the project CSA hash
+				$project->create_client_terms_hash();
+				// if admin has selected to send client a CSA email
+				if($node->field_client_send_terms['und'][0]['value'] == 0){
+					$project->send_client_terms();
+				}				
 			}
 			
 			break;
@@ -236,6 +241,17 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 						$project->send_sales_assigned($node->field_author['und'][0]['uid']);
 					}
 				}
+				
+				// check if pc is manually approving the project
+				$old_approved = $project->project->field_approved['und'][0]['value'];
+				$new_approved = $node->field_approved['und'][0]['value'];
+
+				if($old_approved == 0 && $new_approved == 1){
+					// set status to 6 (approved)
+					$node->field_status['und'][0]['value'] = 6;
+					// send the email
+					$project->send_approved_manual();
+				}
 			
 			}
 			
@@ -259,18 +275,6 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 				$node->field_line_item_desc['und'][0]['value'] = $_SESSION['payment']['line_item_description'];
 				$node->field_charge_amount['und'][0]['value'] = $_SESSION['payment']['cc_amount'];
 				unset($_SESSION['payment']);
-			}
-			
-			// check if pc is manually approving the project
-			$old_approved = $project->project->field_approved['und'][0]['value'];
-			$new_approved = $node->field_approved['und'][0]['value'];
-			
-			if($old_approved == 0 && $new_approved == 1){
-				// set status to 6 (approved)
-				$node->field_status['und'][0]['value'] = 6;
-				// send the email
-				$project->send_approved_manual();
-				
 			}
 			
 			break;
@@ -615,6 +619,7 @@ function bxdev_project_download_production_details($node){
  */
 function bxdev_project_terms_client_resend($nid){
 	$project = new Project($nid);
+	$project->create_client_terms_hash();
 	$project->send_client_terms();
 	drupal_set_message('Terms email has been sent to the Client');
 	drupal_goto('node/' . $nid);

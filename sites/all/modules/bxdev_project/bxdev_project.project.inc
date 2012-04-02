@@ -304,6 +304,28 @@ class Project {
 	 * For direct sales Projects, send email to Clients prompting the acceptance of terms
 	 */
 	function send_client_terms(){
+		// // generate a random hash to associate with the client / project
+		// $hash = md5(user_password());
+		// // delete any existing hashes
+		// db_delete('users_project_terms')
+		// 	->condition('nid', $this->project->nid)
+		// 	->execute();
+		// // store the new value
+		// db_insert('users_project_terms')
+		// 	->fields(array(
+		// 		'nid' => $this->project->nid,
+		// 		'hash' => $hash,
+		// 	))
+		// 	->execute();
+		// $this->hash = $hash;
+		$params = array('project' => $this);
+		drupal_mail('bxdev_project', 'client_terms', $this->client->mail, language_default(), $params);
+	}
+	
+	/**
+	 * Creates a hash value used to match a user with a Project (for accepting the client service agreement)
+	 */
+	function create_client_terms_hash(){
 		// generate a random hash to associate with the client / project
 		$hash = md5(user_password());
 		// delete any existing hashes
@@ -317,9 +339,7 @@ class Project {
 				'hash' => $hash,
 			))
 			->execute();
-		$this->hash = $hash;
-		$params = array('project' => $this);
-		drupal_mail('bxdev_project', 'client_terms', $this->client->mail, language_default(), $params);
+		$this->hash = $hash;		
 	}
 	
 	/**
