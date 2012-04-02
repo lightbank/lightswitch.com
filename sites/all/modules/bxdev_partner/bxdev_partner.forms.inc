@@ -63,7 +63,7 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 	
 	$form['street'] = array(
 		'#type' => 'textfield',
-		'#title' => t('Street address'),
+		'#title' => t('Street Address'),
 	);
 	
 	$form['shoot_time'] = array(
@@ -75,7 +75,7 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 	
 	$form['notes'] = array(
 		'#type' => 'textarea',
-		'#title' => t('Notes for video shoot'),
+		'#title' => t('Notes for Video Shoot'),
 	);
 	
 	// if partner is allowed to select video type
@@ -240,8 +240,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	
 	// send the notification email
 	global $base_url;
-	// $emails = 'jason@lightswitch.com, brittany@lightswitch.com';
-	$emails = 'wandoledzep@gmail.com';
+	$emails = 'jason@lightswitch.com, brittany@lightswitch.com';
+	// $emails = 'wandoledzep@gmail.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
 	$params['partner'] = $partner;
 	$params['city_manual'] = $city_manual;
