@@ -233,7 +233,7 @@ class Project {
 			$system_email = 'project_approved_pc_existing';
 		}
 		
-		// drupal_mail('bxdev_project', $system_email, $this->client->mail, language_default(), $params);
+		drupal_mail('bxdev_project', $system_email, $this->client->mail, language_default(), $params);
 	}
 	
 	/**
