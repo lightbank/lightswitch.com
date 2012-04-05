@@ -38,19 +38,29 @@ function bxdev_vid_form_user_register_form_alter(&$form, &$form_state) {
 		$form['field_name']['#weight'] = -49;
 		$form['field_phone']['#weight'] = -48;
 		$form['field_name']['und'][0]['value']['#required'] = TRUE;
+		
+		// include the videographer profile2 fields
+		$profile = profile_create(array('type' => 'videographer'));
+		$form_state['profiles']['videographer'] = $profile;
+	  $form['profile_videographer']['#tree'] = TRUE;
+	  $form['profile_videographer']['#parents'] = array('profile_videographer');
+	  field_attach_form('profile2', $profile, $form['profile_videographer'], $form_state);
 	
 		// modify validation / submit handlers
 		array_unshift($form['#validate'], 'bxdev_vid_user_register_validate');
+		$form['#validate'][] = 'profile2_form_validate_handler';
 		$form['#submit'][0] = 'bxdev_vid_user_register_submit';
 		// remove the standard user_register_submit drupal handler
 		unset($form['#submit'][1]);
+		$form['#submit'][] = 'profile2_form_submit_handler';
 		$form['#submit'][] = 'bxdev_document_videographer_user_register_submit';
 	
 		// left / right wrappers
 		$form['field_name']['#prefix'] = '<div class="left">';
 		$form['profile_videographer']['field_skills']['#suffix'] = '</div><div class="right">';
 		$form['profile_videographer']['field_resume']['#suffix'] = '</div>';
-		$form['#attributes']['class'][] = 'clearfix';	
+		$form['#attributes']['class'][] = 'clearfix';
+		
 	}
 	
 	if(arg(0) == 'join-our-team'){
@@ -160,3 +170,32 @@ function bxdev_vid_join_form(){
 	$output = render(drupal_get_form('user_register_form'));
 	return $output;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
