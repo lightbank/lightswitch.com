@@ -259,6 +259,7 @@ function bxdev_project_photo_approval_form_submit($form, &$form_state){
 		}
 	}
 	drupal_set_message('Photo approvals have been updated.');
+	$form_state['redirect'] = 'node/' . $nid;
 }
 
 /**

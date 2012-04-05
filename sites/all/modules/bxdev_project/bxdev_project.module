@@ -108,6 +108,13 @@ function bxdev_project_menu() {
 		'type' => MENU_CALLBACK,
 	);
 	
+	$items['project/photo/download/%node'] = array(
+		'page callback' => 'bxdev_project_photo_download_callback',
+		'page arguments' => array(3),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
+	
   return $items;
 }
 
@@ -462,7 +469,13 @@ function bxdev_project_preprocess_node(&$vars){
 		
 		// check for EZWebPlayer download link
 		if($project->approved && !empty($content['field_project_video'][0]['file']['#file_download'])){
-			$vars['ezweb_download_link'] = '<a href="' . $content['field_project_video'][0]['file']['#file_download'] . '">Download video file</a>';
+			$vars['ezweb_download_link'] = '<a class="btn" href="' . $content['field_project_video'][0]['file']['#file_download'] . '">Download Video</a>';
+		}
+		
+		// check for photo download
+		$photos = $project->get_approved_photos();
+		if($project->approved && !empty($photos)){
+			$vars['photo_download_link'] = '<a class="btn" href="/project/photo/download/' . $nid . '">Download Photos</a>';
 		}
 		
 	}
@@ -662,30 +675,107 @@ function bxdev_project_spec_client($nid){
 }
 
 /**
- * Menu callback: ezweb video download
+ * Menu callback: photo download
  */
-function bxdev_project_ezweb_download($node){
-	$content = node_view($node);
-	if(!empty($content['field_project_video'][0]['file']['#file_download'])){
-		$file_name = preg_replace('/[^A-Za-z0-9]/', '', $node->title);
-		// // $file = file_get_contents($content['field_project_video'][0]['file']['#file_download']);
-		// // header('Cache-Control:  maxage=1');
-		// // 	  header('Pragma: public');
-		// header('Content-type: video/mp4');
-		// header('Content-disposition: attachment; filename=' . $file_name . '.mp4');
-		// echo file_get_contents($content['field_project_video'][0]['file']['#file_download']);
-		// $file = file_get_contents($content['field_project_video'][0]['file']['#file_download']);
+function bxdev_project_photo_download_callback($node){
+	// double check that the video is approved before allowing the photo download
+	if(!empty($node->field_approved['und'][0]['value']) && $node->field_approved['und'][0]['value'] == 1){
 		
-		// $local_path = 'public://media-ezweb/videos/' . $file_name . '.mp4';
-		//     if (!file_exists($local_path)) {
-		//       $dirname = drupal_dirname($local_path);
-		//       file_prepare_directory($dirname, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
-		//       @copy($content['field_project_video'][0]['file']['#file_download'], $local_path);
-		//     }
-    
+		$results = db_select('project_photos_approval', 'ppa')
+			->fields('ppa', array('fid'))
+			->condition('nid', $node->nid)
+			->execute()
+			->fetchAll();
+			
+		if(!empty($results)){
+			
+			// make sure our overall project photo directory exists and has proper permissions
+			$dirname = 'public://project_photo_zip';
+			file_prepare_directory($dirname, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+			
+			// make sure our project specific photo directory exists and has proper permissions
+			$photos_dir = strtolower(preg_replace('/[^0-9A-za-z]/', '_', $node->title)) . '_photos';
+			
+			// our zip file destination
+			$destination = 'sites/default/files/project_photo_zip/' . $photos_dir . '.zip';
+			
+			// create the ZipArchive object
+			$zip = new ZipArchive();
+			if($zip->open($destination, ZIPARCHIVE::OVERWRITE) !== true) {
+				watchdog('photo_download', 'Photo zip could not initiate - $zip->open(): ' . $destination);
+				return false;
+			}
+			
+			// add each file to the zip
+			foreach($results as $photo){
+				$file = file_load($photo->fid);
+				$zip->addFile('sites/default/files/' . $file->filename, $photos_dir . '/' . $file->filename);
+			}
+
+			// close the zip
+			$zip->close();
+			
+			// if the zip was successfully created, set the headers and force the download
+			if(file_exists($destination)){
+				// generate a friendly url for the zip file
+				$file_url = file_create_url($dirname . '/' . $photos_dir . '.zip');
+				drupal_goto($file_url);
+			}else{
+				watchdog('photo_download', 'Photo zip download failed: ' . $destination);
+				drupal_set_message('The photo download could not be completed. Please try again later.');
+				drupal_goto('node/' . $node->nid);				
+			}
+		}
+	
+	// no approved photos exist
+	}else{
+		drupal_set_message('Project must be approved before downloading photos.');
+		drupal_goto('node/' . $node->nid);
 	}
-	return 'hi';
 }
+
+/* creates a compressed zip file */
+function create_zip($files = array(), $destination = '', $overwrite = false) {
+	//if the zip file already exists and overwrite is false, return false
+	if(file_exists($destination) && !$overwrite) { return false; }
+	//vars
+	$valid_files = array();
+	//if files were passed in...
+	if(is_array($files)) {
+		//cycle through each file
+		foreach($files as $file) {
+			//make sure the file exists
+			if(file_exists($file)) {
+				$valid_files[] = $file;
+			}
+		}
+	}
+	//if we have good files...
+	if(count($valid_files)) {
+		//create the archive
+		$zip = new ZipArchive();
+		if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+			return false;
+		}
+		//add the files
+		foreach($valid_files as $file) {
+			$zip->addFile($file,$file);
+		}
+		//debug
+		//echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
+		
+		//close the zip -- done!
+		$zip->close();
+		
+		//check to make sure the file exists
+		return file_exists($destination);
+	}
+	else
+	{
+		return false;
+	}
+}
+
 
 /**
  * Access callback: client terms
