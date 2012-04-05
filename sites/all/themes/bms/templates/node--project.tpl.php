@@ -88,6 +88,7 @@
 				<?php endif; ?>
 			</div><!-- end .video-wrap-outer -->
 			<?php if(isset($ezweb_short_link)) print '<div class="ezweb-short-link">' . $ezweb_short_link . '</div>'; ?>
+			<?php if(isset($video_file_download)) print $video_file_download; ?>
 			<?php if(isset($ezweb_download_link)) print '<div class="ezweb-download-file">' . $ezweb_download_link . '</div>'; ?>
 			<?php if(isset($photo_download_link)) print '<div class="photo-download">' . $photo_download_link . '</div>'; ?>
 			<?php if(isset($photos_teaser)): ?>
@@ -106,7 +107,6 @@
 			<?php if(!empty($client_comment_form)) print $client_comment_form; ?>
 			<?php if(!empty($videographer_comments)) print $videographer_comments; ?>
 			<?php if(!empty($videographer_comment_form)) print $videographer_comment_form; ?>
-			<?php if(!empty($video_file_download)) print $video_file_download; ?>
 		</div>
 		
 	</div><!-- end .block -->

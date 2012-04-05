@@ -472,6 +472,11 @@ function bxdev_project_preprocess_node(&$vars){
 			$vars['ezweb_download_link'] = '<a class="btn" href="' . $content['field_project_video'][0]['file']['#file_download'] . '">Download Video</a>';
 		}
 		
+		// check for manual file download
+		if(!empty($project->project->field_project_video_file['und'][0]['uri'])){
+			$vars['video_file_download'] = '<div class="video-file-download"><a target="_blank" class="btn" href="' . file_create_url($project->project->field_project_video_file['und'][0]['uri']) . '">Download Video</a></div>';
+		}
+		
 		// check for photo download
 		$photos = $project->get_approved_photos();
 		if($project->approved && !empty($photos)){

@@ -1059,14 +1059,9 @@ input[type="submit"].approve-btn, .approve-yes {
 	background: url(../images/spec_bg.jpg) no-repeat #fff;
 }
 
-
 .prod-history-wrap .trigger,
 .prod-details-wrap .trigger {
 	padding-right: 80px;
-}
-
-.video-file-download {
-	padding-top: 20px;
 }
 
 .video-file-download span {
@@ -1077,14 +1072,16 @@ input[type="submit"].approve-btn, .approve-yes {
 	padding-bottom: 30px;
 }
 
-.video .ezweb-download-file {
+.video .ezweb-download-file,
+.video .video-file-download {
 	padding-bottom: 30px;
+	margin-right: 15px;
 	float: left;
 }
 
 .video .photo-download {
 	float: left;
-	margin-left: 15px;
+	padding-bottom: 30px;
 }
 
 
