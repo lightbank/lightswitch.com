@@ -454,10 +454,6 @@ function bxdev_project_preprocess_node(&$vars){
 			$vars['charge_amount'] = bxdev_format_currency($project->project->field_charge_amount['und'][0]['value']);
 		}
 		
-		/**
-		 * EZWebPlayer
-		 */
-		
 		// check for EZWebPlayer short link
 		if(!empty($content['field_project_video']['#items'][0]['file'])){
 			$scheme = file_uri_scheme($content['field_project_video']['#items'][0]['file']->uri);
@@ -467,13 +463,19 @@ function bxdev_project_preprocess_node(&$vars){
 			}
 		}
 		
+		/**
+		 * Downloads
+		 */
+		
+		$disable_downloads = isset($project->project->field_disable_file_download['und'][0]['value']) && $project->project->field_disable_file_download['und'][0]['value'] == 1;
+		
 		// check for EZWebPlayer download link
-		if($project->approved && !empty($content['field_project_video'][0]['file']['#file_download'])){
+		if($project->approved && !empty($content['field_project_video'][0]['file']['#file_download']) && !$disable_downloads){
 			$vars['ezweb_download_link'] = '<a class="btn" href="' . $content['field_project_video'][0]['file']['#file_download'] . '">Download Video</a>';
 		}
 		
 		// check for manual file download
-		if(!empty($project->project->field_project_video_file['und'][0]['uri'])){
+		if(!empty($project->project->field_project_video_file['und'][0]['uri']) && !$disable_downloads){
 			$vars['video_file_download'] = '<div class="video-file-download"><a target="_blank" class="btn" href="' . file_create_url($project->project->field_project_video_file['und'][0]['uri']) . '">Download Video</a></div>';
 		}
 		

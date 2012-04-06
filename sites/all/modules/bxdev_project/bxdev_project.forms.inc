@@ -21,6 +21,8 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		unset($form['field_project_video_file']);
 		// hide the approved field
 		unset($form['field_approved']);
+		// hide the disable download field
+		unset($form['field_disable_file_download']);
 
 		$form['field_author']['und']['#type'] = 'hidden';
 		// only pre-populate if sales user
