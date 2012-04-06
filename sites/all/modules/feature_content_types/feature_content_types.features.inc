@@ -81,7 +81,7 @@ function feature_content_types_default_profile2_type() {
     "type" : "videographer",
     "label" : "Videographer",
     "weight" : "0",
-    "data" : { "registration" : 1 },
+    "data" : { "registration" : 0 },
     "metatags" : []
   }');
   return $items;
