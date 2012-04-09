@@ -34,7 +34,7 @@
 			<?php endif; ?>
 		<?php endif; ?>
 		
-		<?php if($videographer): ?>
+		<?php if($videographer && $role != 'client'): ?>
 			<div class="contact">
 				<h3>Videographer:</h3>
 				<div class="name"><?php print $videographer->field_name['und'][0]['value']; ?></div>
