@@ -571,7 +571,7 @@ function bxdev_user_terms_accept_check($account){
 		// load the user's profile		
 		$profile = profile2_load_by_user($account, 'videographer');
 		// check if videographer has accepted terms
-		if($profile->field_videographer_terms['und'][0]['value'] == 0){
+		if(empty($profile->field_videographer_terms['und'][0]['value']) || $profile->field_videographer_terms['und'][0]['value'] == 0){
 			drupal_goto('user/accept-terms');
 		}
 	}
