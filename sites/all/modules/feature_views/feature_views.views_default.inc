@@ -5112,6 +5112,7 @@ return $project->business-> field_business_city[\'und\'][0][\'value\'];';
   $handler->display->display_options['filters']['field_rating_value']['field'] = 'field_rating_value';
   $handler->display->display_options['filters']['field_rating_value']['relationship'] = 'profile';
   $handler->display->display_options['filters']['field_rating_value']['value'] = array(
+    2 => '2',
     3 => '3',
     4 => '4',
     5 => '5',
