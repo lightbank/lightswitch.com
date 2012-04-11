@@ -483,8 +483,7 @@ function bxdev_project_preprocess_node(&$vars){
 		}
 		
 		// check for photo download
-		$photos = $project->get_approved_photos();
-		if($project->approved && !empty($photos)){
+		if($project->approved && !empty($project->project->field_project_photos['und'])){
 			$vars['photo_download_link'] = '<a class="btn" href="/project/photo/download/' . $nid . '">Download Photos</a>';
 		}
 		
@@ -691,13 +690,14 @@ function bxdev_project_photo_download_callback($node){
 	// double check that the video is approved before allowing the photo download
 	if(!empty($node->field_approved['und'][0]['value']) && $node->field_approved['und'][0]['value'] == 1){
 		
-		$results = db_select('project_photos_approval', 'ppa')
-			->fields('ppa', array('fid'))
-			->condition('nid', $node->nid)
-			->execute()
-			->fetchAll();
+		// $results = db_select('project_photos_approval', 'ppa')
+		// 	->fields('ppa', array('fid'))
+		// 	->condition('nid', $node->nid)
+		// 	->execute()
+		// 	->fetchAll();
 			
-		if(!empty($results)){
+		// if(!empty($results)){
+		if(!empty($node->field_project_photos['und'])){
 			
 			// make sure our overall project photo directory exists and has proper permissions
 			$dirname = 'public://project_photo_zip';
@@ -717,9 +717,9 @@ function bxdev_project_photo_download_callback($node){
 			}
 			
 			// add each file to the zip
-			foreach($results as $photo){
-				$file = file_load($photo->fid);
-				$zip->addFile('sites/default/files/' . $file->filename, $photos_dir . '/' . $file->filename);
+			foreach($node->field_project_photos['und'] as $photo){
+				// $file = file_load($photo->fid);
+				$zip->addFile('sites/default/files/' . $photo['filename'], $photos_dir . '/' . $photo['filename']);
 			}
 
 			// close the zip
