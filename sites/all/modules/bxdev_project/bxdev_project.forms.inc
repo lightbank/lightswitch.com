@@ -526,7 +526,7 @@ function bxdev_project_form_alter(&$form, &$form_state, $form_id) {
 			// add the "Any" option
 			$new_options['All'] = '- Any -';
 			// sort alphabetically by key
-			ksort($new_options);
+			asort($new_options);
 			// assign the new options
 			$form['field_project_business_ref_nid']['#options'] = $new_options;
 		}
