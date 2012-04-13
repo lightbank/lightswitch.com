@@ -705,6 +705,7 @@ function bxdev_project_photo_download_callback($node){
 			
 			// make sure our project specific photo directory exists and has proper permissions
 			$photos_dir = strtolower(preg_replace('/[^0-9A-za-z]/', '_', $node->title)) . '_photos';
+			$photos_dir = preg_replace('/[_]+/', '_', $photos_dir);
 			
 			// our zip file destination
 			$destination = 'sites/default/files/project_photo_zip/' . $photos_dir . '.zip';
@@ -719,7 +720,8 @@ function bxdev_project_photo_download_callback($node){
 			// add each file to the zip
 			foreach($node->field_project_photos['und'] as $photo){
 				// $file = file_load($photo->fid);
-				$zip->addFile('sites/default/files/' . $photo['filename'], $photos_dir . '/' . $photo['filename']);
+				// $zip->addFile('sites/default/files/' . $photo['filename'], $photos_dir . '/' . $photo['filename']);
+				$zip->addFile('sites/default/files/' . str_replace('public://', '', $photo['uri']), $photos_dir . '/' . $photo['filename']);
 			}
 
 			// close the zip
