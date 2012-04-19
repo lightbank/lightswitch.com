@@ -2361,13 +2361,16 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'field_status_1' => 'field_status_1',
     'uid' => 'uid',
     'nid' => 'nid',
     'nid_1' => 'nid_1',
     'title_1' => 'title_1',
     'title' => 'title',
+    'field_business_city' => 'field_business_city',
     'field_shoot_date' => 'field_shoot_date',
     'field_name' => 'field_name',
+    'field_name_3' => 'field_name_3',
     'field_name_1' => 'field_name_1',
     'field_status' => 'field_status',
     'field_status_date' => 'field_status_date',
@@ -2378,10 +2381,15 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'field_name_2' => 'field_name_2',
     'created' => 'created',
     'field_status_date_value' => 'field_status_date_value',
-    'field_business_city' => 'field_business_city',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'field_status_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+    ),
     'uid' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
@@ -2412,6 +2420,12 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'align' => '',
       'separator' => '',
     ),
+    'field_business_city' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+    ),
     'field_shoot_date' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -2419,6 +2433,12 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'separator' => '',
     ),
     'field_name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+    ),
+    'field_name_3' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -2479,12 +2499,6 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'separator' => '',
     ),
     'field_status_date_value' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-    ),
-    'field_business_city' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -2695,6 +2709,13 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['relationships']['field_author_uid']['field'] = 'field_author_uid';
   $handler->display->display_options['relationships']['field_author_uid']['required'] = 0;
   $handler->display->display_options['relationships']['field_author_uid']['delta'] = '-1';
+  /* Relationship: Content: Editor (field_project_editor) */
+  $handler->display->display_options['relationships']['field_project_editor_uid']['id'] = 'field_project_editor_uid';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['table'] = 'field_data_field_project_editor';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['field'] = 'field_project_editor_uid';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['label'] = 'editor';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_project_editor_uid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_status_1']['id'] = 'field_status_1';
@@ -2918,6 +2939,31 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_name']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_name']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name']['field_api_classes'] = 0;
+  /* Field: User: Full name */
+  $handler->display->display_options['fields']['field_name_3']['id'] = 'field_name_3';
+  $handler->display->display_options['fields']['field_name_3']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name_3']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name_3']['relationship'] = 'field_project_editor_uid';
+  $handler->display->display_options['fields']['field_name_3']['label'] = 'Editor';
+  $handler->display->display_options['fields']['field_name_3']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['empty'] = '<a href="/project/[nid]/claim/editor">claim</a>';
+  $handler->display->display_options['fields']['field_name_3']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['field_api_classes'] = 0;
   /* Field: User: Full name */
   $handler->display->display_options['fields']['field_name_1']['id'] = 'field_name_1';
   $handler->display->display_options['fields']['field_name_1']['table'] = 'field_data_field_name';
@@ -3195,16 +3241,29 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_pc_ref_uid']['id'] = 'field_pc_ref_uid';
   $handler->display->display_options['filters']['field_pc_ref_uid']['table'] = 'field_data_field_pc_ref';
   $handler->display->display_options['filters']['field_pc_ref_uid']['field'] = 'field_pc_ref_uid';
+  $handler->display->display_options['filters']['field_pc_ref_uid']['group'] = 0;
   $handler->display->display_options['filters']['field_pc_ref_uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_pc_ref_uid']['expose']['operator_id'] = 'field_pc_ref_uid_op';
   $handler->display->display_options['filters']['field_pc_ref_uid']['expose']['label'] = 'PC';
   $handler->display->display_options['filters']['field_pc_ref_uid']['expose']['operator'] = 'field_pc_ref_uid_op';
   $handler->display->display_options['filters']['field_pc_ref_uid']['expose']['identifier'] = 'field_pc_ref_uid';
   $handler->display->display_options['filters']['field_pc_ref_uid']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Editor (field_project_editor) */
+  $handler->display->display_options['filters']['field_project_editor_uid']['id'] = 'field_project_editor_uid';
+  $handler->display->display_options['filters']['field_project_editor_uid']['table'] = 'field_data_field_project_editor';
+  $handler->display->display_options['filters']['field_project_editor_uid']['field'] = 'field_project_editor_uid';
+  $handler->display->display_options['filters']['field_project_editor_uid']['group'] = 0;
+  $handler->display->display_options['filters']['field_project_editor_uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_project_editor_uid']['expose']['operator_id'] = 'field_project_editor_uid_op';
+  $handler->display->display_options['filters']['field_project_editor_uid']['expose']['label'] = 'Editor';
+  $handler->display->display_options['filters']['field_project_editor_uid']['expose']['operator'] = 'field_project_editor_uid_op';
+  $handler->display->display_options['filters']['field_project_editor_uid']['expose']['identifier'] = 'field_project_editor_uid';
+  $handler->display->display_options['filters']['field_project_editor_uid']['expose']['reduce'] = 0;
   /* Filter criterion: Content: Status (field_status) */
   $handler->display->display_options['filters']['field_status_value']['id'] = 'field_status_value';
   $handler->display->display_options['filters']['field_status_value']['table'] = 'field_data_field_status';
   $handler->display->display_options['filters']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['group'] = 0;
   $handler->display->display_options['filters']['field_status_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_status_value']['expose']['operator_id'] = 'field_status_value_op';
   $handler->display->display_options['filters']['field_status_value']['expose']['label'] = 'Status';
@@ -3215,6 +3274,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_project_business_ref_nid']['id'] = 'field_project_business_ref_nid';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['table'] = 'field_data_field_project_business_ref';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['field'] = 'field_project_business_ref_nid';
+  $handler->display->display_options['filters']['field_project_business_ref_nid']['group'] = 0;
   $handler->display->display_options['filters']['field_project_business_ref_nid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_project_business_ref_nid']['expose']['operator_id'] = 'field_project_business_ref_nid_op';
   $handler->display->display_options['filters']['field_project_business_ref_nid']['expose']['label'] = 'Business';
@@ -3225,6 +3285,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_video_type_value']['id'] = 'field_video_type_value';
   $handler->display->display_options['filters']['field_video_type_value']['table'] = 'field_data_field_video_type';
   $handler->display->display_options['filters']['field_video_type_value']['field'] = 'field_video_type_value';
+  $handler->display->display_options['filters']['field_video_type_value']['group'] = 0;
   $handler->display->display_options['filters']['field_video_type_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_video_type_value']['expose']['operator_id'] = 'field_video_type_value_op';
   $handler->display->display_options['filters']['field_video_type_value']['expose']['label'] = 'Video type';
@@ -3236,6 +3297,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['filters']['field_business_city_value']['table'] = 'field_data_field_business_city';
   $handler->display->display_options['filters']['field_business_city_value']['field'] = 'field_business_city_value';
   $handler->display->display_options['filters']['field_business_city_value']['relationship'] = 'field_project_business_ref_nid';
+  $handler->display->display_options['filters']['field_business_city_value']['group'] = 0;
   $handler->display->display_options['filters']['field_business_city_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_business_city_value']['expose']['operator_id'] = 'field_business_city_value_op';
   $handler->display->display_options['filters']['field_business_city_value']['expose']['label'] = 'City';
@@ -3297,6 +3359,13 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['relationships']['field_author_uid']['field'] = 'field_author_uid';
   $handler->display->display_options['relationships']['field_author_uid']['required'] = 0;
   $handler->display->display_options['relationships']['field_author_uid']['delta'] = '-1';
+  /* Relationship: Content: Editor (field_project_editor) */
+  $handler->display->display_options['relationships']['field_project_editor_uid']['id'] = 'field_project_editor_uid';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['table'] = 'field_data_field_project_editor';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['field'] = 'field_project_editor_uid';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['label'] = 'editor';
+  $handler->display->display_options['relationships']['field_project_editor_uid']['required'] = 0;
+  $handler->display->display_options['relationships']['field_project_editor_uid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_status_1']['id'] = 'field_status_1';
@@ -3520,6 +3589,31 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_name']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_name']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name']['field_api_classes'] = 0;
+  /* Field: User: Full name */
+  $handler->display->display_options['fields']['field_name_3']['id'] = 'field_name_3';
+  $handler->display->display_options['fields']['field_name_3']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name_3']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name_3']['relationship'] = 'field_project_editor_uid';
+  $handler->display->display_options['fields']['field_name_3']['label'] = 'Editor';
+  $handler->display->display_options['fields']['field_name_3']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_name_3']['empty'] = '<a href="/project/[nid]/claim/editor">claim</a>';
+  $handler->display->display_options['fields']['field_name_3']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_3']['field_api_classes'] = 0;
   /* Field: User: Full name */
   $handler->display->display_options['fields']['field_name_1']['id'] = 'field_name_1';
   $handler->display->display_options['fields']['field_name_1']['table'] = 'field_data_field_name';
@@ -3784,6 +3878,17 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['arguments']['field_pc_ref_uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_pc_ref_uid']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['field_pc_ref_uid']['not'] = 0;
+  /* Contextual filter: Content: Editor (field_project_editor) */
+  $handler->display->display_options['arguments']['field_project_editor_uid']['id'] = 'field_project_editor_uid';
+  $handler->display->display_options['arguments']['field_project_editor_uid']['table'] = 'field_data_field_project_editor';
+  $handler->display->display_options['arguments']['field_project_editor_uid']['field'] = 'field_project_editor_uid';
+  $handler->display->display_options['arguments']['field_project_editor_uid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_project_editor_uid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_project_editor_uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_project_editor_uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project_editor_uid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_project_editor_uid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_project_editor_uid']['not'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -4643,6 +4748,35 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'references_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+
+  /* Display: Editors */
+  $handler = $view->new_display('references', 'Editors', 'references_4');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'references_style';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'references_fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: User: Active */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    10 => '10',
+  );
+  $handler->display->display_options['filters']['rid']['group'] = 0;
+  $handler->display->display_options['filters']['rid']['reduce_duplicates'] = 0;
   $export['users'] = $view;
 
   $view = new view;

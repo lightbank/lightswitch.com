@@ -275,6 +275,7 @@ function feature_content_types_field_default_fields() {
           'san_rafael' => 'San Rafael CA',
           'santa_fe' => 'Santa Fe NM',
           'santa_maria' => 'Santa Maria',
+          'sarasota' => 'Sarasota FL',
           'savannah' => 'Savannah GA',
           'schenectady' => 'Schenectady NY',
           'scranton' => 'Scranton PA',
@@ -288,6 +289,7 @@ function feature_content_types_field_default_fields() {
           'spring_lake' => 'Spring Lake MI',
           'springfield_illinois' => 'Springfield IL',
           'springfield' => 'Springfield MA',
+          'st_charles' => 'St. Charles IL',
           'st_louis' => 'St. Louis MO',
           'st_paul' => 'St. Paul MN',
           'steubenville' => 'Steubenville OH',
@@ -3071,7 +3073,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '5',
+        'weight' => '8',
       ),
     ),
   );
@@ -3156,7 +3158,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '33',
+        'weight' => '34',
       ),
     ),
   );
@@ -3235,7 +3237,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '15',
+        'weight' => '18',
       ),
     ),
   );
@@ -3307,7 +3309,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '12',
+        'weight' => '14',
       ),
     ),
   );
@@ -3386,7 +3388,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '9',
+        'weight' => '12',
       ),
     ),
   );
@@ -3458,7 +3460,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '14',
+        'weight' => '16',
       ),
     ),
   );
@@ -3530,7 +3532,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '37',
+        'weight' => '38',
       ),
     ),
   );
@@ -3602,7 +3604,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '23',
+        'weight' => '6',
       ),
     ),
   );
@@ -3680,7 +3682,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '26',
+        'weight' => '27',
       ),
     ),
   );
@@ -3758,7 +3760,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '25',
+        'weight' => '26',
       ),
     ),
   );
@@ -3830,7 +3832,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '13',
+        'weight' => '15',
       ),
     ),
   );
@@ -3950,7 +3952,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '21',
+        'weight' => '24',
       ),
     ),
   );
@@ -4023,7 +4025,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '19',
+        'weight' => '21',
       ),
     ),
   );
@@ -4095,7 +4097,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '34',
+        'weight' => '36',
       ),
     ),
   );
@@ -4166,7 +4168,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '36',
+        'weight' => '37',
       ),
     ),
   );
@@ -4237,7 +4239,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '29',
+        'weight' => '30',
       ),
     ),
   );
@@ -4425,6 +4427,94 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-project-field_project_editor'
+  $fields['node-project-field_project_editor'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_project_editor',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'uid' => array(
+          'columns' => array(
+            'uid' => 'uid',
+          ),
+          'table' => 'users',
+        ),
+      ),
+      'indexes' => array(
+        'uid' => array(
+          0 => 'uid',
+        ),
+      ),
+      'module' => 'user_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_roles' => array(
+          2 => 0,
+          3 => 0,
+          4 => 0,
+          5 => 0,
+          6 => 0,
+          7 => 0,
+          8 => 0,
+          9 => 0,
+          10 => '10',
+        ),
+        'referenceable_status' => array(
+          0 => 0,
+          1 => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'references_4',
+          'view_name' => 'users',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'user_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
+          'weight' => 42,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_project_editor',
+      'label' => 'Editor',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Exported field: 'node-project-field_project_photos'
   $fields['node-project-field_project_photos'] = array(
     'field_config' => array(
@@ -4522,7 +4612,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_mupload',
-        'weight' => '22',
+        'weight' => '23',
       ),
     ),
   );
@@ -4591,7 +4681,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '11',
+        'weight' => '13',
       ),
     ),
   );
@@ -4685,7 +4775,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -4798,7 +4888,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '24',
+        'weight' => '25',
       ),
     ),
   );
@@ -4876,7 +4966,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '20',
+        'weight' => '22',
       ),
     ),
   );
@@ -4964,7 +5054,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '16',
+        'weight' => '17',
       ),
     ),
   );
@@ -5075,7 +5165,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '30',
+        'weight' => '31',
       ),
     ),
   );
@@ -5157,7 +5247,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -5259,7 +5349,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '8',
+        'weight' => '10',
       ),
     ),
   );
@@ -5338,7 +5428,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '7',
+        'weight' => '9',
       ),
     ),
   );
@@ -5416,7 +5506,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '27',
+        'weight' => '28',
       ),
     ),
   );
@@ -5488,7 +5578,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -5555,7 +5645,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '28',
+        'weight' => '29',
       ),
     ),
   );
@@ -5647,7 +5737,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -5758,7 +5848,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '32',
+        'weight' => '33',
       ),
     ),
   );
@@ -5831,7 +5921,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '17',
+        'weight' => '19',
       ),
     ),
   );
@@ -5905,7 +5995,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '18',
+        'weight' => '20',
       ),
     ),
   );
@@ -7345,6 +7435,7 @@ function feature_content_types_field_default_fields() {
   t('Disable file download');
   t('Do not send email to client');
   t('Dynamic video type');
+  t('Editor');
   t('Equipment');
   t('Features & areas to avoid?');
   t('Features & areas to include?');

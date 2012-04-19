@@ -1,10 +1,5 @@
 <?php
 
-/**
- * GIT DEVELOP TEST
- */
-
-
 module_load_include('inc', 'bxdev_project', 'bxdev_project.forms');
 
 /**
@@ -559,17 +554,31 @@ function bxdev_project_send_videographer_w9_reminder($nid){
 /**
  * Menu callback: project claim
  */
-function bxdev_project_claim_callback($node){
+function bxdev_project_claim_callback($node, $role = NULL){
 	global $user;
-	$node->field_pc_ref['und'][0]['uid'] = $user->uid;
-	node_save($node);
-	$project = new Project($node->nid);
-	if(!$project->overridden){
-		$project->set_status(2);
-		$project->log('admin', 'Project auto updated to 2 - Claimed');
-		$project->send_claim();
+	
+	// if a role is supplied as an argument
+	if(!is_null($role)){
+	
+		if($role == 'editor'){
+			$node->field_project_editor['und'][0]['uid'] = $user->uid;
+			node_save($node);		
+		}
+	
+	// if no role is supplied, claim as pc
+	}else{
+		$node->field_pc_ref['und'][0]['uid'] = $user->uid;
+		node_save($node);
+		$project = new Project($node->nid);
+		if(!$project->overridden){
+			$project->set_status(2);
+			$project->log('admin', 'Project auto updated to 2 - Claimed');
+			$project->send_claim();
+		}
 	}
-	drupal_goto('projects/master');
+	
+	drupal_set_message('You have claimed Project: ' . $node->title);
+	drupal_goto('user/' . $user->uid);
 }
 
 /**

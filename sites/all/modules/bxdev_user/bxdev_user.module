@@ -404,7 +404,7 @@ function bxdev_user_preprocess_user_profile(&$vars){
 		$output .= '<a class="add-project" href="/admin/clients">Clients</a> ';
 		$output .= '<a href="/admin/structure/types" class="add-project">Admin settings</a> ';
 		$output .= '</div><br />';
-		$output .= views_embed_view('projects', 'pc_landing', $vars['user']->uid);
+		$output .= views_embed_view('projects', 'pc_landing', $vars['user']->uid, $vars['user']->uid);
 	// videographer
 	}else if(isset($user->roles[5])){
 		$output .= views_embed_view('projects', 'block_2');
@@ -480,6 +480,17 @@ function bxdev_user_block_view($delta = '') {
   return $block;
 }
 
+/**
+ * Implements hook_views_query_alter().
+ */
+function bxdev_user_views_query_alter(&$view, &$query){
+	if($view->name == 'projects' && $view->current_display == 'pc_landing'){
+		$query->where[1] = $query->where[0];
+		array_shift($query->where[1]['conditions']);
+		$query->where[1]['type'] = 'OR';
+		unset($query->where[0]['conditions'][1], $query->where[0]['conditions'][2]);
+	}
+}
 
 /**
  * CUSTOM
