@@ -2381,6 +2381,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'field_name_2' => 'field_name_2',
     'created' => 'created',
     'field_status_date_value' => 'field_status_date_value',
+    'field_due_date' => 'field_due_date',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -2499,6 +2500,12 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'separator' => '',
     ),
     'field_status_date_value' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+    ),
+    'field_due_date' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -3210,6 +3217,36 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_status_date_value']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_status_date_value']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_status_date_value']['date_format'] = 'bxdev_project_status_days_ago';
+  /* Field: Content: Due date */
+  $handler->display->display_options['fields']['field_due_date']['id'] = 'field_due_date';
+  $handler->display->display_options['fields']['field_due_date']['table'] = 'field_data_field_due_date';
+  $handler->display->display_options['fields']['field_due_date']['field'] = 'field_due_date';
+  $handler->display->display_options['fields']['field_due_date']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['settings'] = array(
+    'format_type' => 'no_time',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  $handler->display->display_options['fields']['field_due_date']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Shoot date -  start date (field_shoot_date) */
   $handler->display->display_options['sorts']['field_shoot_date_value']['id'] = 'field_shoot_date_value';
@@ -3860,6 +3897,36 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_status_date_value']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_status_date_value']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_status_date_value']['date_format'] = 'bxdev_project_status_days_ago';
+  /* Field: Content: Due date */
+  $handler->display->display_options['fields']['field_due_date']['id'] = 'field_due_date';
+  $handler->display->display_options['fields']['field_due_date']['table'] = 'field_data_field_due_date';
+  $handler->display->display_options['fields']['field_due_date']['field'] = 'field_due_date';
+  $handler->display->display_options['fields']['field_due_date']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_due_date']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_due_date']['settings'] = array(
+    'format_type' => 'no_time',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  $handler->display->display_options['fields']['field_due_date']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Shoot date -  start date (field_shoot_date) */
   $handler->display->display_options['sorts']['field_shoot_date_value']['id'] = 'field_shoot_date_value';
