@@ -189,12 +189,11 @@ class Project {
 	/**
 	 * Send an email to the PC and Sales when a Project has been claimed.
 	 */
-	function send_claim(){
-		// build a list of email addresses (pc and sales)
-		$emails = $this->pc->mail . ', ' . $this->sales->mail;
+	function send_claim($uid){
+		$account = user_load($uid);
 		// build params to pass to the email message
 		$params = array('project' => $this);		
-		drupal_mail('bxdev_project', 'project_claimed', $emails, language_default(), $params);
+		drupal_mail('bxdev_project', 'project_claimed', $account->mail, language_default(), $params);
 	}
 	
 	/**

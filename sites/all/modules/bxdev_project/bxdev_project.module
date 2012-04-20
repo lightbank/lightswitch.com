@@ -254,6 +254,14 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 					}
 				}
 				
+				// check if new pc is being manually assigned
+				if(!empty($node->field_pc_ref['und'][0]['uid'])){
+					$old_pc = !empty($project->project->field_pc_ref['und'][0]['uid']) ? $project->project->field_pc_ref['und'][0]['uid'] : '';
+					if($node->field_pc_ref['und'][0]['uid'] != $old_pc){
+						$project->send_claim($node->field_pc_ref['und'][0]['uid']);
+					}
+				}
+				
 				// check if pc is manually approving the project
 				$old_approved = $project->project->field_approved['und'][0]['value'];
 				$new_approved = $node->field_approved['und'][0]['value'];
