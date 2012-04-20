@@ -265,6 +265,12 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 					$project->send_approved_manual();
 				}
 			
+			// if the node is new (being inserted)
+			}else if(is_null($node->nid)){
+				// set a default due date if the video shoot date is set
+				if(!empty($node->field_shoot_date['und'][0]['value'])){
+					$node->field_due_date['und'][0]['value'] = strtotime('+ 10 days', $node->field_shoot_date['und'][0]['value']);
+				}				
 			}
 			
 			// set the timestamp for date value1
