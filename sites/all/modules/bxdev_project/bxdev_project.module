@@ -1,10 +1,5 @@
 <?php
 
-/**
- * GIT DEVELOP TEST
- */
-
-
 module_load_include('inc', 'bxdev_project', 'bxdev_project.forms');
 
 /**
@@ -254,6 +249,14 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 					}
 				}
 				
+				// check if new pc is being manually assigned
+				if(!empty($node->field_pc_ref['und'][0]['uid'])){
+					$old_pc = !empty($project->project->field_pc_ref['und'][0]['uid']) ? $project->project->field_pc_ref['und'][0]['uid'] : '';
+					if($node->field_pc_ref['und'][0]['uid'] != $old_pc){
+						$project->send_claim($node->field_pc_ref['und'][0]['uid']);
+					}
+				}
+				
 				// check if pc is manually approving the project
 				$old_approved = $project->project->field_approved['und'][0]['value'];
 				$new_approved = $node->field_approved['und'][0]['value'];
@@ -265,6 +268,12 @@ function bxdev_project_node_submit(&$node, $form, &$form_state) {
 					$project->send_approved_manual();
 				}
 			
+			// if the node is new (being inserted)
+			}else if(is_null($node->nid)){
+				// set a default due date if the video shoot date is set
+				if(!empty($values['bxdev_shoot_date'])){
+					$node->field_due_date['und'][0]['value'] = strtotime('+ 10 days', strtotime($values['bxdev_shoot_date']));
+				}				
 			}
 			
 			// set the timestamp for date value1
@@ -411,6 +420,9 @@ function bxdev_project_preprocess_node(&$vars){
 			}
 		}
 		$photos_teaser .= '</div>';
+		if($role != 'videographer'){
+			$photos_teaser .= '<div><a href="/project/' . $nid . '/photos">View photos</a></div>';
+		}
 		$vars['photos_teaser'] = $photos_teaser;
 		
 		// business logo upload
@@ -478,17 +490,17 @@ function bxdev_project_preprocess_node(&$vars){
 		$disable_downloads = isset($project->project->field_disable_file_download['und'][0]['value']) && $project->project->field_disable_file_download['und'][0]['value'] == 1;
 		
 		// check for EZWebPlayer download link
-		if($project->approved && !empty($content['field_project_video'][0]['file']['#file_download']) && !$disable_downloads){
+		if($project->approved && !empty($content['field_project_video'][0]['file']['#file_download']) && !$disable_downloads && $role != 'videographer'){
 			$vars['ezweb_download_link'] = '<a class="btn" href="' . $content['field_project_video'][0]['file']['#file_download'] . '">Download Video</a>';
 		}
 		
 		// check for manual file download
-		if(!empty($project->project->field_project_video_file['und'][0]['uri']) && !$disable_downloads){
+		if(!empty($project->project->field_project_video_file['und'][0]['uri']) && !$disable_downloads && $role != 'videographer'){
 			$vars['video_file_download'] = '<div class="video-file-download"><a target="_blank" class="btn" href="' . file_create_url($project->project->field_project_video_file['und'][0]['uri']) . '">Download Video</a></div>';
 		}
 		
 		// check for photo download
-		if($project->approved && !empty($project->project->field_project_photos['und'])){
+		if($project->approved && !empty($project->project->field_project_photos['und']) && $role != 'videographer'){
 			$vars['photo_download_link'] = '<a class="btn" href="/project/photo/download/' . $nid . '">Download Photos</a>';
 		}
 		
@@ -545,17 +557,31 @@ function bxdev_project_send_videographer_w9_reminder($nid){
 /**
  * Menu callback: project claim
  */
-function bxdev_project_claim_callback($node){
+function bxdev_project_claim_callback($node, $role = NULL){
 	global $user;
-	$node->field_pc_ref['und'][0]['uid'] = $user->uid;
-	node_save($node);
-	$project = new Project($node->nid);
-	if(!$project->overridden){
-		$project->set_status(2);
-		$project->log('admin', 'Project auto updated to 2 - Claimed');
-		$project->send_claim();
+	
+	// if a role is supplied as an argument
+	if(!is_null($role)){
+	
+		if($role == 'editor'){
+			$node->field_project_editor['und'][0]['uid'] = $user->uid;
+			node_save($node);		
+		}
+	
+	// if no role is supplied, claim as pc
+	}else{
+		$node->field_pc_ref['und'][0]['uid'] = $user->uid;
+		node_save($node);
+		$project = new Project($node->nid);
+		if(!$project->overridden){
+			$project->set_status(2);
+			$project->log('admin', 'Project auto updated to 2 - Claimed');
+			$project->send_claim();
+		}
 	}
-	drupal_goto('projects/master');
+	
+	drupal_set_message('You have claimed Project: ' . $node->title);
+	drupal_goto('user/' . $user->uid);
 }
 
 /**
