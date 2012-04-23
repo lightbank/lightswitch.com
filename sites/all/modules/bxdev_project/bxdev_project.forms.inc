@@ -23,6 +23,10 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		unset($form['field_approved']);
 		// hide the disable download field
 		unset($form['field_disable_file_download']);
+		// hide the editor field
+		unset($form['field_project_editor']);
+		// hide the due date field
+		unset($form['field_due_date']);		
 
 		$form['field_author']['und']['#type'] = 'hidden';
 		// only pre-populate if sales user
