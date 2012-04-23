@@ -94,7 +94,6 @@
 			<?php if(isset($photos_teaser)): ?>
 				<div class="project-thumb-wrapper clearfix">
 					<?php print $photos_teaser; ?>
-					<div><a href="/project/<?php print arg(1); ?>/photos">View photos</a></div>
 				</div>
 			<?php endif; ?>
 		</div><!-- end .video -->

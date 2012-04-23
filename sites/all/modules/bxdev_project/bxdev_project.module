@@ -420,6 +420,9 @@ function bxdev_project_preprocess_node(&$vars){
 			}
 		}
 		$photos_teaser .= '</div>';
+		if($role != 'videographer'){
+			$photos_teaser .= '<div><a href="/project/' . $nid . '/photos">View photos</a></div>';
+		}
 		$vars['photos_teaser'] = $photos_teaser;
 		
 		// business logo upload
