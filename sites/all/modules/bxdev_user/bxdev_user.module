@@ -485,10 +485,18 @@ function bxdev_user_block_view($delta = '') {
  */
 function bxdev_user_views_query_alter(&$view, &$query){
 	if($view->name == 'projects' && $view->current_display == 'pc_landing'){
-		$query->where[1] = $query->where[0];
-		array_shift($query->where[1]['conditions']);
+		
+		// search all conditions and place field_project_editor and field_pc_ref in their own "OR" group
+		foreach($query->where[0]['conditions'] as $key => $value){
+			if(preg_match('/(field_project_editor|field_pc_ref)/', $value['field'])){
+				$query->where[1]['conditions'][] = $value;
+				unset($query->where[0]['conditions'][$key]);
+			}
+			
+		}
 		$query->where[1]['type'] = 'OR';
-		unset($query->where[0]['conditions'][1], $query->where[0]['conditions'][2]);
+		$query->where[1]['args'] = array();
+		$query->where[0]['conditions'] = array_values($query->where[0]['conditions']);	
 	}
 }
 
