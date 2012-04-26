@@ -303,8 +303,7 @@ function bxdev_user_block_view($delta = '') {
  * Implements hook_views_query_alter().
  */
 function bxdev_user_views_query_alter(&$view, &$query){
-	if($view->name == 'projects' && $view->current_display == 'pc_landing'){
-		
+	if($view->name == 'projects' && $view->current_display == 'pc_landing'){		
 		// search all conditions and place field_project_editor and field_pc_ref in their own "OR" group
 		foreach($query->where[0]['conditions'] as $key => $value){
 			if(preg_match('/(field_project_editor|field_pc_ref)/', $value['field'])){
@@ -316,6 +315,38 @@ function bxdev_user_views_query_alter(&$view, &$query){
 		$query->where[1]['type'] = 'OR';
 		$query->where[1]['args'] = array();
 		$query->where[0]['conditions'] = array_values($query->where[0]['conditions']);	
+	}
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function bxdev_user_views_pre_render(&$view){
+	if($view->name == 'projects' && $view->current_display == 'client_active'){
+		$being_scheduled = array();
+		// separate any result of status "Being scheduled" which is a system status of either 1 or 2
+		foreach($view->result as $key => $result){
+			// if(in_array($result->field_data_field_status_field_status_value, array('1', '2'))){
+			if(in_array($result->field_field_status[0]['raw']['value'], array('1', '2'))){
+				// print 'hit';
+				$being_scheduled[$result->node_title] = $result;
+				unset($view->result[$key]);
+			}
+		}
+		
+		// if "Status" column was click sorted (desc), or a fresh page load
+		if(($view->exposed_input['order'] == 'php' && $view->exposed_input['sort'] == 'desc') || !isset($view->exposed_input['order'])){
+			// alphabetize the separated results by key
+			ksort($being_scheduled);
+			// merge back into the results
+			$view->result = array_merge($view->result, $being_scheduled);
+		// if "Status" column was click sorted (asc)
+		}else{
+			// alphabetize the separated results by key
+			krsort($being_scheduled);
+			// merge back into the results
+			$view->result = array_merge($being_scheduled, $view->result);
+		}
 	}
 }
 
