@@ -2947,6 +2947,30 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_name']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name']['field_api_classes'] = 0;
   /* Field: User: Full name */
+  $handler->display->display_options['fields']['field_name_1']['id'] = 'field_name_1';
+  $handler->display->display_options['fields']['field_name_1']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name_1']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name_1']['relationship'] = 'field_videog_ref_uid';
+  $handler->display->display_options['fields']['field_name_1']['label'] = 'Videographer';
+  $handler->display->display_options['fields']['field_name_1']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['field_api_classes'] = 0;
+  /* Field: User: Full name */
   $handler->display->display_options['fields']['field_name_3']['id'] = 'field_name_3';
   $handler->display->display_options['fields']['field_name_3']['table'] = 'field_data_field_name';
   $handler->display->display_options['fields']['field_name_3']['field'] = 'field_name';
@@ -2971,30 +2995,6 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_name_3']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_name_3']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name_3']['field_api_classes'] = 0;
-  /* Field: User: Full name */
-  $handler->display->display_options['fields']['field_name_1']['id'] = 'field_name_1';
-  $handler->display->display_options['fields']['field_name_1']['table'] = 'field_data_field_name';
-  $handler->display->display_options['fields']['field_name_1']['field'] = 'field_name';
-  $handler->display->display_options['fields']['field_name_1']['relationship'] = 'field_videog_ref_uid';
-  $handler->display->display_options['fields']['field_name_1']['label'] = 'Videographer';
-  $handler->display->display_options['fields']['field_name_1']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['field_api_classes'] = 0;
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_status']['id'] = 'field_status';
   $handler->display->display_options['fields']['field_status']['table'] = 'field_data_field_status';
@@ -3627,6 +3627,30 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_name']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name']['field_api_classes'] = 0;
   /* Field: User: Full name */
+  $handler->display->display_options['fields']['field_name_1']['id'] = 'field_name_1';
+  $handler->display->display_options['fields']['field_name_1']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name_1']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name_1']['relationship'] = 'field_videog_ref_uid';
+  $handler->display->display_options['fields']['field_name_1']['label'] = 'Videographer';
+  $handler->display->display_options['fields']['field_name_1']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_name_1']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_name_1']['field_api_classes'] = 0;
+  /* Field: User: Full name */
   $handler->display->display_options['fields']['field_name_3']['id'] = 'field_name_3';
   $handler->display->display_options['fields']['field_name_3']['table'] = 'field_data_field_name';
   $handler->display->display_options['fields']['field_name_3']['field'] = 'field_name';
@@ -3651,30 +3675,6 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_name_3']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_name_3']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name_3']['field_api_classes'] = 0;
-  /* Field: User: Full name */
-  $handler->display->display_options['fields']['field_name_1']['id'] = 'field_name_1';
-  $handler->display->display_options['fields']['field_name_1']['table'] = 'field_data_field_name';
-  $handler->display->display_options['fields']['field_name_1']['field'] = 'field_name';
-  $handler->display->display_options['fields']['field_name_1']['relationship'] = 'field_videog_ref_uid';
-  $handler->display->display_options['fields']['field_name_1']['label'] = 'Videographer';
-  $handler->display->display_options['fields']['field_name_1']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_name_1']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_name_1']['field_api_classes'] = 0;
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_status']['id'] = 'field_status';
   $handler->display->display_options['fields']['field_status']['table'] = 'field_data_field_status';
