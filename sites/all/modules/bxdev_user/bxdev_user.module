@@ -327,8 +327,7 @@ function bxdev_user_views_pre_render(&$view){
 		// separate any result of status "Being scheduled" which is a system status of either 1 or 2
 		foreach($view->result as $key => $result){
 			// if(in_array($result->field_data_field_status_field_status_value, array('1', '2'))){
-			if(in_array($result->field_field_status[0]['raw']['value'], array('1', '2'))){
-				// print 'hit';
+			if(in_array($result->field_data_field_status_field_status_value, array('1', '2'))){
 				$being_scheduled[$result->node_title] = $result;
 				unset($view->result[$key]);
 			}
@@ -338,6 +337,7 @@ function bxdev_user_views_pre_render(&$view){
 		if(($view->exposed_input['order'] == 'php' && $view->exposed_input['sort'] == 'desc') || !isset($view->exposed_input['order'])){
 			// alphabetize the separated results by key
 			ksort($being_scheduled);
+			// dpm($being_scheduled);
 			// merge back into the results
 			$view->result = array_merge($view->result, $being_scheduled);
 		// if "Status" column was click sorted (asc)
