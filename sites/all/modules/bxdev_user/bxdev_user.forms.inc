@@ -40,6 +40,51 @@ function bxdev_user_create_user_form($form, $form_state){
 }
 
 /**
+ * Implements hook_form_alter().
+ */
+function bxdev_user_form_alter(&$form, &$form_state, $form_id) {
+	global $user;
+	if($form_id == 'views_exposed_form' && arg(0) == 'user' && is_numeric(arg(1))){
+		if(isset($form['title'])){
+			
+			$titles = array('' => '- All -');
+			
+			$query = new EntityFieldQuery();
+			$query->entityCondition('entity_type', 'node')
+			->entityCondition('bundle', 'business')
+			->fieldCondition('field_client_ref', 'uid', $user->uid);
+			$result = $query->execute();
+			$business_nids = array_keys($result['node']);
+
+			$query = new EntityFieldQuery();
+			$query->entityCondition('entity_type', 'node')
+			->entityCondition('bundle', 'project')
+			->fieldCondition('field_project_business_ref', 'nid', $business_nids, 'IN');
+			
+			// if "active" projects
+			if(empty($arg2)){
+				$query->fieldCondition('field_status', 'value', array(1,2,3,4,5), 'IN');
+			}
+			
+			$result = $query->execute();
+			if(!empty($result)){
+				foreach($result['node'] as $key => $value){
+					$node = node_load($key);
+					$titles[$node->title] = $node->title;
+				}
+			}
+			
+			// sort the titles
+			asort($titles);
+
+			unset($form['title']['#size']);
+			$form['title']['#type'] = 'select';
+			$form['title']['#options'] = $titles;
+		}
+	}
+}
+
+/**
  * Form submit handler: user create
  */
 function bxdev_user_create_user_form_submit($form, &$form_state){

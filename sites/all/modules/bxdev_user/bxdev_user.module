@@ -93,6 +93,16 @@ function bxdev_user_menu() {
 		'access arguments' => array('videographer'),
 		'type' => MENU_CALLBACK,
 	);
+	
+	$items['user/%/all'] = array(
+		'title' => t('All projects'),
+		'page callback' => 'bxdev_user_all_projects_page',
+		'page arguments' => array(1),
+		'access callback' => 'bxdev_user_page_access',
+		'access arguments' => array(1),
+		'type' => MENU_LOCAL_TASK,
+	);
+	
 
   return $items;
 }
@@ -146,204 +156,12 @@ function bxdev_user_mail($key, &$message, $params) {
 		$message['headers']['bcc'] = $params['headers']['bcc'];
 	}
 	
-	// switch($key){
-	// 	case 'videographer':
-	// 		$subject = t('Thank you for your interest in becoming a Lightswitch videographer!');
-	// 		$body = 'Dear ' . $params['full_name'] . '!<br><br>';
-	// 	  $body .= 'Thank you for your interest in becoming a lightswitch videographer! We have received your submission and are currently reviewing your information. Below you will find a unique username and password needed to access your videographer profile page on Lightswitch.com. If you would like to update your profile or make any changes you can do so by clicking the Login link.<br><br>';
-	// 		$body .= 'Login link: <a href="' . $base_url . '/user">' . $base_url . '/user</a><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '<br><br>';
-	// 		$body .= 'Feel free to reach out to us at production@lightswitch.com with any questions.<br><br>';
-	// 		$body .= 'Thanks!<br>';
-	// 		$body .= 'Team Lightswitch';
-	// 		
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 	
-	// 	case 'videographer_existing':
-	// 		$subject = t('Thank you for your interest in becoming a Lightswitch videographer!');
-	// 		$body = 'Hi ' . $params['full_name'] . '!<br><br>';
-	// 	  $body .= 'Thank you for recently submitting your application to be a lightswitch videographer. We\'d like to let you know that the new lightswitch website is now up and running! It features an expanded videographer page that will let you update and edit your profile with new equipment, contact, or general info.  Our review process has a heavy emphasis on the type of equipment you currently own and operate.  Please be as detailed as possible.<br><br>';
-	// 		$body .= 'Also, we have an exciting nationwide project that requires very specific equipment.  If you have a 7D or comparable camera, an off -board recorder (tascam, edirol), and a lav mic please fill out your videographer profile page and send an email to production@lightswitch.com . <strong>If you don\'t have this equipment, don\'t worry about it, you may still be qualified for other lightswitch productions.</strong><br><br>';
-	// 		$body .= 'Below you will find the unique username and password needed to access your videographer profile page on lightswitch.com. Please click the Login link to get started!<br><br>';
-	// 		$body .= 'Login link: <a href="' . $base_url . '/user">' . $base_url . '/user</a><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '<br><br>';
-	// 		$body .= 'Feel free to reach out to us at production@lightswitch.com with any questions.<br><br>';
-	// 		$body .= 'Thanks!<br>';
-	// 		$body .= 'Team Lightswitch';
-	// 		
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'sales':
-	// 		$subject = t('Your Sales account details for Lightswitch');
-	// 	  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '';
-	// 	
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'pc':
-	// 		$subject = t('Your Production Coordinator account details for Lightswitch');
-	// 	  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '';
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 	
-	// 	// NOT USED
-	// 	case 'client':
-	// 		$subject = t('Your Client account details for Lightswitch');
-	// 	  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '';
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 
-	// 	case 'client_reset':
-	// 		$subject = t('Your Lightswitch video is ready for review!');
-	// 		$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-	// 	  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts. Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '<br>';
-	// 		$body .= 'Video landing page: <a href="' . $base_url . '/' . $params['project_path'] . '">' . $base_url . '/' . $params['project_path'] . '</a><br><br>';
-	// 		$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you’d like changes made to your video, login  and fill out all requested changes in the "Post a comment" field under your video. Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it.  Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
-	// 		$body .= 'If you are happy with the video in its current form, please click “approve” on the video landing page below and we’ll send you the final product in convenient file formats.<br><br>';
-	// 		$body .= 'Contact us with any questions or concerns.<br><br>';
-	// 		$body .= 'Sincerely,<br>';
-	// 		$body .= $params['pc']['full_name'] . '<br>';
-	// 		$body .= $params['pc']['email'] . '<br>';
-	// 		$body .= $params['pc']['phone'];
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'direct_sale_new':
-	// 		$subject = t('Your Lightswitch video is ready for review!');
-	// 		$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-	// 				  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
-	// 		$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '<br>';
-	// 		$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you\'d like changes made to your video, log in and post revisions in the "Post a comment" field under your video. You have 5 days to submit revision requests, after which the video will be considered approved as is.  Please make all of your requests very specific so we can work to get your Lightswitch video exactly how you want it. Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
-	// 		$body .= 'If you are happy with the video in its current form, please click "approve" on the video landing page after you log in, and we\'ll send you the final product in convenient file formats.<br><br>';
-	// 		$body .= 'Do not reply to this email; if you have questions please contact me via the information below!.<br><br>';
-	// 		$body .= 'Sincerely,<br>';
-	// 		$body .= $params['pc']['full_name'] . '<br>';
-	// 		$body .= $params['pc']['email'] . '<br>';
-	// 		$body .= $params['pc']['phone'];
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'direct_sale_existing':
-	// 		$subject = t('Your Lightswitch video is ready for review!');
-	// 		$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-	// 	  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com:<br><br>';
-	// 		$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br><br>';
-	// 		$body .= 'As a valued Lightswitch client, you receive one free round of video edits. If you\'d like changes made to your video, log in and post revisions in the "Post a comment" field under your video. You have 5 days to submit revision requests, after which the video will be considered approved as is.  Please make all of your requests very specific so we can work to get your Lightswitch video exactly how you want it. Please note: After the first set of revisions, every additional round of edits will cost $50.<br><br>';
-	// 		$body .= 'If you are happy with the video in its current form, please click "approve" on the video landing page after you log in, and we\'ll send you the final product in convenient file formats.<br><br>';
-	// 		$body .= 'Do not reply to this email; if you have questions please contact me via the information below!.<br>';
-	// 		$body .= 'Sincerely,<br>';
-	// 		$body .= $params['pc']['full_name'] . '<br>';
-	// 		$body .= $params['pc']['email'] . '<br>';
-	// 		$body .= $params['pc']['phone'];
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'business_dev_new':
-	// 		$subject = t('Your Lightswitch video is ready for review!');
-	// 		$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-	// 	  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com using the username and password below:<br><br>';
-	// 		$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '<br>';
-	// 		$body .= 'Sincerely,<br>';
-	// 		$body .= $params['pc']['full_name'] . '<br>';
-	// 		$body .= $params['pc']['email'] . '<br>';
-	// 		$body .= $params['pc']['phone'];
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 
-	// 	case 'business_dev_existing':
-	// 		$subject = t('Your Lightswitch video is ready for review!');
-	// 		$body = 'Dear ' . $params['full_name'] . ',<br><br>';
-	// 	  $body .= 'Thank you again for choosing Lightswitch to help with your online marketing efforts! Our production team has completed the first version of your video and we\'d love for you to review it. To watch your video, please login on Lightswitch.com:<br><br>';
-	// 		$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br><br>';
-	// 		$body .= 'Sincerely,<br>';
-	// 		$body .= $params['pc']['full_name'] . '<br>';
-	// 		$body .= $params['pc']['email'] . '<br>';
-	// 		$body .= $params['pc']['phone'];
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;		
-	// 
-	// 	case 'spec_new':
-	// 		$subject = t('Your Lightswitch video is ready for review!');
-	// 		$body = 'Hello ' . $params['full_name'] . ',<br><br>';
-	// 	  $body .= 'A lightswitch videographer was in ' . $params['business'] . ' a couple of weeks ago to capture footage of your business. Your video is complete and ready for your viewing! If you are interested in purchasing the video you would be able to make a round of edits/changes to the video as you wish. We would also remove all lightswitch branding from the final version and send you the video in easy to download file formats. You would own full rights to your video and can use it on any of your online marketing pages. The video is a one time fee of only $299!<br><br>';
-	// 		$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '<br>';
-	// 		$body .= 'Please review the video and let me know what you think!<br><br>';
-	// 		$body .= $params['sales']['full_name'] . '<br>';
-	// 		$body .= $params['sales']['email'] . '<br>';
-	// 		$body .= $params['sales']['phone'];
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 
-	// 	case 'spec_existing':
-	// 		$subject = t('Your Lightswitch video is ready for review!');
-	// 		$body = 'Hello ' . $params['full_name'] . ',<br><br>';
-	// 	  $body .= 'A lightswitch videographer was in ' . $params['business'] . ' a couple of weeks ago to capture footage of your business. Your video is complete and ready for your viewing! If you are interested in purchasing the video you would be able to make a round of edits/changes to the video as you wish. We would also remove all lightswitch branding from the final version and send you the video in easy to download file formats. You would own full rights to your video and can use it on any of your online marketing pages. The video is a one time fee of only $299!<br><br>';
-	// 		$body .= '<a href="' . $base_url . '/user?url=' . $params['project_path'] . '">Click here to see your video!</a><br><br>';
-	// 		$body .= 'Please review the video and let me know what you think!<br><br>';
-	// 		$body .= $params['sales']['full_name'] . '<br>';
-	// 		$body .= $params['sales']['email'] . '<br>';
-	// 		$body .= $params['sales']['phone'];
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 		
-	// 	case 'password_reset':
-	// 		$subject = t('Your Lightswitch password has been reset');
-	// 	  $body = 'Click <a href="' . $base_url . '/user">' . $base_url . '/user</a> to login using the information below.<br><br>';
-	// 		$body .= 'Username: ' . $params['name'] . '<br>';
-	// 		$body .= 'Password: ' . $params['pass'] . '';
-	// 
-	// 	  $message['subject'] = $subject;
-	// 	  $message['body'][] = $body;
-	// 		break;
-	// 	
-	// }
-	// $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 }
 
 /**
  * Implementation of hook_menu_local_tasks_alter().
  */
 function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
-	// dpm($data);
 	// if user profile page
 	if(arg(0) == 'user' && is_numeric(arg(1))){
 		$user = user_load(arg(1));
@@ -370,8 +188,9 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
 		// client
 		}else if(isset($user->roles[7])){
-			$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
-			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';			
+			// dpm($data);
+			$data['tabs'][0]['output'][0]['#link']['title'] = 'Active projects';
+			$data['tabs'][0]['output'][2]['#link']['title'] = 'Account info';			
 		}
 	}else if(arg(0) != 'admin'){
 		// unset($data['tabs']);
@@ -413,7 +232,7 @@ function bxdev_user_preprocess_user_profile(&$vars){
 		$output .= views_embed_view('projects', 'block');
 	// client
 	}else if(isset($user->roles[7])){
-		$output .= views_embed_view('projects', 'block_1');
+		$output .= views_embed_view('projects', 'client_active');
 	}
 	$vars['user_profile'] = $output;
 	
@@ -484,8 +303,7 @@ function bxdev_user_block_view($delta = '') {
  * Implements hook_views_query_alter().
  */
 function bxdev_user_views_query_alter(&$view, &$query){
-	if($view->name == 'projects' && $view->current_display == 'pc_landing'){
-		
+	if($view->name == 'projects' && $view->current_display == 'pc_landing'){		
 		// search all conditions and place field_project_editor and field_pc_ref in their own "OR" group
 		foreach($query->where[0]['conditions'] as $key => $value){
 			if(preg_match('/(field_project_editor|field_pc_ref)/', $value['field'])){
@@ -497,6 +315,38 @@ function bxdev_user_views_query_alter(&$view, &$query){
 		$query->where[1]['type'] = 'OR';
 		$query->where[1]['args'] = array();
 		$query->where[0]['conditions'] = array_values($query->where[0]['conditions']);	
+	}
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function bxdev_user_views_pre_render(&$view){
+	if($view->name == 'projects' && $view->current_display == 'client_active'){
+		$being_scheduled = array();
+		// separate any result of status "Being scheduled" which is a system status of either 1 or 2
+		foreach($view->result as $key => $result){
+			// if(in_array($result->field_data_field_status_field_status_value, array('1', '2'))){
+			if(in_array($result->field_field_status[0]['raw']['value'], array('1', '2'))){
+				// print 'hit';
+				$being_scheduled[$result->node_title] = $result;
+				unset($view->result[$key]);
+			}
+		}
+		
+		// if "Status" column was click sorted (desc), or a fresh page load
+		if(($view->exposed_input['order'] == 'php' && $view->exposed_input['sort'] == 'desc') || !isset($view->exposed_input['order'])){
+			// alphabetize the separated results by key
+			ksort($being_scheduled);
+			// merge back into the results
+			$view->result = array_merge($view->result, $being_scheduled);
+		// if "Status" column was click sorted (asc)
+		}else{
+			// alphabetize the separated results by key
+			krsort($being_scheduled);
+			// merge back into the results
+			$view->result = array_merge($being_scheduled, $view->result);
+		}
 	}
 }
 
@@ -522,6 +372,25 @@ function bxdev_user_password_forgot($uid){
 	$user->send_password_reset();
 	drupal_set_message('A new password has been sent to your email. You must log out to use your new password. Click <a href="/user/logout">here</a> to logout');
 	drupal_goto('user/' . $uid . '/edit');
+}
+
+/**
+ * Page callback: all projects
+ */
+function bxdev_user_all_projects_page($uid){
+	$output .= views_embed_view('projects', 'client_all');
+	return $output;
+}
+
+/**
+ * Access callback: user page
+ */
+function bxdev_user_page_access($uid){
+	global $user;
+	if($user->uid == $uid){
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /**
