@@ -576,7 +576,7 @@ function bxdev_project_claim_callback($node, $role = NULL){
 		if(!$project->overridden){
 			$project->set_status(2);
 			$project->log('admin', 'Project auto updated to 2 - Claimed');
-			$project->send_claim();
+			$project->send_claim($user->uid);
 		}
 	}
 	
