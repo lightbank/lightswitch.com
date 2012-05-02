@@ -816,6 +816,8 @@ input[type="submit"].approve-btn, .approve-yes {
 
 .node-type-project .left h2 {
 	font-size: 15px;
+	word-wrap: break-word;
+	white-space: normal;
 }
 
 .node-type-project .contact {
