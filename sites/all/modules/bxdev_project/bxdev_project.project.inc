@@ -564,4 +564,25 @@ class Project {
 		return $approved_photos;
 	}
 	
+	/**
+	 * Returns TRUE if comment being posted is the first PC comment.
+	 */
+	function is_pc_first_comment(){
+		// if comments exist
+		if(!empty($this->comments)){
+			// populate an array of pc authored comments
+			$pc_comments = array();
+			foreach($this->comments as $comment){
+				if($comment->field_comment_type['und'][0]['value'] == 'client' && $comment->uid == $this->pc->uid){
+					$pc_comments[] = $comment;
+				}
+			}
+			// if pc authored comments count equals one, this is the first pc to client comment
+			if(count($pc_comments) == 1){
+				return TRUE;
+			}
+		}		
+		return FALSE;
+	}
+	
 }
