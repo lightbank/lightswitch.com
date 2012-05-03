@@ -92,6 +92,28 @@ function bxdev_vid_preprocess_page(&$variables) {
 		$_SESSION['vid_filters'] = $_SERVER['REQUEST_URI'];
 	}
 	
+	/**
+	 * START VIDEOGRAPHER CITY EXPORT
+	 */
+	
+	// $results = db_select('field_data_field_region', 'r')
+	// 	->distinct()
+	// 	->fields('r', array('field_region_value'))
+	// 	->orderBy('field_region_value', 'ASC')
+	// 	->execute()
+	// 	->fetchAll();
+	// 	
+	// $regions = array();
+	// foreach($results as $result){
+	// 	$regions[] = $result->field_region_value;
+	// }
+	// 
+	// dpm(implode(",\r\n", $regions));		
+	
+	/**
+	 * END VIDOEGRAPHER CITY EXPORT
+	 */
+	
 	
 	/**
 	 * START VIDEOGRAPHER EMAIL BLAST TESTING
