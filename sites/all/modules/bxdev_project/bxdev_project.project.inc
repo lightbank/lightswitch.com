@@ -219,7 +219,7 @@ class Project {
 	 */
 	function send_approved_manual(){
 		global $base_url;
-		$system_email;
+		$system_email = '';
 		$params['project'] = $this;
 		$bcc = !empty($this->pc->mail) ? $this->pc->mail . ', editors@lightswitch' : 'editors@lightswitch';
 		$params['headers']['bcc'] = $bcc;
