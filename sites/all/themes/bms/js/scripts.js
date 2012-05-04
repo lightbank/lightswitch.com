@@ -67,6 +67,10 @@
 			return false;
 		});
 		
+		$('.approve-yes').click(function(){
+			$(this).after('<span class="approve-yes clicked">Please wait...</span>').remove();
+		});
+		
 		// Production Details / History Toggle
 		$('.trigger').click(function(){
 			$(this).parent().find('.trigger-list').slideToggle();
