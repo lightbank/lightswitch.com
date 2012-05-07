@@ -355,7 +355,7 @@ function bxdev_project_preprocess_node(&$vars){
 		if(user_access('view production details')){
 			$production_details = '<div class="block prod-details-wrap">
 				<div class="download-doc"><a href="/project/' . $nid . '/download/doc">Download Word Doc</a></div>
-				<div class="download-doc"><a href="/sites/default/files/LS_Production_Release.docx">Download Release</a></div>
+				<div class="download-doc"><a href="/sites/default/files/Lightswitch-Production-Release.pdf">Download Release</a></div>
 				<div class="trigger">
 					<h2>Production Details</h2>
 				</div>
