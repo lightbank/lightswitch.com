@@ -156,6 +156,7 @@ function feature_content_types_field_default_fields() {
           'dickinson' => 'Dickinson ND',
           'duluth' => 'Duluth MN',
           'eau_claire' => 'Eau Claire WI',
+          'edmonton' => 'Edmonton BC',
           'el_dorado' => 'El Dorado AR',
           'el_paso' => 'El Paso TX',
           'erie' => 'Erie PA',
@@ -215,6 +216,7 @@ function feature_content_types_field_default_fields() {
           'minneapolis' => 'Minneapolis MN',
           'minot' => 'Minot ND',
           'mobile_Mobile-Pensacola' => 'Mobile AL',
+          'modesto' => 'Modesto CA',
           'monroe' => 'Monroe AR',
           'monterey' => 'Monterey CA',
           'montgomery' => 'Montgomery AL',
@@ -273,6 +275,7 @@ function feature_content_types_field_default_fields() {
           'san_jose' => 'San Jose CA',
           'san_luis_obispo' => 'San Luis Obispo CA',
           'san_rafael' => 'San Rafael CA',
+          'santa_barbara' => 'Santa Barbara CA',
           'santa_fe' => 'Santa Fe NM',
           'santa_maria' => 'Santa Maria',
           'sarasota' => 'Sarasota FL',
@@ -297,6 +300,7 @@ function feature_content_types_field_default_fields() {
           'syracuse' => 'Syracuse NY',
           'tallahassee' => 'Tallahassee FL',
           'tampa' => 'Tampa FL',
+          'temecula' => 'Temecula CA',
           'terre_haute' => 'Terre Haute IN',
           'thomasville' => 'Thomasville GA',
           'toledo' => 'Toledo OH',
@@ -3158,7 +3162,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '35',
+        'weight' => '37',
       ),
     ),
   );
@@ -3237,7 +3241,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '19',
+        'weight' => '20',
       ),
     ),
   );
@@ -3460,7 +3464,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '16',
+        'weight' => '17',
       ),
     ),
   );
@@ -3532,7 +3536,7 @@ function feature_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '39',
+        'weight' => '40',
       ),
     ),
   );
@@ -3692,7 +3696,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '18',
+        'weight' => '19',
       ),
     ),
   );
@@ -3770,7 +3774,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '28',
+        'weight' => '30',
       ),
     ),
   );
@@ -3848,7 +3852,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '27',
+        'weight' => '28',
       ),
     ),
   );
@@ -3920,7 +3924,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '15',
+        'weight' => '16',
       ),
     ),
   );
@@ -4040,7 +4044,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '25',
+        'weight' => '26',
       ),
     ),
   );
@@ -4113,7 +4117,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '22',
+        'weight' => '23',
       ),
     ),
   );
@@ -4185,7 +4189,7 @@ function feature_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '37',
+        'weight' => '38',
       ),
     ),
   );
@@ -4256,7 +4260,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '38',
+        'weight' => '39',
       ),
     ),
   );
@@ -4327,7 +4331,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '31',
+        'weight' => '34',
       ),
     ),
   );
@@ -4638,6 +4642,7 @@ function feature_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'project',
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -4694,13 +4699,94 @@ function feature_content_types_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'mupload',
+        'module' => 'image',
         'settings' => array(
+          'insert' => 0,
+          'insert_class' => '',
+          'insert_default' => array(
+            0 => 'auto',
+          ),
+          'insert_styles' => array(
+            0 => 'auto',
+          ),
+          'insert_width' => '',
           'preview_image_style' => '',
           'progress_indicator' => 'throbber',
         ),
-        'type' => 'file_mupload',
-        'weight' => '24',
+        'type' => 'image_image',
+        'weight' => '25',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_project_rescheduling'
+  $fields['node-project-field_project_rescheduling'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_project_rescheduling',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 44,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_project_rescheduling',
+      'label' => 'Rescheduling',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '15',
       ),
     ),
   );
@@ -4976,7 +5062,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '26',
+        'weight' => '27',
       ),
     ),
   );
@@ -5054,7 +5140,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '23',
+        'weight' => '24',
       ),
     ),
   );
@@ -5142,7 +5228,7 @@ function feature_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '17',
+        'weight' => '18',
       ),
     ),
   );
@@ -5253,7 +5339,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '32',
+        'weight' => '35',
       ),
     ),
   );
@@ -5594,7 +5680,7 @@ function feature_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '29',
+        'weight' => '31',
       ),
     ),
   );
@@ -5733,7 +5819,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '30',
+        'weight' => '33',
       ),
     ),
   );
@@ -5936,7 +6022,7 @@ function feature_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '34',
+        'weight' => '36',
       ),
     ),
   );
@@ -6009,7 +6095,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '20',
+        'weight' => '21',
       ),
     ),
   );
@@ -6083,7 +6169,7 @@ function feature_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '21',
+        'weight' => '22',
       ),
     ),
   );
@@ -6953,6 +7039,7 @@ function feature_content_types_field_default_fields() {
           'denver' => 'Denver CO',
           'des_moines' => 'Des Moines IA',
           'detroit' => 'Detroit MI',
+          'edmonton' => 'Edmonton BC',
           'el_paso' => 'El Paso TX',
           'evansville' => 'Evansville IN',
           'fishers' => 'Fishers IN',
@@ -6990,6 +7077,7 @@ function feature_content_types_field_default_fields() {
           'miami' => 'Miami FL',
           'milwaukee' => 'Milwaukee WI',
           'minneapolis' => 'Minneapolis MN',
+          'modesto' => 'Modesto CA',
           'mobile_Mobile-Pensacola' => 'Mobile AL',
           'montgomery' => 'Montgomery AL',
           'myrtle_beach' => 'Myrtle Beach SC',
@@ -7049,6 +7137,7 @@ function feature_content_types_field_default_fields() {
           'syracuse' => 'Syracuse NY',
           'tallahassee' => 'Tallahassee FL',
           'tampa' => 'Tampa FL',
+          'temecula' => 'Temecula CA',
           'thomasville' => 'Thomasville GA',
           'toledo' => 'Toledo OH',
           'topeka' => 'Topeka KS',
@@ -7548,6 +7637,7 @@ function feature_content_types_field_default_fields() {
   t('Public access');
   t('Public email');
   t('Rating');
+  t('Rescheduling');
   t('Revision approved');
   t('Revision approved date');
   t('Revision list');

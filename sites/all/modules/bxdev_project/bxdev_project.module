@@ -180,7 +180,7 @@ function bxdev_project_node_insert($node) {
 		case 'comment':
 			$project = new Project($node->field_project_ref['und'][0]['nid']);
 			// if the first pc comment
-			if($project->is_pc_first_comment()){
+			if($node->uid == $project->pc->uid && $node->field_comment_type['und'][0]['value'] == 'client' && $project->is_pc_first_comment()){
 				if(!$project->overridden){
 					// set the status to 4 - Version 1 to Client
 					$project->set_status(4);
