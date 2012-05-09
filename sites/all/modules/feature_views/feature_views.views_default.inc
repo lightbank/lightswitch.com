@@ -2363,6 +2363,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'field_project_rescheduling' => 'field_project_rescheduling',
     'field_status_1' => 'field_status_1',
     'uid' => 'uid',
     'nid' => 'nid',
@@ -2372,8 +2373,8 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'field_business_city' => 'field_business_city',
     'field_shoot_date' => 'field_shoot_date',
     'field_name' => 'field_name',
-    'field_name_3' => 'field_name_3',
     'field_name_1' => 'field_name_1',
+    'field_name_3' => 'field_name_3',
     'field_status' => 'field_status',
     'field_status_date' => 'field_status_date',
     'field_public_access' => 'field_public_access',
@@ -2384,9 +2385,16 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'created' => 'created',
     'field_status_date_value' => 'field_status_date_value',
     'field_due_date' => 'field_due_date',
+    'php' => 'php',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'field_project_rescheduling' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+    ),
     'field_status_1' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -2441,13 +2449,13 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'align' => '',
       'separator' => '',
     ),
-    'field_name_3' => array(
+    'field_name_1' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
     ),
-    'field_name_1' => array(
+    'field_name_3' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -2508,6 +2516,12 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
       'separator' => '',
     ),
     'field_due_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+    ),
+    'php' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -2897,6 +2911,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_shoot_date']['id'] = 'field_shoot_date';
   $handler->display->display_options['fields']['field_shoot_date']['table'] = 'field_data_field_shoot_date';
   $handler->display->display_options['fields']['field_shoot_date']['field'] = 'field_shoot_date';
+  $handler->display->display_options['fields']['field_shoot_date']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_shoot_date']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_shoot_date']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_shoot_date']['alter']['absolute'] = 0;
@@ -2923,6 +2938,47 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'show_repeat_rule' => 'show',
   );
   $handler->display->display_options['fields']['field_shoot_date']['field_api_classes'] = 0;
+  /* Field: Shoot date */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'Shoot date';
+  $handler->display->display_options['fields']['php']['label'] = 'Shoot date';
+  $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['php']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['php']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['php']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['php']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = '$entities = entity_load(\'node\', array($row->nid));
+$entity = $entities[$row->nid];
+
+if(!empty($entity->field_project_rescheduling) && $entity->field_project_rescheduling[\'und\'][0][\'value\']){
+  return 0;
+}else{
+  return $entity->field_shoot_date[\'und\'][0][\'value\'];
+}';
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php 
+if($value === 0){
+  print \'Rescheduling\';
+}else{
+  print date(\'m/d/Y g:ia\', $value);
+}
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '2';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: User: Full name */
   $handler->display->display_options['fields']['field_name']['id'] = 'field_name';
   $handler->display->display_options['fields']['field_name']['table'] = 'field_data_field_name';
@@ -3406,6 +3462,30 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['relationships']['field_project_editor_uid']['required'] = 0;
   $handler->display->display_options['relationships']['field_project_editor_uid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Rescheduling */
+  $handler->display->display_options['fields']['field_project_rescheduling']['id'] = 'field_project_rescheduling';
+  $handler->display->display_options['fields']['field_project_rescheduling']['table'] = 'field_data_field_project_rescheduling';
+  $handler->display->display_options['fields']['field_project_rescheduling']['field'] = 'field_project_rescheduling';
+  $handler->display->display_options['fields']['field_project_rescheduling']['label'] = '';
+  $handler->display->display_options['fields']['field_project_rescheduling']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_project_rescheduling']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_project_rescheduling']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_project_rescheduling']['field_api_classes'] = 0;
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_status_1']['id'] = 'field_status_1';
   $handler->display->display_options['fields']['field_status_1']['table'] = 'field_data_field_status';
@@ -3577,6 +3657,7 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['fields']['field_shoot_date']['id'] = 'field_shoot_date';
   $handler->display->display_options['fields']['field_shoot_date']['table'] = 'field_data_field_shoot_date';
   $handler->display->display_options['fields']['field_shoot_date']['field'] = 'field_shoot_date';
+  $handler->display->display_options['fields']['field_shoot_date']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_shoot_date']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_shoot_date']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['field_shoot_date']['alter']['absolute'] = 0;
@@ -3603,6 +3684,48 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
     'show_repeat_rule' => 'show',
   );
   $handler->display->display_options['fields']['field_shoot_date']['field_api_classes'] = 0;
+  /* Field: Shoot date */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'Shoot date';
+  $handler->display->display_options['fields']['php']['label'] = 'Shoot date';
+  $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['php']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['php']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['php']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['php']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = '$entities = entity_load(\'node\', array($row->nid));
+$entity = $entities[$row->nid];
+
+if(!empty($entity->field_project_rescheduling) && $entity->field_project_rescheduling[\'und\'][0][\'value\']){
+  return 0;
+}else{
+  return $entity->field_shoot_date[\'und\'][0][\'value\'];
+}
+';
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php 
+if($value === 0){
+  print \'Rescheduling\';
+}else{
+  print date(\'m/d/Y g:ia\', $value);
+}
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '2';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: User: Full name */
   $handler->display->display_options['fields']['field_name']['id'] = 'field_name';
   $handler->display->display_options['fields']['field_name']['table'] = 'field_data_field_name';
@@ -3935,6 +4058,10 @@ if(bxdev_user_get_role($user->uid) == \'pc\'):
   $handler->display->display_options['sorts']['field_shoot_date_value']['table'] = 'field_data_field_shoot_date';
   $handler->display->display_options['sorts']['field_shoot_date_value']['field'] = 'field_shoot_date_value';
   $handler->display->display_options['sorts']['field_shoot_date_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Rescheduling (field_project_rescheduling) */
+  $handler->display->display_options['sorts']['field_project_rescheduling_value']['id'] = 'field_project_rescheduling_value';
+  $handler->display->display_options['sorts']['field_project_rescheduling_value']['table'] = 'field_data_field_project_rescheduling';
+  $handler->display->display_options['sorts']['field_project_rescheduling_value']['field'] = 'field_project_rescheduling_value';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Production coordinator (field_pc_ref) */
   $handler->display->display_options['arguments']['field_pc_ref_uid']['id'] = 'field_pc_ref_uid';
