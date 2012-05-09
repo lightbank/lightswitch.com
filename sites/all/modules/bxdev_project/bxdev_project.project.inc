@@ -164,7 +164,8 @@ class Project {
 		}
 
 		if($comment->uid == $this->client->uid){
-			drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);
+			// drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);
+			// drupal_mail('bxdev_project', 'comment', 'wandoledzep@gmail.com', language_default(), $params);
 		}
 		
 	}
