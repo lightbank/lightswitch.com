@@ -143,6 +143,7 @@ class Project {
 		// get the poster's uid
 		$owner_uid = $comment->uid;
 		$users = array();
+		// add pc email
 		$users[$this->pc->uid] = $this->pc;
 		if($comment_type == 'client'){
 			$users[$this->client->uid] = $this->client;
@@ -162,12 +163,9 @@ class Project {
 		foreach($users as $uid => $user){
 			drupal_mail('bxdev_project', 'comment', $user->mail, language_default(), $params);
 		}
-
-		if($comment->uid == $this->client->uid){
-			// drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);
-			// drupal_mail('bxdev_project', 'comment', 'wandoledzep@gmail.com', language_default(), $params);
-		}
 		
+		// send editors email
+		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
 	}
 
 	/**
