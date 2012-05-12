@@ -47,6 +47,7 @@ function bxdev_user_form_alter(&$form, &$form_state, $form_id) {
 	if($form_id == 'views_exposed_form' && arg(0) == 'user' && is_numeric(arg(1))){
 		if(isset($form['title'])){
 			
+			$arg2 = arg(2);
 			$titles = array('' => '- All -');
 			
 			$query = new EntityFieldQuery();
