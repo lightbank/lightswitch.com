@@ -167,7 +167,7 @@ class Project {
 		}
 		
 		// send editors email
-		// drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
+		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
 	}
 
 	/**
