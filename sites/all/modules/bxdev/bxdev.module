@@ -624,9 +624,8 @@ function bxdev_pricing_contact_callback($form, $form_state){
 function bxdev_get_video($node){
 	
 	$file = file_load($node->field_gallery_video['und'][0]['fid']);
-	$file = (array) $file;
 	
-	$path = file_create_url($file->uri);
+	// $path = file_create_url($file->uri);
 	
 	$output = '<style type="text/css">
 	body {
@@ -660,8 +659,24 @@ function bxdev_get_video($node){
 	}
 	
 	</style>';
+	
+	switch($file->filemime){
+		// ezweb
+		case 'video/ezweb':
+			$vars = array(
+				'uri' => $file->uri,
+				'width' => 560,
+				'height' => 340,
+			);
+			$output .= theme('media_ezweb_video', $vars);
+			break;
 		
-	$output .= theme('media_vimeo_video', $file);
+		// vimeo
+		default:
+			$file = (array) $file;
+			$output .= theme('media_vimeo_video', $file);
+			break;
+	}
 	
 	$output .= '<div class="btn-wrap"><a href="#" class="btn" onclick="parent.window.location = \'/video-production-services\'">Learn More</a></div>';
 	
