@@ -144,10 +144,12 @@ class Project {
 		$owner_uid = $comment->uid;
 		$users = array();
 		// add pc email
-		$users[$this->pc->uid] = $this->pc;
-		if($comment_type == 'client'){
+		if(!empty($this->pc)){
+			$users[$this->pc->uid] = $this->pc;
+		}
+		if($comment_type == 'client' && !empty($this->client)){
 			$users[$this->client->uid] = $this->client;
-		}else if($comment_type == 'videographer'){
+		}else if($comment_type == 'videographer' && !empty($this->videographer)){
 			$users[$this->videographer->uid] = $this->videographer;
 		}
 		// remove the poster
@@ -165,7 +167,7 @@ class Project {
 		}
 		
 		// send editors email
-		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
+		// drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
 	}
 
 	/**
