@@ -180,7 +180,6 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 				$data['tabs'][0]['output'][0]['#link']['title'] = 'Your Projects';
 				$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';
 				unset($data['tabs'][0]['output'][1]);
-				// dpm($data);
 			}
 			if(!empty($data['tabs'][1])){
 				$data['tabs'][1]['output'][0]['#link']['title'] = 'Account settings';
@@ -192,12 +191,12 @@ function bxdev_user_menu_local_tasks_alter(&$data, $router_item, $root_path){
 			$data['tabs'][0]['output'][1]['#link']['title'] = 'Account info';		
 		// client
 		}else if(isset($user->roles[7])){
-			// dpm($data);
 			$data['tabs'][0]['output'][0]['#link']['title'] = 'Active projects';
-			$data['tabs'][0]['output'][2]['#link']['title'] = 'Account info';			
+			$data['tabs'][0]['output'][2]['#link']['title'] = 'Account info';
+			if(isset($data['tabs'][1]['output'][2]['#link']) && $data['tabs'][1]['output'][2]['#link']['title'] == 'Videographer'){
+				unset($data['tabs'][1]['output'][2]);
+			}
 		}
-	}else if(arg(0) != 'admin'){
-		// unset($data['tabs']);
 	}
 	
 	// get the logged in user
@@ -486,4 +485,24 @@ function bxdev_user_first_time_login_check($account){
 	}
 }
 
-
+/**
+ * Get all emails associated with a client
+ *
+ * @param $user (object)
+ *  - fully loaded user object
+ * @param $profile_type (string)
+ *  - profile type (client, videographer, etc..)
+ * @return string (well-formatted email to string)
+ */
+function bxdev_user_get_client_emails($user){
+	$addresses[] = $user->mail;
+	// load the user profile
+	$profile = profile2_load_by_user($user->uid, 'client');
+	if($profile && !empty($profile->field_client_additional_emails['und'])){
+		foreach($profile->field_client_additional_emails['und'] as $value){
+			$addresses[] = $value['value'];
+		}
+	}		
+	$addresses = implode(',', $addresses);		
+	return $addresses;
+}

@@ -203,7 +203,8 @@ function feature_views_views_default_views() {
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = 'Links';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/admin/client/[uid]/payments">payments</a> 
-<a href="/admin/client/[uid]/documents">documents</a>';
+<a href="/admin/client/[uid]/documents">documents</a> 
+<a href="/user/[uid]/edit">edit</a>';
   $handler->display->display_options['fields']['nothing']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['nothing']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['nothing']['alter']['external'] = 0;
