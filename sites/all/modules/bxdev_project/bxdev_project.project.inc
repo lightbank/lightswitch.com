@@ -27,7 +27,11 @@ class Project {
 		// load the users
 		$project = node_load($nid);
 		$business = node_load($project->field_project_business_ref['und'][0]['nid']);
+		
 		$client = user_load($business->field_client_ref['und'][0]['uid']);
+		// get all client emails
+		$client->emails = bxdev_user_get_client_emails($client);
+		
 		$sales = '';
 		$pc = '';
 		$videographer = '';
@@ -163,11 +167,13 @@ class Project {
 		$params['comment_date'] = date('m-d-Y', $comment->created);
 		$params['comment'] = nl2br($comment->field_comment['und'][0]['value']);
 		foreach($users as $uid => $user){
-			drupal_mail('bxdev_project', 'comment', $user->mail, language_default(), $params);
+			// if client, use all associcated emails
+			$to = $uid == $this->client->uid ? $this->client->emails : $user->mail;
+			drupal_mail('bxdev_project', 'comment', $to, language_default(), $params);
 		}
 		
 		// send editors email
-		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
+		// drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
 	}
 
 	/**
@@ -206,8 +212,8 @@ class Project {
 		// build a list of email addresses (pc, sales, and client)
 		$emails[] = $this->pc->mail;
 		$emails[] = $this->sales->mail;
-		$emails[] = $this->client->mail;
-		$emails[] = 'editors@lightswitch.com';
+		$emails[] = $this->client->emails;
+		// $emails[] = 'editors@lightswitch.com';
 		foreach($emails as $email){
 			if($email != ''){
 				drupal_mail('bxdev_project', 'approved', $email, language_default(), $params);
@@ -233,7 +239,7 @@ class Project {
 			$system_email = 'project_approved_pc_existing';
 		}
 		
-		drupal_mail('bxdev_project', $system_email, $this->client->mail, language_default(), $params);
+		drupal_mail('bxdev_project', $system_email, $this->client->emails, language_default(), $params);
 	}
 	
 	/**
@@ -293,8 +299,7 @@ class Project {
 				$account = user_load($row->uid);
 				$emails[] = $account->mail;
 			}
-			// $emails = implode(',', $emails);
-			$emails = 'wandoledzep@gmail.com';
+			$emails = implode(',', $emails);
 			$params = array('project' => $this, 'project_link' => $project_link);		
 			drupal_mail('bxdev_project', 'project_added', $emails, language_default(), $params);
 		}

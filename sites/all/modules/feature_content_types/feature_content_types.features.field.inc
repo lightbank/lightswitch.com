@@ -6246,51 +6246,37 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
-  // Exported field: 'profile2-client-field_businesses_ref'
-  $fields['profile2-client-field_businesses_ref'] = array(
+  // Exported field: 'profile2-client-field_client_additional_emails'
+  $fields['profile2-client-field_client_additional_emails'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_businesses_ref',
+      'field_name' => 'field_client_additional_emails',
       'field_permissions' => array(
         'type' => '0',
       ),
       'foreign keys' => array(
-        'nid' => array(
+        'format' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'format' => 'format',
           ),
-          'table' => 'node',
+          'table' => 'filter_format',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'format' => array(
+          0 => 'format',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'text',
       'settings' => array(
+        'max_length' => '255',
         'profile2_private' => 0,
-        'referenceable_types' => array(
-          'business' => 'business',
-          'fact' => 0,
-          'faq' => 0,
-          'page' => 0,
-          'project' => 0,
-          'video' => 0,
-          'videographer' => 0,
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'text',
     ),
     'field_instance' => array(
       'bundle' => 'client',
@@ -6300,28 +6286,27 @@ function feature_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 20,
+          'type' => 'text_default',
+          'weight' => 0,
         ),
       ),
       'entity_type' => 'profile2',
-      'field_name' => 'field_businesses_ref',
-      'label' => 'Businesses',
+      'field_name' => 'field_client_additional_emails',
+      'label' => 'Additional emails',
       'required' => 0,
       'settings' => array(
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'node_reference',
+        'module' => 'text',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
           'size' => '60',
         ),
-        'type' => 'node_reference_autocomplete',
+        'type' => 'text_textfield',
         'weight' => 0,
       ),
     ),
@@ -7583,6 +7568,7 @@ function feature_content_types_field_default_fields() {
   // Included for use with string extractors like potx.
   t('<a href="/get/document/document_videographer_independent_contractor_agreement" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
   t('<a href="/sites/default/files/lightswitch_w9.pdf">Click here to download a new W9 form</a>');
+  t('Additional emails');
   t('Address');
   t('Allow partner to select video type');
   t('Approved');
@@ -7596,7 +7582,6 @@ function feature_content_types_field_default_fields() {
   t('Business logos and photos');
   t('Business overview paragraph');
   t('Business owner interview');
-  t('Businesses');
   t('Camera type');
   t('Category');
   t('Charge amount');
