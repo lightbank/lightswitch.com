@@ -326,6 +326,8 @@ function bxdev_project_preprocess_node(&$vars){
 		$project = new Project($nid);
 		$content = node_view($project->project);
 		
+		dpm($project);
+		
 		// pass the role to the template
 		$vars['role'] = $role;
 		

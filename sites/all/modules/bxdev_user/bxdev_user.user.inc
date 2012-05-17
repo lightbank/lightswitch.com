@@ -205,7 +205,8 @@ class User {
 			}	
 		}
 		
-		drupal_mail('bxdev_user', $system_email, $this->user->mail, language_default(), $params);
+		$addresses = bxdev_user_get_client_emails($this->user);
+		drupal_mail('bxdev_user', $system_email, $addresses, language_default(), $params);
 		
 		$project->log('admin', 'Login information reset and sent to Client');
 	}
