@@ -173,7 +173,7 @@ class Project {
 		}
 		
 		// send editors email
-		// drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
+		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Project {
 		$emails[] = $this->pc->mail;
 		$emails[] = $this->sales->mail;
 		$emails[] = $this->client->emails;
-		// $emails[] = 'editors@lightswitch.com';
+		$emails[] = 'editors@lightswitch.com';
 		foreach($emails as $email){
 			if($email != ''){
 				drupal_mail('bxdev_project', 'approved', $email, language_default(), $params);
