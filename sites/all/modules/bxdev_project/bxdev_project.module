@@ -181,7 +181,8 @@ function bxdev_project_node_insert($node) {
 			$project = new Project($node->field_project_ref['und'][0]['nid']);
 			$author_role = bxdev_user_get_role($node->uid);
 			// if the first pc comment
-			if($author_role == 'pc' && $node->field_comment_type['und'][0]['value'] == 'client' && $project->is_pc_first_comment()){
+			// if($author_role == 'pc' && $node->field_comment_type['und'][0]['value'] == 'client' && $project->is_pc_first_comment()){
+			if($author_role == 'pc' && $project->is_client_login_comment()){
 				if(!$project->overridden){
 					// set the status to 4 - Version 1 to Client
 					$project->set_status(4);

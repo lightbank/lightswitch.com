@@ -573,22 +573,35 @@ class Project {
 	/**
 	 * Returns TRUE if comment being posted is the first PC comment.
 	 */
-	function is_pc_first_comment(){
+	function is_client_login_comment(){
 		// if comments exist
 		if(!empty($this->comments)){
-			// populate an array of pc authored comments
+			
+			// create an array of all pc and client comments
 			$pc_comments = array();
+			$client_comments = array();
+			// cycle through each comment
 			foreach($this->comments as $comment){
+				// get the role of the comment author
 				$author_role = bxdev_user_get_role($comment->uid);
-				if($comment->field_comment_type['und'][0]['value'] == 'client' && $author_role == 'pc'){
-					$pc_comments[] = $comment;
+				// if comment is of the client track
+				if($comment->field_comment_type['und'][0]['value'] == 'client'){
+					// if client authored comment
+					if($author_role == 'client'){
+						$client_comments[] = $comment;
+					// if pc authored comment
+					}else if($author_role == 'pc'){
+						$pc_comments[] = $comment;
+					}
 				}
 			}
-			// if pc authored comments count equals one, this is the first pc to client comment
-			if(count($pc_comments) == 1){
+			
+			// if one pc comment, and zero client comments, bingo
+			if(count($pc_comments) === 1 && count($client_comments) === 0){
 				return TRUE;
 			}
-		}		
+		}
+		
 		return FALSE;
 	}
 	
