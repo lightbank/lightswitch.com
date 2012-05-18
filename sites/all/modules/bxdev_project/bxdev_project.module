@@ -179,8 +179,9 @@ function bxdev_project_node_insert($node) {
 			
 		case 'comment':
 			$project = new Project($node->field_project_ref['und'][0]['nid']);
+			$author_role = bxdev_user_get_role($node->uid);
 			// if the first pc comment
-			if($node->uid == $project->pc->uid && $node->field_comment_type['und'][0]['value'] == 'client' && $project->is_pc_first_comment()){
+			if($author_role == 'pc' && $node->field_comment_type['und'][0]['value'] == 'client' && $project->is_pc_first_comment()){
 				if(!$project->overridden){
 					// set the status to 4 - Version 1 to Client
 					$project->set_status(4);
@@ -325,8 +326,6 @@ function bxdev_project_preprocess_node(&$vars){
 		$nid = $vars['nid'];
 		$project = new Project($nid);
 		$content = node_view($project->project);
-		
-		dpm($project);
 		
 		// pass the role to the template
 		$vars['role'] = $role;

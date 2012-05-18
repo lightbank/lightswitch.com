@@ -579,7 +579,8 @@ class Project {
 			// populate an array of pc authored comments
 			$pc_comments = array();
 			foreach($this->comments as $comment){
-				if($comment->field_comment_type['und'][0]['value'] == 'client' && $comment->uid == $this->pc->uid){
+				$author_role = bxdev_user_get_role($comment->uid);
+				if($comment->field_comment_type['und'][0]['value'] == 'client' && $author_role == 'pc'){
 					$pc_comments[] = $comment;
 				}
 			}
