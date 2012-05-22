@@ -52,6 +52,7 @@ function bxdev_node_access($node, $op, $account) {
 		if($node->type == 'project'){
 			if($is_anon){
 				$path = substr($_SERVER['REQUEST_URI'], 1);
+				// create an array to pass to drupal_goto that contains parameter information
 				$query['query']['url'] = $path;
 				$project = new Project($node->nid);
 				$profile = profile2_load_by_user($project->client->uid, 'client');

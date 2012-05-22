@@ -574,6 +574,13 @@ function bxdev_user_get_logo(){
 		$override = TRUE;
 	}
 	
+	// if the client accept terms page, set override to true
+	if($arg0 == 'client' && $arg1 == 'terms'){
+		$override = TRUE;
+		$project = new Project($arg2);
+		$account = $project->client;
+	}
+	
 	if($override){
 		$profile = !$profile ? profile2_load_by_user($account->uid, 'client') : $profile;
 		if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
@@ -586,28 +593,43 @@ function bxdev_user_get_logo(){
 	print $logo;
 }
 
+/**
+ * Used to determine whether to show blocks based on partner theme
+ *
+ * @return boolean
+ */
 function bxdev_user_partner_theme_global_visibility(){
 
+	// if partner_theme url param is present, return false
 	if(isset($_GET['partner_theme'])){
 		return FALSE;
 	}
 	
+	// initialize our vars
 	global $user;
-	$account = $user;
-	
+	$account = $user;	
 	$arg0 = arg(0);
 	$arg1 = arg(1);
 	$arg2 = arg(2);
 	
+	// check for a node page, or the photos page
 	if(($arg0 == 'node' && is_numeric($arg1)) || ($arg0 == 'project' && $arg2 == 'photos')){
+		// load the node object
 		$node = node_load($arg1);
+		// if project node
 		if($node->type == 'project'){
 			$project = new Project($arg1);
 			$account = $project->client;
+		// if business node
 		}else if($node->type == 'business'){
 			$account = user_load($node->field_client_ref['und'][0]['uid']);
 		}
-		$override = TRUE;
+	}
+	
+	// if client terms page
+	if($arg0 == 'client' && $arg1 == 'terms'){
+		$project = new Project($arg2);
+		$account = $project->client;
 	}
 	
 	$profile = profile2_load_by_user($account->uid, 'client');
