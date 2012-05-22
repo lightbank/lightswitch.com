@@ -135,9 +135,21 @@ function bxdev_user_user_login(&$edit, $account) {
 		$url = $_GET['url'];
 		drupal_goto($url);
 	}
-	
-	// drupal_goto('user/' . $account->uid);
 }
+
+/**
+ * Implements hook_user_logout().
+ */
+function bxdev_user_user_logout($account) {
+  $profile = profile2_load_by_user($account->uid, 'client');
+	if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+		$query['query']['partner_theme'] = $profile->uid;
+		session_destroy();
+		drupal_goto('user', $query);
+	}
+}
+
+
 
 /**
  * Implements hook_mail().
@@ -294,7 +306,12 @@ function bxdev_user_block_view($delta = '') {
 				$output .= '<div class="username">Logged in as ' . $user->name . '</div>';
 				$output .= '<div class="actions"><a href="/user/' . $user->uid . '">Account</a> | <a href="/user/logout">Logout</a></div>';
 			}else{
-				$output .= '<a href="/user">Login</a>';
+				// if a partner_theme url param exists, append it to the login link
+				$partner_theme = '';
+				if(isset($_GET['partner_theme'])){
+					$partner_theme = '?partner_theme=' . $_GET['partner_theme'];
+				}
+				$output .= '<a href="/user' . $partner_theme . '">Login</a>';
 			}
       $block['content'] = $output;
       break;
@@ -506,3 +523,107 @@ function bxdev_user_get_client_emails($user){
 	$addresses = implode(',', $addresses);		
 	return $addresses;
 }
+
+/**
+ * Determine the site logo to use, depending on the user's partner theme
+ */
+function bxdev_user_get_logo(){
+	
+	// init our variables
+	global $user;
+	$account = $user;
+	$profile = FALSE;
+	$override = FALSE;
+	$arg0 = arg(0);
+	$arg1 = arg(1);
+	$arg2 = arg(2);
+	
+	// set the default logo
+	$logo = '<a href="/"><img src="/sites/all/themes/bms/images/logo.jpg" /></a>';
+	
+	// if partner_theme url param exists, set the profile to the param value, and set override to true
+	if(isset($_GET['partner_theme'])){
+		$profile = profile2_load_by_user($_GET['partner_theme'], 'client');
+		// load the partner theme node object
+		$theme = node_load($profile->field_client_partner_theme['und'][0]['nid']);
+		// customize the page title
+		drupal_set_title('Login to ' . $theme->title);
+		$override = TRUE;
+	}
+	
+	// check for a node page, or the photos page
+	if(($arg0 == 'node' && is_numeric($arg1)) || ($arg0 == 'project' && $arg2 == 'photos')){
+		// load the node object
+		$node = node_load($arg1);
+		// if project node
+		if($node->type == 'project'){
+			// load the project object
+			$project = new Project($arg1);
+			// set the account to the project client
+			$account = $project->client;
+		// if business node
+		}else if($node->type == 'business'){
+			// set the account to the business client reference
+			$account = user_load($node->field_client_ref['und'][0]['uid']);
+		}
+		$override = TRUE;
+	}
+	
+	// if any user profile page, set override to true
+	if($arg0 == 'user'){
+		$override = TRUE;
+	}
+	
+	if($override){
+		$profile = !$profile ? profile2_load_by_user($account->uid, 'client') : $profile;
+		if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+			$theme = node_load($profile->field_client_partner_theme['und'][0]['nid']);
+			if(!empty($theme->field_partner_theme_logo['und'][0]['fid'])){
+				$logo = theme('image_style', array('path' => $theme->field_partner_theme_logo['und'][0]['uri'], 'style_name' => 'partner_theme_logo'));
+			}
+		}
+	}
+	print $logo;
+}
+
+function bxdev_user_partner_theme_global_visibility(){
+
+	if(isset($_GET['partner_theme'])){
+		return FALSE;
+	}
+	
+	global $user;
+	$account = $user;
+	
+	$arg0 = arg(0);
+	$arg1 = arg(1);
+	$arg2 = arg(2);
+	
+	if(($arg0 == 'node' && is_numeric($arg1)) || ($arg0 == 'project' && $arg2 == 'photos')){
+		$node = node_load($arg1);
+		if($node->type == 'project'){
+			$project = new Project($arg1);
+			$account = $project->client;
+		}else if($node->type == 'business'){
+			$account = user_load($node->field_client_ref['und'][0]['uid']);
+		}
+		$override = TRUE;
+	}
+	
+	$profile = profile2_load_by_user($account->uid, 'client');
+	if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+	  return FALSE;
+	}
+	
+	return TRUE;
+}
+
+
+
+
+
+
+
+
+
+

@@ -217,10 +217,18 @@ class User {
 	function send_password_reset(){
 		global $base_url;
 		$this->reset_password();
+		
+		// check to include a partner theme parameter
+		$partner_theme = '';
+		$profile = profile2_load_by_user($this->user->uid, 'client');
+		if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+			$partner_theme = '?partner_theme=' . $profile->uid;
+		}
+		
 		$params = array(
 			'username' => $this->user->name,
 			'password' => $this->password,
-			'login_link' => '<a href="' . $base_url . '/user">' . $base_url . '/user</a>',
+			'login_link' => '<a href="' . $base_url . '/user' . $partner_theme . '">' . $base_url . '/user' . $partner_theme . '</a>',
 		);
 		drupal_mail('bxdev_user', 'password_reset', $this->user->mail, language_default(), $params);
 	}
