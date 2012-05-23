@@ -3231,6 +3231,231 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-partner_theme-field_partner_coming_soon'
+  $fields['node-partner_theme-field_partner_coming_soon'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_coming_soon',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'image',
+      'settings' => array(
+        'default_image' => 0,
+        'profile2_private' => FALSE,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'image',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_theme',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => '',
+          ),
+          'type' => 'image',
+          'weight' => 1,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_partner_coming_soon',
+      'label' => 'Coming soon image',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'file_directory' => 'partner_logos',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'image',
+        'settings' => array(
+          'insert' => 0,
+          'insert_class' => '',
+          'insert_default' => 'auto',
+          'insert_styles' => array(
+            'auto' => 'auto',
+            'image' => 0,
+            'image_approval' => 0,
+            'image_business_large' => 0,
+            'image_business_thumb' => 0,
+            'image_gallery_slideshow' => 0,
+            'image_gallery_thumb' => 0,
+            'image_large' => 0,
+            'image_medium' => 0,
+            'image_partner_logo' => 0,
+            'image_partner_theme_logo' => 0,
+            'image_project_thumb' => 0,
+            'image_square_thumbnail' => 0,
+            'image_thumbnail' => 0,
+            'image_video_thumb_home_border' => 0,
+            'image_video_thumb_home_bw' => 0,
+            'link' => 0,
+          ),
+          'insert_width' => '',
+          'preview_image_style' => 'thumbnail',
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'image_image',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-partner_theme-field_partner_theme_logo'
+  $fields['node-partner_theme-field_partner_theme_logo'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_theme_logo',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'image',
+      'settings' => array(
+        'default_image' => 0,
+        'profile2_private' => FALSE,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'image',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_theme',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => '',
+          ),
+          'type' => 'image',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'ffp_field_partner_theme_logo' => array(
+        'active_updating' => 0,
+        'file_name' => '[file:ffp-name-only-original].[file:ffp-extension-original]',
+        'file_name_cleanup' => array(
+          'file_name_pathauto' => 0,
+          'file_name_tolower' => 0,
+          'file_name_transliterate' => 0,
+        ),
+        'file_path' => 'partner_logos',
+        'file_path_cleanup' => array(
+          'file_path_pathauto' => 0,
+          'file_path_tolower' => 0,
+          'file_path_transliterate' => 0,
+        ),
+        'retroactive_update' => 0,
+      ),
+      'field_name' => 'field_partner_theme_logo',
+      'label' => 'Logo',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'image',
+        'settings' => array(
+          'insert' => 0,
+          'insert_class' => '',
+          'insert_default' => 'auto',
+          'insert_styles' => array(
+            'auto' => 'auto',
+            'image' => 0,
+            'image_approval' => 0,
+            'image_business_large' => 0,
+            'image_business_thumb' => 0,
+            'image_gallery_slideshow' => 0,
+            'image_gallery_thumb' => 0,
+            'image_large' => 0,
+            'image_medium' => 0,
+            'image_partner_logo' => 0,
+            'image_project_thumb' => 0,
+            'image_square_thumbnail' => 0,
+            'image_thumbnail' => 0,
+            'image_video_thumb_home_border' => 0,
+            'image_video_thumb_home_bw' => 0,
+            'link' => 0,
+          ),
+          'insert_width' => '',
+          'preview_image_style' => 'thumbnail',
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'image_image',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'node-project-field_approved'
   $fields['node-project-field_approved'] = array(
     'field_config' => array(
@@ -7897,6 +8122,7 @@ function feature_content_types_field_default_fields() {
   t('Client');
   t('Client responded');
   t('Client terms accepted');
+  t('Coming soon image');
   t('Comment');
   t('Comment type');
   t('Declined date');
@@ -7917,6 +8143,7 @@ function feature_content_types_field_default_fields() {
   t('Lighting');
   t('Line item description');
   t('Links to examples of work');
+  t('Logo');
   t('Notes');
   t('PC notes');
   t('Partner theme');
