@@ -663,7 +663,16 @@ function bxdev_user_partner_theme_global_visibility(){
 	return TRUE;
 }
 
-
+function bxdev_user_check_partner_theme($uid){
+	
+	$profile = profile2_load_by_user($uid, 'client');
+	if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+		$theme = node_load($profile->field_client_partner_theme['und'][0]['nid']);
+		return $theme->title;
+	}	
+	
+	return FALSE;
+}
 
 
 
