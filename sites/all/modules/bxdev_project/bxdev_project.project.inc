@@ -185,7 +185,7 @@ class Project {
 		}
 		
 		// send editors email
-		// drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
+		drupal_mail('bxdev_project', 'comment', 'editors@lightswitch.com', language_default(), $params);		
 	}
 
 	/**
@@ -225,7 +225,7 @@ class Project {
 		$emails[] = $this->pc->mail;
 		$emails[] = $this->sales->mail;
 		$emails[] = $this->client->emails;
-		// $emails[] = 'editors@lightswitch.com';
+		$emails[] = 'editors@lightswitch.com';
 		$system_email = '';
 		
 		// check for a partner theme
@@ -252,7 +252,7 @@ class Project {
 		global $base_url;
 		$system_email = '';
 		$params['project'] = $this;
-		// $bcc = !empty($this->pc->mail) ? $this->pc->mail . ', editors@lightswitch' : 'editors@lightswitch';
+		$bcc = !empty($this->pc->mail) ? $this->pc->mail . ', editors@lightswitch' : 'editors@lightswitch';
 		$params['headers']['bcc'] = $bcc;
 		
 		$user = user_load($this->client->uid);
@@ -268,12 +268,6 @@ class Project {
 		}else{
 			$system_email = $user->data['first_time_login'] == 1 ? 'project_approved_pc_new' : 'project_approved_pc_existing';
 		}			
-		
-		// if($user->data['first_time_login'] == 1){
-		// 	$system_email = 'project_approved_pc_new';
-		// }else{
-		// 	$system_email = 'project_approved_pc_existing';
-		// }
 		
 		drupal_mail('bxdev_project', $system_email, $this->client->emails, language_default(), $params);
 	}
