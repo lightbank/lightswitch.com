@@ -2792,6 +2792,161 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-partner_portal-field_partner_add_field_label'
+  $fields['node-partner_portal-field_partner_add_field_label'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_add_field_label',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_portal',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'If left blank, "Other" will be used',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 5,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_partner_add_field_label',
+      'label' => 'Additional field label',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-partner_portal-field_partner_default_theme'
+  $fields['node-partner_portal-field_partner_default_theme'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_default_theme',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'business' => 0,
+          'comment' => 0,
+          'gallery_video' => 0,
+          'page' => 0,
+          'partner_portal' => 0,
+          'partner_theme' => 'partner_theme',
+          'project' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_portal',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 3,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_partner_default_theme',
+      'label' => 'Default client theme',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '4',
+      ),
+    ),
+  );
+
   // Exported field: 'node-partner_portal-field_partner_dynamic_type'
   $fields['node-partner_portal-field_partner_dynamic_type'] = array(
     'field_config' => array(
@@ -2929,6 +3084,78 @@ function feature_content_types_field_default_fields() {
         'settings' => array(),
         'type' => 'options_buttons',
         'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-partner_portal-field_partner_show_add_field'
+  $fields['node-partner_portal-field_partner_show_add_field'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_show_add_field',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_portal',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 4,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_partner_show_add_field',
+      'label' => 'Show additional field',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '5',
       ),
     ),
   );
@@ -6313,6 +6540,83 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'profile2-client-field_client_partner_theme'
+  $fields['profile2-client-field_client_partner_theme'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_client_partner_theme',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => 0,
+        'referenceable_types' => array(
+          'business' => 0,
+          'comment' => 0,
+          'gallery_video' => 0,
+          'page' => 0,
+          'partner_portal' => 0,
+          'partner_theme' => 'partner_theme',
+          'project' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'client',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 1,
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_client_partner_theme',
+      'label' => 'Partner theme',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'profile2-videographer-field_address'
   $fields['profile2-videographer-field_address'] = array(
     'field_config' => array(
@@ -7572,6 +7876,7 @@ function feature_content_types_field_default_fields() {
   t('<a href="/get/document/document_videographer_independent_contractor_agreement" rel="shadowbox;height=800;width=600">Click here to view Lightswitch\'s Independent Contractor Agreement</a>');
   t('<a href="/sites/default/files/lightswitch_w9.pdf">Click here to download a new W9 form</a>');
   t('Additional emails');
+  t('Additional field label');
   t('Address');
   t('Allow partner to select video type');
   t('Approved');
@@ -7596,6 +7901,7 @@ function feature_content_types_field_default_fields() {
   t('Comment type');
   t('Declined date');
   t('Declined reason');
+  t('Default client theme');
   t('Default payment ID');
   t('Disable file download');
   t('Do not send email to client');
@@ -7607,11 +7913,13 @@ function feature_content_types_field_default_fields() {
   t('Features & areas to include?');
   t('Hours of operation');
   t('I accept the Independent Contractor Agreement');
+  t('If left blank, "Other" will be used');
   t('Lighting');
   t('Line item description');
   t('Links to examples of work');
   t('Notes');
   t('PC notes');
+  t('Partner theme');
   t('Payment notes');
   t('Phone');
   t('Post comments');
@@ -7633,6 +7941,7 @@ function feature_content_types_field_default_fields() {
   t('Script notes');
   t('Select the nearest city');
   t('Shoot date');
+  t('Show additional field');
   t('Signed production release');
   t('Skills');
   t('Social URL 1');

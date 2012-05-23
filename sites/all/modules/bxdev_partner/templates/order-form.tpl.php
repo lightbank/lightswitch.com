@@ -70,6 +70,14 @@
 					<?php print render($form['city_manual']); ?>
 				</div>
 			</div><!--closes greenarrowbox -->
+			
+			<?php if(isset($form['additional_field'])): ?>
+				<div class="greenArrowHead">
+					<div class="formFieldContainer">
+						<?php print render($form['additional_field']); ?>
+					</div>
+				</div><!--closes greenarrowbox -->
+			<?php endif; ?>
 
 		</div><!--closes right column form Container -->
 		

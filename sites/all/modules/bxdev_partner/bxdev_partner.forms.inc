@@ -9,6 +9,8 @@
  */
 function bxdev_partner_order_form($form, &$form_state, $node){
 	
+	$form['#node'] = $node;
+	
 	$fields = field_info_fields('node', 'business');
 	$time_options = bxdev_get_times_array();
 	$city_options[''] = '- Select - ';
@@ -77,6 +79,13 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		'#type' => 'textarea',
 		'#title' => t('Notes for Video Shoot'),
 	);
+	
+	if(!empty($node->field_partner_show_add_field['und'][0]['value'])){
+		$form['additional_field'] = array(
+			'#type' => 'textarea',
+			'#title' => !empty($node->field_partner_add_field_label['und'][0]['value']) ? $node->field_partner_add_field_label['und'][0]['value'] : 'Other',
+		);
+	}
 	
 	// if partner is allowed to select video type
 	if($node->field_partner_select_type['und'][0]['value']){
@@ -157,6 +166,7 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$shoot_time = $values['shoot_time'];
 	$shoot_timestamp = strtotime($shoot_date . ' ' . $shoot_time);
 	$notes = $values['notes'];
+	$additional_field = $values['additional_field'];
 	
 	// determine video type
 	$project_type = '';
@@ -245,7 +255,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$project->field_project_type['und'][0]['value'] = $project_type;
 	$project->field_charge_amount['und'][0]['value'] = $project_type;
 	$project->field_video_type['und'][0]['value'] = 'bd';
-	$project->field_pc_notes['und'][0]['value'] = !empty($notes) ? $notes : '';
+	$project->field_pc_notes['und'][0]['value'] = !empty($notes) ? $notes . "\n\n" : '';
+	$project->field_pc_notes['und'][0]['value'] .= !empty($additional_field) ? $additional_field : '';
 	
 	node_save($project);
 		
