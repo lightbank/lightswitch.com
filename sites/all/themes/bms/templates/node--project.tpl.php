@@ -84,7 +84,7 @@
 				<?php if(!empty($content['field_project_video']['#items'])): ?>
 					<?php print render($content['field_project_video']); ?>
 				<?php else: ?>
-					<div class="no-vid"><img src="/sites/all/themes/bms/images/pic_coming_soon.jpg" /></div>
+					<div class="no-vid"><?php print $no_vid; ?></div>
 				<?php endif; ?>
 			</div><!-- end .video-wrap-outer -->
 			<?php if(isset($ezweb_short_link)) print '<div class="ezweb-short-link">' . $ezweb_short_link . '</div>'; ?>

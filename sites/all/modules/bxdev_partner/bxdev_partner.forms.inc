@@ -188,6 +188,19 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 		);
 		$account = user_save($account);
 	}
+	// check if a default partner theme should be applied to the client
+	if(!empty($partner->field_partner_default_theme['und'][0]['nid'])){
+		// load the profile for the user
+		$profile = profile2_load_by_user($account->uid, 'client');
+		// if a profile does not exist, create one
+		if(!$profile){
+			$profile = profile_create(array('user' => $account, 'type' => 'client'));
+		}
+		// assign the default partner theme
+		$profile->field_client_partner_theme['und'][0]['nid'] = $partner->field_partner_default_theme['und'][0]['nid'];
+		// save the profile
+		profile2_save($profile);
+	}
 	
 	/**
 	 * Create the business
@@ -240,8 +253,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	
 	// send the notification email
 	global $base_url;
-	$emails = 'jason@lightswitch.com, brittany@lightswitch.com';
-	// $emails = 'wandoledzep@gmail.com';
+	// $emails = 'jason@lightswitch.com, brittany@lightswitch.com';
+	$emails = 'accounting@bxcreative.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
 	$params['partner'] = $partner;
 	$params['city_manual'] = $city_manual;
