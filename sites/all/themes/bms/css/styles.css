@@ -1774,5 +1774,31 @@ input[type="submit"].approve-btn, .approve-yes {
 
 
 
+/** PARTNER THEMES
+================================================**/
+
+.partner-theme-tribune-localtrack button,
+.partner-theme-tribune-localtrack input[type="submit"],
+.partner-theme-tribune-localtrack #page .links .active,
+.partner-theme-tribune-localtrack #user-login #edit-actions input {
+	background-color: #9b1b1a;
+}
+
+.partner-theme-tribune-localtrack input.approve-btn[type="submit"] {
+	background-color: #198300;
+}
+
+.partner-theme-tribune-localtrack .left .email,
+.partner-theme-tribune-localtrack .left .phone,
+.partner-theme-tribune-localtrack .left .address,
+.partner-theme-tribune-localtrack .left .website {
+	background-image: url(../images/sprite_global_tribune.png);
+}
+
+
+
+
+
+
 
 

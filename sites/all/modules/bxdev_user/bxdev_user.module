@@ -1,8 +1,6 @@
 <?php
 
-/**
- * DEV TEST
- */
+$GLOBALS['partner_theme'] = 'default';
 
 module_load_include('inc', 'bxdev_user', 'bxdev_user.forms');
 
@@ -258,11 +256,18 @@ function bxdev_user_preprocess_user_profile(&$vars){
  */
 function bxdev_user_preprocess_html(&$variables) {
 	global $user;
+	global $partner_theme;
+	
 	$arg2 = arg(2);
 	// if pc user and url is user/%
 	if(bxdev_user_get_role($user->uid) == 'pc' && (arg(0) == 'user' && is_numeric(arg(1)) && !$arg2)){
 		// add body class
 		$variables['classes_array'][] = 'wide-table';
+	}
+	
+	// assign any partner theme body classes
+	if($partner_theme != 'default'){
+		$variables['classes_array'][] = 'partner-theme-' . strtolower(preg_replace('/[^A-Za-z0-9]/', '-', $partner_theme));
 	}
 }
 
@@ -531,6 +536,9 @@ function bxdev_user_get_logo(){
 	
 	// init our variables
 	global $user;
+	global $partner_theme;
+	$partner_theme = 'default';
+	
 	$account = $user;
 	$profile = FALSE;
 	$override = FALSE;
@@ -561,12 +569,13 @@ function bxdev_user_get_logo(){
 			$project = new Project($arg1);
 			// set the account to the project client
 			$account = $project->client;
+			$override = TRUE;
 		// if business node
 		}else if($node->type == 'business'){
 			// set the account to the business client reference
 			$account = user_load($node->field_client_ref['und'][0]['uid']);
+			$override = TRUE;
 		}
-		$override = TRUE;
 	}
 	
 	// if any user profile page, set override to true
@@ -581,10 +590,17 @@ function bxdev_user_get_logo(){
 		$account = $project->client;
 	}
 	
+	// if an override has occurred
 	if($override){
+		// check for a profile, if one does not exist yet, attempt to load one
 		$profile = !$profile ? profile2_load_by_user($account->uid, 'client') : $profile;
+		// if a profile is set and a partner theme is applied
 		if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+			// load the partner theme node object
 			$theme = node_load($profile->field_client_partner_theme['und'][0]['nid']);
+			// set the partner theme global, which will be used to generate a body class
+			$partner_theme = $theme->title;
+			// if a logo has been set
 			if(!empty($theme->field_partner_theme_logo['und'][0]['fid'])){
 				$logo = theme('image_style', array('path' => $theme->field_partner_theme_logo['und'][0]['uri'], 'style_name' => 'partner_theme_logo'));
 			}
@@ -606,8 +622,7 @@ function bxdev_user_partner_theme_global_visibility(){
 	}
 	
 	// initialize our vars
-	global $user;
-	$account = $user;	
+	$account = '';
 	$arg0 = arg(0);
 	$arg1 = arg(1);
 	$arg2 = arg(2);
@@ -626,15 +641,23 @@ function bxdev_user_partner_theme_global_visibility(){
 		}
 	}
 	
+	// if any user profile page, set override to true
+	if($arg0 == 'user'){
+		global $user;
+		$account = $user;
+	}
+	
 	// if client terms page
 	if($arg0 == 'client' && $arg1 == 'terms'){
 		$project = new Project($arg2);
 		$account = $project->client;
 	}
 	
-	$profile = profile2_load_by_user($account->uid, 'client');
-	if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
-	  return FALSE;
+	if(is_object($account)){
+		$profile = profile2_load_by_user($account->uid, 'client');
+		if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+		  return FALSE;
+		}
 	}
 	
 	return TRUE;
