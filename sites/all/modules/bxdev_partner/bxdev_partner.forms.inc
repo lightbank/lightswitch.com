@@ -257,6 +257,11 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$project->field_video_type['und'][0]['value'] = 'bd';
 	$project->field_pc_notes['und'][0]['value'] = !empty($notes) ? $notes . "\n\n" : '';
 	$project->field_pc_notes['und'][0]['value'] .= !empty($additional_field) ? $additional_field : '';
+	$project->field_voice_over['und'][0]['value'] = $project_type == '599' ? '1' : '0';
+	if($project_type == '449' || $project_type == '549'){
+		$project->field_voice_over_gender['und'][0]['value'] = 'no_preference';
+	}
+	$project->field_owner_interview['und'][0]['value'] = $project_type == '549' ? '1' : '0';	
 	
 	node_save($project);
 		
