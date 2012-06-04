@@ -2967,7 +2967,7 @@ function feature_content_types_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => 'Standard video',
+          0 => 'Video with music',
           1 => 'Video with interview',
           2 => 'Video with voice over',
         ),
@@ -3252,7 +3252,7 @@ function feature_content_types_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          449 => 'Standard video',
+          449 => 'Video with music',
           549 => 'Video with interview',
           599 => 'Video with voice over',
         ),
