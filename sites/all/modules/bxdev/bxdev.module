@@ -745,5 +745,3 @@ function bxdev_get_filename_string($string){
 	// generate a clean client name used in the file name
 	return preg_replace('/[^\w\.-]/', '_', strtolower($string));
 }
-
-

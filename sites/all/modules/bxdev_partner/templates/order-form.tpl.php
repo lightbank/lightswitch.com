@@ -32,6 +32,14 @@
 					<?php print render($form['notes']); ?>
 				</div>
 			</div><!--closes greenarrowbox -->
+			
+			<?php if(isset($form['subscription_month'])): ?>
+				<div class="greenArrowHead">
+					<div class="formFieldContainer">
+						<?php print render($form['subscription_month']); ?>
+					</div>
+				</div><!--closes greenarrowbox -->
+			<?php endif; ?>
 
 		</div><!--closes left column form Container -->
 

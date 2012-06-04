@@ -87,6 +87,29 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		);
 	}
 	
+	if(!empty($node->field_partner_show_month['und'][0]['value'])){
+		$form['subscription_month'] = array(
+			'#type' => 'select',
+			'#title' => t('Subscription Start Month'),
+			'#options' => array(
+				'' => t('- Select -'),
+				1 => '01 - January',
+				2 => '02 - February',
+				3 => '03 - March',
+				4 => '04 - April',
+				5 => '05 - May',
+				6 => '06 - June',
+				7 => '07 - July',
+				8 => '08 - August',
+				9 => '09 - September',
+				10 => '10 - October',
+				11 => '11 - November',
+				12 => '12 - December',				
+			),
+			'#required' => TRUE,
+		);
+	}	
+	
 	// if partner is allowed to select video type
 	if($node->field_partner_select_type['und'][0]['value']){
 		
@@ -95,7 +118,7 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		foreach($node->field_partner_dynamic_type['und'] as $value){
 			switch($value['value']){
 				case '0':
-					$options[449] = 'Standard video';
+					$options[449] = 'Video with music';
 					break;
 				
 				case '1':
@@ -167,6 +190,7 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$shoot_timestamp = strtotime($shoot_date . ' ' . $shoot_time);
 	$notes = $values['notes'];
 	$additional_field = $values['additional_field'];
+	$subscription_month = $values['subscription_month'];
 	
 	// determine video type
 	$project_type = '';
@@ -255,8 +279,14 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$project->field_project_type['und'][0]['value'] = $project_type;
 	$project->field_charge_amount['und'][0]['value'] = $project_type;
 	$project->field_video_type['und'][0]['value'] = 'bd';
+	// if notes have been entered
 	$project->field_pc_notes['und'][0]['value'] = !empty($notes) ? $notes . "\n\n" : '';
-	$project->field_pc_notes['und'][0]['value'] .= !empty($additional_field) ? $additional_field : '';
+	// if an additional field has been entered
+	$project->field_pc_notes['und'][0]['value'] .= !empty($additional_field) ? $additional_field . "\n\n" : '';
+	// if a subscription start date has been entered
+	if($subscription_month != ''){
+		$project->field_pc_notes['und'][0]['value'] .= 'Subscription start month: ' . date('F', mktime(0, 0, 0, $subscription_month)) . "\n\n";
+	}
 	$project->field_voice_over['und'][0]['value'] = $project_type == '599' ? '1' : '0';
 	if($project_type == '449' || $project_type == '549'){
 		$project->field_voice_over_gender['und'][0]['value'] = 'no_preference';
