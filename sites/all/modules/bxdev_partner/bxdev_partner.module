@@ -63,7 +63,7 @@ function bxdev_partner_get_partner_theme($uid){
 			$theme = node_load($profile->field_client_partner_theme['und'][0]['nid']);
 		}
 	// if a node page
-	}else	if(arg(0) == 'node' && is_numeric(arg(1))){
+	}else	if((arg(0) == 'node' || arg(0) == 'project') && is_numeric(arg(1))){
 		$node = node_load(arg(1));
 		// if a partner portal node
 		if($node->type == 'partner_portal'){
