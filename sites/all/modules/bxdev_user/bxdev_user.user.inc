@@ -169,7 +169,8 @@ class User {
 	function send_client_project_login($project){
 		
 		$params['project'] = $project;
-		$params['headers']['bcc'] = $project->pc->mail . ', editors@lightswitch.com';
+		// $params['headers']['bcc'] = $project->pc->mail . ', editors@lightswitch.com';
+		$params['headers']['bcc'] = $project->pc->mail;
 		
 		$system_email = '';
 		

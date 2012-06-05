@@ -299,8 +299,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	
 	// send the notification email
 	global $base_url;
-	$emails = 'jason@lightswitch.com, brittany@lightswitch.com';
-	// $emails = 'accounting@bxcreative.com';
+	// $emails = 'jason@lightswitch.com, brittany@lightswitch.com';
+	$emails = 'accounting@bxcreative.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
 	$params['partner'] = $partner;
 	$params['city_manual'] = $city_manual;
