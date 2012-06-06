@@ -341,7 +341,7 @@ function bxdev_project_preprocess_node(&$vars){
 		$vars['client'] = $project->client;
 		$vars['pc'] = $project->pc;
 		$vars['videographer'] = $project->videographer;
-		$vars['sales'] = $project->sales;
+		$vars['sales'] = $project->sales;		
 		
 		// check if project has been approved
 		$vars['approved'] = $vars['field_approved'][0]['value'];
@@ -507,7 +507,7 @@ function bxdev_project_preprocess_node(&$vars){
 		}
 		
 		/**
-		 * No video placeholder
+		 * Partner theme checks
 		 */
 		// set the default no video placeholder
 		$vars['no_vid'] = '<img src="/sites/all/themes/bms/images/pic_coming_soon.jpg" />';
@@ -521,6 +521,10 @@ function bxdev_project_preprocess_node(&$vars){
 			if(!empty($theme->field_partner_coming_soon['und'][0]['uri'])){
 				// assign the coming soon image
 				$vars['no_vid'] = '<img src="' . file_create_url($theme->field_partner_coming_soon['und'][0]['uri']) . '" />';
+			}
+			// if Tribune LocalTrack, modify the pc email address
+			if($theme->title == 'Tribune LocalTrack'){ 
+				$vars['pc_email'] = substr($project->pc->mail, 0, strpos($project->pc->mail, '@')) . '@localtrackvideo.com';
 			}
 		}
 		

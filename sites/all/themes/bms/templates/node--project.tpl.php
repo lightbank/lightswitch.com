@@ -28,7 +28,13 @@
 				<div class="contact">
 					<h3>Production Coordinator:</h3>
 					<div class="name"><?php print $pc->field_name['und'][0]['value']; ?></div>
-					<div class="email"><a href="mailto:<?php print $pc->mail; ?>"><?php print $pc->mail; ?></a></div>
+					<div class="email">
+						<?php if(isset($pc_email)): ?>
+							<a href="mailto:<?php print $pc_email; ?>"><?php print $pc_email; ?></a>
+						<?php else: ?>
+							<a href="mailto:<?php print $pc->mail; ?>"><?php print $pc->mail; ?></a>
+						<?php endif; ?>
+					</div>
 					<div class="phone"><?php print $pc->field_phone['und'][0]['value']; ?></div>
 				</div><!-- end .contact -->
 			<?php endif; ?>

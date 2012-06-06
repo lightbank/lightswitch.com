@@ -520,21 +520,14 @@ function bms_preprocess_mimemail_message(&$variables){
 	$account = '';
 	// if the recipient is a drupal user object
 	if(is_object($recipient)){
-		// $role = bxdev_user_get_role($recipient->uid);
 		$account = $recipient;
 	// if the recipient is a string of emails, separated by a comma
 	}else if(strpos($recipient, ',') !== FALSE){
 		$email = reset(explode(',', $recipient));
 		$account = user_load_by_mail($email);
-		// if($account){
-		// 	$role = bxdev_user_get_role($account->uid);
-		// }
 	// if the recipient is a single email address string
 	}else{
 		$account = user_load_by_mail($recipient);
-		// if($account){
-		// 	$role = bxdev_user_get_role($account->uid);
-		// }
 	}
 	
 	if($account){
@@ -546,19 +539,6 @@ function bms_preprocess_mimemail_message(&$variables){
 		}		
 	}
 	
-	// // if client (or additional email address)
-	// if($role == 'client' || $role == '' && is_object($account)){
-	// 	// get the profile
-	// 	$profile = profile2_load_by_user($account->uid, 'client');
-	// 	// if the profile exists and has a partner theme assigned
-	// 	if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
-	// 		$theme = node_load($profile->field_client_partner_theme['und'][0]['nid']);
-	// 		if(!empty($theme->field_partner_theme_logo['und'][0]['fid'])){
-	// 			// set the custom logo
-	// 			$variables['logo'] = theme('image_style', array('path' => $theme->field_partner_theme_logo['und'][0]['uri'], 'style_name' => 'partner_theme_logo'));
-	// 		}
-	// 	}
-	// }
 }
 
 
