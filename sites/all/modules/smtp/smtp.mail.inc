@@ -456,18 +456,30 @@ class SmtpMailSystem implements MailSystemInterface {
 		$username = '';
 		$password = '';
 		$host = '';
+		$from = 'info@localtrackvideo.com';
 		
 		// if a node page
 		if(arg(0) == 'node' && is_numeric(arg(1))){
-			// load the project
-			$project = new Project(arg(1));
-			// if the project exists
-			if($project->project){
-				$theme = bxdev_partner_get_partner_theme($project->client->uid);
-				// if tribune partner theme
-				if($theme && $theme->title == 'Tribune LocalTrack'){
-					$tribune_override = TRUE;
-				}				
+			$node = node_load(arg(1));
+			if($node->type == 'partner_portal'){
+				if(!empty($node->field_partner_default_theme['und'][0]['nid'])){
+					$theme = node_load($node->field_partner_default_theme['und'][0]['nid']);
+					if($theme->title == 'Tribune LocalTrack'){
+						$tribune_override = TRUE;
+					}
+				}
+			}else if($node->type == 'project'){
+				// load the project
+				$project = new Project(arg(1));
+				// if the project exists
+				if($project->project){
+					$theme = bxdev_partner_get_partner_theme($project->client->uid);
+					// if tribune partner theme
+					if($theme && $theme->title == 'Tribune LocalTrack'){
+						$tribune_override = TRUE;
+						$from = substr($project->pc->mail, 0, strpos($project->pc->mail, '@')) . '@localtrackvideo.com';
+					}				
+				}
 			}
 		}		
 		
@@ -476,7 +488,6 @@ class SmtpMailSystem implements MailSystemInterface {
 	    $username = 'lightswitch';
 	    $password = 'switch2012!';
 			$host = 'smtp.sendgrid.net';
-			$from = substr($project->pc->mail, 0, strpos($project->pc->mail, '@')) . '@localtrackvideo.com';
 			$mailer->From = $from;
 			$mailer->Sender = $from;
 			$mailer->FromName = 'Tribune LocalTrack';
@@ -493,7 +504,6 @@ class SmtpMailSystem implements MailSystemInterface {
       $mailer->Username = $username;
       $mailer->Password = $password;
     }
-
 
     // Set the protocol prefix for the smtp host.
     switch (variable_get('smtp_protocol', 'standard')) {
