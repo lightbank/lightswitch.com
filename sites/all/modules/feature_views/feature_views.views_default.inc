@@ -659,10 +659,11 @@ function feature_views_views_default_views() {
   $handler->display->display_options['fields']['field_name']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_name']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_name']['field_api_classes'] = 0;
-  /* Field: Global: PHP */
+  /* Field: Author name (Lightswitch) */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'Author name (Lightswitch)';
   $handler->display->display_options['fields']['php']['label'] = '';
   $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
@@ -686,7 +687,11 @@ function feature_views_views_default_views() {
 global $user;
 $role = bxdev_user_get_role($user->uid);
 if($role == \'client\' && $user->uid != $data->users_node_uid){
-  print \'Lightswitch\';
+	if(bxdev_user_check_partner_theme($user->uid) == \'Tribune LocalTrack\'){
+		print \'LocalTrack\';
+	}else{
+  	print \'Lightswitch\';
+	}
 }else{
   print $data->field_field_name[0][\'rendered\'][\'#markup\'];
 }
