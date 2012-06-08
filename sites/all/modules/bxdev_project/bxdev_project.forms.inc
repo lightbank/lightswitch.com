@@ -146,14 +146,13 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 	$fid = !empty($form['#node']->field_project_video['und'][0]['fid']) ? $form['#node']->field_project_video['und'][0]['fid'] : '';
 	$embed_code = '
 <script src="https://embed.lightswitch.com/1.0/video.js"></script>
-
-<div id="video"><!-- you can put a placeholder graphic here if you would like --></div>
+<div id="video"></div>
 <script>
   lsjq(document).ready(function() {
     lsjq(\'#video\').lightswitch({
-      "video_id":"' . $fid . '", // This ID is different for each video, from Drupal
-      "width":"640",       // This is the width, can be changed, the default should probably be different than this
-      "height":"360"       // Same for the height
+      "video_id":"' . $fid . '",
+      "width":"640",
+      "height":"360"
     });
   });
 </script>';
