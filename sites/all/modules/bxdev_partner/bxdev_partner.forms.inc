@@ -48,7 +48,6 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 	$form['shoot_date'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Shoot Date'),
-		'#required' => TRUE,
 	);
 	
 	$form['business_name'] = array(
@@ -72,7 +71,6 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		'#type' => 'select',
 		'#options' => $time_options,
 		'#title' => t('Shoot Time'),
-		'#required' => TRUE,
 	);
 	
 	$form['notes'] = array(
@@ -299,7 +297,7 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	
 	// send the notification email
 	global $base_url;
-	$emails = 'jason@lightswitch.com, brittany@lightswitch.com';
+	$emails = 'jason@lightswitch.com, brittany@lightswitch.com, kelly@lightswitch.com';
 	// $emails = 'accounting@bxcreative.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
 	$params['partner'] = $partner;

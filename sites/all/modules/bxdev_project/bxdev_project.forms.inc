@@ -152,8 +152,8 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
   lsjq(document).ready(function() {
     lsjq(\'#video\').lightswitch({
       "video_id":"' . $fid . '", // This ID is different for each video, from Drupal
-      "width":"660",       // This is the width, can be changed, the default should probably be different than this
-      "height":"373"       // Same for the height
+      "width":"640",       // This is the width, can be changed, the default should probably be different than this
+      "height":"360"       // Same for the height
     });
   });
 </script>';

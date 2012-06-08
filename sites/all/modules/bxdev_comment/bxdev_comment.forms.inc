@@ -9,7 +9,15 @@ function bxdev_comment_client_form($form, &$form_state){
 	$nid = arg(1);
 	$project = new Project($nid);
 	$role = bxdev_user_get_role($user->uid);
-	$zero_comments = $role == 'pc' ? 'Lightswitch has completed a cut of your video, and it\'s ready for you to view.  As a valued Lightswitch client, you receive one free round of video edits.  If you have changes you\'d like to make to the video, please comment below with your revision requests.  Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it!  Referencing the minutes and seconds can be helpful to pinpoint sections you\'d like revised.  If you are happy with the video in its current form, please click “approve” and we’ll send you the final video in convenient file formats. You have 5 days to submit revision requests, after which the video will be considered approved as is.' : '';
+	// determine the pre-populated first comment
+	$first_comment = '';
+	if(bxdev_user_check_partner_theme($project->client->uid) == 'Tribune LocalTrack'){
+		$first_comment = "We hope you like your LocalTrack video. Included with your video is one free round of revisions. If you have any changes you would like to make, please list them all in detail here and our editors will get to work. If you love your video as is and don't have any changes, simply click \"Approve\" and you will receive an email link to your final video within three business days.\n\nPlease note, if you do not submit any revisions within 7 business days, your video will be approved and you will receive an email link to your final video and photos, along with tips for all of the great places you can start using your video! Once your video is approved, you will be solely responsible for the content in your video.";
+	}else{
+		$first_comment = 'Lightswitch has completed a cut of your video, and it\'s ready for you to view.  As a valued Lightswitch client, you receive one free round of video edits.  If you have changes you\'d like to make to the video, please comment below with your revision requests.  Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it!  Referencing the minutes and seconds can be helpful to pinpoint sections you\'d like revised.  If you are happy with the video in its current form, please click “approve” and we’ll send you the final video in convenient file formats. You have 5 days to submit revision requests, after which the video will be considered approved as is.';
+	}
+
+	$zero_comments = $role == 'pc' ? $first_comment : '';
 	
 	$form['comment'] = array(
 	  '#type' => 'textarea',

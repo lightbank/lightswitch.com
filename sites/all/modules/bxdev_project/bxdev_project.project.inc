@@ -224,7 +224,7 @@ class Project {
 		$emails[] = $this->pc->mail;
 		$emails[] = $this->sales->mail;
 		$emails[] = $this->client->emails;
-		$emails[] = 'editors@lightswitch.com';
+		// $emails[] = 'editors@lightswitch.com';
 		$system_email = '';
 		
 		// check for a partner theme
