@@ -486,7 +486,7 @@ class SmtpMailSystem implements MailSystemInterface {
 		if($tribune_override){			
 			// Set the authentication settings.
 	    $username = 'lightswitch';
-	    $password = 'switch2012!';
+	    $password = 'awesomevideos2012';
 			$host = 'smtp.sendgrid.net';
 			$mailer->From = $from;
 			$mailer->Sender = $from;
