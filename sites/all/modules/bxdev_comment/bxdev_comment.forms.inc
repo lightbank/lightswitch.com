@@ -9,12 +9,15 @@ function bxdev_comment_client_form($form, &$form_state){
 	$nid = arg(1);
 	$project = new Project($nid);
 	$role = bxdev_user_get_role($user->uid);
-	// determine the pre-populated first comment
+	// determine the pre-populated first comment and approve language
 	$first_comment = '';
+	$approve_language = '';
 	if(bxdev_user_check_partner_theme($project->client->uid) == 'Tribune LocalTrack'){
-		$first_comment = "We hope you like your LocalTrack video. Included with your video is one free round of revisions. If you have any changes you would like to make, please list them all in detail here and our editors will get to work. If you love your video as is and don't have any changes, simply click \"Approve\" and you will receive an email link to your final video within three business days.\n\nPlease note, if you do not submit any revisions within 7 business days, your video will be approved and you will receive an email link to your final video and photos, along with tips for all of the great places you can start using your video! Once your video is approved, you will be solely responsible for the content in your video.";
+		$first_comment = "We hope you like your LocalTrack video. Included with your video is one free round of revisions. If you have any changes you would like to make, please list them all in detail here and our editors will get to work as soon as you submit your comments. If multiple people are commenting, please gather all comments first, and then submit them all in one post.\n\nIf you love your video as is and don't have any changes, simply click \"Approve\" and you will receive an email link to your final video within three business days.\n\nPlease note, if you do not submit any revisions within 7 business days, your video will be approved and you will receive an email link to your final video and photos, along with tips for all of the great places you can start using your video! Once your video is approved, you will be solely responsible for the content in your video.";
+		$approve_language = '<h3>Are you sure you wish to approve this project?</h3><p>After approval, comments will no longer be able to be posted.<br />Once you approve your video, you will be solely responsible for the content.</p>';
 	}else{
 		$first_comment = 'Lightswitch has completed a cut of your video, and it\'s ready for you to view.  As a valued Lightswitch client, you receive one free round of video edits.  If you have changes you\'d like to make to the video, please comment below with your revision requests.  Please make all of your requests very specific so we can work to get your lightswitch video exactly how you want it!  Referencing the minutes and seconds can be helpful to pinpoint sections you\'d like revised.  If you are happy with the video in its current form, please click “approve” and we’ll send you the final video in convenient file formats. You have 5 days to submit revision requests, after which the video will be considered approved as is.';
+		$approve_language = '<h3>Are you sure you wish to approve this project?</h3><p>After approval, comments will no longer be able to be posted.</p>';
 	}
 
 	$zero_comments = $role == 'pc' ? $first_comment : '';
@@ -46,8 +49,9 @@ function bxdev_comment_client_form($form, &$form_state){
 		'#access' => user_access('client'),
 	);
 	
+	
 	$form['approve_confirm'] = array(
-		'#markup' => '<div class="approve-confirm" style="display:none;"><h3>Are you sure you wish to approve this project?</h3><p>After approval, comments will no longer be able to be posted.</p><a class="approve-yes" href="/project/' . $nid . '/approve">Approve</a> <a href="" class="approve-cancel">Cancel</a></div>',
+		'#markup' => '<div class="approve-confirm" style="display:none;">' . $approve_language . '<a class="approve-yes" href="/project/' . $nid . '/approve">Approve</a> <a href="" class="approve-cancel">Cancel</a></div>',
 	);
 	
 	return $form;	

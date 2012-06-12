@@ -604,6 +604,11 @@ footer {
 	background: #fb942e url(../images/sprite_global.png) no-repeat 64px -120px;
 }
 
+.page-user-change-password #content {
+	width: 348px;
+	margin: 0 auto;
+}
+
 
 /** LOGGED IN
 ================================================**/
@@ -1795,7 +1800,9 @@ input[type="submit"].approve-btn, .approve-yes {
 	background-image: url(../images/sprite_global_tribune.png);
 }
 
-
+.partner-theme-tribune-localtrack .logo {
+	width: 164px\9;
+}
 
 
 

@@ -120,6 +120,7 @@ function bxdev_user_change_password_form($form, $form_state){
 	drupal_set_title('This is your first time logging in. Please change your password!');
 	$form['pass'] = array(
 		'#type' => 'password_confirm',
+		'#required' => TRUE,
 	);
 	$form['submit'] = array(
 	  '#type' => 'submit',
