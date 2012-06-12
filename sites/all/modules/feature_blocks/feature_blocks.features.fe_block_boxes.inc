@@ -14,7 +14,7 @@ function feature_blocks_default_fe_block_boxes() {
   $fe_block_boxes->info = 'Button: View Pricing';
   $fe_block_boxes->format = 'full_html';
   $fe_block_boxes->machine_name = 'button_view_pricing';
-  $fe_block_boxes->body = '<p><a class="btn" href="/video-production-services">View Pricing</a></p>
+  $fe_block_boxes->body = '<p><a class="btn" href="/video-production-services">Learn More</a></p>
 ';
 
   $export['button_view_pricing'] = $fe_block_boxes;
@@ -70,10 +70,10 @@ function feature_blocks_default_fe_block_boxes() {
 <div class="left social-links">
 	<h5>Stay in Touch</h5>
 	<ul>
-		<li class="youtube"><a href="http://www.youtube.com/user/lightswitchbiz?blend=4&ob=video-mustangbase">YouTube</a></li>
-		<li class="facebook"><a href="http://www.facebook.com/pages/Lightswitch/107652399341080">Facebook</a></li>
-		<li class="vimeo"><a href="http://vimeo.com/user8579584">Vimeo</a></li>
-		<li class="twitter"><a href="http://twitter.com/lightswitchbiz">Twitter</a></li>
+		<li class="youtube"><a href="https://www.youtube.com/user/lightswitchbiz?blend=4&ob=video-mustangbase">YouTube</a></li>
+		<li class="facebook"><a href="https://www.facebook.com/pages/Lightswitch/107652399341080">Facebook</a></li>
+		<li class="vimeo"><a href="https://vimeo.com/user8579584">Vimeo</a></li>
+		<li class="twitter"><a href="https://twitter.com/lightswitchbiz">Twitter</a></li>
 	</ul>
 </div>
 
@@ -148,8 +148,8 @@ function feature_blocks_default_fe_block_boxes() {
   $fe_block_boxes->info = 'Home CTA';
   $fe_block_boxes->format = 'php_code';
   $fe_block_boxes->machine_name = 'home_cta';
-  $fe_block_boxes->body = '<div class="left"><a href="/video-production-services" class="btn">View Pricing</a></div>
-<div class="right"><h3>Lightswitch shoots professional videos, on location, <span>starting at $449!</span></h3></div>';
+  $fe_block_boxes->body = '<div class="left"><a href="/video-production-services" class="btn">Learn More</a></div>
+<div class="right"><h3>Lightswitch shoots professional videos, on location, <span>for a great low price!</span></h3></div>';
 
   $export['home_cta'] = $fe_block_boxes;
 
@@ -206,7 +206,7 @@ function feature_blocks_default_fe_block_boxes() {
 <p><img alt="" src="/sites/default/files/why_trust.png" style="width: 154px; height: 129px;" /></p>
 <ul>
 	<li>
-		We edit, shoot and deliver for <strong>only $449</strong></li>
+		We edit, shoot and deliver for <strong>a great low price!</strong></li>
 	<li>
 		Professional network of Videographers</li>
 	<li>
@@ -280,7 +280,7 @@ function feature_blocks_default_fe_block_boxes() {
 		<span class="icon"></span>
 	</li>
 </ul>
-<p><a href="/video-production-services" class="btn">View Pricing</a></p>';
+<p><a href="/video-production-services" class="btn">Learn More</a></p>';
 
   $export['how_steps'] = $fe_block_boxes;
 
@@ -303,7 +303,7 @@ function feature_blocks_default_fe_block_boxes() {
 		<span class="icon"></span>
 	</li>
 </ul>
-<p><a href="/video-production-services" class="btn">View Pricing</a></p>';
+<p><a href="/video-production-services" class="btn">Learn More</a></p>';
 
   $export['need_videographer'] = $fe_block_boxes;
 
@@ -316,7 +316,7 @@ function feature_blocks_default_fe_block_boxes() {
 		Standard Video</h1>
 	<div class="vid-thumb">
 		<a href="http://vimeo.com/moogaloop.swf?clip_id=34032033" rel="shadowbox;height=450;width=605"><img alt="" src="/sites/default/files/pricing-video-1.jpg" style="width: 241px; height: 133px;" /></a></div>
-	<p class="the-price">$449.00</p>
+<p class="the-price">&nbsp;</p>
 	<p><a class="btn" href="">Get Started</a></p>
 	<p class="cc">no credit card required</p>
 	<ul>
@@ -333,14 +333,14 @@ function feature_blocks_default_fe_block_boxes() {
 		<li>
 			One Free Round of Edits *</li>
 	</ul>
-	<p class="edits">* Additional edits are $50.00</p>
+	<p class="edits">&nbsp;</p>
 </div>
 <div class="price-block">
 	<h1>
 		Video with Interview</h1>
 	<div class="vid-thumb">
 		<a href="http://vimeo.com/moogaloop.swf?clip_id=34030990" rel="shadowbox;height=450;width=605"><img alt="" src="/sites/default/files/pricing-video-2.jpg" style="width: 241px; height: 133px;" /></a></div>
-	<p class="the-price">$549.00</p>
+	<p class="the-price">&nbsp;</p>
 	<p><a class="btn" href="#">Get Started</a></p>
 	<p class="cc">no credit card required</p>
 	<ul>
@@ -359,7 +359,7 @@ function feature_blocks_default_fe_block_boxes() {
 		Video with Voice-over</h1>
 	<div class="vid-thumb">
 		<a href="http://vimeo.com/moogaloop.swf?clip_id=33172754" rel="shadowbox;height=450;width=605"><img alt="" src="/sites/default/files/pricing-video-3.jpg" style="width: 241px; height: 133px;" /></a></div>
-	<p class="the-price">$599.00</p>
+	<p class="the-price">&nbsp;</p>
 	<p><a class="btn" href="#">Get Started</a></p>
 	<p class="cc">no credit card required</p>
 	<ul>
@@ -383,7 +383,7 @@ function feature_blocks_default_fe_block_boxes() {
   $fe_block_boxes->format = 'php_code';
   $fe_block_boxes->machine_name = 'why_content';
   $fe_block_boxes->body = '<h2>Lightswitch will shoot, edit and deliver a professional video customized to your business. We do it faster, better and cheaper than anyone else.</h2>
-<p><a href="/video-production-services" class="btn">View Pricing</a></p>
+<p><a href="/video-production-services" class="btn">Learn More</a></p>
 <span class="camera"></span>';
 
   $export['why_content'] = $fe_block_boxes;
@@ -435,9 +435,9 @@ function feature_blocks_default_fe_block_boxes() {
 	<div id="block-2" class="tab-block">
 		<h3>Why Lightswitch</h3>
 		<div class="col c1">
-			<h4>Price</h4>
+			<!-- <h4>Price</h4>
 			<span class="icon"></span>
-			<p>We edit, shoot and deliver for only $449</p>
+			<p>We edit, shoot and deliver for only $449</p>-->
 		</div>
 		<div class="col c2">
 			<h4>Nationwide Network</h4>
