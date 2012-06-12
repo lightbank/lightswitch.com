@@ -509,4 +509,40 @@ function bms_date_all_day_label(){
 	return t('');
 }
 
+/**
+ * Override email template
+ */
+function bms_preprocess_mimemail_message(&$variables){
+	// set the default logo
+	$variables['logo'] = '<img src="http://lightswitch.com/sites/default/files/mail_logo.jpg" />';
+	$recipient = $variables['recipient'];
+	// $role = '';
+	$account = '';
+	// if the recipient is a drupal user object
+	if(is_object($recipient)){
+		$account = $recipient;
+	// if the recipient is a string of emails, separated by a comma
+	}else if(strpos($recipient, ',') !== FALSE){
+		$email = reset(explode(',', $recipient));
+		$account = user_load_by_mail($email);
+	// if the recipient is a single email address string
+	}else{
+		$account = user_load_by_mail($recipient);
+	}
+	
+	if($account){
+		$theme = bxdev_partner_get_partner_theme($account->uid);
+
+		if(!empty($theme->field_partner_theme_logo['und'][0]['fid'])){
+			// set the custom logo
+			$variables['logo'] = theme('image_style', array('path' => $theme->field_partner_theme_logo['und'][0]['uri'], 'style_name' => 'partner_theme_logo'));
+		}		
+	}
+	
+}
+
+
+
+
+
 

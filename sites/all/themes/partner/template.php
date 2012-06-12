@@ -509,4 +509,19 @@ function partner_date_all_day_label(){
 	return t('');
 }
 
+/**
+ * Override email template
+ */
+function partner_preprocess_mimemail_message(&$variables){	
+	// set the default logo
+	$variables['logo'] = '<img src="http://lightswitch.com/sites/default/files/mail_logo.jpg" />';
+	$recipient = $variables['recipient'];
+	
+	$theme = bxdev_partner_get_partner_theme($recipient->uid);
+	
+	if(!empty($theme->field_partner_theme_logo['und'][0]['fid'])){
+		// set the custom logo
+		$variables['logo'] = theme('image_style', array('path' => $theme->field_partner_theme_logo['und'][0]['uri'], 'style_name' => 'partner_theme_logo'));
+	}	
+}
 

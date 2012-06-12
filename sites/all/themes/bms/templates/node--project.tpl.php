@@ -11,7 +11,6 @@
 	<div class="block">
 		<h1><a href="/<?php print drupal_lookup_path('alias', 'node/' . $business->nid) ?>"><?php print $business->title ?></a></h1>
 		<h2><?php print $title ?></h2>
-		<?php if(!empty($charge_amount)) print $charge_amount ?>
 	</div>
 	
 	<div class="block contacts">
@@ -28,7 +27,13 @@
 				<div class="contact">
 					<h3>Production Coordinator:</h3>
 					<div class="name"><?php print $pc->field_name['und'][0]['value']; ?></div>
-					<div class="email"><a href="mailto:<?php print $pc->mail; ?>"><?php print $pc->mail; ?></a></div>
+					<div class="email">
+						<?php if(isset($pc_email)): ?>
+							<a href="mailto:<?php print $pc_email; ?>"><?php print $pc_email; ?></a>
+						<?php else: ?>
+							<a href="mailto:<?php print $pc->mail; ?>"><?php print $pc->mail; ?></a>
+						<?php endif; ?>
+					</div>
 					<div class="phone"><?php print $pc->field_phone['und'][0]['value']; ?></div>
 				</div><!-- end .contact -->
 			<?php endif; ?>
@@ -84,7 +89,7 @@
 				<?php if(!empty($content['field_project_video']['#items'])): ?>
 					<?php print render($content['field_project_video']); ?>
 				<?php else: ?>
-					<div class="no-vid"><img src="/sites/all/themes/bms/images/pic_coming_soon.jpg" /></div>
+					<div class="no-vid"><?php print $no_vid; ?></div>
 				<?php endif; ?>
 			</div><!-- end .video-wrap-outer -->
 			<?php if(isset($ezweb_short_link)) print '<div class="ezweb-short-link">' . $ezweb_short_link . '</div>'; ?>

@@ -36,10 +36,48 @@ function bxdev_partner_preprocess_page(&$vars) {
 	if(isset($vars['node'])){
 		$node = $vars['node'];
 		if($node->type == 'partner_portal'){
-			$vars['partner_logo'] = theme('image_style', array('path' => $node->field_partner_logo['und'][0]['uri'], 'style_name' => 'partner_logo'));
 			$vars['partner_form'] = render(drupal_get_form('bxdev_partner_order_form', $node));
 		}
 	}
 }
 
+/**
+ * Check if a custom partner theme is being used.
+ *
+ * @param $uid (int)
+ *  - user ID
+ * @return FALSE if no partner theme, partner theme node object if otherwise
+ */
+function bxdev_partner_get_partner_theme($uid){	
+	$theme = FALSE;
+	
+	// get the role of the recipient
+	$role = bxdev_user_get_role($uid);
+	
+	// if client, check for theme assignment
+	if($role == 'client'){
+		// get the profile
+		$profile = profile2_load_by_user($uid, 'client');
+		// if the profile exists and has a partner theme assigned
+		if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+			$theme = node_load($profile->field_client_partner_theme['und'][0]['nid']);
+		}
+	// if a node page
+	}else	if((arg(0) == 'node' || arg(0) == 'project') && is_numeric(arg(1))){
+		$node = node_load(arg(1));
+		// if a partner portal node
+		if($node->type == 'partner_portal'){
+			// check for a partner theme
+			if(!empty($node->field_partner_default_theme['und'][0]['nid'])){
+				$theme = node_load($node->field_partner_default_theme['und'][0]['nid']);
+			}
+		// if a project node
+		}else if($node->type == 'project'){
+			$project = new Project(arg(1));
+			$theme = bxdev_user_check_partner_theme($project->client->uid, TRUE);
+		}	
+	}
+	
+	return $theme;	
+}
 

@@ -139,6 +139,36 @@ function bxdev_project_form_project_node_form_alter(&$form, $form_state){
 		$form['field_owner_interview']['#suffix'] = '</div><div class="right">';
 		$form['actions']['#prefix'] = '</div>';		
 	}
+	
+	/**
+	 * Add the video embed code
+	 */
+	$fid = !empty($form['#node']->field_project_video['und'][0]['fid']) ? $form['#node']->field_project_video['und'][0]['fid'] : '';
+	$embed_code = '
+<script src="https://embed.lightswitch.com/1.0/video.js"></script>
+<div id="video"></div>
+<script>
+  lsjq(document).ready(function() {
+    lsjq(\'#video\').lightswitch({
+      "video_id":"' . $fid . '",
+      "width":"640",
+      "height":"360"
+    });
+  });
+</script>';
+	
+	$form['embed_fieldset'] = array(
+		'#type' => 'fieldset',
+		'#title' => t('Embed code'),
+		'#collapsible' => TRUE,
+		'#collapsed' => FALSE,
+		'#weight' => 50,
+		'embed_code' => array(
+			'#type' => 'textarea',
+			'#value' => $embed_code,
+			'#attributes' => array('style' => 'width: 850px; height: 250px; font-family: Consolas;'),
+		)
+	);
 		
 }
 

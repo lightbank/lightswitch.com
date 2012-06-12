@@ -120,6 +120,7 @@ function bxdev_user_change_password_form($form, $form_state){
 	drupal_set_title('This is your first time logging in. Please change your password!');
 	$form['pass'] = array(
 		'#type' => 'password_confirm',
+		'#required' => TRUE,
 	);
 	$form['submit'] = array(
 	  '#type' => 'submit',
@@ -214,9 +215,14 @@ function bxdev_user_accept_terms_form_validate($form, &$form_state){
  * Implements hook_form_alter().
  */
 function bxdev_user_form_user_pass_alter(&$form, &$form_state) {
+	$partner_theme = '';
+	if(isset($_GET['partner_theme'])){
+		$partner_theme = '?partner_theme=' . $_GET['partner_theme'];
+	}
+
 	drupal_set_title('Reset password');
 	$form['name']['#title'] = 'Email address';
-	$form['name']['#description'] = '<a href="/user">Back to login</a>';
+	$form['name']['#description'] = '<a href="/user' . $partner_theme . '">Back to login</a>';
 	$form['#submit'][0] = 'bxdev_user_user_pass_submit';
 }
 
@@ -235,15 +241,24 @@ function bxdev_user_user_pass_submit($form, &$form_state){
 	}else{
 		drupal_set_message('Email address does not exist.', 'error');
 	}
+	// if partner_theme url param is set
+	if(isset($_GET['partner_theme'])){
+		global $base_url;
+		$form_state['redirect'] = $base_url . '/user/password?partner_theme=' . $_GET['partner_theme'];
+	}
 }
 
 /**
  * Implements hook_form_alter().
  */
 function bxdev_user_form_user_login_alter(&$form, &$form_state) {
+	$partner_theme = '';
+	if(isset($_GET['partner_theme'])){
+		$partner_theme = '?partner_theme=' . $_GET['partner_theme'];
+	}
 	drupal_set_title('Login to lightswitch');
 	$form['name']['#description'] = '';
-	$form['pass']['#description'] = '<a href="/user/password">Forgot your password?</a>';
+	$form['pass']['#description'] = '<a href="/user/password' . $partner_theme . '">Forgot your password?</a>';
 }
 
 /**

@@ -9,6 +9,8 @@
  */
 function bxdev_partner_order_form($form, &$form_state, $node){
 	
+	$form['#node'] = $node;
+	
 	$fields = field_info_fields('node', 'business');
 	$time_options = bxdev_get_times_array();
 	$city_options[''] = '- Select - ';
@@ -46,7 +48,6 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 	$form['shoot_date'] = array(
 		'#type' => 'textfield',
 		'#title' => t('Shoot Date'),
-		'#required' => TRUE,
 	);
 	
 	$form['business_name'] = array(
@@ -70,13 +71,42 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		'#type' => 'select',
 		'#options' => $time_options,
 		'#title' => t('Shoot Time'),
-		'#required' => TRUE,
 	);
 	
 	$form['notes'] = array(
 		'#type' => 'textarea',
 		'#title' => t('Notes for Video Shoot'),
 	);
+	
+	if(!empty($node->field_partner_show_add_field['und'][0]['value'])){
+		$form['additional_field'] = array(
+			'#type' => 'textarea',
+			'#title' => !empty($node->field_partner_add_field_label['und'][0]['value']) ? $node->field_partner_add_field_label['und'][0]['value'] : 'Other',
+		);
+	}
+	
+	if(!empty($node->field_partner_show_month['und'][0]['value'])){
+		$form['subscription_month'] = array(
+			'#type' => 'select',
+			'#title' => t('Subscription Start Month'),
+			'#options' => array(
+				'' => t('- Select -'),
+				1 => '01 - January',
+				2 => '02 - February',
+				3 => '03 - March',
+				4 => '04 - April',
+				5 => '05 - May',
+				6 => '06 - June',
+				7 => '07 - July',
+				8 => '08 - August',
+				9 => '09 - September',
+				10 => '10 - October',
+				11 => '11 - November',
+				12 => '12 - December',				
+			),
+			'#required' => TRUE,
+		);
+	}	
 	
 	// if partner is allowed to select video type
 	if($node->field_partner_select_type['und'][0]['value']){
@@ -86,7 +116,7 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		foreach($node->field_partner_dynamic_type['und'] as $value){
 			switch($value['value']){
 				case '0':
-					$options[449] = 'Standard video';
+					$options[449] = 'Video with music';
 					break;
 				
 				case '1':
@@ -157,6 +187,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$shoot_time = $values['shoot_time'];
 	$shoot_timestamp = strtotime($shoot_date . ' ' . $shoot_time);
 	$notes = $values['notes'];
+	$additional_field = $values['additional_field'];
+	$subscription_month = $values['subscription_month'];
 	
 	// determine video type
 	$project_type = '';
@@ -187,6 +219,19 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 			7 => 'client',
 		);
 		$account = user_save($account);
+	}
+	// check if a default partner theme should be applied to the client
+	if(!empty($partner->field_partner_default_theme['und'][0]['nid'])){
+		// load the profile for the user
+		$profile = profile2_load_by_user($account->uid, 'client');
+		// if a profile does not exist, create one
+		if(!$profile){
+			$profile = profile_create(array('user' => $account, 'type' => 'client'));
+		}
+		// assign the default partner theme
+		$profile->field_client_partner_theme['und'][0]['nid'] = $partner->field_partner_default_theme['und'][0]['nid'];
+		// save the profile
+		profile2_save($profile);
 	}
 	
 	/**
@@ -232,7 +277,19 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$project->field_project_type['und'][0]['value'] = $project_type;
 	$project->field_charge_amount['und'][0]['value'] = $project_type;
 	$project->field_video_type['und'][0]['value'] = 'bd';
-	$project->field_pc_notes['und'][0]['value'] = !empty($notes) ? $notes : '';
+	// if notes have been entered
+	$project->field_pc_notes['und'][0]['value'] = !empty($notes) ? $notes . "\n\n" : '';
+	// if an additional field has been entered
+	$project->field_pc_notes['und'][0]['value'] .= !empty($additional_field) ? $additional_field . "\n\n" : '';
+	// if a subscription start date has been entered
+	if($subscription_month != ''){
+		$project->field_pc_notes['und'][0]['value'] .= 'Subscription start month: ' . date('F', mktime(0, 0, 0, $subscription_month)) . "\n\n";
+	}
+	$project->field_voice_over['und'][0]['value'] = $project_type == '599' ? '1' : '0';
+	if($project_type == '449' || $project_type == '549'){
+		$project->field_voice_over_gender['und'][0]['value'] = 'no_preference';
+	}
+	$project->field_owner_interview['und'][0]['value'] = $project_type == '549' ? '1' : '0';	
 	
 	node_save($project);
 		
@@ -240,8 +297,8 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	
 	// send the notification email
 	global $base_url;
-	$emails = 'jason@lightswitch.com, brittany@lightswitch.com';
-	// $emails = 'wandoledzep@gmail.com';
+	$emails = 'jason@lightswitch.com, brittany@lightswitch.com, kelly@lightswitch.com';
+	// $emails = 'accounting@bxcreative.com';
 	$params['project_link'] = $base_url . '/' . drupal_lookup_path('alias', 'node/' . $project->nid);
 	$params['partner'] = $partner;
 	$params['city_manual'] = $city_manual;

@@ -170,6 +170,7 @@ class User {
 		
 		$params['project'] = $project;
 		$params['headers']['bcc'] = $project->pc->mail . ', editors@lightswitch.com';
+		// $params['headers']['bcc'] = $project->pc->mail;
 		
 		$system_email = '';
 		
@@ -179,29 +180,41 @@ class User {
 			$this->reset_password();
 			// if project is spec
 			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
-				// drupal_mail('bxdev_user', 'first_comment_spec_new', $this->user->mail, language_default(), $params);
 				$system_email = 'first_comment_spec_new';
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
-				// drupal_mail('bxdev_user', 'first_comment_direct_sale_new', $this->user->mail, language_default(), $params);
 				$system_email = 'first_comment_direct_sale_new';
+			// other type (business dev)
 			}else{
-				// drupal_mail('bxdev_user', 'first_comment_business_dev_new', $this->user->mail, language_default(), $params);
-				$system_email = 'first_comment_business_dev_new';
+				// check for a partner theme
+				$partner_theme = bxdev_user_check_partner_theme($this->user->uid);
+				// if one exists, send custom email
+				if($partner_theme == 'Tribune LocalTrack'){
+					$system_email = 'tribune_first_comment_business_dev_new';
+				// send default email
+				}else{
+					$system_email = 'first_comment_business_dev_new';
+				}
 			}
 		// if client has logged in before (existing)
 		}else{
 			// if project is spec
 			if($project->project->field_video_type['und'][0]['value'] == 'spec'){
-				// drupal_mail('bxdev_user', 'first_comment_spec_existing', $this->user->mail, language_default(), $params);
 				$system_email = 'first_comment_spec_existing';
 			// if project is direct sale
 			}else if($project->project->field_video_type['und'][0]['value'] == 'direct_sale'){
-				// drupal_mail('bxdev_user', 'first_comment_direct_sale_existing', $this->user->mail, language_default(), $params);
 				$system_email = 'first_comment_direct_sale_existing';
 			}else{
-				// drupal_mail('bxdev_user', 'first_comment_business_dev_existing', $this->user->mail, language_default(), $params);
-				$system_email = 'first_comment_business_dev_existing';
+				// check for a partner theme
+				$partner_theme = bxdev_user_check_partner_theme($this->user->uid);
+				// if one exists, send custom email
+				if($partner_theme == 'Tribune LocalTrack'){
+					$system_email = 'tribune_first_comment_business_dev_existing';
+				// send default email
+				}else{
+					$system_email = 'first_comment_business_dev_existing';
+				}
+				
 			}	
 		}
 		
@@ -217,10 +230,18 @@ class User {
 	function send_password_reset(){
 		global $base_url;
 		$this->reset_password();
+		
+		// check to include a partner theme parameter
+		$partner_theme = '';
+		$profile = profile2_load_by_user($this->user->uid, 'client');
+		if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+			$partner_theme = '?partner_theme=' . $profile->uid;
+		}
+		
 		$params = array(
 			'username' => $this->user->name,
 			'password' => $this->password,
-			'login_link' => '<a href="' . $base_url . '/user">' . $base_url . '/user</a>',
+			'login_link' => '<a href="' . $base_url . '/user' . $partner_theme . '">' . $base_url . '/user' . $partner_theme . '</a>',
 		);
 		drupal_mail('bxdev_user', 'password_reset', $this->user->mail, language_default(), $params);
 	}

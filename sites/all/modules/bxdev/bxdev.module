@@ -52,7 +52,14 @@ function bxdev_node_access($node, $op, $account) {
 		if($node->type == 'project'){
 			if($is_anon){
 				$path = substr($_SERVER['REQUEST_URI'], 1);
-				drupal_goto('user', array('query' => array('url' => $path)));
+				// create an array to pass to drupal_goto that contains parameter information
+				$query['query']['url'] = $path;
+				$project = new Project($node->nid);
+				$profile = profile2_load_by_user($project->client->uid, 'client');
+				if($profile && !empty($profile->field_client_partner_theme['und'][0]['nid'])){
+					$query['query']['partner_theme'] = $profile->uid;
+				}
+				drupal_goto('user', $query);
 			}		
 		// business
 		}else if($node->type == 'business'){
@@ -738,5 +745,3 @@ function bxdev_get_filename_string($string){
 	// generate a clean client name used in the file name
 	return preg_replace('/[^\w\.-]/', '_', strtolower($string));
 }
-
-

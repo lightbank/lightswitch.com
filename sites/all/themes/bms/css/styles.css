@@ -215,14 +215,14 @@ footer {
 	float: left;
 }
 
-.logo a {
+/*.logo a {
 	display: block;
 	width: 234px;
 	height: 72px;
 	background: url(../images/sprite_global.png) no-repeat;
 	text-indent: -9999em;
 }
-
+*/
 .nav {
 	float: right;
 	padding-top: 22px;
@@ -602,6 +602,11 @@ footer {
 #user-login #edit-actions input {
 	padding-right: 40px;
 	background: #fb942e url(../images/sprite_global.png) no-repeat 64px -120px;
+}
+
+.page-user-change-password #content {
+	width: 348px;
+	margin: 0 auto;
 }
 
 
@@ -1103,7 +1108,7 @@ input[type="submit"].approve-btn, .approve-yes {
 
 .back, .videographer-back {
 	float: left;
-	margin: 10px 20px 10px 0;
+	margin: 10px 20px 0 0;
 	font-family: Georgia, serif;
 	font-size: 13px;
 	font-weight: bold;
@@ -1143,6 +1148,7 @@ input[type="submit"].approve-btn, .approve-yes {
 	clear: left;
 	width: 300px;
 	font-family: Georgia, serif;
+	margin-top: 30px;
 }
 
 .page-clients .left,
@@ -1157,6 +1163,7 @@ input[type="submit"].approve-btn, .approve-yes {
 	position: relative;
 	float: right;
 	width: 700px;
+	margin-top: 30px;
 }
 
 .page-user #edit-field-pc-ref-uid-wrapper {
@@ -1769,6 +1776,34 @@ input[type="submit"].approve-btn, .approve-yes {
 .roundabout-holder {
 	margin-left: 120px;
 }
+
+
+
+/** PARTNER THEMES
+================================================**/
+
+.partner-theme-tribune-localtrack button,
+.partner-theme-tribune-localtrack input[type="submit"],
+.partner-theme-tribune-localtrack #page .links .active,
+.partner-theme-tribune-localtrack #user-login #edit-actions input {
+	background-color: #9b1b1a;
+}
+
+.partner-theme-tribune-localtrack input.approve-btn[type="submit"] {
+	background-color: #198300;
+}
+
+.partner-theme-tribune-localtrack .left .email,
+.partner-theme-tribune-localtrack .left .phone,
+.partner-theme-tribune-localtrack .left .address,
+.partner-theme-tribune-localtrack .left .website {
+	background-image: url(../images/sprite_global_tribune.png);
+}
+
+.partner-theme-tribune-localtrack .logo {
+	width: 164px\9;
+}
+
 
 
 

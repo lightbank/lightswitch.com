@@ -447,9 +447,56 @@ class SmtpMailSystem implements MailSystemInterface {
     }
 
 
-    // Set the authentication settings.
-    $username = variable_get('smtp_username', '');
-    $password = variable_get('smtp_password', '');
+		/**
+		 * BX OVERRIDE - CHECK FOR TRIBUNE PARTNER THEME
+		 */
+		
+		$tribune_override = FALSE;
+		$project = '';
+		$username = '';
+		$password = '';
+		$host = '';
+		$from = 'info@localtrackvideo.com';
+		
+		// if a node page
+		if(arg(0) == 'node' && is_numeric(arg(1))){
+			$node = node_load(arg(1));
+			if($node->type == 'partner_portal'){
+				if(!empty($node->field_partner_default_theme['und'][0]['nid'])){
+					$theme = node_load($node->field_partner_default_theme['und'][0]['nid']);
+					if($theme->title == 'Tribune LocalTrack'){
+						$tribune_override = TRUE;
+					}
+				}
+			}else if($node->type == 'project'){
+				// load the project
+				$project = new Project(arg(1));
+				// if the project exists
+				if($project->project){
+					$theme = bxdev_partner_get_partner_theme($project->client->uid);
+					// if tribune partner theme
+					if($theme && $theme->title == 'Tribune LocalTrack'){
+						$tribune_override = TRUE;
+						$from = substr($project->pc->mail, 0, strpos($project->pc->mail, '@')) . '@localtrackvideo.com';
+					}				
+				}
+			}
+		}		
+		
+		if($tribune_override){			
+			// Set the authentication settings.
+	    $username = 'lightswitch';
+	    $password = 'awesomevideos2012';
+			$host = 'smtp.sendgrid.net';
+			$mailer->From = $from;
+			$mailer->Sender = $from;
+			$mailer->FromName = 'Tribune LocalTrack';
+		}else{
+	    // keep the default settings
+	    $username = variable_get('smtp_username', '');
+	    $password = variable_get('smtp_password', '');
+			$host = variable_get('smtp_host', '') . ';' . variable_get('smtp_hostbackup', '');
+		}
 
     // If username and password are given, use SMTP authentication.
     if ($username != '' && $password != '') {
@@ -457,7 +504,6 @@ class SmtpMailSystem implements MailSystemInterface {
       $mailer->Username = $username;
       $mailer->Password = $password;
     }
-
 
     // Set the protocol prefix for the smtp host.
     switch (variable_get('smtp_protocol', 'standard')) {
@@ -475,10 +521,10 @@ class SmtpMailSystem implements MailSystemInterface {
 
 
     // Set other connection settings.
-    $mailer->Host   = variable_get('smtp_host', '') . ';' . variable_get('smtp_hostbackup', '');
+    // $mailer->Host   = variable_get('smtp_host', '') . ';' . variable_get('smtp_hostbackup', '');
+		$mailer->Host = $host;
     $mailer->Port   = variable_get('smtp_port', '25');
     $mailer->Mailer = 'smtp';
-
 
     // Let the people know what is going on.
     watchdog('smtp', 'Sending mail to: @to', array('@to' => $to));
