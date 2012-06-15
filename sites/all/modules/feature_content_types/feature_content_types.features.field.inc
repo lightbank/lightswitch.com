@@ -7528,6 +7528,7 @@ function feature_content_types_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
+          0 => '0',
           1 => '1',
           2 => '2',
           3 => '3',
@@ -7544,7 +7545,7 @@ function feature_content_types_field_default_fields() {
       'bundle' => 'videographer',
       'default_value' => array(
         0 => array(
-          'value' => '1',
+          'value' => '0',
         ),
       ),
       'deleted' => '0',

@@ -185,7 +185,7 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$city_manual = $values['city_manual'];
 	$shoot_date = $values['shoot_date'];
 	$shoot_time = $values['shoot_time'];
-	$shoot_timestamp = strtotime($shoot_date . ' ' . $shoot_time);
+	$shoot_timestamp = $shoot_date != '' ? strtotime($shoot_date . ' ' . $shoot_time) : NULL;
 	$notes = $values['notes'];
 	$additional_field = $values['additional_field'];
 	$subscription_month = $values['subscription_month'];

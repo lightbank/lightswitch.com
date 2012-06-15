@@ -459,7 +459,7 @@ class SmtpMailSystem implements MailSystemInterface {
 		$from = 'info@localtrackvideo.com';
 		
 		// if a node page
-		if(arg(0) == 'node' && is_numeric(arg(1))){
+		if((arg(0) == 'node' || arg(0) == 'project') && is_numeric(arg(1))){
 			$node = node_load(arg(1));
 			if($node->type == 'partner_portal'){
 				if(!empty($node->field_partner_default_theme['und'][0]['nid'])){
