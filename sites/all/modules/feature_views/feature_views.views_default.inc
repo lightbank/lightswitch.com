@@ -2979,6 +2979,8 @@ if(!empty($entity->field_project_rescheduling) && $entity->field_project_resched
   $handler->display->display_options['fields']['php']['php_output'] = '<?php 
 if($value === 0){
   print \'Rescheduling\';
+}else if($value == \'\'){
+  print \'\';
 }else{
   print date(\'m/d/Y g:ia\', $value);
 }
@@ -3726,6 +3728,8 @@ if(!empty($entity->field_project_rescheduling) && $entity->field_project_resched
   $handler->display->display_options['fields']['php']['php_output'] = '<?php 
 if($value === 0){
   print \'Rescheduling\';
+}else if($value == \'\'){
+  print \'\';
 }else{
   print date(\'m/d/Y g:ia\', $value);
 }

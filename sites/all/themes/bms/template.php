@@ -515,28 +515,35 @@ function bms_date_all_day_label(){
 function bms_preprocess_mimemail_message(&$variables){
 	// set the default logo
 	$variables['logo'] = '<img src="http://lightswitch.com/sites/default/files/mail_logo.jpg" />';
-	$recipient = $variables['recipient'];
-	// $role = '';
-	$account = '';
-	// if the recipient is a drupal user object
-	if(is_object($recipient)){
-		$account = $recipient;
-	// if the recipient is a string of emails, separated by a comma
-	}else if(strpos($recipient, ',') !== FALSE){
-		$email = reset(explode(',', $recipient));
-		$account = user_load_by_mail($email);
-	// if the recipient is a single email address string
-	}else{
-		$account = user_load_by_mail($recipient);
+	$tribune_override = FALSE;
+	
+	// if a node page
+	if((arg(0) == 'node' || arg(0) == 'project') && is_numeric(arg(1))){
+		$node = node_load(arg(1));
+		if($node->type == 'partner_portal'){
+			if(!empty($node->field_partner_default_theme['und'][0]['nid'])){
+				$theme = node_load($node->field_partner_default_theme['und'][0]['nid']);
+				if($theme->title == 'Tribune LocalTrack'){
+					$tribune_override = TRUE;
+				}
+			}
+		}else if($node->type == 'project'){
+			// load the project
+			$project = new Project(arg(1));
+			// if the project exists
+			if($project->project){
+				$theme = bxdev_partner_get_partner_theme($project->client->uid);
+				// if tribune partner theme
+				if($theme && $theme->title == 'Tribune LocalTrack'){
+					$tribune_override = TRUE;
+					$from = !empty($project->project->pc) ? substr($project->pc->mail, 0, strpos($project->pc->mail, '@')) . '@localtrackvideo.com' : 'info@localtrack.com';
+				}				
+			}
+		}
 	}
 	
-	if($account){
-		$theme = bxdev_partner_get_partner_theme($account->uid);
-
-		if(!empty($theme->field_partner_theme_logo['und'][0]['fid'])){
-			// set the custom logo
-			$variables['logo'] = theme('image_style', array('path' => $theme->field_partner_theme_logo['und'][0]['uri'], 'style_name' => 'partner_theme_logo'));
-		}		
+	if($tribune_override){
+		$variables['logo'] = theme('image_style', array('path' => $theme->field_partner_theme_logo['und'][0]['uri'], 'style_name' => 'partner_theme_logo'));
 	}
 	
 }

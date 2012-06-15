@@ -167,24 +167,27 @@ class Project {
 		$params['comment_date'] = date('m-d-Y', $comment->created);
 		$params['comment'] = nl2br($comment->field_comment['und'][0]['value']);
 		$system_email = '';
+		
+		// check for a partner theme
+		$partner_theme = bxdev_user_check_partner_theme($this->client->uid);
+		// if one exists, send custom email
+		if($partner_theme == 'Tribune LocalTrack'){
+			$system_email = 'tribune_comment';
+		// send default email
+		}else{
+			$system_email = 'comment';
+		}			
+		
 		foreach($users as $uid => $user){
 			// if client, use all associcated emails
 			$to = $uid == $this->client->uid ? $this->client->emails : $user->mail;			
-			// check for a partner theme
-			$partner_theme = bxdev_user_check_partner_theme($this->client->uid);
-			// if one exists, send custom email
-			if($partner_theme == 'Tribune LocalTrack'){
-				$system_email = 'tribune_comment';
-			// send default email
-			}else{
-				$system_email = 'comment';
-			}			
 			
 			drupal_mail('bxdev_project', $system_email, $to, language_default(), $params);
 		}
 		
 		// send editors email
-		drupal_mail('bxdev_project', $system_email, 'editors@lightswitch.com', language_default(), $params);		
+		drupal_mail('bxdev_project', $system_email, 'editors@lightswitch.com', language_default(), $params);
+		// drupal_mail('bxdev_project', $system_email, 'accounting@bxcreative.com', language_default(), $params);	
 	}
 
 	/**
