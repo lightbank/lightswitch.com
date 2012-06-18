@@ -477,7 +477,7 @@ class SmtpMailSystem implements MailSystemInterface {
 					// if tribune partner theme
 					if($theme && $theme->title == 'Tribune LocalTrack'){
 						$tribune_override = TRUE;
-						$from = !empty($this->project->pc) ? substr($project->pc->mail, 0, strpos($project->pc->mail, '@')) . '@localtrackvideo.com' : 'info@localtrack.com';
+						$from = !empty($project->pc->mail) ? substr($project->pc->mail, 0, strpos($project->pc->mail, '@')) . '@localtrackvideo.com' : 'info@localtrackvideo.com';
 					}				
 				}
 			}
