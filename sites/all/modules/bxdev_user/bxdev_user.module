@@ -293,6 +293,8 @@ function bxdev_user_preprocess_page(&$vars){
  */
 function bxdev_user_block_info() {
   $blocks['user_info']['info'] = 'User info';
+	$blocks['client_project_count_active']['info'] = 'Client project count - active';
+	$blocks['client_project_count_all']['info'] = 'Client project count - all';
   return $blocks;
 }
 
@@ -316,9 +318,22 @@ function bxdev_user_block_view($delta = '') {
 				}
 				$output .= '<a href="/user' . $partner_theme . '">Login</a>';
 			}
-      $block['content'] = $output;
       break;
+			
+		case 'client_project_count_active':
+			$output = 'active';	
+			
+			break;
+			
+		case 'client_project_count_all':
+			$output = 'all';	
+
+			break;
+
   }
+
+	$block['content'] = $output;
+	
   return $block;
 }
 
