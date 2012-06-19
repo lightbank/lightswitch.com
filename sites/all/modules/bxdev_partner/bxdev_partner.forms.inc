@@ -289,7 +289,15 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	if($project_type == '449' || $project_type == '549'){
 		$project->field_voice_over_gender['und'][0]['value'] = 'no_preference';
 	}
-	$project->field_owner_interview['und'][0]['value'] = $project_type == '549' ? '1' : '0';	
+	$project->field_owner_interview['und'][0]['value'] = $project_type == '549' ? '1' : '0';
+	
+	// if a Tribune project, make "disable video download" TRUE
+	if(!empty($partner->field_partner_default_theme['und'][0]['nid'])){
+		$partner_theme = node_load($partner->field_partner_default_theme['und'][0]['nid']);
+		if($partner_theme->title == 'Tribune LocalTrack'){
+			$project->field_disable_file_download['und'][0]['value'] = "1";
+		}
+	}
 	
 	node_save($project);
 		
