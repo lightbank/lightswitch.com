@@ -321,12 +321,111 @@ function bxdev_user_block_view($delta = '') {
       break;
 			
 		case 'client_project_count_active':
-			$output = 'active';	
+
+			$uid = arg(1);
+			$statuses = array();
+			$output = '';
+
+			$query = new EntityFieldQuery();
+			$query->entityCondition('entity_type', 'node')
+			->entityCondition('bundle', 'business')
+			->fieldCondition('field_client_ref', 'uid', $uid, '=');
+			$businesses = $query->execute();
+		
+			// if businesses exist
+			if(!empty($businesses['node'])){
+				$businesses = array_keys($businesses['node']);
+
+				$query = new EntityFieldQuery();
+				$query->entityCondition('entity_type', 'node')
+				->entityCondition('bundle', 'project')
+				->fieldCondition('field_project_business_ref', 'nid', $businesses, 'IN')
+				->fieldCondition('field_status', 'value', array(1, 2, 3, 4, 5), 'IN');
+				$projects = $query->execute();
+			
+				// if businesses exist
+				if(!empty($projects['node'])){
+					foreach($projects['node'] as $project){
+						// get the status for the project
+						$status = db_select('field_data_field_status', 's')
+							->fields('s', array('field_status_value'))
+							->condition('entity_id', $project->nid)
+							->execute()
+							->fetchField();
+						// if the status exists
+						if($status != ''){
+							$statuses[$status][] = $status;
+						}
+					}
+				}
+			
+			} // end if businesses exist
+		
+			$table['rows'][0][] = 'Being scheduled';
+			$table['rows'][0][] = count($statuses[1]) + count($statuses[2]);
+			$table['rows'][1][] = 'Scheduled';
+			$table['rows'][1][] = count($statuses[3]);
+			$table['rows'][2][] = 'First version to client';
+			$table['rows'][2][] = count($statuses[4]);
+			$table['rows'][3][] = 'In revision';
+			$table['rows'][3][] = count($statuses[5]);
+		
+			$output = theme('table', $table);
 			
 			break;
 			
 		case 'client_project_count_all':
-			$output = 'all';	
+
+			$uid = arg(1);
+			$statuses = array();
+			$output = '';
+
+			$query = new EntityFieldQuery();
+			$query->entityCondition('entity_type', 'node')
+			->entityCondition('bundle', 'business')
+			->fieldCondition('field_client_ref', 'uid', $uid, '=');
+			$businesses = $query->execute();
+			
+			// if businesses exist
+			if(!empty($businesses['node'])){
+				$businesses = array_keys($businesses['node']);
+
+				$query = new EntityFieldQuery();
+				$query->entityCondition('entity_type', 'node')
+				->entityCondition('bundle', 'project')
+				->fieldCondition('field_project_business_ref', 'nid', $businesses, 'IN');
+				$projects = $query->execute();
+				
+				// if businesses exist
+				if(!empty($projects['node'])){
+					foreach($projects['node'] as $project){
+						// get the status for the project
+						$status = db_select('field_data_field_status', 's')
+							->fields('s', array('field_status_value'))
+							->condition('entity_id', $project->nid)
+							->execute()
+							->fetchField();
+						// if the status exists
+						if($status != ''){
+							$statuses[$status][] = $status;
+						}
+					}
+				}
+				
+			} // end if businesses exist
+			
+			$table['rows'][0][] = 'Being scheduled';
+			$table['rows'][0][] = count($statuses[1]) + count($statuses[2]);
+			$table['rows'][1][] = 'Scheduled';
+			$table['rows'][1][] = count($statuses[3]);
+			$table['rows'][2][] = 'First version to client';
+			$table['rows'][2][] = count($statuses[4]);
+			$table['rows'][3][] = 'In revision';
+			$table['rows'][3][] = count($statuses[5]);
+			$table['rows'][4][] = 'Approved';
+			$table['rows'][4][] = count($statuses[6]) + count($statuses[7]);			
+			
+			$output = theme('table', $table);
 
 			break;
 

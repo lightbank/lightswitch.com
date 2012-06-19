@@ -178,6 +178,28 @@ th .ajax-progress {
 	display: none!important;
 }
 
+#block-bxdev-user-client-project-count-all,
+#block-bxdev-user-client-project-count-active {
+	float: left;
+}
+
+#block-bxdev-user-client-project-count-all table,
+#block-bxdev-user-client-project-count-active table {
+	width: 170px;
+	margin: 0;
+}
+
+#block-bxdev-user-client-project-count-all td,
+#block-bxdev-user-client-project-count-active td {
+	padding: 0px 5px;
+	border: 0;
+}
+
+.view-display-id-client_all .view-filters form,
+.view-display-id-client_active .view-filters form {
+	float: left;
+}
+
 
 /** LAYOUT
 ================================================**/
