@@ -42,7 +42,7 @@
     <div class="view-filters clearfix">
       <?php print $exposed; ?>
 			<?php
-				$block = block_load('bxdev_user', 'client_project_count_all');      
+				$block = block_load('bxdev_user', 'client_project_count_active');      
 				print drupal_render(_block_get_renderable_array(_block_render_blocks(array($block))));
 			?>
     </div>
