@@ -2979,6 +2979,8 @@ if(!empty($entity->field_project_rescheduling) && $entity->field_project_resched
   $handler->display->display_options['fields']['php']['php_output'] = '<?php 
 if($value === 0){
   print \'Rescheduling\';
+}else if($value == \'\'){
+  print \'\';
 }else{
   print date(\'m/d/Y g:ia\', $value);
 }
@@ -3726,6 +3728,8 @@ if(!empty($entity->field_project_rescheduling) && $entity->field_project_resched
   $handler->display->display_options['fields']['php']['php_output'] = '<?php 
 if($value === 0){
   print \'Rescheduling\';
+}else if($value == \'\'){
+  print \'\';
 }else{
   print date(\'m/d/Y g:ia\', $value);
 }
@@ -5603,10 +5607,9 @@ switch($node->field_status[\'und\'][0][\'value\']){
   $handler->display->display_options['fields']['field_rating']['alter']['html'] = 0;
   $handler->display->display_options['fields']['field_rating']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rating']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_rating']['empty'] = '0';
-  $handler->display->display_options['fields']['field_rating']['hide_empty'] = 1;
-  $handler->display->display_options['fields']['field_rating']['empty_zero'] = 1;
-  $handler->display->display_options['fields']['field_rating']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_rating']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_rating']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_rating']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_rating']['field_api_classes'] = 0;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
