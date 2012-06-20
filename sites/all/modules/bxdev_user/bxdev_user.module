@@ -361,6 +361,7 @@ function bxdev_user_block_view($delta = '') {
 			
 			} // end if businesses exist
 		
+			$status_total = count($statuses[1]) + count($statuses[2]) + count($statuses[3]) + count($statuses[4]) + count($statuses[5]);
 			$table['rows'][0][] = 'Being scheduled';
 			$table['rows'][0][] = count($statuses[1]) + count($statuses[2]);
 			$table['rows'][1][] = 'Scheduled';
@@ -369,6 +370,8 @@ function bxdev_user_block_view($delta = '') {
 			$table['rows'][2][] = count($statuses[4]);
 			$table['rows'][3][] = 'In revision';
 			$table['rows'][3][] = count($statuses[5]);
+			$table['rows'][4][] = '<strong>Total</strong>';
+			$table['rows'][4][] = '<strong>' . $status_total . '</strong>';
 		
 			$output = theme('table', $table);
 			
@@ -414,6 +417,7 @@ function bxdev_user_block_view($delta = '') {
 				
 			} // end if businesses exist
 			
+			$status_total = count($statuses[1]) + count($statuses[2]) + count($statuses[3]) + count($statuses[4]) + count($statuses[5]) + count($statuses[6]) + count($statuses[7]);
 			$table['rows'][0][] = 'Being scheduled';
 			$table['rows'][0][] = count($statuses[1]) + count($statuses[2]);
 			$table['rows'][1][] = 'Scheduled';
@@ -423,7 +427,10 @@ function bxdev_user_block_view($delta = '') {
 			$table['rows'][3][] = 'In revision';
 			$table['rows'][3][] = count($statuses[5]);
 			$table['rows'][4][] = 'Approved';
-			$table['rows'][4][] = count($statuses[6]) + count($statuses[7]);			
+			$table['rows'][4][] = count($statuses[6]) + count($statuses[7]);
+			$table['rows'][5][] = '<strong>Total</strong>';
+			$table['rows'][5][] = '<strong>' . $status_total . '</strong>';		
+			
 			
 			$output = theme('table', $table);
 
