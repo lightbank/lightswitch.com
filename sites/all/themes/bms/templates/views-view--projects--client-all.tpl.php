@@ -41,7 +41,6 @@
   <?php if ($exposed): ?>
     <div class="view-filters">
       <?php print $exposed; ?>
-			the table
     </div>
   <?php endif; ?>
 
