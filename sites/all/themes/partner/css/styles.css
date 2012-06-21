@@ -278,6 +278,10 @@ select {
 	margin-bottom: 5px;
 }
 
+.greenArrowHead.file {
+	background-position: 0px -20px;
+}
+
 
 #submitContainer
 {
@@ -387,3 +391,17 @@ a#submitButton:active {
 	font-size: 14px;
 }
 
+#edit-release-upload-upload-button {
+	display: none;
+}
+
+.form-managed-file .messages {
+	font-size: 14px;
+	width: 325px;
+}
+
+.form-managed-file .file a {
+	font-size: 14px;
+	font-weight: normal;
+	color: #0066CC;
+}

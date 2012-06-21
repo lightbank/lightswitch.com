@@ -121,6 +121,7 @@ function feature_content_types_field_default_fields() {
           'bay_city' => 'Bay City MI',
           'beaumont' => 'Beaumont TX',
           'beckley' => 'Beckley WV',
+          'benton' => 'Benton, ME',
           'biloxi' => 'Biloxi MS',
           'binghamtom' => 'Binghamton NY',
           'birmingham' => 'Birmingham AL',
@@ -129,6 +130,7 @@ function feature_content_types_field_default_fields() {
           'bloomington' => 'Bloomington IL',
           'boise' => 'Boise ID',
           'boston' => 'Boston MA',
+          'branson' => 'Branson MO',
           'buffalo' => 'Buffalo NY',
           'burlington' => 'Burlington VT',
           'casper' => 'Casper WY',
@@ -169,6 +171,7 @@ function feature_content_types_field_default_fields() {
           'ft_myers' => 'Ft. Myers FL',
           'ft_smith' => 'Ft. Smith AR',
           'ft_wayne' => 'Ft. Wayne IN',
+          'gatlinburg' => 'Gatlinburg, TN',
           'gulfport' => 'Gulfport MS',
           'grand_rapids' => 'Grand Rapids MI',
           'green_bay' => 'Green Bay WI',
@@ -196,12 +199,14 @@ function feature_content_types_field_default_fields() {
           'knoxville_Knoxville' => 'Knoxville TN',
           'la_crosse' => 'La Crosse WI',
           'lafayette' => 'Lafayette LA',
+          'lakewood' => 'Lakewood OH',
           'lansing' => 'Lansing MI',
           'las_vegas' => 'Las Vegas NV',
           'lawton' => 'Lawton OK',
           'lexington' => 'Lexington KY',
           'lincoln' => 'Lincoln MA',
           'little_rock' => 'Little Rock AR',
+          'london_ON' => 'London ON',
           'los_angeles' => 'Los Angeles CA',
           'louisville' => 'Louisville KY',
           'lubbock' => 'Lubbock TX',
@@ -243,6 +248,7 @@ function feature_content_types_field_default_fields() {
           'palm_springs' => 'Palm Springs FL',
           'panama_city' => 'Panama City FL',
           'pasco' => 'Pasco WA',
+          'pembroke pines' => 'Pembroke Pines FL',
           'pensacola' => 'Pensacola FL',
           'peoria' => 'Peoria IL',
           'peshtigo' => 'Peshtigo WI',
@@ -254,6 +260,7 @@ function feature_content_types_field_default_fields() {
           'plattsburgh' => 'Plattsburgh NY',
           'pocatello' => 'Pocatello ID',
           'port_arthur' => 'Port Arthur TX',
+          'portland_ME' => 'Portland ME',
           'portland' => 'Portland OR',
           'providence_Providence-New Bedford' => 'Providence RI',
           'raleigh' => 'Raleigh NC',
@@ -277,11 +284,13 @@ function feature_content_types_field_default_fields() {
           'san_luis_obispo' => 'San Luis Obispo CA',
           'san_rafael' => 'San Rafael CA',
           'santa_barbara' => 'Santa Barbara CA',
+          'santa cruz' => 'Santa Cruz CA',
           'santa_fe' => 'Santa Fe NM',
           'santa_maria' => 'Santa Maria',
           'sarasota' => 'Sarasota FL',
           'savannah' => 'Savannah GA',
           'schenectady' => 'Schenectady NY',
+          'scottsdale' => 'Scottsdale, AZ',
           'scranton' => 'Scranton PA',
           'seattle' => 'Seattle WA',
           'sherman' => 'Sherman TX',
@@ -293,9 +302,11 @@ function feature_content_types_field_default_fields() {
           'spring_lake' => 'Spring Lake MI',
           'springfield_illinois' => 'Springfield IL',
           'springfield' => 'Springfield MA',
+          'springfield_missouri' => 'Springfield MO',
           'st_charles' => 'St. Charles IL',
           'st_louis' => 'St. Louis MO',
           'st_paul' => 'St. Paul MN',
+          'st_petersburg' => 'St. Petersburg FL',
           'steubenville' => 'Steubenville OH',
           'superior' => 'Superior WI',
           'syracuse' => 'Syracuse NY',
@@ -3232,6 +3243,78 @@ function feature_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-partner_portal-field_partner_show_upload'
+  $fields['node-partner_portal-field_partner_show_upload'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_show_upload',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'partner_portal',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 7,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_partner_show_upload',
+      'label' => 'Show production release upload',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '8',
+      ),
+    ),
+  );
+
   // Exported field: 'node-partner_portal-field_partner_static_type'
   $fields['node-partner_portal-field_partner_static_type'] = array(
     'field_config' => array(
@@ -4643,6 +4726,121 @@ function feature_content_types_field_default_fields() {
         'settings' => array(),
         'type' => 'options_buttons',
         'weight' => '23',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-project-field_partner_release'
+  $fields['node-project-field_partner_release'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_partner_release',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'profile2_private' => FALSE,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 45,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'ffp_field_partner_release' => array(
+        'active_updating' => 0,
+        'file_name' => '[file:ffp-name-only-original].[file:ffp-extension-original]',
+        'file_name_cleanup' => array(
+          'file_name_pathauto' => 0,
+          'file_name_tolower' => 0,
+          'file_name_transliterate' => 0,
+        ),
+        'file_path' => 'partner_signed_releases',
+        'file_path_cleanup' => array(
+          'file_path_pathauto' => 0,
+          'file_path_tolower' => 0,
+          'file_path_transliterate' => 0,
+        ),
+        'retroactive_update' => 0,
+      ),
+      'field_name' => 'field_partner_release',
+      'label' => 'Partner signed production release',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'pdf doc docx txt',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'insert' => 0,
+          'insert_class' => '',
+          'insert_default' => 'auto',
+          'insert_styles' => array(
+            'auto' => 'auto',
+            'image' => 0,
+            'image_approval' => 0,
+            'image_business_large' => 0,
+            'image_business_thumb' => 0,
+            'image_gallery_slideshow' => 0,
+            'image_gallery_thumb' => 0,
+            'image_large' => 0,
+            'image_medium' => 0,
+            'image_partner_logo' => 0,
+            'image_partner_theme_logo' => 0,
+            'image_project_thumb' => 0,
+            'image_square_thumbnail' => 0,
+            'image_thumbnail' => 0,
+            'image_video_thumb_home_border' => 0,
+            'image_video_thumb_home_bw' => 0,
+            'link' => 0,
+          ),
+          'insert_width' => '',
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '41',
       ),
     ),
   );
@@ -7594,12 +7792,13 @@ function feature_content_types_field_default_fields() {
           'aiken' => 'Aiken GA',
           'albany_Albany-Schenectady-Troy' => 'Albany NY',
           'albuquerque' => 'Albuquerque NM',
+          'amarillo' => 'Amarillo TX',
           'appleton' => 'Appleton WI',
           'atlanta' => 'Atlanta GA',
           'auburn' => 'Auburn ME',
           'augusta' => 'Augusta GA',
           'austin' => 'Austin TX',
-          'bakersfield' => 'Bakersfield',
+          'bakersfield' => 'Bakersfield CA',
           'baltimore' => 'Baltimore MD',
           'baton_rouge' => 'Baton Rouge LA',
           'bay_city' => 'Bay City MI',
@@ -7652,6 +7851,7 @@ function feature_content_types_field_default_fields() {
           'jacksonville' => 'Jacksonville FL',
           'kansas_city' => 'Kansas City MO',
           'kelowna' => 'Kelowna BC',
+          'kitchner' => 'Kitchner ON',
           'knoxville_Knoxville' => 'Knoxville TN',
           'lafayette' => 'Lafayette LA',
           'las_vegas' => 'Las Vegas NV',
@@ -7693,6 +7893,7 @@ function feature_content_types_field_default_fields() {
           'phoenix' => 'Phoenix AZ',
           'pittsburgh' => 'Pittsburgh PA',
           'plattsburgh' => 'Plattsburgh NY',
+          'portland_ME' => 'Portland ME',
           'portland' => 'Portland OR',
           'providence_Providence-New Bedford' => 'Providence RI',
           'raleigh' => 'Raleigh NC',
@@ -7710,6 +7911,7 @@ function feature_content_types_field_default_fields() {
           'san_jose' => 'San Jose CA',
           'san_rafael' => 'San Rafael CA',
           'santa_barbara' => 'Santa Barbara CA',
+          'santa_cruz' => 'Santa Cruz CA',
           'santa_fe' => 'Santa Fe NM',
           'savannah' => 'Savannah GA',
           'schenectady' => 'Schenectady NY',
@@ -7721,9 +7923,10 @@ function feature_content_types_field_default_fields() {
           'spokane' => 'Spokane WA',
           'spring_lake' => 'Spring Lake MI',
           'springfield_illinois' => 'Springfield IL',
-          'springfield' => 'Springfield MA',
+          'springfield' => 'Springfield MO',
           'st_louis' => 'St. Louis MO',
           'st_paul' => 'St. Paul MN',
+          'st_petersburg' => 'St. Petersburg FL',
           'syracuse' => 'Syracuse NY',
           'tallahassee' => 'Tallahassee FL',
           'tampa' => 'Tampa FL',
@@ -8219,6 +8422,7 @@ function feature_content_types_field_default_fields() {
   t('Logo');
   t('Notes');
   t('PC notes');
+  t('Partner signed production release');
   t('Partner theme');
   t('Payment notes');
   t('Phone');
@@ -8242,6 +8446,7 @@ function feature_content_types_field_default_fields() {
   t('Select the nearest city');
   t('Shoot date');
   t('Show additional field');
+  t('Show production release upload');
   t('Show subscription month');
   t('Signed production release');
   t('Skills');

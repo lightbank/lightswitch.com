@@ -85,6 +85,17 @@ function bxdev_partner_order_form($form, &$form_state, $node){
 		);
 	}
 	
+	if(!empty($node->field_partner_show_upload['und'][0]['value'])){
+		$form['release_upload'] = array(
+			'#type' => 'managed_file',
+			'#title' => 'Signed Production Release',
+			'#upload_location' => 'public://partner_signed_releases/',
+			'#upload_validators' => array(
+		    'file_validate_extensions' => array('pdf doc docx'),
+		  ),
+		);
+	}
+	
 	if(!empty($node->field_partner_show_month['und'][0]['value'])){
 		$form['subscription_month'] = array(
 			'#type' => 'select',
@@ -189,6 +200,7 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	$notes = $values['notes'];
 	$additional_field = $values['additional_field'];
 	$subscription_month = $values['subscription_month'];
+	$release_upload = $values['release_upload'];
 	
 	// determine video type
 	$project_type = '';
@@ -289,7 +301,23 @@ function bxdev_partner_order_form_submit($form, &$form_state){
 	if($project_type == '449' || $project_type == '549'){
 		$project->field_voice_over_gender['und'][0]['value'] = 'no_preference';
 	}
-	$project->field_owner_interview['und'][0]['value'] = $project_type == '549' ? '1' : '0';	
+	$project->field_owner_interview['und'][0]['value'] = $project_type == '549' ? '1' : '0';
+	
+	// if a Tribune project, make "disable video download" TRUE
+	if(!empty($partner->field_partner_default_theme['und'][0]['nid'])){
+		$partner_theme = node_load($partner->field_partner_default_theme['und'][0]['nid']);
+		if($partner_theme->title == 'Tribune LocalTrack'){
+			$project->field_disable_file_download['und'][0]['value'] = "1";
+		}
+	}
+	
+	// if a partner signed release was uploaded
+	if($release_upload != ''){
+		$file = file_load($release_upload);
+		$file->display = 1;
+		$file->description = '';
+		$project->field_partner_release['und'][0] = (array) $file;
+	}
 	
 	node_save($project);
 		

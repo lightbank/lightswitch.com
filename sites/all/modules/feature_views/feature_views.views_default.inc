@@ -4579,6 +4579,29 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['relationships']['field_project_business_ref_nid']['required'] = 0;
   $handler->display->display_options['relationships']['field_project_business_ref_nid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['nid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -4626,29 +4649,79 @@ print \'<a class="\' . $active . \'" href="/business/\' . $data->node_field_data
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Post date */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'node';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = 'Date added';
-  $handler->display->display_options['fields']['created']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['created']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['created']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['created']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['created']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['created']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['created']['date_format'] = 'no_time';
+  /* Field: Content: Shoot date */
+  $handler->display->display_options['fields']['field_shoot_date']['id'] = 'field_shoot_date';
+  $handler->display->display_options['fields']['field_shoot_date']['table'] = 'field_data_field_shoot_date';
+  $handler->display->display_options['fields']['field_shoot_date']['field'] = 'field_shoot_date';
+  $handler->display->display_options['fields']['field_shoot_date']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_shoot_date']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_shoot_date']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['field_shoot_date']['settings'] = array(
+    'format_type' => 'no_time',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  $handler->display->display_options['fields']['field_shoot_date']['field_api_classes'] = 0;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Shoot date';
+  $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['php']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['php']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['php']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['php']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['php']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = '$entities = entity_load(\'node\', array($row->nid));
+$entity = $entities[$row->nid];
+
+if(!empty($entity->field_project_rescheduling) && $entity->field_project_rescheduling[\'und\'][0][\'value\']){
+  return 0;
+}else{
+  return $entity->field_shoot_date[\'und\'][0][\'value\'];
+}';
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php 
+if($value === 0){
+  print \'Rescheduling\';
+}else if($value == \'\'){
+  print \'\';
+}else{
+  print date(\'m/d/Y g:ia\', $value);
+}
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '2';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Videographer (field_videog_ref) */
   $handler->display->display_options['arguments']['field_videog_ref_uid']['id'] = 'field_videog_ref_uid';

@@ -528,6 +528,12 @@ function bxdev_project_preprocess_node(&$vars){
 			}
 		}
 		
+		/**
+		 * Partner signed release
+		 */
+		if(!empty($content['field_partner_release'][0]['#file']->fid)){
+			$vars['partner_signed_release'] = '<h3>Signed production release</h3><br/><a href="' . file_create_url($content['field_partner_release'][0]['#file']->uri) . '">' . $content['field_partner_release'][0]['#file']->filename . '</a>';
+		}
 		
 	}
 }
