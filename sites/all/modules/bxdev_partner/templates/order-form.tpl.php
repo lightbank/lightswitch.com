@@ -86,6 +86,14 @@
 					</div>
 				</div><!--closes greenarrowbox -->
 			<?php endif; ?>
+			
+			<?php if(isset($form['release_upload'])): ?>
+				<div class="greenArrowHead file">
+					<div class="formFieldContainer">
+						<?php print render($form['release_upload']); ?>
+					</div>
+				</div><!--closes greenarrowbox -->
+			<?php endif; ?>
 
 		</div><!--closes right column form Container -->
 		

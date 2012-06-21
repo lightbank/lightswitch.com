@@ -66,6 +66,12 @@
 		</div>
 	<?php endif; ?>
 	
+	<?php if(isset($partner_signed_release)): ?>
+		<div class="block">
+			<?php print $partner_signed_release; ?>
+		</div>
+	<?php endif; ?>
+	
 	<?php if(isset($videographer_documents)): ?>
 		<div class="block">
 			<?php print $videographer_documents; ?>
