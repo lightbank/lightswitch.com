@@ -14,7 +14,7 @@ class MediaInternetEzwebHandler extends MediaInternetBaseHandler {
 		// }
 		
 		if(strpos($embedCode, 'lsvids.tv') !== FALSE){
-			$v_id = substr($embedCode, -6);
+			$v_id = substr(substr($embedCode, strrpos($embedCode, '/') + 1), 1);
 			return file_stream_wrapper_uri_normalize('ezweb://ez/' . $v_id);		
 		}
 			
